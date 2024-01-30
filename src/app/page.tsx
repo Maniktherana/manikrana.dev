@@ -17,12 +17,23 @@ export default function Home() {
       />
       <div className="flex flex-row md:max-w-screen-md lg:max-w-screen-xl justify-between items-center w-full xl:gap-5">
         <div className="w-full p-4 mx-auto relative z-10 ">
-          <h1 className="text-4xl  md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-black to-black/[0.7] dark:from-neutral-50 dark:to-neutral-300 bg-opacity-50">
+          <h1 className="text-4xl md:text-6xl text-center md:text-left font-bold bg-clip-text text-transparent bg-gradient-to-b from-black to-black/[0.7] dark:from-neutral-50 dark:to-neutral-300 bg-opacity-50">
             Hi, I&apos;m Manik
           </h1>
-          <RoleScramble className="text-2xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-black to-black/[0.7] dark:from-neutral-50 dark:to-neutral-300 bg-opacity-50" />
+          <RoleScramble className="hidden md:block text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-black to-black/[0.7] dark:from-neutral-50 dark:to-neutral-300 bg-opacity-50" />
+          <Button
+            asChild
+            className="block md:hidden mt-10 hero-join-button-dark group relative mx-auto w-[150px] overflow-hidden rounded-lg p-[1px] font-bold transition-all duration-300 md:dark:hidden dark:block dark:hover:shadow-[0_0_2rem_-0.5rem_#fff8] md:mr-0 lg:mr-auto"
+            variant="outline"
+          >
+            <Link href="mailto:manikrana54@gmail.com" target="_blank">
+              <span className="inline-flex h-full w-[149px] justify-center items-center gap-2 rounded-lg px-4 py-2 transition-all duration-300 bg-neutral-900 text-white group-hover:dark:bg-black">
+                Get in touch
+              </span>
+            </Link>
+          </Button>
           <ul className="flex flex-row justify-center md:justify-start gap-2 mt-5">
-            <li className="pr-10">
+            <li className="pr-10 hidden md:block">
               <Button
                 asChild
                 className="hero-join-button-dark group relative mx-auto w-fit overflow-hidden rounded-lg p-[1px] font-bold transition-all duration-300 dark:block dark:hover:shadow-[0_0_2rem_-0.5rem_#fff8] md:mr-0 lg:mr-auto"
