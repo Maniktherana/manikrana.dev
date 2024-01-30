@@ -10,13 +10,13 @@ export default function Home() {
   return (
     <main className="h-screen font-sans w-full rounded-md flex md:items-center md:justify-center dark:bg-black/[0.96] antialiased dark:bg-grid-white/[0.03] bg-grid-black/[0.04] relative overflow-hidden">
       <div className="absolute inset-0 dark:bg-grid-white/[0.03] bg-grid-black/[0.08] [mask-image:linear-gradient(to_bottom,white_1%,transparent_20%)]"></div>
-      <Spotlight className="-top-40 left-0 md:left-30 md:-top-10 light:hidden" />
+      <Spotlight className="-top-[0.5em] left-0 md:left-30 md:-top-10 light:hidden" />
       <Spotlight
-        className="-top-40 left-0 md:left-30 md:-top-10 dark:hidden"
+        className="-top-[0.5em] left-0 md:left-30 md:-top-10 dark:hidden"
         fill="black"
       />
       <div className="flex flex-row md:max-w-screen-md lg:max-w-screen-xl justify-between items-center w-full xl:gap-5">
-        <div className="w-full p-4 mx-auto relative z-10 ">
+        <div className="w-full p-4 mb-32 sm:mb-0 mx-auto relative z-10 ">
           <h1 className="text-4xl md:text-6xl text-center md:text-left font-bold bg-clip-text text-transparent bg-gradient-to-b from-black to-black/[0.7] dark:from-neutral-50 dark:to-neutral-300 bg-opacity-50">
             Hi, I&apos;m Manik
           </h1>
