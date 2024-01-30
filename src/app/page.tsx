@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="h-screen font-sans w-full rounded-md flex md:items-center md:justify-center dark:bg-black/[0.96] antialiased dark:bg-grid-white/[0.03] bg-grid-black/[0.04] relative overflow-hidden">
+    <main className="h-screen font-sans w-full rounded-md flex md:items-center md:justify-center bg-neutral-200 dark:bg-black/[0.96] antialiased dark:bg-grid-white/[0.03] bg-grid-black/[0.04] relative overflow-hidden">
       <div className="absolute inset-0 dark:bg-grid-white/[0.03] bg-grid-black/[0.08] [mask-image:linear-gradient(to_bottom,white_1%,transparent_20%)]"></div>
       <Spotlight className="-top-[0.5em] left-0 md:left-30 md:-top-10 light:hidden" />
       <Spotlight
