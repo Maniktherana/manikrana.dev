@@ -4,6 +4,7 @@ import RoleScramble from "@/components/roles";
 import { Button } from "@/components/ui/button";
 import Spotlight from "@/components/ui/spotlight";
 import XIcon from "@/components/x-icon";
+import { MailIcon } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -28,7 +29,7 @@ export default function Home() {
           >
             <Link href="mailto:manikrana54@gmail.com" target="_blank">
               <span className="inline-flex h-full w-[149px] justify-center items-center gap-2 rounded-lg px-4 py-2 transition-all duration-300 bg-neutral-900 text-white group-hover:dark:bg-black">
-                Get in touch
+                <MailIcon size={20} /> Get in touch
               </span>
             </Link>
           </Button>
@@ -41,7 +42,7 @@ export default function Home() {
               >
                 <Link href="mailto:manikrana54@gmail.com" target="_blank">
                   <span className="inline-flex h-full w-fit items-center gap-2 rounded-lg px-4 py-2 transition-all duration-300 bg-neutral-900 text-white group-hover:dark:bg-black">
-                    Get in touch
+                    <MailIcon size={20} /> Get in touch
                   </span>
                 </Link>
               </Button>
