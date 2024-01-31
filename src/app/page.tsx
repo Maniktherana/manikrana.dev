@@ -27,7 +27,7 @@ export default function Home() {
             className="block md:hidden mt-10 hero-join-button-dark group relative mx-auto w-[150px] overflow-hidden rounded-lg p-[1px] font-bold transition-all duration-300 md:dark:hidden dark:block dark:hover:shadow-[0_0_2rem_-0.5rem_#fff8] md:mr-0 lg:mr-auto"
             variant="outline"
           >
-            <Link href="mailto:manikrana54@gmail.com" target="_blank">
+            <Link href="mailto:hello@manik.lol" target="_blank">
               <span className="inline-flex h-full w-[149px] justify-center items-center gap-2 rounded-lg px-4 py-2 transition-all duration-300 bg-neutral-900 text-white group-hover:dark:bg-black">
                 <MailIcon size={20} /> Get in touch
               </span>
@@ -40,7 +40,7 @@ export default function Home() {
                 className="hero-join-button-dark group relative mx-auto w-fit overflow-hidden rounded-lg p-[1px] font-bold transition-all duration-300 dark:block dark:hover:shadow-[0_0_2rem_-0.5rem_#fff8] md:mr-0 lg:mr-auto"
                 variant="outline"
               >
-                <Link href="mailto:manikrana54@gmail.com" target="_blank">
+                <Link href="mailto:hello@manik.lol" target="_blank">
                   <span className="inline-flex h-full w-fit items-center gap-2 rounded-lg px-4 py-2 transition-all duration-300 bg-neutral-900 text-white group-hover:dark:bg-black">
                     <MailIcon size={20} /> Get in touch
                   </span>
