@@ -1,11 +1,12 @@
-import GithubIcon from "@/components/github-icon";
-import LinkedinIcon from "@/components/linkedin-icon";
+import Link from "next/link";
+import { MailIcon } from "lucide-react";
+
+import XIcon from "@/components/x-icon";
 import RoleScramble from "@/components/roles";
 import { Button } from "@/components/ui/button";
+import GithubIcon from "@/components/github-icon";
 import Spotlight from "@/components/ui/spotlight";
-import XIcon from "@/components/x-icon";
-import { MailIcon } from "lucide-react";
-import Link from "next/link";
+import LinkedinIcon from "@/components/linkedin-icon";
 
 export default function Home() {
   return (
