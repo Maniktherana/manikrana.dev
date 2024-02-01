@@ -658,15 +658,13 @@ export default async function Image() {
             </filter>
             <linearGradient
               id="paint0_linear_18_2"
-              x1="1015.05"
-              y1="47.1903"
-              x2="665.254"
-              y2="683.637"
+              x1="600"
+              y1="20"
+              x2="600"
+              y2="610"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="#EBF8FC" />
-              <stop offset="0.295134" stop-color="#AFAFAF" />
-              <stop offset="0.57639" stop-color="#8A8A8A" />
+              <stop offset="0.0951897" stop-color="#8A8A8A" />
               <stop offset="1" stop-color="#1D1D29" />
             </linearGradient>
             <linearGradient
