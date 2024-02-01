@@ -11,6 +11,7 @@ import Footer from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://manikrana.dev"),
   title: "Manik Rana",
   description: "Manik Rana, a full stack developer based in India.",
 };

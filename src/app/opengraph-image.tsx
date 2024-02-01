@@ -8,7 +8,6 @@ export const size = {
   height: 630,
 };
 export const contentType = "image/png";
-export const url = "https://manikrana.dev/opengraph-image";
 
 export default async function Image() {
   return new ImageResponse(
