@@ -4,7 +4,7 @@ import { MailIcon } from "lucide-react";
 import XIcon from "@/components/icons/x-icon";
 import RoleScramble from "@/components/roles";
 import { Button } from "@/components/ui/button";
-import Spotlight from "@/components/ui/spotlight";
+import Spotlight from "@/components/spotlight";
 import GithubIcon from "@/components/icons/github-icon";
 import LinkedinIcon from "@/components/icons/linkedin-icon";
 
