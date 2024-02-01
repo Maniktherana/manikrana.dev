@@ -34,9 +34,9 @@ export default async function Image() {
             <rect width="1200" height="630" fill="black" />
             <g filter="url(#filter0_d_18_2)">
               <rect
-                x="21"
+                x="55"
                 y="21"
-                width="1158"
+                width="1090"
                 height="588"
                 rx="39"
                 stroke="url(#paint0_linear_18_2)"
@@ -602,9 +602,9 @@ export default async function Image() {
           <defs>
             <filter
               id="filter0_d_18_2"
-              x="-20.1827"
+              x="13.8173"
               y="-0.0913258"
-              width="1240.37"
+              width="1172.37"
               height="670.365"
               filterUnits="userSpaceOnUse"
               color-interpolation-filters="sRGB"
@@ -658,10 +658,10 @@ export default async function Image() {
             </filter>
             <linearGradient
               id="paint0_linear_18_2"
-              x1="1040.89"
+              x1="1015.05"
               y1="47.1903"
-              x2="702.675"
-              y2="700.896"
+              x2="665.254"
+              y2="683.637"
               gradientUnits="userSpaceOnUse"
             >
               <stop stop-color="#EBF8FC" />
