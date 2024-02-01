@@ -12,7 +12,7 @@ import {
 const WorkStatus = () => {
   return (
     <HoverCard>
-      <HoverCardTrigger>
+      <HoverCardTrigger asChild>
         <Button
           variant={"link"}
           className="flex flex-row justify-start items-center pl-0 gap-3"
