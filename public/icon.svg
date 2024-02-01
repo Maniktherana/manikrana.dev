@@ -16,7 +16,7 @@
 <g style="mix-blend-mode:overlay">
 <circle cx="58.2648" cy="58.2648" r="58.2648" transform="matrix(-1 0 0 1 302.187 166.059)" fill="#EDF1F2" fill-opacity="0.3"/>
 </g>
-<path d="M138.926 132.807H200.852L243.449 236.614H245.596L288.193 132.807H350.119V316.08H301.437V210.125H300.005L259.199 314.648H229.846L189.039 209.409H187.608V316.08H138.926V132.807Z" fill="url(#paint3_linear_103_25)"/>
+<path d="M138.926 132.807H200.852L243.449 236.614H245.596L288.193 132.807H350.119V316.08H301.437V210.125H300.005L259.199 314.648H229.846L189.039 209.409H187.608V316.08H138.926V132.807Z" fill="#E1EBDC"/>
 <defs>
 <filter id="filter0_d_103_25" x="0.817348" y="0.908674" width="485.808" height="485.808" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
@@ -53,10 +53,6 @@
 <stop stop-color="#474B49"/>
 <stop offset="0.529514" stop-color="#1C1C1C"/>
 <stop offset="1" stop-color="#101211"/>
-</linearGradient>
-<linearGradient id="paint3_linear_103_25" x1="244.5" y1="66.0797" x2="244.5" y2="383.08" gradientUnits="userSpaceOnUse">
-<stop stop-color="#E1EBDC"/>
-<stop offset="1" stop-color="#EBEBEA" stop-opacity="0"/>
 </linearGradient>
 </defs>
 </svg>
