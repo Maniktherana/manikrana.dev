@@ -12,7 +12,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Manik Rana",
-  description: "I write code occasionally.",
+  description: "Manik Rana, a full stack developer based in India.",
 };
 
 export default function RootLayout({
