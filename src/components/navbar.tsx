@@ -13,7 +13,7 @@ const Navbar = () => {
         className="flex flex-row justify-start items-center gap-3"
         href={"/"}
       >
-        <Image src="/logo.png" alt="Logo" width={25} height={25} />
+        <Image src="/logo.png" alt="Logo" width={30} height={30} />
         <Scram
           text="Manik Rana"
           hover={true}
