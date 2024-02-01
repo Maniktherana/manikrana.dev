@@ -10,6 +10,7 @@ const roles = [
   "SQL > NoSQL",
   "Polyglot Programmer",
   "Check out my talks",
+  "Always learning",
 ];
 
 function* randomRole(): Generator<string> {
