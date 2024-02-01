@@ -3,8 +3,8 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import Scram from "./scram";
-import { ModeToggle } from "./theme-toggle";
+import Scram from "@/components/scram";
+import { ModeToggle } from "@/components/theme-toggle";
 
 const Navbar = () => {
   return (

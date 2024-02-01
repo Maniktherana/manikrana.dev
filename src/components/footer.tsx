@@ -1,5 +1,5 @@
 import React from "react";
-import WorkStatus from "./work-status";
+import WorkStatus from "@/components/work-status";
 
 const Footer = () => {
   return (
