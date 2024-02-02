@@ -40,11 +40,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Navbar />
-          {children}
-          <Analytics />
-          <SpeedInsights />
-          <Footer />
+          <div className="relative">
+            <Navbar />
+            {children}
+            <Analytics />
+            <SpeedInsights />
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>
