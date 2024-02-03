@@ -73,7 +73,7 @@ export default function Home() {
               </li>
               <li>
                 <Link
-                  href="https://www.linkedin.com/in/manik-r-91234824a/"
+                  href="https://www.linkedin.com/in/manik-rana/"
                   target="_blank"
                 >
                   <Button
