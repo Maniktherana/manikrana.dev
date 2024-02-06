@@ -93,6 +93,17 @@
   animation: gradient-rotate 5s linear infinite reverse;
 }
 
+.hero-join-button-dark-i {
+  background: linear-gradient(
+    var(--gradient-angle),
+    #fff,
+    hsla(0, 0%, 100%, 0.5),
+    hsla(0, 0%, 100%, 0.3),
+    hsla(0, 0%, 100%, 0.1)
+  ) !important;
+  animation: gradient-rotate 5s linear infinite reverse;
+}
+
 @layer base {
   * {
     @apply border-border;

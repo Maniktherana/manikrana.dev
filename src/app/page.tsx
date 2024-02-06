@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button";
 import Spotlight from "@/components/spotlight";
 import GithubIcon from "@/components/icons/github-icon";
 import LinkedinIcon from "@/components/icons/linkedin-icon";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <>
-      <main className="h-screen font-sans w-full rounded-md flex md:items-center md:justify-center bg-neutral-100 dark:bg-black/[0.96] antialiased dark:bg-grid-white/[0.03] bg-grid-black/[0.04] relative overflow-hidden">
+      <main className="h-screen pb-36 font-sans w-full rounded-md flex md:items-center md:justify-center bg-neutral-100 dark:bg-black/[0.96] antialiased dark:bg-grid-white/[0.03] bg-grid-black/[0.04] relative overflow-hidden">
         <div className="absolute inset-0 dark:bg-grid-white/[0.03] bg-grid-black/[0.08] [mask-image:linear-gradient(to_bottom,white_1%,transparent_20%)]"></div>
         <Spotlight className="-top-[0.5em] left-0 md:left-30 md:-top-10 light:hidden" />
         <Spotlight
@@ -19,7 +20,16 @@ export default function Home() {
           fill="black"
         />
         <div className="flex flex-row md:max-w-screen-md lg:max-w-screen-xl justify-between items-center w-full xl:gap-5">
-          <div className="w-full p-4 mb-32 mx-auto relative z-10 ">
+          <div className="w-full p-4 md:pl-24 mx-auto relative z-10 ">
+            <div className="w-full flex justify-center mb-10">
+              <Image
+                src="/manik.png"
+                alt="Manik Rana"
+                width={150}
+                height={150}
+                className="md:hidden rounded-full shadow-[0_0_5rem_-0.5rem_#fff8] hero-join-button-dark-i transition-all duration-300 p-[1px]"
+              />
+            </div>
             <h1 className="text-4xl md:text-6xl text-center md:text-left font-bold bg-clip-text text-transparent bg-gradient-to-b from-black to-black/[0.6] dark:from-neutral-50 dark:to-neutral-400 bg-opacity-50">
               Hi, I&apos;m Manik
             </h1>
@@ -71,7 +81,7 @@ export default function Home() {
                   </Button>
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="https://www.linkedin.com/in/manik-rana/"
                   target="_blank"
@@ -84,10 +94,18 @@ export default function Home() {
                     <LinkedinIcon />
                   </Button>
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
-          <div className="w-full hidden md:block"></div>
+          <div className="w-full hidden md:flex flex-row justify-center items-start">
+            <Image
+              src="/manik.png"
+              alt="Manik Rana"
+              width={400}
+              height={400}
+              className="rounded-full shadow-[0_0_5rem_-0.5rem_#fff8] hero-join-button-dark-i transition-all duration-300 p-[1px]"
+            />
+          </div>
         </div>
       </main>
     </>
