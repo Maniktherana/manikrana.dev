@@ -1,13 +1,12 @@
 import Link from "next/link";
+import Image from "next/image";
 import { MailIcon } from "lucide-react";
 
 import XIcon from "@/components/icons/x-icon";
 import RoleScramble from "@/components/roles";
-import { Button } from "@/components/ui/button";
 import Spotlight from "@/components/spotlight";
+import { Button } from "@/components/ui/button";
 import GithubIcon from "@/components/icons/github-icon";
-import LinkedinIcon from "@/components/icons/linkedin-icon";
-import Image from "next/image";
 
 export default function Home() {
   return (
@@ -81,20 +80,6 @@ export default function Home() {
                   </Button>
                 </Link>
               </li>
-              {/* <li>
-                <Link
-                  href="https://www.linkedin.com/in/manik-rana/"
-                  target="_blank"
-                >
-                  <Button
-                    variant={"ghost"}
-                    size={"big-icon"}
-                    className="text-neutral-500"
-                  >
-                    <LinkedinIcon />
-                  </Button>
-                </Link>
-              </li> */}
             </ul>
           </div>
           <div className="w-full hidden md:flex flex-row justify-center items-start">
