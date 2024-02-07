@@ -47,7 +47,7 @@ export default function Talks() {
                     src="/fossUnited.svg"
                     width={190}
                     height={190}
-                    className="rounded-lg w-[100px] h-[100px] bg-black p-2"
+                    className="rounded-lg w-[100px] h-[100px] bg-black  p-2"
                     alt="Foss United Logo"
                   />
                   <div className="flex flex-col justify-start gap-3 items-start">
@@ -58,7 +58,11 @@ export default function Talks() {
                       href="https://github.com/Maniktherana/airflow-talk"
                       target="_blank"
                     >
-                      <Button variant={"theme"} size="default">
+                      <Button
+                        asChild
+                        className="flex items-center gap-2 rounded-md border-2 px-4 py-2 dark:text-white"
+                        variant="outline"
+                      >
                         <p className="flex flex-row items-center gap-3 font-semibold">
                           <GithubIcon /> Slides and code
                         </p>
@@ -88,7 +92,11 @@ export default function Talks() {
                       href="https://github.com/Maniktherana/airflow-talk"
                       target="_blank"
                     >
-                      <Button variant={"theme"} size="default">
+                      <Button
+                        asChild
+                        className="flex items-center gap-2 rounded-md border-2 px-4 py-2 dark:text-white"
+                        variant="outline"
+                      >
                         <p className="flex flex-row items-center gap-3 font-semibold">
                           <GithubIcon /> Slides and code
                         </p>
@@ -118,7 +126,11 @@ export default function Talks() {
                       href="https://github.com/Maniktherana/first-foray-into-rust-talk"
                       target="_blank"
                     >
-                      <Button variant={"theme"} size="default">
+                      <Button
+                        asChild
+                        className="flex items-center gap-2 rounded-md border-2 px-4 py-2 dark:text-white"
+                        variant="outline"
+                      >
                         <p className="flex flex-row items-center gap-3 font-semibold">
                           <GithubIcon /> Slides and code
                         </p>

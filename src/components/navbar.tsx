@@ -25,7 +25,13 @@ const Navbar = () => {
           className="flex flex-row justify-start items-center gap-3 w-[250px]"
           href={"/"}
         >
-          <Image src="/logo.png" alt="Logo" width={30} height={30} />
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={30}
+            height={30}
+            className="rounded-md"
+          />
           <Scram
             text="Manik Rana"
             hover={true}
@@ -55,9 +61,13 @@ const Navbar = () => {
         <ModeToggle />
         <div className="md:hidden font-sans">
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button variant={"theme"} size="icon">
-                <AlignRight />
+            <DropdownMenuTrigger asChild>
+              <Button
+                className="flex items-center gap-2 rounded-md border-2"
+                variant="outline"
+                size="icon"
+              >
+                <AlignRight size="20px" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
