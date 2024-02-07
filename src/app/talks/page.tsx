@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import GithubIcon from "@/components/icons/github-icon";
+import { MapPin } from "lucide-react";
 
 export default function Talks() {
   return (
@@ -45,29 +46,39 @@ export default function Talks() {
                 <div className="flex flex-row justify-start items-center gap-5">
                   <Image
                     src="/fossUnited.svg"
-                    width={190}
-                    height={190}
-                    className="rounded-lg w-[100px] h-[100px] bg-black  p-2"
+                    width={200}
+                    height={200}
+                    className="rounded-lg w-[130px] h-[130px] bg-black  p-2"
                     alt="Foss United Logo"
                   />
-                  <div className="flex flex-col justify-start gap-3 items-start">
-                    <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+                  <div className="flex flex-col h-[130px] justify-start items-start">
+                    <h3 className="font-semibold text-neutral-900 dark:text-white">
                       Build an ETL Pipeline with Apache Airflow
                     </h3>
-                    <Link
-                      href="https://github.com/Maniktherana/airflow-talk"
-                      target="_blank"
+                    <Button
+                      asChild
+                      className="flex p-0 items-center gap-2 rounded-md dark:text-neutral-400 h-8"
+                      variant="link"
+                      size="sm"
                     >
-                      <Button
-                        asChild
-                        className="flex items-center gap-2 rounded-md border-2 px-4 py-2 dark:text-white"
-                        variant="outline"
+                      <Link href="https://fossunited.org/" target="_blank">
+                        <MapPin size="16px" /> FOSS United
+                      </Link>
+                    </Button>
+                    <Button
+                      asChild
+                      className="flex items-center gap-2 rounded-md mt-auto border-2 px-4 py-2 dark:text-white"
+                      variant="outline"
+                    >
+                      <Link
+                        href="https://github.com/Maniktherana/airflow-talk"
+                        target="_blank"
                       >
                         <p className="flex flex-row items-center gap-3 font-semibold">
                           <GithubIcon /> Slides and code
                         </p>
-                      </Button>
-                    </Link>
+                      </Link>
+                    </Button>
                   </div>
                 </div>
               </li>
@@ -79,29 +90,39 @@ export default function Talks() {
                 <div className="flex flex-row justify-start items-center gap-5">
                   <Image
                     src="/pydelhi.jpg"
-                    width={190}
-                    height={190}
-                    className="rounded-lg w-[100px] h-[100px]"
+                    width={200}
+                    height={200}
+                    className="rounded-lg w-[130px] h-[130px]"
                     alt="PyDelhi Logo"
                   />
-                  <div className="flex flex-col justify-start gap-3 items-start">
-                    <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+                  <div className="flex flex-col h-[130px] justify-start items-start">
+                    <h3 className="font-semibold text-neutral-900 dark:text-white">
                       Build an ETL Pipeline with Apache Airflow
                     </h3>
-                    <Link
-                      href="https://github.com/Maniktherana/airflow-talk"
-                      target="_blank"
+                    <Button
+                      asChild
+                      className="flex p-0 items-center gap-2 rounded-md dark:text-neutral-400 h-8"
+                      variant="link"
+                      size="sm"
                     >
-                      <Button
-                        asChild
-                        className="flex items-center gap-2 rounded-md border-2 px-4 py-2 dark:text-white"
-                        variant="outline"
+                      <Link href="https://pydelhi.org/" target="_blank">
+                        <MapPin size="16px" /> PyDelhi
+                      </Link>
+                    </Button>
+                    <Button
+                      asChild
+                      className="flex items-center gap-2 rounded-md mt-auto border-2 px-4 py-2 dark:text-white"
+                      variant="outline"
+                    >
+                      <Link
+                        href="https://github.com/Maniktherana/airflow-talk"
+                        target="_blank"
                       >
                         <p className="flex flex-row items-center gap-3 font-semibold">
                           <GithubIcon /> Slides and code
                         </p>
-                      </Button>
-                    </Link>
+                      </Link>
+                    </Button>
                   </div>
                 </div>
               </li>
@@ -113,29 +134,39 @@ export default function Talks() {
                 <div className="flex flex-row justify-start items-center gap-5">
                   <Image
                     src="/rustDelhi.jpg"
-                    width={190}
-                    height={190}
-                    className="rounded-lg w-[100px] h-[100px]"
+                    width={200}
+                    height={200}
+                    className="rounded-lg w-[130px] h-[130px]"
                     alt="Rust Delhi Logo"
                   />
-                  <div className="flex flex-col justify-start gap-3 items-start">
-                    <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+                  <div className="flex flex-col h-[130px] justify-start items-start">
+                    <h3 className="font-semibold text-neutral-900 dark:text-white">
                       My First Foray into Rust
                     </h3>
-                    <Link
-                      href="https://github.com/Maniktherana/first-foray-into-rust-talk"
-                      target="_blank"
+                    <Button
+                      asChild
+                      className="flex p-0 items-center gap-2 rounded-md dark:text-neutral-400 h-8"
+                      variant="link"
+                      size="sm"
                     >
-                      <Button
-                        asChild
-                        className="flex items-center gap-2 rounded-md border-2 px-4 py-2 dark:text-white"
-                        variant="outline"
+                      <Link href="https://rustdelhi.in/" target="_blank">
+                        <MapPin size="16px" /> Rust Delhi
+                      </Link>
+                    </Button>
+                    <Button
+                      asChild
+                      className="flex items-center gap-2 rounded-md mt-auto border-2 px-4 py-2 dark:text-white"
+                      variant="outline"
+                    >
+                      <Link
+                        href="https://github.com/Maniktherana/first-foray-into-rust-talk"
+                        target="_blank"
                       >
                         <p className="flex flex-row items-center gap-3 font-semibold">
                           <GithubIcon /> Slides and code
                         </p>
-                      </Button>
-                    </Link>
+                      </Link>
+                    </Button>
                   </div>
                 </div>
               </li>
