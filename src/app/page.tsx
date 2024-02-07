@@ -32,7 +32,7 @@ export default function Home() {
             <h1 className="text-4xl md:text-6xl text-center md:text-left font-bold bg-clip-text text-transparent bg-gradient-to-b from-black to-black/[0.6] dark:from-neutral-50 dark:to-neutral-400 bg-opacity-50">
               Hi, I&apos;m Manik
             </h1>
-            <RoleScramble className="font-mono text-center md:text-left text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-black to-black/[0.6] dark:from-neutral-50 dark:to-neutral-400 bg-opacity-50" />
+            <RoleScramble className="font-mono text-center md:text-left text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-black/[0.5] dark:bg-neutral-400 bg-opacity-50" />
             <Button
               asChild
               className="block md:hidden mt-5 hero-join-button-dark group relative mx-auto w-[150px] overflow-hidden rounded-lg p-[1px] font-bold transition-all duration-300 md:dark:hidden dark:block dark:hover:shadow-[0_0_2rem_-0.5rem_#fff8] md:mr-0 lg:mr-auto"
