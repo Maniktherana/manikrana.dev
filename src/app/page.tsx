@@ -26,7 +26,7 @@ export default function Home() {
                 alt="Manik Rana"
                 width={150}
                 height={150}
-                className="md:hidden rounded-full shadow-[0_0_5rem_-0.5rem_#fff8] hero-join-button-dark-i transition-all duration-300 p-[1px]"
+                className="md:hidden rounded-full dark:shadow-[0_0_5rem_-0.5rem_#fff8] shadow-[0_0_5rem_-0.5rem_#000] hero-join-button-dark-i transition-all duration-300 p-[1px]"
               />
             </div>
             <h1 className="text-4xl md:text-6xl text-center md:text-left font-bold bg-clip-text text-transparent bg-gradient-to-b from-black to-black/[0.6] dark:from-neutral-50 dark:to-neutral-400 bg-opacity-50">
@@ -88,7 +88,7 @@ export default function Home() {
               alt="Manik Rana"
               width={400}
               height={400}
-              className="rounded-full shadow-[0_0_5rem_-0.5rem_#fff8] hero-join-button-dark-i transition-all duration-300 p-[1px]"
+              className="rounded-full dark:shadow-[0_0_5rem_-0.5rem_#fff8] shadow-[0_0_5rem_-0.5rem_#000] hero-join-button-dark-i transition-all duration-300 p-[1px]"
             />
           </div>
         </div>
