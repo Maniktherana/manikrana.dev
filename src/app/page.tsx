@@ -13,9 +13,9 @@ export default function Home() {
     <>
       <main className="h-screen pb-36 font-sans w-full rounded-md flex md:items-center md:justify-center bg-neutral-100 dark:bg-black/[0.96] antialiased dark:bg-grid-white/[0.03] bg-grid-black/[0.04] relative overflow-hidden">
         <div className="absolute inset-0 dark:bg-grid-white/[0.03] bg-grid-black/[0.08] [mask-image:linear-gradient(to_bottom,white_1%,transparent_20%)]"></div>
-        <Spotlight className="-top-[0.5em] left-0 md:left-30 md:-top-10 light:hidden" />
+        <Spotlight className="-top-[1.4em] left-0 md:left-30 md:-top-10 light:hidden" />
         <Spotlight
-          className="-top-[0.5em] left-0 md:left-30 md:-top-10 dark:hidden"
+          className="-top-[1.4em] left-0 md:left-30 md:-top-10 dark:hidden"
           fill="black"
         />
         <div className="flex flex-row md:max-w-screen-md lg:max-w-screen-xl justify-between items-center w-full xl:gap-5">
