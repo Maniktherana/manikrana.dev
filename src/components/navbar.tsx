@@ -16,6 +16,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@radix-ui/react-popover";
 
 const Navbar = () => {
   return (
@@ -70,16 +75,19 @@ const Navbar = () => {
                 <AlignRight size="20px" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="w-36">
               <DropdownMenuLabel>
-                <Link href="/">
-                  <p className="font-sans">Home</p>
-                </Link>
+                <span className="font-sans">Menu</span>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/">
+                  <span className="text-center font-sans">Home</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/talks">
-                  <p className="font-sans">Talks</p>
+                  <span className="text-center font-sans">Talks</span>
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
