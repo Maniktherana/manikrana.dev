@@ -75,19 +75,15 @@ const Navbar = () => {
                 <AlignRight size="20px" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-36">
-              <DropdownMenuLabel>
-                <span className="font-sans">Menu</span>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
+            <DropdownMenuContent className="w-40 border-2">
+              <DropdownMenuItem asChild className="h-12 text-md">
                 <Link href="/">
-                  <span className="text-center font-sans">Home</span>
+                  <span className="font-mono">Home</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem asChild className="h-12 text-md">
                 <Link href="/talks">
-                  <span className="text-center font-sans">Talks</span>
+                  <span className="font-mono">Talks</span>
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
