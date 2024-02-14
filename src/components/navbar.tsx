@@ -3,7 +3,6 @@ import Image from "next/image";
 
 import Scram from "@/components/scram";
 import { ModeToggle } from "@/components/theme-toggle";
-import { Button } from "./ui/button";
 import Menu from "./menu";
 
 const Navbar = () => {
@@ -28,29 +27,10 @@ const Navbar = () => {
             className="text-xl font-mono cursor-pointer"
           />
         </Link>
-        <ul className="flex-row h-[30px] justify-center items-center gap-3 font-mono hidden md:flex">
-          <li>
-            <Link
-              className="flex flex-row justify-start items-center gap-3"
-              href={"/talks"}
-            >
-              <Button
-                asChild
-                variant="link"
-                size="sm"
-                className="text-md dark:text-neutral-400 dark:hover:text-white"
-              >
-                <Scram text="Talks" hover={true} speed={0.8} />
-              </Button>
-            </Link>
-          </li>
-        </ul>
       </div>
       <div className="flex gap-4">
         <ModeToggle />
-        <div className="md:hidden font-sans">
-          <Menu />
-        </div>
+        <Menu />
       </div>
     </nav>
   );
