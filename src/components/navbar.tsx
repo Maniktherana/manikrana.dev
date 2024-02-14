@@ -1,26 +1,10 @@
-import React from "react";
-
 import Link from "next/link";
 import Image from "next/image";
 
 import Scram from "@/components/scram";
-import { AlignRight } from "lucide-react";
 import { ModeToggle } from "@/components/theme-toggle";
 import { Button } from "./ui/button";
-import { size } from "../app/opengraph-image";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@radix-ui/react-popover";
+import Menu from "./menu";
 
 const Navbar = () => {
   return (
@@ -65,29 +49,7 @@ const Navbar = () => {
       <div className="flex gap-4">
         <ModeToggle />
         <div className="md:hidden font-sans">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                className="flex items-center gap-2 rounded-md border-2"
-                variant="outline"
-                size="icon"
-              >
-                <AlignRight size="20px" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-40 border-2">
-              <DropdownMenuItem asChild className="h-12 text-md">
-                <Link href="/">
-                  <span className="font-mono">Home</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild className="h-12 text-md">
-                <Link href="/talks">
-                  <span className="font-mono">Talks</span>
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Menu />
         </div>
       </div>
     </nav>

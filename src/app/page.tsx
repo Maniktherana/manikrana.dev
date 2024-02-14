@@ -65,7 +65,7 @@ export default function Home() {
                     size={"big-icon"}
                     className="text-neutral-500"
                   >
-                    <GithubIcon />
+                    <GithubIcon size="25" />
                   </Button>
                 </Link>
               </li>
@@ -76,7 +76,7 @@ export default function Home() {
                     size={"big-icon"}
                     className="text-neutral-500"
                   >
-                    <XIcon />
+                    <XIcon size="30" />
                   </Button>
                 </Link>
               </li>

@@ -75,7 +75,7 @@ export default function Talks() {
                         target="_blank"
                       >
                         <p className="flex flex-row items-center gap-3 font-semibold">
-                          <GithubIcon /> Slides and code
+                          <GithubIcon size="25" /> Slides and code
                         </p>
                       </Link>
                     </Button>
@@ -119,7 +119,7 @@ export default function Talks() {
                         target="_blank"
                       >
                         <p className="flex flex-row items-center gap-3 font-semibold">
-                          <GithubIcon /> Slides and code
+                          <GithubIcon size="25" /> Slides and code
                         </p>
                       </Link>
                     </Button>
@@ -163,7 +163,7 @@ export default function Talks() {
                         target="_blank"
                       >
                         <p className="flex flex-row items-center gap-3 font-semibold">
-                          <GithubIcon /> Slides and code
+                          <GithubIcon size="25" /> Slides and code
                         </p>
                       </Link>
                     </Button>
