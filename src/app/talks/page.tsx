@@ -26,7 +26,7 @@ export default function Talks() {
               className="hidden md:block rounded-md dark:shadow-[0_0_5rem_-0.5rem_#fff8] shadow-[0_0_5rem_-0.5rem_#000] duration-300 p-[1px] bg-black dark:bg-white"
             />
           </div>
-          <div className="p-5 md:max-w-[700px]">
+          <div className="animate-fade-up delay-500 opacity-0 duration-500 p-5 md:max-w-[700px]">
             <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-black to-black/[0.6] dark:from-neutral-50 dark:to-neutral-400 bg-opacity-50">
               Talks
             </h1>
@@ -37,7 +37,7 @@ export default function Talks() {
             </p>
           </div>
           <div className="p-5 md:max-w-[500px] my-5">
-            <ol className="relative border-s border-neutral-700 dark:border-neutral-500">
+            <ol className="animate-fade-up delay-500 opacity-0 duration-500 relative border-s border-neutral-700 dark:border-neutral-500">
               <li className="mb-10 ms-4">
                 <div className="absolute w-3 h-3 bg-neutral-700 rounded-full mt-1.5 -start-1.5 border border-white dark:border-neutral-900 dark:bg-neutral-700"></div>
                 <time className="mb-1 text-sm font-normal leading-none text-neutral-600 dark:text-neutral-500">

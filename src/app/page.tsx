@@ -44,7 +44,7 @@ export default function Home() {
                 </span>
               </Link>
             </Button>
-            <ul className="flex flex-row justify-center md:justify-start gap-2 mt-5">
+            <ul className="animate-fade-up delay-700 opacity-0 duration-500 flex flex-row justify-center md:justify-start gap-2 mt-5">
               <li className="pr-10 hidden md:block">
                 <Button
                   asChild
