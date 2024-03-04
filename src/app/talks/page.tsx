@@ -7,7 +7,7 @@ import { MapPin } from "lucide-react";
 export default function Talks() {
   return (
     <>
-      <main className=" font-sans w-full rounded-md flex flex-col md:items-center md:justify-start bg-neutral-100 dark:bg-black/[0.96] antialiased dark:bg-grid-white/[0.03] bg-grid-black/[0.04] relative overflow-hidden">
+      <main className="animate-fade-up font-sans w-full rounded-md flex flex-col md:items-center md:justify-start bg-neutral-100 dark:bg-black/[0.96] antialiased dark:bg-grid-white/[0.03] bg-grid-black/[0.04] relative overflow-hidden">
         <div className="absolute inset-0 dark:bg-grid-white/[0.03] bg-grid-black/[0.08] [mask-image:linear-gradient(to_bottom,white_1%,transparent_20%)]"></div>
         <div className="flex flex-col py-24 md:max-w-screen-md lg:max-w-screen-xl justify-start items-center w-full xl:gap-5">
           <div className="w-full p-4  mx-auto relative flex justify-center items-center z-10">

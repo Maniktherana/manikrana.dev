@@ -18,7 +18,7 @@ export default function Home() {
           className="-top-[1.4em] left-0 md:left-30 md:-top-10 dark:hidden"
           fill="black"
         />
-        <div className="flex flex-row md:max-w-screen-md lg:max-w-screen-xl justify-between items-center w-full xl:gap-5">
+        <div className="animate-fade-up flex flex-row md:max-w-screen-md lg:max-w-screen-xl justify-between items-center w-full xl:gap-5">
           <div className="w-full p-4 md:pl-24 mx-auto relative z-10 ">
             <div className="w-full flex justify-center mb-10">
               <Image
