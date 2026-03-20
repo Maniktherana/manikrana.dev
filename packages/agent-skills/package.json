@@ -1,0 +1,15 @@
+{
+  "name": "@workspace/skills",
+  "version": "0.0.1",
+  "type": "module",
+  "bin": {
+    "skills": "./scripts/install.ts"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "install": "bun run ./scripts/install.ts",
+    "install:local": "bun run ./scripts/install.ts"
+  }
+}

@@ -4,10 +4,10 @@ This is a TanStack Start monorepo template with shadcn/ui.
 
 ## Adding components
 
-To add components to your app, run the following command at the root of your `web` app:
+To add components to your app, run the following command at the root of your `manikrana.dev` app:
 
 ```bash
-bunx shadcn@latest add button -c apps/web
+bunx shadcn@latest add button -c apps/manikrana.dev
 ```
 
 This will place the ui components in the `packages/ui/src/components` directory.

@@ -10,7 +10,9 @@
     "lint:fix": "turbo lint:fix",
     "fmt": "turbo fmt",
     "fmt:check": "turbo fmt:check",
-    "typecheck": "turbo typecheck"
+    "typecheck": "turbo typecheck",
+    "skills:install": "bun run packages/agent-skills/scripts/install.ts",
+    "skills:new": "gen distributable-skill"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^5.10.0",

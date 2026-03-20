@@ -1,0 +1,229 @@
+@import "tailwindcss";
+
+@source "../**/*.{ts,tsx}";
+@source "../../../../packages/ui/src/**/*.{ts,tsx}";
+
+@font-face {
+  font-family: "CommitMono";
+  src: url("/fonts/CommitMonoV143-VF.woff2") format("woff2");
+  font-weight: 200 700;
+  font-style: normal;
+}
+
+:root {
+  --terminal-text: #111;
+  --terminal-mid: #555;
+  --terminal-bg: #aaa;
+  --terminal-bg25: repeating-conic-gradient(
+      var(--terminal-text) 0% 25%,
+      transparent 0% 100%
+    )
+    1px 0.5px / 2px 2px;
+  --terminal-bg50: repeating-conic-gradient(
+      var(--terminal-text) 0% 25%,
+      transparent 0% 50%,
+      var(--terminal-text) 0% 75%,
+      transparent 0% 100%
+    )
+    1px 0.5px / 2px 2px;
+  --terminal-bg75: repeating-conic-gradient(
+      transparent 0% 25%,
+      var(--terminal-text) 0% 100%
+    )
+    1px 0.5px / 2px 2px;
+}
+
+@utility dither-75 {
+  background: var(--terminal-bg75);
+}
+
+@utility dither-25 {
+  background: var(--terminal-bg25);
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--terminal-bg);
+  color: var(--terminal-text);
+  font-family: "CommitMono", "Commit Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+/* Scrollbars */
+html {
+  scrollbar-color: var(--terminal-text) var(--terminal-bg);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track-piece,
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-button,
+::-webkit-scrollbar-corner {
+  border-radius: 0 !important;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--terminal-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--terminal-text);
+  border: 1px solid var(--terminal-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--terminal-mid);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--terminal-bg);
+}
+
+::selection {
+  color: var(--terminal-text);
+  background-color: var(--terminal-mid);
+}
+
+:focus {
+  outline: none;
+  color: var(--terminal-bg);
+  background-color: var(--terminal-text);
+  animation: terminal-flicker 50ms 2;
+}
+
+@keyframes terminal-flicker {
+  0%,
+  49% {
+    opacity: 0;
+  }
+  50%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Button focus: dithered pattern instead of solid inversion */
+[data-slot="terminal-button"]:focus {
+  background: var(--terminal-bg75);
+  color: var(--terminal-bg);
+}
+
+/* Button hover: same flicker as keyboard focus */
+[data-slot="terminal-button"]:hover {
+  animation: terminal-flicker 50ms 2;
+}
+
+/* Collapsible reveal */
+@keyframes terminal-collapsible-reveal {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0% 0);
+  }
+}
+
+.terminal-collapsible-content {
+  animation: 150ms steps(6, jump-start) forwards terminal-collapsible-reveal;
+}
+
+/* Shake feedback */
+.shake {
+  animation: 200ms steps(1, jump-start) terminal-shake;
+}
+.shake-up {
+  animation: 125ms steps(1, jump-start) terminal-shake-up;
+}
+.shake-down {
+  animation: 125ms steps(1, jump-start) terminal-shake-down;
+}
+.shake-left {
+  animation: 125ms steps(1, jump-start) terminal-shake-left;
+}
+.shake-right {
+  animation: 125ms steps(1, jump-start) terminal-shake-right;
+}
+
+@keyframes terminal-shake {
+  33% {
+    transform: translate(0.125rem, 0.125rem);
+  }
+  67% {
+    transform: translate(-0.125rem, -0.125rem);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+@keyframes terminal-shake-up {
+  50% {
+    transform: translateY(-0.25rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes terminal-shake-down {
+  50% {
+    transform: translateY(0.25rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes terminal-shake-left {
+  50% {
+    transform: translateX(-0.25rem);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes terminal-shake-right {
+  50% {
+    transform: translateX(0.25rem);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Page wipe overlay */
+.page-wipe-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200vw;
+  height: 200vh;
+  background-color: var(--terminal-bg);
+  z-index: 99;
+  visibility: hidden;
+}
+
+.page-wipe-overlay.page-wipe-active {
+  animation: 440ms steps(10, jump-start) forwards terminal-page-wipe;
+}
+
+@keyframes terminal-page-wipe {
+  0% {
+    transform: translateY(0);
+    visibility: visible;
+  }
+  99.9% {
+    visibility: visible;
+  }
+  100% {
+    visibility: hidden;
+    transform: translateY(200vh);
+  }
+}
