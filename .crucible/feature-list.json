@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "repo": "Maniktherana/manikrana.dev",
+  "generatedAt": "2026-04-19T08:17:20Z",
+  "features": [
+    {
+      "id": "feat-7",
+      "source": "issue#7",
+      "title": "ensure talks are up to date",
+      "description": "browser the repo https://github.com/Maniktherana/talks and make sure all talks there are listed in the talks section of the site. if there are missing talks, be sure to add entries for them",
+      "passes": false
+    },
+    {
+      "id": "feat-6",
+      "source": "issue#6",
+      "title": "merge talks page with the root one",
+      "description": "currently we need to navigate to the talks page to know what talks manik gave. it would make more sense to just let the user scroll down and see the timeline of talks there itself.",
+      "passes": false
+    },
+    {
+      "id": "feat-5",
+      "source": "issue#5",
+      "title": "remove light mode/dark mode toggle",
+      "description": "make the site dark mode by default. get rid of the toggle",
+      "passes": false
+    }
+  ]
+}
