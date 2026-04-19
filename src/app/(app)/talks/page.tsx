@@ -41,6 +41,97 @@ export default function Talks() {
               <li className="mb-10 ms-4">
                 <div className="absolute w-3 h-3 bg-neutral-700 rounded-full mt-1.5 -start-1.5 border border-white dark:border-neutral-900 dark:bg-neutral-700"></div>
                 <time className="mb-1 text-sm font-normal leading-none text-neutral-600 dark:text-neutral-500">
+                  October 2024
+                </time>
+                <div className="flex flex-row justify-start items-center gap-5">
+                  <Image
+                    src="/talksBanner.jpg"
+                    width={200}
+                    height={200}
+                    className="rounded-lg w-[130px] h-[130px]"
+                    alt="Promon Logo"
+                  />
+                  <div className="flex flex-col h-[130px] justify-start items-start">
+                    <h3 className="font-semibold text-neutral-900 dark:text-white">
+                      Writing a JSX Parser in Python
+                    </h3>
+                    <Button
+                      asChild
+                      className="flex p-0 items-center gap-2 rounded-md dark:text-neutral-400 h-8"
+                      variant="link"
+                      size="sm"
+                    >
+                      <Link href="https://promconindia.io/" target="_blank">
+                        <MapPin size="16px" /> Promon
+                      </Link>
+                    </Button>
+                    <Button
+                      asChild
+                      className="flex items-center gap-2 rounded-md mt-auto border-2 px-4 py-2 dark:text-white"
+                      variant="outline"
+                    >
+                      <Link
+                        href="https://github.com/Maniktherana/talks/tree/main/prometheus-parser-talk"
+                        target="_blank"
+                      >
+                        <p className="flex flex-row items-center gap-3 font-semibold">
+                          <GithubIcon size="25" /> Slides and code
+                        </p>
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </li>
+              <li className="mb-10 ms-4">
+                <div className="absolute w-3 h-3 bg-neutral-700 rounded-full mt-1.5 -start-1.5 border border-white dark:border-neutral-900 dark:bg-neutral-700"></div>
+                <time className="mb-1 text-sm font-normal leading-none text-neutral-600 dark:text-neutral-500">
+                  June 2024
+                </time>
+                <div className="flex flex-row justify-start items-center gap-5">
+                  <Image
+                    src="/talksBanner.jpg"
+                    width={200}
+                    height={200}
+                    className="rounded-lg w-[130px] h-[130px]"
+                    alt="Observability Talk Banner"
+                  />
+                  <div className="flex flex-col h-[130px] justify-start items-start">
+                    <h3 className="font-semibold text-neutral-900 dark:text-white">
+                      Intro to Observability
+                    </h3>
+                    <Button
+                      asChild
+                      className="flex p-0 items-center gap-2 rounded-md dark:text-neutral-400 h-8"
+                      variant="link"
+                      size="sm"
+                    >
+                      <Link
+                        href="https://github.com/Maniktherana/talks/tree/main/observability-talk"
+                        target="_blank"
+                      >
+                        <MapPin size="16px" /> Meetup
+                      </Link>
+                    </Button>
+                    <Button
+                      asChild
+                      className="flex items-center gap-2 rounded-md mt-auto border-2 px-4 py-2 dark:text-white"
+                      variant="outline"
+                    >
+                      <Link
+                        href="https://github.com/Maniktherana/talks/tree/main/observability-talk"
+                        target="_blank"
+                      >
+                        <p className="flex flex-row items-center gap-3 font-semibold">
+                          <GithubIcon size="25" /> Slides and code
+                        </p>
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </li>
+              <li className="mb-10 ms-4">
+                <div className="absolute w-3 h-3 bg-neutral-700 rounded-full mt-1.5 -start-1.5 border border-white dark:border-neutral-900 dark:bg-neutral-700"></div>
+                <time className="mb-1 text-sm font-normal leading-none text-neutral-600 dark:text-neutral-500">
                   February 2024
                 </time>
                 <div className="flex flex-row justify-start items-center gap-5">
