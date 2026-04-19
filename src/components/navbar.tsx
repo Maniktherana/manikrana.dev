@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 import Scram from "@/components/scram";
-import { ModeToggle } from "@/components/theme-toggle";
 import Menu from "./menu";
 
 const Navbar = () => {
@@ -29,7 +28,6 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="flex gap-4">
-        <ModeToggle />
         <Menu />
       </div>
     </nav>

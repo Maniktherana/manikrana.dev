@@ -8,7 +8,6 @@ import "@/app/globals.css";
 
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://manikrana.dev"),
@@ -37,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning lang="en">
+    <html className="dark" lang="en">
       <head>
         <link href="/icon.svg" rel="icon" type="image/svg+xml" />
         <link
@@ -60,15 +59,13 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="relative">
-            <Navbar />
-            {children}
-            <Analytics />
-            <SpeedInsights />
-            <Footer />
-          </div>
-        </ThemeProvider>
+        <div className="relative">
+          <Navbar />
+          {children}
+          <Analytics />
+          <SpeedInsights />
+          <Footer />
+        </div>
       </body>
     </html>
   );
