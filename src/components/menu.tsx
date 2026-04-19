@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { AlignRight, ExternalLink, Home, Mic2 } from "lucide-react";
+import { AlignRight, ExternalLink, Home } from "lucide-react";
 
 import React from "react";
 import { Button } from "./ui/button";
@@ -38,15 +38,6 @@ const Menu = () => {
           >
             <Home size={"18px"} strokeWidth={1.5} />
             <span>Home</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild className="h-11 rounded-lg text-md">
-          <Link
-            href="/talks"
-            className="flex flex-row justify-start items-center gap-3"
-          >
-            <Mic2 size={"18px"} strokeWidth={1.5} />
-            <span>Talks</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
