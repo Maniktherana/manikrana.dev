@@ -36,13 +36,30 @@ function ModalPage() {
                 Push the latest stock counts to the storefront and connected sales channels.
               </DialogDescription>
             </DialogHeader>
-            <div className="px-6 pb-4">
+            <div className="flex flex-1 flex-col gap-4 px-6 py-4">
+              <p className="medusa-small">
+                Review the channels that will receive this stock refresh before publishing.
+              </p>
               <Alert>
                 <AlertTitle>Summer basics restock</AlertTitle>
                 <AlertDescription>
                   128 variants will be refreshed across Online Store, POS, and Wholesale.
                 </AlertDescription>
               </Alert>
+              <FieldGroup className="mt-2 grid gap-3">
+                <Field>
+                  <FieldLabel htmlFor="modal-update-title">Update title</FieldLabel>
+                  <Input id="modal-update-title" defaultValue="Summer basics restock" />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="modal-update-note">Publish note</FieldLabel>
+                  <Textarea
+                    id="modal-update-note"
+                    rows={3}
+                    defaultValue="Inventory counts were reconciled after the latest warehouse intake."
+                  />
+                </Field>
+              </FieldGroup>
             </div>
             <DialogFooter>
               <DialogClose render={<Button type="button" variant="outline" />}>Cancel</DialogClose>
@@ -65,7 +82,7 @@ function ModalPage() {
                 Update the warehouse settings used for priority orders.
               </DialogDescription>
             </DialogHeader>
-            <div className="px-6 pb-4">
+            <div className="flex flex-1 px-6 py-4">
               <FieldGroup>
                 <Field>
                   <FieldLabel htmlFor="modal-profile-name">Profile name</FieldLabel>
@@ -113,7 +130,7 @@ function ModalPage() {
                 stay available.
               </DialogDescription>
             </DialogHeader>
-            <div className="px-6 pb-4">
+            <div className="flex flex-1 flex-col gap-4 px-6 py-4">
               <Alert variant="destructive">
                 <AlertTriangleIcon aria-hidden="true" />
                 <AlertTitle>Archive action</AlertTitle>
@@ -121,6 +138,10 @@ function ModalPage() {
                   Merchants will not be able to purchase this item until it is restored.
                 </AlertDescription>
               </Alert>
+              <p className="medusa-small">
+                Archiving removes the product from merchant-facing channels immediately. Staff can
+                restore it from the product history screen.
+              </p>
             </div>
             <DialogFooter>
               <DialogClose render={<Button type="button" variant="outline" />}>Cancel</DialogClose>

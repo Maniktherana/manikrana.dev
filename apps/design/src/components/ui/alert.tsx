@@ -26,11 +26,11 @@ const alertSurfaceVariants = cva(
   {
     variants: {
       status: {
-        neutral: "border-[#d4d4d8] bg-[#f4f4f5]",
-        information: "border-[#93c5fd] bg-[#dbeafe]",
-        success: "border-[#6ee7b7] bg-[#d1fae5]",
-        warning: "border-[#fdba74] bg-[#ffedd5]",
-        error: "border-[#fda4af] bg-[#ffe4e6]",
+        neutral: "border-[#d4d4d8] bg-[#f4f4f5] dark:border-[#3f3f46] dark:bg-[#27272a]",
+        information: "border-[#93c5fd] bg-[#dbeafe] dark:border-[#2563eb99] dark:bg-[#1d4ed833]",
+        success: "border-[#6ee7b7] bg-[#d1fae5] dark:border-[#10b98199] dark:bg-[#064e3b66]",
+        warning: "border-[#fdba74] bg-[#ffedd5] dark:border-[#f9731699] dark:bg-[#7c2d1266]",
+        error: "border-[#fda4af] bg-[#ffe4e6] dark:border-[#f43f5e99] dark:bg-[#88133766]",
       },
     },
     defaultVariants: {

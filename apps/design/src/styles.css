@@ -30,6 +30,49 @@
   --component: #fafafa;
   --interactive: #2563eb;
   --interactive-foreground: #ffffff;
+  --button-primary: #27272a;
+  --button-primary-hover: #3f3f46;
+  --button-primary-pressed: #52525b;
+  --button-primary-foreground: #ffffff;
+  --button-secondary: #ffffff;
+  --button-secondary-hover: #f4f4f5;
+  --button-secondary-pressed: #e4e4e7;
+  --button-secondary-foreground: #18181b;
+  --button-transparent-hover: rgb(24 24 27 / 6%);
+  --button-danger: #e11d48;
+  --button-danger-hover: #be123c;
+  --button-danger-pressed: #9f1239;
+  --button-danger-foreground: #ffffff;
+  --button-disabled: #f4f4f5;
+  --button-disabled-border: #e4e4e7;
+  --button-disabled-foreground: #a1a1aa;
+  --control-unchecked-bg: #fafafa;
+  --control-unchecked-hover-bg: #f4f4f5;
+  --control-unchecked-border: #d4d4d8;
+  --control-unchecked-hover-border: #a1a1aa;
+  --inline-code-bg: #f4f4f5;
+  --inline-code-bg-hover: #e4e4e7;
+  --inline-code-border: #d4d4d8;
+  --inline-code-text: #52525b;
+  --inline-code-muted-bg: #e4e4e7;
+  --inline-code-muted-bg-hover: #d4d4d8;
+  --inline-code-muted-border: #d4d4d8;
+  --kbd-field-bg: #fafafa;
+  --kbd-field-border: #d4d4d8;
+  --kbd-field-text: #52525b;
+  --kbd-component-bg: #f4f4f5;
+  --kbd-component-border: #d4d4d8;
+  --kbd-component-text: #52525b;
+  --kbd-contrast-bg: #27272a;
+  --kbd-contrast-border: rgb(255 255 255 / 16%);
+  --kbd-contrast-text: rgb(255 255 255 / 56%);
+  --button-inverted: var(--button-primary);
+  --button-inverted-hover: var(--button-primary-hover);
+  --button-inverted-pressed: var(--button-primary-pressed);
+  --button-inverted-foreground: var(--button-primary-foreground);
+  --button-neutral: var(--button-secondary);
+  --button-neutral-hover: var(--button-secondary-hover);
+  --button-neutral-foreground: var(--button-secondary-foreground);
   --border: #e4e4e7;
   --input: #e4e4e7;
   --ring: #2563eb;
@@ -46,11 +89,19 @@
     0 0 0 1px rgb(0 0 0 / 8%), 0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
   --shadow-control:
     0 0 0 1px rgb(0 0 0 / 8%), 0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
-  --shadow-button-neutral: 0 1px 2px 0 rgb(0 0 0 / 12%), 0 0 0 1px rgb(0 0 0 / 8%);
+  --shadow-button-secondary: 0 1px 2px 0 rgb(0 0 0 / 12%), 0 0 0 1px rgb(0 0 0 / 8%);
+  --shadow-button-primary:
+    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b,
+    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+  --shadow-button-neutral: var(--shadow-button-secondary);
+  --shadow-button-inverted: var(--shadow-button-primary);
   --shadow-button-primary-focus:
     0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b, 0 0 0 2px #ffffff,
     0 0 0 4px rgb(59 130 246 / 60%), inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-control-interactive: 0 1px 2px 0 rgb(30 58 138 / 50%), 0 0 0 1px #2563eb;
+  --shadow-control-unchecked: 0 1px 2px 0 rgb(0 0 0 / 10%), 0 0 0 1px var(--control-unchecked-border);
+  --shadow-control-unchecked-hover:
+    0 1px 2px 0 rgb(0 0 0 / 12%), 0 0 0 1px var(--control-unchecked-hover-border);
   --shadow-switch-track:
     0 2px 4px 0 rgb(0 0 0 / 4%), inset 0 1px 1px 0 rgb(0 0 0 / 4%),
     inset 0 2px 4px 0 rgb(0 0 0 / 4%), inset 0 0 0 0.75px rgb(0 0 0 / 6%),
@@ -65,11 +116,12 @@
     0 0 0 1px rgb(0 0 0 / 8%), 0 8px 16px 0 rgb(0 0 0 / 8%), 0 16px 32px 0 rgb(0 0 0 / 8%),
     inset 0 0 0 1px #ffffff, inset 0 0 0 1.5px rgb(228 228 231 / 60%);
   --shadow-commandbar:
-    0 8px 16px 0 rgb(0 0 0 / 8%), 0 16px 32px 0 rgb(0 0 0 / 8%), inset 0 0 0 0.75px #27272a,
-    inset 0 0 0 1.25px rgb(255 255 255 / 30%);
-  --shadow-button-destructive:
-    0 1px 2px 0 rgb(190 18 60 / 40%), 0 0 0 1px var(--destructive-strong-border),
+    0 4px 8px 0 rgb(0 0 0 / 12%), 0 0 0 1px #18181b,
     inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+  --shadow-button-danger:
+    0 1px 2px 0 rgb(190 18 60 / 40%), 0 0 0 1px var(--button-danger-hover),
+    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+  --shadow-button-destructive: var(--shadow-button-danger);
   --shadow-tooltip:
     0 0 0 1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 8%);
   --shadow-thumbnail:
@@ -106,6 +158,49 @@
   --component: #27272a;
   --interactive: #3b82f6;
   --interactive-foreground: #ffffff;
+  --button-primary: #52525b;
+  --button-primary-hover: #71717a;
+  --button-primary-pressed: #3f3f46;
+  --button-primary-foreground: #ffffff;
+  --button-secondary: #27272a;
+  --button-secondary-hover: #3f3f46;
+  --button-secondary-pressed: #52525b;
+  --button-secondary-foreground: #f4f4f5;
+  --button-transparent-hover: #3f3f46;
+  --button-danger: #be123c;
+  --button-danger-hover: #e11d48;
+  --button-danger-pressed: #9f1239;
+  --button-danger-foreground: #ffffff;
+  --button-disabled: #27272a;
+  --button-disabled-border: #3f3f46;
+  --button-disabled-foreground: #71717a;
+  --control-unchecked-bg: #27272a;
+  --control-unchecked-hover-bg: #3f3f46;
+  --control-unchecked-border: rgb(255 255 255 / 16%);
+  --control-unchecked-hover-border: rgb(255 255 255 / 24%);
+  --inline-code-bg: #27272a;
+  --inline-code-bg-hover: #3f3f46;
+  --inline-code-border: rgb(255 255 255 / 16%);
+  --inline-code-text: rgb(255 255 255 / 72%);
+  --inline-code-muted-bg: #3f3f46;
+  --inline-code-muted-bg-hover: #52525b;
+  --inline-code-muted-border: rgb(255 255 255 / 20%);
+  --kbd-field-bg: #27272a;
+  --kbd-field-border: rgb(255 255 255 / 16%);
+  --kbd-field-text: rgb(255 255 255 / 56%);
+  --kbd-component-bg: #3f3f46;
+  --kbd-component-border: rgb(255 255 255 / 18%);
+  --kbd-component-text: rgb(255 255 255 / 64%);
+  --kbd-contrast-bg: #27272a;
+  --kbd-contrast-border: rgb(255 255 255 / 16%);
+  --kbd-contrast-text: rgb(255 255 255 / 56%);
+  --button-inverted: var(--button-primary);
+  --button-inverted-hover: var(--button-primary-hover);
+  --button-inverted-pressed: var(--button-primary-pressed);
+  --button-inverted-foreground: var(--button-primary-foreground);
+  --button-neutral: var(--button-secondary);
+  --button-neutral-hover: var(--button-secondary-hover);
+  --button-neutral-foreground: var(--button-secondary-foreground);
   --border: #ffffff1a;
   --input: #ffffff1a;
   --ring: #60a5fa;
@@ -120,13 +215,21 @@
   --shadow-control:
     0 -1px 0 0 rgb(255 255 255 / 6%), 0 0 0 1px rgb(255 255 255 / 6%), 0 0 0 1px #27272a,
     0 0 1px 1.5px rgb(0 0 0 / 24%), 0 2px 2px 0 rgb(0 0 0 / 24%);
-  --shadow-button-neutral:
-    0 -1px 0 0 rgb(255 255 255 / 6%), 0 0 0 1px rgb(255 255 255 / 6%), 0 0 0 1px #27272a,
-    0 0 1px 1.5px rgb(0 0 0 / 24%), 0 2px 2px 0 rgb(0 0 0 / 24%);
+  --shadow-button-secondary:
+    0 1px 2px 0 rgb(0 0 0 / 32%), 0 0 0 1px rgb(255 255 255 / 16%);
+  --shadow-button-primary:
+    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b,
+    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+  --shadow-button-neutral: var(--shadow-button-secondary);
+  --shadow-button-inverted: var(--shadow-button-primary);
   --shadow-button-primary-focus:
     0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b, 0 0 0 2px #212124,
     0 0 0 4px rgb(59 130 246 / 60%), inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-control-interactive: 0 1px 2px 0 rgb(30 58 138 / 50%), 0 0 0 1px #3b82f6;
+  --shadow-control-unchecked:
+    0 1px 2px 0 rgb(0 0 0 / 32%), 0 0 0 1px var(--control-unchecked-border);
+  --shadow-control-unchecked-hover:
+    0 1px 2px 0 rgb(0 0 0 / 36%), 0 0 0 1px var(--control-unchecked-hover-border);
   --shadow-switch-track:
     0 2px 4px 0 rgb(0 0 0 / 24%), inset 0 1px 1px 0 rgb(255 255 255 / 4%),
     inset 0 0 0 0.75px rgb(255 255 255 / 8%), inset 0 0 8px 0 rgb(0 0 0 / 24%);
@@ -142,11 +245,12 @@
     0 16px 32px 0 rgb(0 0 0 / 44%), 0 8px 16px 0 rgb(0 0 0 / 36%),
     inset 0 0 0 1px rgb(255 255 255 / 5%), inset 0 0 0 1.5px rgb(255 255 255 / 8%);
   --shadow-commandbar:
-    0 8px 16px 0 rgb(0 0 0 / 36%), 0 16px 32px 0 rgb(0 0 0 / 44%), inset 0 0 0 0.75px #27272a,
-    inset 0 0 0 1.25px rgb(255 255 255 / 30%);
-  --shadow-button-destructive:
-    0 1px 2px 0 rgb(190 18 60 / 40%), 0 0 0 1px var(--destructive-strong-border),
+    0 4px 8px 0 rgb(0 0 0 / 36%), 0 0 0 1px rgb(255 255 255 / 8%),
+    inset 0 0.75px 0 0 rgb(255 255 255 / 12%);
+  --shadow-button-danger:
+    0 1px 2px 0 rgb(190 18 60 / 40%), 0 0 0 1px var(--button-danger-hover),
     inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+  --shadow-button-destructive: var(--shadow-button-danger);
   --shadow-tooltip:
     0 -1px 0 0 rgb(255 255 255 / 6%), 0 0 0 1px rgb(255 255 255 / 6%), 0 0 0 1px #27272a,
     0 4px 8px 0 rgb(0 0 0 / 32%), 0 2px 4px 0 rgb(0 0 0 / 28%);
@@ -531,15 +635,67 @@
   border: 1px solid rgb(255 255 255 / 10%);
   border-radius: 8px;
   color: rgb(255 255 255 / 88%);
+  display: flex;
+  flex-direction: column;
+  margin: 0 4px 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+[data-medusa] .medusa-code-block-pre {
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 400;
   line-height: 1.6;
-  margin: 0 4px 4px;
+  margin: 0;
   max-height: 360px;
   overflow: auto;
   padding: 12px;
   white-space: pre;
+}
+
+[data-medusa] .medusa-code-block-body[data-collapsed] .medusa-code-block-pre {
+  max-height: 220px;
+  overflow: hidden;
+  padding-bottom: 56px;
+}
+
+[data-medusa] .medusa-code-block-fade {
+  background: linear-gradient(180deg, rgb(39 39 42 / 0%) 0%, #27272a 100%);
+  bottom: 34px;
+  height: 56px;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+
+[data-medusa] .medusa-code-block-expand {
+  align-items: center;
+  background: rgb(255 255 255 / 10%);
+  border: 0;
+  border-top: 1px solid rgb(255 255 255 / 16%);
+  color: rgb(255 255 255 / 56%);
+  cursor: pointer;
+  display: flex;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  justify-content: center;
+  line-height: 1.1;
+  min-height: 34px;
+  padding: 8px;
+  width: 100%;
+}
+
+[data-medusa] .medusa-code-block-expand:hover {
+  background: rgb(255 255 255 / 13%);
+  color: rgb(255 255 255 / 88%);
+}
+
+[data-medusa] .medusa-code-block-expand:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
 }
 
 [data-medusa] .medusa-code-block-line {
@@ -1193,35 +1349,33 @@
   text-decoration: underline;
 }
 
-[data-medusa] [data-slot="button"][data-variant="ghost"]:hover,
 [data-medusa] [data-slot="button"][data-variant="outline"]:hover,
 [data-medusa] [data-slot="button"][data-variant="secondary"]:hover {
-  background: var(--accent);
+  background: var(--button-secondary-hover);
+  color: var(--button-secondary-foreground);
+}
+
+[data-medusa] [data-slot="button"][data-variant="ghost"]:hover {
+  background: var(--button-transparent-hover);
   color: var(--foreground);
 }
 
 [data-medusa] [data-slot="button"][data-active="true"] {
-  background: var(--accent);
+  background: var(--button-transparent-hover);
   color: var(--foreground);
 }
 
 [data-medusa] [data-slot="button"][data-variant="default"] {
-  background: #27272a;
-  box-shadow:
-    var(--shadow-button-neutral),
-    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
-  color: var(--primary-foreground);
+  background: var(--button-primary);
+  box-shadow: var(--shadow-button-primary);
+  color: var(--button-primary-foreground);
 }
 
 [data-medusa] [data-slot="button"][data-variant="default"]:hover {
-  background: #3f3f46;
-  color: var(--primary-foreground);
+  background: var(--button-primary-hover);
+  color: var(--button-primary-foreground);
 }
 
-[data-medusa] [data-slot="button"][data-variant="default"],
-[data-medusa] [data-slot="button"][data-variant="outline"],
-[data-medusa] [data-slot="button"][data-variant="secondary"],
-[data-medusa] [data-slot="button"][data-variant="destructive"],
 [data-medusa] [data-slot="select-trigger"],
 [data-medusa] [data-slot="input"],
 [data-medusa] [data-slot="input-group"],
@@ -1234,7 +1388,18 @@
 [data-medusa] [data-slot="button"][data-variant="outline"],
 [data-medusa] [data-slot="button"][data-variant="secondary"],
 [data-medusa] [data-slot="button"]:not([data-variant]) {
-  box-shadow: var(--shadow-button-neutral);
+  box-shadow: var(--shadow-button-secondary);
+}
+
+[data-medusa] [data-slot="button"][data-variant="destructive"] {
+  box-shadow: var(--shadow-button-danger);
+}
+
+[data-medusa] [data-slot="button"]:is(:disabled, [aria-disabled="true"], [data-disabled]) {
+  background: var(--button-disabled);
+  border-color: var(--button-disabled-border);
+  box-shadow: none;
+  color: var(--button-disabled-foreground);
 }
 
 [data-medusa] [data-slot="input-group"] [data-slot="button"] {
@@ -1313,15 +1478,15 @@
 }
 
 [data-medusa] [data-slot="button"][data-variant="destructive"] {
-  background: var(--destructive-strong);
-  border-color: var(--destructive-strong-border);
-  box-shadow: var(--shadow-button-destructive);
-  color: #ffffff;
+  background: var(--button-danger);
+  border-color: transparent;
+  box-shadow: var(--shadow-button-danger);
+  color: var(--button-danger-foreground);
 }
 
 [data-medusa] [data-slot="button"][data-variant="destructive"]:hover {
-  background: var(--destructive-strong-border);
-  color: #ffffff;
+  background: var(--button-danger-hover);
+  color: var(--button-danger-foreground);
 }
 
 [data-medusa] [data-slot="button-group"] {
@@ -1650,14 +1815,14 @@
   padding: 0;
 }
 
-[data-medusa] [data-slot="popover-content"].medusa-date-popover,
-[data-medusa] [data-slot="popover-content"].medusa-filter-menu {
-  background: var(--background);
-  box-shadow: var(--shadow-flyout);
-  color: var(--foreground);
+[data-slot="popover-content"].medusa-date-popover,
+[data-slot="popover-content"].medusa-filter-menu {
+  background: var(--background) !important;
+  box-shadow: var(--shadow-flyout) !important;
+  color: var(--foreground) !important;
 }
 
-[data-medusa] .medusa-date-popover [data-slot="calendar"] {
+.medusa-date-popover [data-slot="calendar"] {
   border-radius: 8px 8px 0 0;
 }
 
@@ -1669,22 +1834,22 @@
   padding: 12px;
 }
 
-[data-medusa] [data-slot="popover-content"].medusa-filter-menu {
+[data-slot="popover-content"].medusa-filter-menu {
   background: var(--component);
   padding: 4px;
 }
 
-[data-medusa] .medusa-filter-menu [data-slot="popover-header"] {
+.medusa-filter-menu [data-slot="popover-header"] {
   padding: 4px 8px 8px;
 }
 
-[data-medusa] .medusa-filter-menu [data-slot="popover-title"] {
+.medusa-filter-menu [data-slot="popover-title"] {
   color: var(--foreground);
   font-size: 13px;
   line-height: 1.6;
 }
 
-[data-medusa] .medusa-filter-menu [data-slot="popover-description"] {
+.medusa-filter-menu [data-slot="popover-description"] {
   color: var(--secondary-foreground);
   font-size: 13px;
   line-height: 1.6;
@@ -2026,18 +2191,19 @@
 
 [data-medusa] .medusa-user-badge {
   align-items: center;
-  background: var(--background);
+  background: var(--component);
   border: 1px solid transparent;
   border-radius: 999px;
   box-shadow: var(--shadow-button-neutral);
-  color: var(--foreground);
+  color: var(--secondary-foreground);
   display: inline-flex;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   gap: 8px;
   height: 28px;
   line-height: 1.1;
-  padding: 2px 10px 2px 2px;
+  overflow: hidden;
+  padding: 4px 10px 4px 4px;
   transition:
     background-color 140ms ease,
     box-shadow 140ms ease,
@@ -2047,6 +2213,11 @@
 [data-medusa] .medusa-user-badge:hover,
 [data-medusa] .medusa-user-badge[data-hover="true"] {
   background: var(--accent);
+}
+
+[data-medusa] .medusa-user-badge [data-slot="avatar"] {
+  height: 20px;
+  width: 20px;
 }
 
 [data-medusa] .medusa-option-card {
@@ -2061,6 +2232,7 @@
   min-height: 42px;
   padding: 0;
   width: 294px;
+  cursor: pointer;
 }
 
 [data-medusa] .medusa-option-card[data-border="true"] {
@@ -2083,6 +2255,7 @@
 }
 
 [data-medusa] .medusa-option-card[data-disabled="true"] {
+  cursor: not-allowed;
   opacity: 0.5;
 }
 
@@ -2246,18 +2419,73 @@
   line-height: 1.6;
 }
 
+[data-medusa] [data-slot="code"] {
+  background: var(--inline-code-bg);
+  border-color: var(--inline-code-border);
+  color: var(--inline-code-text);
+}
+
+[data-medusa] [data-slot="code"]:hover {
+  background: var(--inline-code-bg-hover);
+}
+
+[data-medusa] [data-slot="code"][data-background="muted"] {
+  background: var(--inline-code-muted-bg);
+  border-color: var(--inline-code-muted-border);
+}
+
+[data-medusa] [data-slot="code"][data-background="muted"]:hover {
+  background: var(--inline-code-muted-bg-hover);
+}
+
 [data-medusa] .medusa-checkbox-base [data-slot="checkbox-box"] {
-  background: var(--background);
+  background: var(--control-unchecked-bg);
+  box-shadow: var(--shadow-control-unchecked);
 }
 
 [data-medusa] .medusa-radio-base [data-slot="radio-visual"] {
-  background: var(--background);
+  background: var(--control-unchecked-bg);
+  box-shadow: var(--shadow-control-unchecked);
+}
+
+[data-medusa] [data-slot="checkbox"][data-checked] [data-slot="checkbox-box"],
+[data-medusa] [data-slot="checkbox"][data-indeterminate] [data-slot="checkbox-box"],
+[data-medusa] [data-slot="radio-group-item"][data-checked] [data-slot="radio-visual"] {
+  background: var(--interactive);
+  box-shadow: var(--shadow-control-interactive);
+}
+
+[data-medusa] [data-slot="checkbox"][data-unchecked]:hover [data-slot="checkbox-box"],
+[data-medusa] [data-slot="radio-group-item"][data-unchecked]:hover [data-slot="radio-visual"] {
+  background: var(--control-unchecked-hover-bg);
+  box-shadow: var(--shadow-control-unchecked-hover);
+}
+
+[data-medusa] [data-slot="checkbox"][data-checked]:hover [data-slot="checkbox-box"],
+[data-medusa] [data-slot="checkbox"][data-indeterminate]:hover [data-slot="checkbox-box"],
+[data-medusa] [data-slot="radio-group-item"][data-checked]:hover [data-slot="radio-visual"] {
+  background: var(--interactive);
+  box-shadow: var(--shadow-control-interactive);
 }
 
 [data-medusa] [data-slot="kbd"] {
-  border-color: var(--border);
+  background: var(--kbd-field-bg);
+  border-color: var(--kbd-field-border);
   border-width: 0.5px;
   box-shadow: none;
+  color: var(--kbd-field-text);
+}
+
+[data-medusa] [data-slot="kbd"][data-background="component"] {
+  background: var(--kbd-component-bg);
+  border-color: var(--kbd-component-border);
+  color: var(--kbd-component-text);
+}
+
+[data-medusa] [data-slot="kbd"][data-background="contrast"] {
+  background: var(--kbd-contrast-bg);
+  border-color: var(--kbd-contrast-border);
+  color: var(--kbd-contrast-text);
 }
 
 [data-medusa]

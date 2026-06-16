@@ -58,6 +58,12 @@ function KbdPage() {
         </KbdGroup>
       </ComponentDemoBand>
 
+      <ComponentDemoBand label="SURFACES" className="mt-8 flex flex-wrap items-center gap-4">
+        <Kbd>⌘</Kbd>
+        <Kbd background="component">⌘</Kbd>
+        <Kbd background="contrast">⌘</Kbd>
+      </ComponentDemoBand>
+
       <ComponentDemoBand label="COMMAND HINTS" className="mt-8 w-full max-w-xl">
         <div className="divide-y rounded-lg border bg-background">
           {commandHints.map((hint) => (
@@ -86,7 +92,7 @@ function KbdPage() {
             <InputGroupInput id="kbd-search" placeholder="Products, orders, customers" />
             <InputGroupAddon align="inline-end">
               <KbdGroup aria-label="Focus search shortcut">
-                <Kbd>/</Kbd>
+                <Kbd background="component">/</Kbd>
               </KbdGroup>
             </InputGroupAddon>
           </InputGroup>
@@ -99,8 +105,8 @@ function KbdPage() {
           <Button type="button" variant="outline" className="justify-between">
             Export orders
             <KbdGroup aria-label="Export orders shortcut">
-              <Kbd>Cmd</Kbd>
-              <Kbd>E</Kbd>
+              <Kbd background="component">Cmd</Kbd>
+              <Kbd background="component">E</Kbd>
             </KbdGroup>
           </Button>
           <Input aria-label="Order filter" defaultValue="status:ready" />

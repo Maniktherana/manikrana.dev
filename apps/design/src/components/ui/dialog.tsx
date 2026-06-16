@@ -90,7 +90,7 @@ function DialogFooter({
     <div
       data-slot="dialog-footer"
       className={cn(
-        "flex flex-col-reverse items-end justify-end gap-2 border-t bg-background px-6 py-4 sm:flex-row",
+        "mt-auto flex flex-col-reverse items-end justify-end gap-2 border-t bg-background px-6 py-4 sm:flex-row",
         className,
       )}
       {...props}

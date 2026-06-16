@@ -5,11 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
-function Code({ className, ...props }: React.ComponentProps<"code">) {
+type CodeProps = React.ComponentProps<"code"> & {
+  background?: "base" | "muted";
+};
+
+function Code({ background = "base", className, ...props }: CodeProps) {
   return (
     <code
+      data-slot="code"
+      data-background={background}
       className={cn(
-        "inline-flex h-[18px] items-center justify-center rounded border-[0.5px] border-[#d4d4d8] bg-[#f4f4f5] px-[5.5px] py-px font-mono text-xs leading-[1.1] font-normal text-[#52525b]",
+        "inline-flex h-[18px] w-fit max-w-full items-center justify-center self-start overflow-hidden rounded border-[0.5px] border-[var(--inline-code-border)] bg-[var(--inline-code-bg)] px-[5.5px] py-px font-mono text-xs leading-[1.1] font-normal text-[var(--inline-code-text)] transition-colors data-[background=muted]:border-[var(--inline-code-muted-border)] data-[background=muted]:bg-[var(--inline-code-muted-bg)]",
         className,
       )}
       {...props}
@@ -27,7 +33,10 @@ function CodeBlock({
   className?: string;
 }) {
   const [copied, setCopied] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(false);
   const lines = code.split("\n");
+  const isCollapsible = lines.length > 10;
+  const isCollapsed = isCollapsible && !expanded;
 
   return (
     <div className={cn("medusa-code-block", className)}>
@@ -56,16 +65,33 @@ function CodeBlock({
           <TooltipContent>{copied ? "Copied" : "Copy"}</TooltipContent>
         </Tooltip>
       </div>
-      <pre className="medusa-code-block-body">
-        <code>
-          {lines.map((line, index) => (
-            <span className="medusa-code-block-line" key={`${index}-${line}`}>
-              <span className="medusa-code-block-number">{index + 1}</span>
-              <span className="medusa-code-block-text">{line || " "}</span>
-            </span>
-          ))}
-        </code>
-      </pre>
+      <div
+        className="medusa-code-block-body"
+        data-collapsible={isCollapsible || undefined}
+        data-collapsed={isCollapsed || undefined}
+      >
+        <pre className="medusa-code-block-pre">
+          <code>
+            {lines.map((line, index) => (
+              <span className="medusa-code-block-line" key={`${index}-${line}`}>
+                <span className="medusa-code-block-number">{index + 1}</span>
+                <span className="medusa-code-block-text">{line || " "}</span>
+              </span>
+            ))}
+          </code>
+        </pre>
+        {isCollapsed ? <div aria-hidden="true" className="medusa-code-block-fade" /> : null}
+        {isCollapsible ? (
+          <button
+            aria-expanded={expanded}
+            className="medusa-code-block-expand"
+            type="button"
+            onClick={() => setExpanded((current) => !current)}
+          >
+            {expanded ? "Hide bottom" : "Show bottom"}
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 }

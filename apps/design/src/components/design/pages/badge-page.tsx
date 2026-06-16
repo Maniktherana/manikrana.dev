@@ -62,13 +62,13 @@ function BadgePage() {
 
       <ComponentDemoBand label="USER BADGE" className="mt-8">
         <button className="medusa-user-badge" type="button">
-          <Avatar size="sm">
+          <Avatar size="2xs">
             <AvatarFallback>MR</AvatarFallback>
           </Avatar>
           <span>Mina Rao</span>
         </button>
         <button className="medusa-user-badge" data-hover="true" type="button">
-          <Avatar size="sm">
+          <Avatar size="2xs">
             <AvatarFallback>SK</AvatarFallback>
           </Avatar>
           <span>Sam Kim</span>

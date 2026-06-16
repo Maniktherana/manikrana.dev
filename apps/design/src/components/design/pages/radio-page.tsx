@@ -10,6 +10,7 @@ import {
   FieldGroup,
   FieldLegend,
   FieldSet,
+  FieldTitle,
 } from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -140,47 +141,60 @@ function RadioPage() {
           aria-label="Radio label cards"
           className="flex flex-wrap gap-6"
         >
-          <Field orientation="horizontal" className="medusa-option-card">
-            <RadioGroupItem id="radio-label-bare" value="bare" />
+          <Label htmlFor="radio-label-bare" className="medusa-option-card">
+            <RadioGroupItem id="radio-label-bare" className="pointer-events-none" value="bare" />
             <FieldContent>
-              <Label htmlFor="radio-label-bare">Label</Label>
+              <FieldTitle>Label</FieldTitle>
               <FieldDescription>The quick brown fox jumps over a lazy dog.</FieldDescription>
             </FieldContent>
-          </Field>
+          </Label>
 
-          <Field orientation="horizontal" className="medusa-option-card" data-border="true">
-            <RadioGroupItem id="radio-label-border" value="border" />
+          <Label htmlFor="radio-label-border" className="medusa-option-card" data-border="true">
+            <RadioGroupItem
+              id="radio-label-border"
+              className="pointer-events-none"
+              value="border"
+            />
             <FieldContent>
-              <Label htmlFor="radio-label-border">Label</Label>
+              <FieldTitle>Label</FieldTitle>
               <FieldDescription>The quick brown fox jumps over a lazy dog.</FieldDescription>
             </FieldContent>
-          </Field>
+          </Label>
 
-          <Field
-            orientation="horizontal"
+          <Label
+            htmlFor="radio-label-checked"
             className="medusa-option-card"
             data-border="true"
             data-hover="true"
           >
-            <RadioGroupItem id="radio-label-checked" value="checked-card" />
+            <RadioGroupItem
+              id="radio-label-checked"
+              className="pointer-events-none"
+              value="checked-card"
+            />
             <FieldContent>
-              <Label htmlFor="radio-label-checked">Checked label</Label>
+              <FieldTitle>Checked label</FieldTitle>
               <FieldDescription>The quick brown fox jumps over a lazy dog.</FieldDescription>
             </FieldContent>
-          </Field>
+          </Label>
 
-          <Field
-            orientation="horizontal"
+          <Label
+            htmlFor="radio-label-disabled"
             className="medusa-option-card"
             data-border="true"
             data-disabled="true"
           >
-            <RadioGroupItem id="radio-label-disabled" value="disabled" disabled />
+            <RadioGroupItem
+              id="radio-label-disabled"
+              className="pointer-events-none"
+              value="disabled"
+              disabled
+            />
             <FieldContent>
-              <Label htmlFor="radio-label-disabled">Disabled label</Label>
+              <FieldTitle>Disabled label</FieldTitle>
               <FieldDescription>The quick brown fox jumps over a lazy dog.</FieldDescription>
             </FieldContent>
-          </Field>
+          </Label>
         </RadioGroup>
       </ComponentDemoBand>
 

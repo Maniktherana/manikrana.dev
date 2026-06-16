@@ -11,6 +11,7 @@ import {
   FieldGroup,
   FieldLegend,
   FieldSet,
+  FieldTitle,
 } from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
 import { CircleHelpIcon } from "lucide-react";
@@ -72,55 +73,55 @@ function CheckboxPage() {
       </ComponentDemoBand>
 
       <ComponentDemoBand label="CHECKBOX LABEL" className="mt-8 flex flex-wrap gap-6">
-        <Field orientation="horizontal" className="medusa-option-card">
-          <Checkbox id="checkbox-label-bare" />
+        <Label htmlFor="checkbox-label-bare" className="medusa-option-card">
+          <Checkbox id="checkbox-label-bare" className="pointer-events-none" />
           <FieldContent>
-            <Label htmlFor="checkbox-label-bare">
+            <FieldTitle>
               Label
               <span className="font-normal text-muted-foreground">(Optional)</span>
               <CircleHelpIcon className="size-[15px] text-muted-foreground" />
-            </Label>
+            </FieldTitle>
             <FieldDescription>The quick brown fox jumps over a lazy dog.</FieldDescription>
           </FieldContent>
-        </Field>
+        </Label>
 
-        <Field orientation="horizontal" className="medusa-option-card" data-border="true">
-          <Checkbox id="checkbox-label-border" />
+        <Label htmlFor="checkbox-label-border" className="medusa-option-card" data-border="true">
+          <Checkbox id="checkbox-label-border" className="pointer-events-none" />
           <FieldContent>
-            <Label htmlFor="checkbox-label-border">
+            <FieldTitle>
               Label
               <span className="font-normal text-muted-foreground">(Optional)</span>
               <CircleHelpIcon className="size-[15px] text-muted-foreground" />
-            </Label>
+            </FieldTitle>
             <FieldDescription>The quick brown fox jumps over a lazy dog.</FieldDescription>
           </FieldContent>
-        </Field>
+        </Label>
 
-        <Field
-          orientation="horizontal"
+        <Label
+          htmlFor="checkbox-label-hover"
           className="medusa-option-card"
           data-border="true"
           data-hover="true"
         >
-          <Checkbox id="checkbox-label-hover" defaultChecked />
+          <Checkbox id="checkbox-label-hover" className="pointer-events-none" defaultChecked />
           <FieldContent>
-            <Label htmlFor="checkbox-label-hover">Checked label</Label>
+            <FieldTitle>Checked label</FieldTitle>
             <FieldDescription>The quick brown fox jumps over a lazy dog.</FieldDescription>
           </FieldContent>
-        </Field>
+        </Label>
 
-        <Field
-          orientation="horizontal"
+        <Label
+          htmlFor="checkbox-label-disabled"
           className="medusa-option-card"
           data-border="true"
           data-disabled="true"
         >
-          <Checkbox id="checkbox-label-disabled" disabled />
+          <Checkbox id="checkbox-label-disabled" className="pointer-events-none" disabled />
           <FieldContent>
-            <Label htmlFor="checkbox-label-disabled">Disabled label</Label>
+            <FieldTitle>Disabled label</FieldTitle>
             <FieldDescription>The quick brown fox jumps over a lazy dog.</FieldDescription>
           </FieldContent>
-        </Field>
+        </Label>
       </ComponentDemoBand>
 
       <ComponentDemoBand label="DISABLED" className="mt-8 flex flex-col gap-5">

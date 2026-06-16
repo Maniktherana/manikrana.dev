@@ -41,7 +41,7 @@ function SingleDatePicker() {
         <CalendarIcon data-icon="inline-start" />
         {formatDate(date)}
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-2" align="start">
+      <PopoverContent className="medusa-date-popover w-auto p-0" align="start">
         <PopoverHeader className="px-1 pb-1">
           <PopoverTitle>Ship date</PopoverTitle>
           <PopoverDescription>Select the order's first available ship date.</PopoverDescription>
@@ -69,7 +69,7 @@ function FieldDatePicker() {
           <CalendarIcon data-icon="inline-start" />
           {formatDate(date)}
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-2" align="start">
+        <PopoverContent className="medusa-date-popover w-auto p-0" align="start">
           <Calendar
             mode="single"
             selected={date}
@@ -94,7 +94,7 @@ function DisabledDatePicker() {
           <CircleSlashIcon data-icon="inline-start" />
           Managed by plan
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-2" align="start">
+        <PopoverContent className="medusa-date-popover w-auto p-0" align="start">
           <Calendar mode="single" defaultMonth={shippingStartDate} disabled />
         </PopoverContent>
       </Popover>
@@ -145,7 +145,7 @@ function DatePickerPage() {
             <CalendarIcon data-icon="inline-start" />
             Review blackout dates
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-2" align="start">
+          <PopoverContent className="medusa-date-popover w-auto p-0" align="start">
             <PopoverHeader className="px-1 pb-1">
               <PopoverTitle>Unavailable dates</PopoverTitle>
               <PopoverDescription>

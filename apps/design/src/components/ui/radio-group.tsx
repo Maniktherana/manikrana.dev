@@ -21,8 +21,8 @@ function RadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props) {
       data-slot="radio-group-item"
       className={cn(
         "group/radio-group-item peer relative flex size-5 shrink-0 items-center justify-center rounded-full outline-none after:absolute after:-inset-x-2 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50",
-        "hover:[&_[data-slot=radio-visual]]:bg-muted focus-visible:[&_[data-slot=radio-visual]]:shadow-[var(--shadow-button-primary-focus)]",
-        "aria-invalid:[&_[data-slot=radio-visual]]:shadow-[0_0_0_1px_color-mix(in_srgb,var(--destructive)_35%,transparent),var(--shadow-button-neutral)]",
+        "data-unchecked:hover:[&_[data-slot=radio-visual]]:bg-[var(--control-unchecked-hover-bg)] data-unchecked:hover:[&_[data-slot=radio-visual]]:shadow-[var(--shadow-control-unchecked-hover)] focus-visible:[&_[data-slot=radio-visual]]:shadow-[var(--shadow-button-primary-focus)]",
+        "aria-invalid:[&_[data-slot=radio-visual]]:shadow-[0_0_0_1px_color-mix(in_srgb,var(--destructive)_35%,transparent),var(--shadow-control-unchecked)]",
         "data-checked:[&_[data-slot=radio-visual]]:bg-[var(--interactive)] data-checked:[&_[data-slot=radio-visual]]:shadow-[var(--shadow-control-interactive)]",
         className,
       )}
@@ -31,7 +31,7 @@ function RadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props) {
       <span
         aria-hidden="true"
         data-slot="radio-visual"
-        className="absolute top-1/2 left-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--component)] shadow-[var(--shadow-button-neutral)] transition-colors"
+        className="absolute top-1/2 left-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--control-unchecked-bg)] shadow-[var(--shadow-control-unchecked)] transition-colors"
       />
       <RadioPrimitive.Indicator
         data-slot="radio-group-indicator"

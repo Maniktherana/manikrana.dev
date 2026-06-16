@@ -50,7 +50,7 @@ function MenubarTrigger({ className, ...props }: React.ComponentProps<typeof Dro
     <DropdownMenuTrigger
       data-slot="menubar-trigger"
       className={cn(
-        "flex h-7 items-center gap-2 rounded-none px-2 text-[13px] leading-[1.1] font-medium text-secondary-foreground outline-hidden select-none hover:bg-accent hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground [&_svg:not([class*='size-'])]:size-[15px]",
+        "flex h-7 items-center gap-2 rounded-none px-2 text-[13px] leading-[1.1] font-medium text-secondary-foreground outline-hidden select-none hover:bg-accent hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground data-popup-open:bg-accent data-popup-open:text-foreground [&_svg:not([class*='size-'])]:size-[15px]",
         className,
       )}
       {...props}

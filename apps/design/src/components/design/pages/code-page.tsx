@@ -44,7 +44,7 @@ function CodePage() {
         {metadataTokens.map((token) => (
           <div key={token.value} className="medusa-raised flex flex-col gap-2 p-3">
             <p className="medusa-code-label">{token.label}</p>
-            <Code>{token.value}</Code>
+            <Code background="muted">{token.value}</Code>
             <p className="medusa-small">
               Tokenized fragments stay distinct without becoming a full code block.
             </p>
@@ -68,10 +68,12 @@ function CodePage() {
 
       <ComponentDemoBand label="DESIGN TOKENS" className="mt-8 flex flex-wrap items-center gap-3">
         <span className="medusa-code-label">Surface</span>
-        <Code>medusa-raised</Code>
+        <Code background="muted">medusa-raised</Code>
         <span className="medusa-code-label">Classes</span>
         {tokenValues.map((token) => (
-          <Code key={token}>{token}</Code>
+          <Code background="muted" key={token}>
+            {token}
+          </Code>
         ))}
       </ComponentDemoBand>
     </ComponentPageShell>
