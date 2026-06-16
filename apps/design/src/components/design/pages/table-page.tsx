@@ -2,9 +2,12 @@ import {
   ArrowUpRightIcon,
   CheckCircle2Icon,
   Clock3Icon,
+  DownloadIcon,
+  FilterIcon,
   MoreHorizontalIcon,
   PackageCheckIcon,
   PackageIcon,
+  SearchIcon,
   TriangleAlertIcon,
 } from "lucide-react";
 
@@ -15,6 +18,20 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -106,7 +123,8 @@ const products = [
 function TablePage() {
   return (
     <ComponentPageShell title="Table">
-      <ComponentDemoBand label="ORDER QUEUE" className="mt-8 w-full max-w-5xl">
+      <ComponentDemoBand label="ORDER QUEUE" className="mt-8 flex w-full max-w-5xl flex-col gap-3">
+        <TableToolbar />
         <Table>
           <TableCaption>Open fulfillment orders sorted by newest first.</TableCaption>
           <TableHeader>
@@ -160,6 +178,7 @@ function TablePage() {
             ))}
           </TableBody>
         </Table>
+        <TableMenu />
       </ComponentDemoBand>
 
       <ComponentDemoBand label="PRODUCT STOCK" className="mt-8 w-full max-w-3xl">
@@ -239,6 +258,62 @@ function TablePage() {
         </Table>
       </ComponentDemoBand>
     </ComponentPageShell>
+  );
+}
+
+function TableToolbar() {
+  return (
+    <div className="medusa-raised flex min-h-[60px] flex-wrap items-center gap-2 px-3 py-2">
+      <InputGroup className="w-[280px]">
+        <InputGroupAddon>
+          <SearchIcon aria-hidden="true" />
+        </InputGroupAddon>
+        <InputGroupInput aria-label="Search orders" placeholder="Search orders" />
+      </InputGroup>
+      <Select defaultValue="all">
+        <SelectTrigger className="w-[180px]" size="sm">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent align="start">
+          <SelectGroup>
+            <SelectItem value="all">All statuses</SelectItem>
+            <SelectItem value="ready">Ready</SelectItem>
+            <SelectItem value="packing">Packing</SelectItem>
+            <SelectItem value="review">Review</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <Button type="button" variant="outline" size="sm">
+        <FilterIcon data-icon="inline-start" />
+        Filters
+      </Button>
+      <Button type="button" variant="ghost" size="sm" className="ml-auto">
+        <DownloadIcon data-icon="inline-start" />
+        Export
+      </Button>
+    </div>
+  );
+}
+
+function TableMenu() {
+  return (
+    <div className="medusa-raised flex min-h-[60px] flex-wrap items-center gap-3 px-3 py-2">
+      <p className="medusa-small-plus mr-auto">4 orders selected</p>
+      <Button type="button" variant="ghost" size="sm">
+        Clear
+      </Button>
+      <Button type="button" variant="outline" size="sm">
+        Create fulfillment
+      </Button>
+      <Button type="button" size="sm">
+        Reserve stock
+      </Button>
+      <div className="flex w-full items-center gap-2 border-t border-border pt-2">
+        <Skeleton className="h-4 w-32" />
+        <Skeleton className="h-4 w-24" />
+        <Skeleton className="ml-auto h-7 w-24" />
+      </div>
+    </div>
   );
 }
 

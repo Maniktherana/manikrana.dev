@@ -6,6 +6,7 @@ import {
   CircleDotIcon,
   CircleDollarSignIcon,
   ClipboardListIcon,
+  LockIcon,
   PackageCheckIcon,
   PackageSearchIcon,
   RotateCcwIcon,
@@ -90,6 +91,10 @@ function TabsPage() {
             <TabsTrigger value="returns">
               <RotateCcwIcon data-icon="inline-start" />
               Returns
+            </TabsTrigger>
+            <TabsTrigger value="settings" disabled>
+              <LockIcon data-icon="inline-start" />
+              Settings
             </TabsTrigger>
           </TabsList>
 

@@ -2629,10 +2629,10 @@
 
 [data-medusa]
   [data-slot="tabs-list"][data-variant="default"]
-  > [data-slot="tabs-trigger"][data-selected],
+  > [data-slot="tabs-trigger"][data-active],
 [data-medusa]
   [data-slot="tabs-list"][data-variant="progress"]
-  > [data-slot="tabs-trigger"][data-selected] {
+  > [data-slot="tabs-trigger"][data-active] {
   background: var(--background);
   color: var(--foreground);
 }
@@ -2655,13 +2655,13 @@
 [data-medusa] [data-slot="tabs-list"][data-variant="line"] > [data-slot="tabs-trigger"]:hover,
 [data-medusa]
   [data-slot="tabs-list"][data-variant="line"]
-  > [data-slot="tabs-trigger"][data-selected] {
+  > [data-slot="tabs-trigger"][data-active] {
   color: var(--foreground);
 }
 
 [data-medusa]
   [data-slot="tabs-list"][data-variant="line"]
-  > [data-slot="tabs-trigger"][data-selected] {
+  > [data-slot="tabs-trigger"][data-active] {
   border-block-end-color: var(--foreground);
 }
 
@@ -2692,7 +2692,7 @@
 
 [data-medusa]
   [data-slot="tabs-list"][data-variant="browser"]
-  > [data-slot="tabs-trigger"][data-selected] {
+  > [data-slot="tabs-trigger"][data-active] {
   background: var(--background);
   box-shadow: var(--shadow-card);
   color: var(--foreground);

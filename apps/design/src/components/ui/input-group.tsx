@@ -12,12 +12,23 @@ const inputGroupVariants = cva(
   "group/input-group relative flex h-8 w-full min-w-0 items-center rounded-md border border-transparent transition-colors outline-none in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-disabled:opacity-60 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:ring-0 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>textarea]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5",
   {
     variants: {
+      radius: {
+        squared: "",
+        rounded: "rounded-full!",
+      },
+      size: {
+        default: "",
+        sm: "h-7! min-h-7!",
+      },
       variant: {
         default: "",
+        component: "bg-background!",
         muted: "",
       },
     },
     defaultVariants: {
+      radius: "squared",
+      size: "default",
       variant: "default",
     },
   },
@@ -25,14 +36,18 @@ const inputGroupVariants = cva(
 
 function InputGroup({
   className,
+  radius = "squared",
+  size = "default",
   variant = "default",
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof inputGroupVariants>) {
   return (
     <div
       data-slot="input-group"
+      data-radius={radius}
+      data-size={size}
       data-variant={variant}
-      className={cn(inputGroupVariants({ variant }), className)}
+      className={cn(inputGroupVariants({ radius, size, variant }), className)}
       {...props}
     />
   );

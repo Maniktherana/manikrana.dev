@@ -1,7 +1,21 @@
+"use client";
+
+import { useState } from "react";
+
 import {
   ComponentDemoBand,
   ComponentPageShell,
 } from "@/components/design/pages/component-page-shell";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxGroup,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxLabel,
+  ComboboxList,
+} from "@/components/ui/combobox";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import {
   Select,
@@ -46,7 +60,18 @@ const inventoryLocations = [
   },
 ] as const;
 
+const productCollections = [
+  { label: "All collections", value: "all" },
+  { label: "Summer essentials", value: "summer-essentials" },
+  { label: "Archive sale", value: "archive-sale" },
+  { label: "Storefront featured", value: "storefront-featured" },
+] as const;
+
+type CollectionValue = (typeof productCollections)[number]["value"];
+
 function SelectPage() {
+  const [collection, setCollection] = useState<CollectionValue>("summer-essentials");
+
   return (
     <ComponentPageShell title="Select">
       <ComponentDemoBand label="BASIC" className="mt-8 flex flex-wrap items-end gap-6">
@@ -111,6 +136,39 @@ function SelectPage() {
             <FieldDescription>
               Unavailable sources stay visible but cannot be selected.
             </FieldDescription>
+          </Field>
+        </FieldGroup>
+      </ComponentDemoBand>
+
+      <ComponentDemoBand label="SEARCHABLE SELECT" className="mt-8">
+        <FieldGroup className="max-w-sm">
+          <Field>
+            <FieldLabel htmlFor="collection-combobox">Collection</FieldLabel>
+            <Combobox
+              items={productCollections}
+              value={collection}
+              onValueChange={(value) => setCollection((value ?? "all") as CollectionValue)}
+            >
+              <ComboboxInput
+                id="collection-combobox"
+                placeholder="Search collections"
+                showClear
+              />
+              <ComboboxContent align="start">
+                <ComboboxList>
+                  <ComboboxEmpty>No collections found.</ComboboxEmpty>
+                  <ComboboxGroup>
+                    <ComboboxLabel>Collections</ComboboxLabel>
+                    {productCollections.map((item) => (
+                      <ComboboxItem key={item.value} value={item.value}>
+                        {item.label}
+                      </ComboboxItem>
+                    ))}
+                  </ComboboxGroup>
+                </ComboboxList>
+              </ComboboxContent>
+            </Combobox>
+            <FieldDescription>Searchable select behavior for longer option sets.</FieldDescription>
           </Field>
         </FieldGroup>
       </ComponentDemoBand>

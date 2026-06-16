@@ -45,15 +45,6 @@ function SegmentedControlPage() {
         </ToggleGroup>
       </ComponentDemoBand>
 
-      <ComponentDemoBand label="MULTI SELECT">
-        <ToggleGroup defaultValue={["paid", "fulfilled"]} multiple variant="segmented" spacing={0}>
-          <ToggleGroupItem value="paid">Paid</ToggleGroupItem>
-          <ToggleGroupItem value="authorized">Authorized</ToggleGroupItem>
-          <ToggleGroupItem value="fulfilled">Fulfilled</ToggleGroupItem>
-          <ToggleGroupItem value="refunded">Refunded</ToggleGroupItem>
-        </ToggleGroup>
-      </ComponentDemoBand>
-
       <ComponentDemoBand label="ICON SEGMENTS">
         <ToggleGroup defaultValue={["grid"]} variant="segmented" spacing={0}>
           <ToggleGroupItem value="list" aria-label="List view">

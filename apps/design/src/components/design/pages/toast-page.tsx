@@ -4,7 +4,10 @@ import {
   InfoIcon,
   RotateCwIcon,
   ShoppingCartIcon,
+  SparklesIcon,
+  TriangleAlertIcon,
   Undo2Icon,
+  XCircleIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -13,6 +16,7 @@ import {
   ComponentPageShell,
 } from "@/components/design/pages/component-page-shell";
 import { Button } from "@/components/ui/button";
+import { Kbd } from "@/components/ui/kbd";
 
 function showDefaultToast() {
   toast("Draft order created", {
@@ -29,6 +33,18 @@ function showSuccessToast() {
 function showInfoToast() {
   toast.info("Import queued", {
     description: "The supplier feed will run after the current batch.",
+  });
+}
+
+function showWarningToast() {
+  toast.warning("Stock threshold reached", {
+    description: "Canvas Tote has 12 units available across all locations.",
+  });
+}
+
+function showErrorToast() {
+  toast.error("Payment capture failed", {
+    description: "The provider declined the capture request for order #1059.",
   });
 }
 
@@ -71,6 +87,42 @@ function showPromiseToast() {
   });
 }
 
+function showKeyboardToast() {
+  toast.message(
+    <span className="inline-flex items-center gap-2">
+      Command menu opened
+      <Kbd background="component">⌘</Kbd>
+      <Kbd background="component">K</Kbd>
+    </span>,
+  );
+}
+
+function showWhatsNewToast() {
+  toast.custom((id) => (
+    <div className="medusa-toast flex! flex-col!">
+      <div className="flex w-full items-start gap-3">
+        <span className="medusa-toast-icon">
+          <SparklesIcon aria-hidden="true" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="medusa-toast-title">New analytics dashboard</p>
+          <p className="medusa-toast-description">
+            Review sell-through, returns, and stock pressure from one overview.
+          </p>
+        </div>
+      </div>
+      <div className="mt-2 flex w-full items-center gap-2 pl-8">
+        <button type="button" className="medusa-toast-action" onClick={() => toast.dismiss(id)}>
+          Later
+        </button>
+        <button type="button" className="medusa-toast-action" onClick={() => toast.dismiss(id)}>
+          View update
+        </button>
+      </div>
+    </div>
+  ));
+}
+
 function ToastPage() {
   return (
     <ComponentPageShell title="Toast">
@@ -87,12 +139,28 @@ function ToastPage() {
           <InfoIcon data-icon="inline-start" />
           Status
         </Button>
+        <Button type="button" variant="outline" onClick={showWarningToast}>
+          <TriangleAlertIcon data-icon="inline-start" />
+          Warning
+        </Button>
+        <Button type="button" variant="destructive" onClick={showErrorToast}>
+          <XCircleIcon data-icon="inline-start" />
+          Error
+        </Button>
       </ComponentDemoBand>
 
       <ComponentDemoBand label="ACTIONS">
         <Button type="button" variant="outline" onClick={showActionToast}>
           <Undo2Icon data-icon="inline-start" />
           Reserve stock
+        </Button>
+        <Button type="button" variant="secondary" onClick={showKeyboardToast}>
+          <InfoIcon data-icon="inline-start" />
+          Keyboard
+        </Button>
+        <Button type="button" variant="outline" onClick={showWhatsNewToast}>
+          <SparklesIcon data-icon="inline-start" />
+          What's new
         </Button>
       </ComponentDemoBand>
 

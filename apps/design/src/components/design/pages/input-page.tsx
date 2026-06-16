@@ -75,6 +75,23 @@ function InputPage() {
         </Field>
       </ComponentDemoBand>
 
+      <ComponentDemoBand label="RADIUS" className="mt-8 grid max-w-3xl gap-5 md:grid-cols-2">
+        <Field>
+          <FieldLabel htmlFor="input-rounded">Rounded input</FieldLabel>
+          <Input id="input-rounded" radius="rounded" placeholder="Search by handle" />
+        </Field>
+
+        <Field>
+          <FieldLabel htmlFor="input-group-rounded">Rounded input group</FieldLabel>
+          <InputGroup radius="rounded" variant="component">
+            <InputGroupAddon>
+              <SearchIcon aria-hidden="true" />
+            </InputGroupAddon>
+            <InputGroupInput id="input-group-rounded" placeholder="Search inventory" />
+          </InputGroup>
+        </Field>
+      </ComponentDemoBand>
+
       <ComponentDemoBand
         label="DISABLED AND INVALID"
         className="mt-8 grid max-w-3xl gap-5 md:grid-cols-2"

@@ -60,8 +60,30 @@ function CommandDialog({
 
 function CommandInput({
   className,
+  variant = "default",
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Input>) {
+}: React.ComponentProps<typeof CommandPrimitive.Input> & {
+  variant?: "default" | "modal";
+}) {
+  if (variant === "modal") {
+    return (
+      <div
+        data-slot="command-input-wrapper"
+        data-variant="modal"
+        className="border-b border-border bg-background"
+      >
+        <CommandPrimitive.Input
+          data-slot="command-input"
+          className={cn(
+            "h-[52px] w-full px-4 text-sm leading-[1.1] outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+            className,
+          )}
+          {...props}
+        />
+      </div>
+    );
+  }
+
   return (
     <div data-slot="command-input-wrapper" className="p-1 pb-0">
       <InputGroup className="h-8! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-2!">

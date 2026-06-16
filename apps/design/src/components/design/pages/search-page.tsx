@@ -1,90 +1,190 @@
 "use client";
 
 import { useState } from "react";
-import { SearchIcon, XIcon } from "lucide-react";
+import {
+  BoxesIcon,
+  CogIcon,
+  PackagePlusIcon,
+  SearchIcon,
+  ShoppingCartIcon,
+  SparklesIcon,
+  TagIcon,
+  XIcon,
+} from "lucide-react";
 
 import {
   ComponentDemoBand,
   ComponentPageShell,
 } from "@/components/design/pages/component-page-shell";
-import { Button } from "@/components/ui/button";
-import { CommandBar, CommandBarAction } from "@/components/ui/command";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandShortcut,
+} from "@/components/ui/command";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { Kbd } from "@/components/ui/kbd";
+import { Kbd, KbdGroup } from "@/components/ui/kbd";
+
+const searchSections = [
+  {
+    heading: "Commands",
+    items: [
+      {
+        detail: "Ask anything",
+        icon: SparklesIcon,
+        label: "Ask Bloom",
+        shortcuts: ["⇧", "A"],
+        value: "ask bloom",
+      },
+      {
+        detail: "Modal",
+        icon: PackagePlusIcon,
+        label: "Create product",
+        shortcuts: ["C", "P"],
+        value: "create product",
+      },
+    ],
+  },
+  {
+    heading: "Jump to",
+    items: [
+      {
+        detail: "Overview",
+        icon: ShoppingCartIcon,
+        label: "Orders",
+        shortcuts: ["G", "O"],
+        value: "orders",
+      },
+      {
+        detail: "Overview",
+        icon: TagIcon,
+        label: "Products",
+        shortcuts: ["G", "P"],
+        value: "products",
+      },
+    ],
+  },
+  {
+    heading: "Settings",
+    items: [
+      {
+        detail: "Settings",
+        icon: CogIcon,
+        label: "Return Reasons",
+        shortcuts: ["G", "R"],
+        value: "return reasons",
+      },
+      {
+        detail: "Settings",
+        icon: BoxesIcon,
+        label: "Sales Channels",
+        shortcuts: ["G", "S"],
+        value: "sales channels",
+      },
+    ],
+  },
+] as const;
 
 function SearchPage() {
-  const [query, setQuery] = useState("Input");
+  const [query, setQuery] = useState("");
+  const [searchValue, setSearchValue] = useState("ORD-1058");
 
   return (
     <ComponentPageShell title="Search">
-      <ComponentDemoBand label="BASE · SQUARED">
-        <SearchField label="Default" />
-        <SearchField label="Hover" state="hover" />
-        <SearchField label="Focus" state="focus" />
-        <SearchField label="Filled" value={query} onValueChange={setQuery} filled />
-        <SearchField label="Disabled" disabled />
-        <SearchField label="Error" state="error" filled value="Input" />
+      <ComponentDemoBand label="SEARCH MODAL" className="mt-8 w-full">
+        <SearchCommandModal query={query} onQueryChange={setQuery} />
       </ComponentDemoBand>
 
-      <ComponentDemoBand label="COMPONENT · SQUARED">
-        <SearchField label="Default" tone="component" />
-        <SearchField label="Hover" tone="component" state="hover" />
-        <SearchField label="Focus" tone="component" state="focus" />
-        <SearchField label="Filled" tone="component" filled value="Input" />
-        <SearchField label="Disabled" tone="component" disabled />
-        <SearchField label="Error" tone="component" state="error" filled value="Input" />
-      </ComponentDemoBand>
-
-      <ComponentDemoBand label="ROUNDED">
-        <SearchField label="Base rounded" radius="rounded" />
-        <SearchField label="Base component rounded" tone="component" radius="rounded" />
-        <SearchField label="Small rounded" radius="rounded" size="small" />
+      <ComponentDemoBand label="SEARCH INPUTS" className="mt-8 flex flex-wrap items-start gap-6">
+        <SearchField label="Squared field" />
+        <SearchField label="Rounded field" radius="rounded" />
+        <SearchField label="Component tone" tone="component" value="Orders" filled />
         <SearchField
-          label="Small component rounded"
-          tone="component"
+          label="Small rounded"
           radius="rounded"
           size="small"
+          value={searchValue}
+          onValueChange={setSearchValue}
+          filled
         />
-      </ComponentDemoBand>
-
-      <ComponentDemoBand label="SMALL · 28PX">
-        <SearchField label="Small default" size="small" />
-        <SearchField label="Small hover" size="small" state="hover" />
-        <SearchField label="Small focus" size="small" state="focus" />
-        <SearchField label="Small error" size="small" state="error" filled value="Input" />
-      </ComponentDemoBand>
-
-      <ComponentDemoBand label="SEARCH MODAL">
-        <div className="medusa-raised flex w-[640px] max-w-full flex-col gap-3 p-4">
-          <SearchField
-            label="Modal input"
-            className="w-full"
-            value={query}
-            onValueChange={setQuery}
-          />
-          <div className="flex flex-col gap-1">
-            <SearchResult title="Orders" detail="Search orders, fulfillments, and returns" />
-            <SearchResult title="Products" detail="Find variants, inventory, and pricing" active />
-            <SearchResult title="Customers" detail="Open profiles and account activity" />
-          </div>
-          <CommandBar>
-            <CommandBarAction>
-              Open
-              <Kbd>Enter</Kbd>
-            </CommandBarAction>
-            <CommandBarAction>
-              Close
-              <Kbd>Esc</Kbd>
-            </CommandBarAction>
-          </CommandBar>
-        </div>
+        <SearchField label="Disabled" disabled />
+        <SearchField label="Invalid" invalid value="Unknown SKU" filled />
       </ComponentDemoBand>
     </ComponentPageShell>
+  );
+}
+
+function SearchCommandModal({
+  onQueryChange,
+  query,
+}: {
+  onQueryChange: (value: string) => void;
+  query: string;
+}) {
+  return (
+    <Command className="h-[480px] w-[640px] max-w-full rounded-xl! p-0 shadow-[var(--shadow-modal)]">
+      <CommandInput
+        value={query}
+        onValueChange={onQueryChange}
+        placeholder="Jump to or find something..."
+        variant="modal"
+      />
+      <CommandList className="min-h-0 flex-1 max-h-none p-2">
+        <CommandEmpty className="py-10 text-center text-sm text-muted-foreground">
+          No results found.
+        </CommandEmpty>
+        {searchSections.map((section) => (
+          <CommandGroup
+            key={section.heading}
+            heading={section.heading}
+            className="p-0 pb-1 **:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:pt-2 **:[[cmdk-group-heading]]:pb-1 **:[[cmdk-group-heading]]:text-xs"
+          >
+            {section.items.map((item) => (
+              <CommandItem
+                key={item.value}
+                value={item.value}
+                className="h-10 rounded-md px-2 py-0 text-[13px]"
+              >
+                <item.icon />
+                <span className="min-w-0 flex-1 truncate font-medium">{item.label}</span>
+                <span className="truncate text-muted-foreground">{item.detail}</span>
+                <CommandShortcut className="flex items-center gap-1 tracking-normal">
+                  {item.shortcuts.map((shortcut) => (
+                    <Kbd key={shortcut}>{shortcut}</Kbd>
+                  ))}
+                </CommandShortcut>
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        ))}
+      </CommandList>
+      <div className="flex flex-wrap items-center gap-4 border-t border-border bg-[var(--component)] px-4 py-3 text-xs font-medium text-muted-foreground">
+        <span className="mr-auto inline-flex items-center gap-2">
+          Navigate
+          <KbdGroup>
+            <Kbd background="component">↓</Kbd>
+            <Kbd background="component">↑</Kbd>
+          </KbdGroup>
+        </span>
+        <span className="inline-flex items-center gap-2">
+          Open result
+          <Kbd background="component">↵</Kbd>
+        </span>
+        <span className="h-3 w-px bg-border" aria-hidden="true" />
+        <span className="inline-flex items-center gap-2">
+          Close
+          <Kbd background="component">esc</Kbd>
+        </span>
+      </div>
+    </Command>
   );
 }
 
@@ -92,22 +192,22 @@ function SearchField({
   className,
   disabled,
   filled,
+  invalid,
   label,
   onValueChange,
   radius = "squared",
   size = "base",
-  state,
   tone = "field",
   value,
 }: {
   className?: string;
   disabled?: boolean;
   filled?: boolean;
+  invalid?: boolean;
   label: string;
   onValueChange?: (value: string) => void;
   radius?: "squared" | "rounded";
   size?: "base" | "small";
-  state?: "hover" | "focus" | "error";
   tone?: "field" | "component";
   value?: string;
 }) {
@@ -116,23 +216,16 @@ function SearchField({
   return (
     <InputGroup
       aria-label={label}
-      className={[
-        "medusa-search-input",
-        tone === "component" ? "medusa-search-component" : "",
-        radius === "rounded" ? "medusa-search-rounded" : "",
-        size === "small" ? "medusa-search-small" : "",
-        state === "hover" ? "medusa-search-hover" : "",
-        state === "focus" ? "medusa-search-focus" : "",
-        state === "error" ? "medusa-search-error" : "",
-        disabled ? "medusa-search-disabled" : "",
-        className ?? "",
-      ].join(" ")}
+      className={["medusa-search-input", className ?? ""].join(" ")}
+      radius={radius}
+      size={size === "small" ? "sm" : "default"}
+      variant={tone === "component" ? "component" : "default"}
     >
       <InputGroupAddon>
         <SearchIcon aria-hidden="true" />
       </InputGroupAddon>
       <InputGroupInput
-        aria-invalid={state === "error" ? true : undefined}
+        aria-invalid={invalid ? true : undefined}
         disabled={disabled}
         onChange={(event) => onValueChange?.(event.target.value)}
         placeholder="Search"
@@ -152,33 +245,9 @@ function SearchField({
         </InputGroupAddon>
       ) : null}
       <InputGroupAddon align="inline-end">
-        <Kbd>Cmd K</Kbd>
+        <Kbd>⌘K</Kbd>
       </InputGroupAddon>
     </InputGroup>
-  );
-}
-
-function SearchResult({
-  active,
-  detail,
-  title,
-}: {
-  active?: boolean;
-  detail: string;
-  title: string;
-}) {
-  return (
-    <Button
-      className="h-auto w-full justify-start px-2 py-2 text-left"
-      data-active={active ? "true" : undefined}
-      type="button"
-      variant="ghost"
-    >
-      <span className="flex min-w-0 flex-col gap-1">
-        <span className="medusa-small-plus">{title}</span>
-        <span className="medusa-small truncate text-muted-foreground">{detail}</span>
-      </span>
-    </Button>
   );
 }
 
