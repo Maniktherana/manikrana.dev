@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/apps/*/node_modules
 /.pnp
 .pnp.js
 .yarn/install-state.gz
@@ -9,9 +10,10 @@
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
+# framework output
+**/.turbo/
+/apps/*/.output/
+/apps/*/dist/
 
 # production
 /build
@@ -33,4 +35,3 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts

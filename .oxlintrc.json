@@ -1,0 +1,45 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "import",
+    "react",
+    "jsx-a11y",
+    "react-perf",
+    "typescript",
+    "unicorn",
+    "oxc"
+  ],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "react/button-has-type": "error",
+    "react/jsx-no-target-blank": "error",
+    "react/react-in-jsx-scope": "off",
+    "jsx-a11y/anchor-has-content": "error"
+  },
+  "env": {
+    "browser": true,
+    "builtin": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "version": "19.0.0",
+      "linkComponents": [
+        {
+          "name": "Link",
+          "linkAttribute": "to"
+        }
+      ]
+    }
+  },
+  "ignorePatterns": [
+    "node_modules/**",
+    ".turbo/**",
+    "apps/*/.output/**",
+    "apps/*/dist/**",
+    "apps/site/src/routeTree.gen.ts",
+    "apps/design/src/routeTree.gen.ts"
+  ]
+}

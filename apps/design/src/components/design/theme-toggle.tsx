@@ -1,0 +1,97 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { MoonIcon, SunIcon } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+
+type ThemePreference = "light" | "dark" | "system";
+type ResolvedTheme = "light" | "dark";
+
+const themeStorageKey = "medusa-ui-theme";
+
+function getStoredTheme(): ThemePreference {
+  const storedTheme = window.localStorage.getItem(themeStorageKey);
+
+  if (storedTheme === "light" || storedTheme === "dark") {
+    return storedTheme;
+  }
+
+  return "system";
+}
+
+function getSystemTheme(): ResolvedTheme {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function resolveTheme(theme: ThemePreference): ResolvedTheme {
+  return theme === "system" ? getSystemTheme() : theme;
+}
+
+function applyTheme(theme: ResolvedTheme) {
+  document.documentElement.classList.toggle("dark", theme === "dark");
+  document.documentElement.style.colorScheme = theme;
+}
+
+function ThemeToggle() {
+  const [themePreference, setThemePreference] = useState<ThemePreference>("system");
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>("light");
+
+  useEffect(() => {
+    const systemQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const syncTheme = () => {
+      const nextPreference = getStoredTheme();
+      const nextResolvedTheme = resolveTheme(nextPreference);
+
+      setThemePreference(nextPreference);
+      setResolvedTheme(nextResolvedTheme);
+      applyTheme(nextResolvedTheme);
+    };
+
+    syncTheme();
+    systemQuery.addEventListener("change", syncTheme);
+    window.addEventListener("storage", syncTheme);
+
+    return () => {
+      systemQuery.removeEventListener("change", syncTheme);
+      window.removeEventListener("storage", syncTheme);
+    };
+  }, []);
+
+  const nextTheme = resolvedTheme === "dark" ? "light" : "dark";
+  const label = resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+  const tooltipLabel = themePreference === "system" ? `${label} (system default)` : label;
+  const ThemeIcon = resolvedTheme === "dark" ? SunIcon : MoonIcon;
+
+  return (
+    <Tooltip>
+      <TooltipTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            className="text-foreground"
+            aria-label={label}
+            aria-pressed={resolvedTheme === "dark"}
+            data-theme-preference={themePreference}
+            data-theme={resolvedTheme}
+            onClick={() => {
+              window.localStorage.setItem(themeStorageKey, nextTheme);
+              setThemePreference(nextTheme);
+              setResolvedTheme(nextTheme);
+              applyTheme(nextTheme);
+            }}
+          />
+        }
+      >
+        <ThemeIcon />
+      </TooltipTrigger>
+      <TooltipContent>{tooltipLabel}</TooltipContent>
+    </Tooltip>
+  );
+}
+
+export { ThemeToggle };
