@@ -12,7 +12,7 @@ function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
       className={cn(
         "peer group/checkbox relative flex size-5 shrink-0 items-center justify-center outline-none after:absolute after:-inset-x-2 after:-inset-y-2 group-has-disabled/field:opacity-50 disabled:cursor-not-allowed disabled:opacity-50",
         "data-checked:text-[var(--interactive-foreground)] data-indeterminate:text-[var(--interactive-foreground)] data-unchecked:text-transparent",
-        "data-unchecked:hover:[&_[data-slot=checkbox-box]]:bg-[var(--control-unchecked-hover-bg)] data-unchecked:hover:[&_[data-slot=checkbox-box]]:shadow-[var(--shadow-control-unchecked-hover)] focus-visible:[&_[data-slot=checkbox-box]]:shadow-[var(--shadow-button-primary-focus)]",
+        "data-unchecked:hover:[&_[data-slot=checkbox-box]]:bg-[var(--control-unchecked-hover-bg)] data-unchecked:hover:[&_[data-slot=checkbox-box]]:shadow-[var(--shadow-control-unchecked-hover)] focus-visible:[&_[data-slot=checkbox-box]]:shadow-[var(--shadow-control-focus)]",
         "aria-invalid:[&_[data-slot=checkbox-box]]:shadow-[0_0_0_1px_color-mix(in_srgb,var(--destructive)_35%,transparent),var(--shadow-control-unchecked)]",
         "data-checked:[&_[data-slot=checkbox-box]]:bg-[var(--interactive)] data-checked:[&_[data-slot=checkbox-box]]:shadow-[var(--shadow-control-interactive)]",
         "data-indeterminate:[&_[data-slot=checkbox-box]]:bg-[var(--interactive)] data-indeterminate:[&_[data-slot=checkbox-box]]:shadow-[var(--shadow-control-interactive)]",

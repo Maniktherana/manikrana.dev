@@ -1,11 +1,4 @@
-export type ComponentCategory =
-  | "Form"
-  | "Navigation"
-  | "Overlay"
-  | "Feedback"
-  | "Display"
-  | "AI"
-  | "Composition";
+export type ComponentCategory = "Components" | "Blocks";
 
 export type ComponentRecord = {
   id: string;
@@ -22,7 +15,7 @@ export const componentCatalog = [
   {
     id: "accordion",
     title: "Accordion",
-    category: "Navigation",
+    category: "Components",
     primitive: "Accordion, AccordionItem, AccordionTrigger, AccordionContent",
     files: ["src/components/ui/accordion.tsx"],
     figmaSource: "Accordion / Standard Accordion / Progress Accordion",
@@ -32,22 +25,22 @@ export const componentCatalog = [
   {
     id: "ai-assistant",
     title: "AI Assistant",
-    category: "AI",
-    primitive: "Button, Avatar, Badge, Command, Prompt, ChatBlock",
+    category: "Blocks",
+    primitive: "AIAssistant",
     files: [
       "src/components/ui/button.tsx",
       "src/components/ui/avatar.tsx",
       "src/components/ui/command.tsx",
-      "src/components/design/prompt-kit.tsx",
+      "src/components/design/ai-assistant.tsx",
     ],
-    figmaSource: "Medusa compact surfaces plus Prompt Kit primitives",
-    description: "A composed assistant panel using shadcn primitives and Prompt Kit style anatomy.",
+    figmaSource: "Medusa compact assistant block",
+    description: "A composed assistant panel built from Medusa UI primitives.",
     custom: true,
   },
   {
     id: "alert",
     title: "Alert",
-    category: "Feedback",
+    category: "Components",
     primitive: "Alert, AlertTitle, AlertDescription, AlertAction",
     files: ["src/components/ui/alert.tsx"],
     figmaSource: "Medusa card-rest elevation and compact text tokens",
@@ -57,17 +50,18 @@ export const componentCatalog = [
   {
     id: "avatar",
     title: "Avatar",
-    category: "Display",
+    category: "Components",
     primitive: "Avatar, AvatarImage, AvatarFallback, AvatarBadge, AvatarGroup",
     files: ["src/components/ui/avatar.tsx"],
     figmaSource: "Medusa icon and item density",
-    description: "Profile identity primitives for user rows and chat items.",
+    description:
+      "Profile identity primitives for user rows and compact item surfaces.",
     custom: false,
   },
   {
     id: "badge",
     title: "Badge",
-    category: "Display",
+    category: "Components",
     primitive: "Badge",
     files: ["src/components/ui/badge.tsx"],
     figmaSource: "Medusa compact label token",
@@ -77,29 +71,35 @@ export const componentCatalog = [
   {
     id: "breadcrumbs",
     title: "Breadcrumbs",
-    category: "Navigation",
-    primitive: "Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage",
+    category: "Components",
+    primitive:
+      "Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage",
     files: ["src/components/ui/breadcrumb.tsx"],
     figmaSource: "File info / Path",
-    description: "The docs path row from the Figma file, mapped to shadcn breadcrumb primitives.",
+    description:
+      "The docs path row from the Figma file, mapped to shadcn breadcrumb primitives.",
     custom: false,
   },
   {
     id: "button",
     title: "Button",
-    category: "Form",
+    category: "Components",
     primitive: "Button",
     files: ["src/components/ui/button.tsx"],
     figmaSource: "Button base token references in Medusa file headers",
-    description: "Primary action, outline action, ghost action, and icon-only sizes.",
+    description:
+      "Primary action, outline action, ghost action, and icon-only sizes.",
     custom: false,
   },
   {
     id: "button-group",
     title: "Button Group",
-    category: "Form",
+    category: "Components",
     primitive: "ButtonGroup, ButtonGroupText, ButtonGroupSeparator",
-    files: ["src/components/ui/button-group.tsx", "src/components/ui/button.tsx"],
+    files: [
+      "src/components/ui/button-group.tsx",
+      "src/components/ui/button.tsx",
+    ],
     figmaSource: "Compact grouped control density",
     description: "Grouped actions with shared borders and separator support.",
     custom: false,
@@ -107,7 +107,7 @@ export const componentCatalog = [
   {
     id: "checkbox",
     title: "Checkbox",
-    category: "Form",
+    category: "Components",
     primitive: "Checkbox",
     files: ["src/components/ui/checkbox.tsx", "src/components/ui/field.tsx"],
     figmaSource: "Progress indicator sizing and compact field text",
@@ -115,39 +115,20 @@ export const componentCatalog = [
     custom: false,
   },
   {
-    id: "chat",
-    title: "Chat",
-    category: "AI",
-    primitive: "Chat, ChatMessage, PromptInput",
-    files: ["src/components/design/prompt-kit.tsx"],
-    figmaSource: "Medusa cards plus Prompt Kit Message and ChatContainer anatomy",
-    description: "A local chat composition with messages, avatars, actions, and composer.",
-    custom: true,
-  },
-  {
-    id: "chat-blocks",
-    title: "Chat Blocks",
-    category: "AI",
-    primitive: "ChatBlock, ChatBlockHeader, ChatBlockContent",
-    files: ["src/components/design/prompt-kit.tsx", "src/components/ui/card.tsx"],
-    figmaSource: "Medusa card-rest elevation",
-    description: "Structured AI output blocks for tool results and summaries.",
-    custom: true,
-  },
-  {
-    id: "chat-items",
-    title: "Chat Items",
-    category: "AI",
-    primitive: "ChatMessage, Item, Avatar",
-    files: ["src/components/design/prompt-kit.tsx", "src/components/ui/item.tsx"],
-    figmaSource: "Item rows and compact message type",
-    description: "Message row anatomy built from Avatar and Item-like content slots.",
-    custom: true,
+    id: "combobox",
+    title: "Combobox",
+    category: "Components",
+    primitive:
+      "Combobox, ComboboxInput, ComboboxContent, ComboboxItem, ComboboxChips, ComboboxChip",
+    files: ["src/components/ui/combobox.tsx"],
+    figmaSource: "Medusa single / multiselect and select menu",
+    description: "Searchable select with optional multiselect chips.",
+    custom: false,
   },
   {
     id: "code",
     title: "Code",
-    category: "Display",
+    category: "Components",
     primitive: "Code",
     files: ["src/components/design/code.tsx"],
     figmaSource: "Code Labels/code-label-xsmall",
@@ -157,17 +138,18 @@ export const componentCatalog = [
   {
     id: "code-block",
     title: "Code Block",
-    category: "Display",
+    category: "Components",
     primitive: "CodeBlock, Code",
     files: ["src/components/design/code.tsx", "src/components/ui/button.tsx"],
     figmaSource: "Code label token plus card-rest elevation",
-    description: "Prompt Kit style code block with a compact header and copy action.",
+    description:
+      "Prompt Kit style code block with a compact header and copy action.",
     custom: true,
   },
   {
     id: "commandbar",
     title: "Commandbar",
-    category: "Overlay",
+    category: "Components",
     primitive: "Command, CommandInput, CommandList, CommandItem",
     files: ["src/components/ui/command.tsx"],
     figmaSource: "Medusa popover surface and compact rows",
@@ -177,7 +159,7 @@ export const componentCatalog = [
   {
     id: "separator",
     title: "Separator",
-    category: "Display",
+    category: "Components",
     primitive: "Separator",
     files: ["src/components/ui/separator.tsx"],
     figmaSource: "Content Divider",
@@ -187,27 +169,20 @@ export const componentCatalog = [
   {
     id: "date-picker",
     title: "Date Picker",
-    category: "Form",
+    category: "Components",
     primitive: "DatePicker = Popover + Button + Calendar",
-    files: ["src/components/design/form-compositions.tsx", "src/components/ui/calendar.tsx"],
+    files: [
+      "src/components/design/form-compositions.tsx",
+      "src/components/ui/calendar.tsx",
+    ],
     figmaSource: "Medusa compact popover and control tokens",
     description: "Local wrapper around the official Calendar primitive.",
     custom: true,
   },
   {
-    id: "filter",
-    title: "Filter",
-    category: "Composition",
-    primitive: "FilterPanel = Popover + Select + Checkbox + Badge",
-    files: ["src/components/design/form-compositions.tsx"],
-    figmaSource: "Medusa compact popover and grouped fields",
-    description: "A composed filter surface for table and search flows.",
-    custom: true,
-  },
-  {
     id: "hovercard",
     title: "Hover Card",
-    category: "Overlay",
+    category: "Components",
     primitive: "HoverCard, HoverCardTrigger, HoverCardContent",
     files: ["src/components/ui/hover-card.tsx"],
     figmaSource: "Medusa card-rest elevation",
@@ -217,17 +192,18 @@ export const componentCatalog = [
   {
     id: "input",
     title: "Input",
-    category: "Form",
+    category: "Components",
     primitive: "Input, InputGroup, InputGroupInput, Textarea",
     files: ["src/components/ui/input.tsx", "src/components/ui/input-group.tsx"],
     figmaSource: "Medusa compact controls",
-    description: "Text entry primitives with prefix, suffix, and textarea variants.",
+    description:
+      "Text entry primitives with prefix, suffix, and textarea variants.",
     custom: false,
   },
   {
     id: "item-block",
     title: "Item Block",
-    category: "Display",
+    category: "Components",
     primitive: "Item, ItemMedia, ItemContent, Card",
     files: ["src/components/ui/item.tsx", "src/components/ui/card.tsx"],
     figmaSource: "Medusa item/card surfaces",
@@ -237,7 +213,7 @@ export const componentCatalog = [
   {
     id: "kbd",
     title: "Kbd",
-    category: "Display",
+    category: "Components",
     primitive: "Kbd, KbdGroup",
     files: ["src/components/ui/kbd.tsx"],
     figmaSource: "Compact label and border tokens",
@@ -247,7 +223,7 @@ export const componentCatalog = [
   {
     id: "label",
     title: "Label",
-    category: "Form",
+    category: "Components",
     primitive: "Label, FieldLabel",
     files: ["src/components/ui/label.tsx", "src/components/ui/field.tsx"],
     figmaSource: "Labels/txt-compact-small-plus",
@@ -257,17 +233,21 @@ export const componentCatalog = [
   {
     id: "menu",
     title: "Menu",
-    category: "Overlay",
+    category: "Components",
     primitive: "DropdownMenu and Menubar",
-    files: ["src/components/ui/dropdown-menu.tsx", "src/components/ui/menubar.tsx"],
+    files: [
+      "src/components/ui/dropdown-menu.tsx",
+      "src/components/ui/menubar.tsx",
+    ],
     figmaSource: "Medusa popover and compact item rows",
-    description: "Action menus and top-level menubars backed by Base UI menu primitives.",
+    description:
+      "Action menus and top-level menubars backed by Base UI menu primitives.",
     custom: false,
   },
   {
     id: "modal",
     title: "Modal",
-    category: "Overlay",
+    category: "Components",
     primitive: "Dialog, DialogContent, DialogTitle",
     files: ["src/components/ui/dialog.tsx"],
     figmaSource: "Medusa card-rest elevation and compact fields",
@@ -275,19 +255,9 @@ export const componentCatalog = [
     custom: false,
   },
   {
-    id: "prompt",
-    title: "Prompt",
-    category: "AI",
-    primitive: "PromptInput, PromptToolbar, PromptSuggestion",
-    files: ["src/components/design/prompt-kit.tsx"],
-    figmaSource: "Medusa input/card tokens plus Prompt Kit PromptInput anatomy",
-    description: "Local prompt composer with action rail and suggestions.",
-    custom: true,
-  },
-  {
     id: "popover",
     title: "Popover",
-    category: "Overlay",
+    category: "Components",
     primitive: "Popover, PopoverTrigger, PopoverContent",
     files: ["src/components/ui/popover.tsx"],
     figmaSource: "Medusa card-rest elevation",
@@ -297,7 +267,7 @@ export const componentCatalog = [
   {
     id: "radio",
     title: "Radio Group",
-    category: "Form",
+    category: "Components",
     primitive: "RadioGroup, RadioGroupItem",
     files: ["src/components/ui/radio-group.tsx"],
     figmaSource: "Progress indicator size and compact field labels",
@@ -305,39 +275,33 @@ export const componentCatalog = [
     custom: false,
   },
   {
-    id: "segmented-control",
-    title: "Segmented Control",
-    category: "Form",
-    primitive: "ToggleGroup, ToggleGroupItem",
-    files: ["src/components/ui/toggle-group.tsx"],
-    figmaSource: "Medusa grouped control surface",
-    description: "Segmented choices mapped to ToggleGroup.",
-    custom: false,
-  },
-  {
     id: "select",
     title: "Select",
-    category: "Form",
-    primitive: "Select, SelectTrigger, SelectContent, SelectItem, Combobox",
-    files: ["src/components/ui/select.tsx", "src/components/ui/combobox.tsx"],
+    category: "Components",
+    primitive: "Select, SelectTrigger, SelectContent, SelectItem",
+    files: ["src/components/ui/select.tsx"],
     figmaSource: "Medusa compact controls and menu rows",
-    description: "Select menus with grouped items and searchable option sets.",
+    description: "Select menus with grouped items.",
     custom: false,
   },
   {
     id: "search",
     title: "Search",
-    category: "Form",
+    category: "Components",
     primitive: "SearchInput = InputGroup + Input, SearchModal = Command",
-    files: ["src/components/ui/input-group.tsx", "src/components/ui/command.tsx"],
+    files: [
+      "src/components/ui/input-group.tsx",
+      "src/components/ui/command.tsx",
+    ],
     figmaSource: "Medusa compact input and icon sizing",
-    description: "Search input variants plus the Medusa command-style search modal.",
+    description:
+      "Search input variants plus the Medusa command-style search modal.",
     custom: true,
   },
   {
     id: "switch",
     title: "Switch",
-    category: "Form",
+    category: "Components",
     primitive: "Switch",
     files: ["src/components/ui/switch.tsx"],
     figmaSource: "Medusa compact control scale",
@@ -347,7 +311,7 @@ export const componentCatalog = [
   {
     id: "table",
     title: "Table",
-    category: "Display",
+    category: "Components",
     primitive: "Table, TableHeader, TableBody, TableRow, TableCell",
     files: ["src/components/ui/table.tsx"],
     figmaSource: "Medusa grid lines and code labels",
@@ -357,7 +321,7 @@ export const componentCatalog = [
   {
     id: "tabs",
     title: "Tabs",
-    category: "Navigation",
+    category: "Components",
     primitive: "Tabs, TabsList, TabsTrigger, TabsContent",
     files: ["src/components/ui/tabs.tsx"],
     figmaSource: "Medusa grouped control surface",
@@ -367,7 +331,7 @@ export const componentCatalog = [
   {
     id: "toast",
     title: "Toast",
-    category: "Feedback",
+    category: "Components",
     primitive: "Toaster and toast() from sonner",
     files: ["src/components/ui/sonner.tsx"],
     figmaSource: "Medusa card-rest elevation",
@@ -377,7 +341,7 @@ export const componentCatalog = [
   {
     id: "tooltip",
     title: "Tooltip",
-    category: "Overlay",
+    category: "Components",
     primitive: "Tooltip, TooltipTrigger, TooltipContent",
     files: ["src/components/ui/tooltip.tsx"],
     figmaSource: "Medusa compact overlay text",
@@ -393,8 +357,7 @@ export const catalogById = Object.fromEntries(
 export const featuredComponentIds = [
   "accordion",
   "button",
-  "prompt",
-  "chat",
+  "ai-assistant",
   "date-picker",
   "table",
 ];

@@ -11,7 +11,7 @@ const toggleVariants = cva(
         default: "bg-transparent",
         outline: "border border-input bg-transparent hover:bg-muted",
         segmented:
-          "h-7 flex-1 rounded-md px-2 text-[13px] leading-[1.1] font-medium text-muted-foreground hover:bg-transparent hover:text-foreground focus-visible:ring-0 focus-visible:shadow-[var(--shadow-button-primary-focus)] aria-pressed:bg-background aria-pressed:text-foreground aria-pressed:shadow-[var(--shadow-card)] data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-[var(--shadow-card)] [&_svg:not([class*='size-'])]:size-[15px]",
+          "h-7 flex-1 rounded-md px-2 text-[13px] leading-[1.1] font-medium text-muted-foreground hover:bg-transparent hover:text-foreground focus-visible:ring-0 focus-visible:shadow-[var(--shadow-control-focus)] aria-pressed:bg-background aria-pressed:text-foreground aria-pressed:shadow-[var(--shadow-card)] data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-[var(--shadow-card)] [&_svg:not([class*='size-'])]:size-[15px]",
       },
       size: {
         default:

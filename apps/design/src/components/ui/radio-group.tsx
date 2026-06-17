@@ -21,7 +21,7 @@ function RadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props) {
       data-slot="radio-group-item"
       className={cn(
         "group/radio-group-item peer relative flex size-5 shrink-0 items-center justify-center rounded-full outline-none after:absolute after:-inset-x-2 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50",
-        "data-unchecked:hover:[&_[data-slot=radio-visual]]:bg-[var(--control-unchecked-hover-bg)] data-unchecked:hover:[&_[data-slot=radio-visual]]:shadow-[var(--shadow-control-unchecked-hover)] focus-visible:[&_[data-slot=radio-visual]]:shadow-[var(--shadow-button-primary-focus)]",
+        "data-unchecked:hover:[&_[data-slot=radio-visual]]:bg-[var(--control-unchecked-hover-bg)] data-unchecked:hover:[&_[data-slot=radio-visual]]:shadow-[var(--shadow-control-unchecked-hover)] focus-visible:[&_[data-slot=radio-visual]]:shadow-[var(--shadow-control-focus)]",
         "aria-invalid:[&_[data-slot=radio-visual]]:shadow-[0_0_0_1px_color-mix(in_srgb,var(--destructive)_35%,transparent),var(--shadow-control-unchecked)]",
         "data-checked:[&_[data-slot=radio-visual]]:bg-[var(--interactive)] data-checked:[&_[data-slot=radio-visual]]:shadow-[var(--shadow-control-interactive)]",
         className,

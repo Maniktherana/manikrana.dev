@@ -5,7 +5,7 @@ import {
   ComponentExamples,
   ComponentPreview,
 } from "@/components/design/component-doc-blocks";
-import { Code, CodeBlock } from "@/components/design/code";
+import { Code, CodeBlockSource } from "@/components/design/code";
 import { slugify } from "@/lib/docs-shared";
 import { cn } from "@/lib/utils";
 
@@ -161,10 +161,9 @@ const mdxComponents = {
       "tsx";
 
     return (
-      <CodeBlock
+      <CodeBlockSource
         code={code}
         language={language}
-        collapseAfterLines={false}
         highlighted={
           <pre className={className} {...props}>
             {children}

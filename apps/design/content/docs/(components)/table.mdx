@@ -1,6 +1,6 @@
 ---
 title: Table
-description: Data table with compact rows and understated dividers.
+description: Data table primitives with compact rows and horizontal overflow support.
 component: true
 base: base
 ---
@@ -16,17 +16,81 @@ bunx shadcn@latest add table
 ## Usage
 
 ```tsx
-import { Table } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+```
 
-export function TableDemo() {
-  return <Table>Table</Table>;
-}
+```tsx
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Component</TableHead>
+      <TableHead>Status</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Button</TableCell>
+      <TableCell>Ready</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 ```
 
 ## Examples
 
-<ComponentExamples name="table" />
+### Default
+
+`Table` wraps the native `table` in a horizontal overflow container.
+
+<ComponentPreview name="table" />
+
+### Overflow
+
+Wide tables keep their intrinsic column width and scroll horizontally instead of compressing cells.
+
+```tsx
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Order</TableHead>
+      <TableHead>Customer</TableHead>
+      <TableHead>Status</TableHead>
+      <TableHead>Fulfillment</TableHead>
+      <TableHead className="text-right">Total</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>#1084</TableCell>
+      <TableCell>Manik Rana</TableCell>
+      <TableCell>Ready</TableCell>
+      <TableCell>Standard shipping</TableCell>
+      <TableCell className="text-right">$128.00</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
 
 ## API Reference
 
-<ComponentApi name="table" />
+### Table
+
+| Component | Element | Notes |
+| --- | --- | --- |
+| `Table` | `table` | Includes a horizontal overflow wrapper. |
+| `TableHeader` | `thead` | Header group. |
+| `TableBody` | `tbody` | Body group. |
+| `TableFooter` | `tfoot` | Footer group. |
+| `TableRow` | `tr` | Row with hover and selected state support. |
+| `TableHead` | `th` | Header cell. |
+| `TableCell` | `td` | Body cell. |
+| `TableCaption` | `caption` | Caption text below the table. |

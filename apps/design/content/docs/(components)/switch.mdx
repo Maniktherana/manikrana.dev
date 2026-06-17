@@ -1,6 +1,6 @@
 ---
 title: Switch
-description: Binary toggle with Field label support.
+description: Binary toggle with tactile thumb motion, labels, and clickable card compositions.
 component: true
 base: base
 ---
@@ -17,16 +17,53 @@ bunx shadcn@latest add switch
 
 ```tsx
 import { Switch } from "@/components/ui/switch";
+```
 
-export function SwitchDemo() {
-  return <Switch defaultChecked />;
-}
+```tsx
+<Switch defaultChecked />
 ```
 
 ## Examples
 
-<ComponentExamples name="switch" />
+### Size
+
+Use `size="sm"` for label and card rows.
+
+<ComponentPreview name="switch-size" />
+
+### Label
+
+Pair `Switch` with text when the label should sit outside a card surface.
+
+<ComponentPreview name="switch-label" />
+
+### Card
+
+Use a controlled switch when the whole card should toggle the value.
+
+<ComponentPreview name="switch-card" />
+
+### Card With Content
+
+Render secondary controls below the label when the switch reveals configuration.
+
+<ComponentPreview name="switch-card-content" />
+
+### Disabled
+
+Disabled switches keep the visual state and native disabled keyboard behavior.
+
+<ComponentPreview name="switch-disabled" />
 
 ## API Reference
 
-<ComponentApi name="switch" />
+### Switch
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `checked` | `boolean` | - |
+| `defaultChecked` | `boolean` | - |
+| `onCheckedChange` | `(checked: boolean) => void` | - |
+| `disabled` | `boolean` | - |
+| `size` | `"default" \| "sm"` | `"default"` |
+| `className` | `string` | - |

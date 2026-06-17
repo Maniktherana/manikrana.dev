@@ -1,11 +1,11 @@
 ---
 title: Checkbox
-description: Boolean control inside Field anatomy.
+description: A control that allows the user to toggle between checked, unchecked, and indeterminate states.
 component: true
 base: base
 ---
 
-<ComponentPreview name="checkbox" />
+<ComponentPreview name="checkbox-demo" />
 
 ## Installation
 
@@ -17,16 +17,82 @@ bunx shadcn@latest add checkbox
 
 ```tsx
 import { Checkbox } from "@/components/ui/checkbox";
-
-export function CheckboxDemo() {
-  return <Checkbox defaultChecked />;
-}
 ```
+
+```tsx
+<Checkbox defaultChecked />
+```
+
+## Composition
+
+Pair `Checkbox` with `Field` and `FieldLabel` for layout and labeling.
+
+```text
+Field (orientation="horizontal")
+├── Checkbox
+└── FieldLabel  (or FieldContent → FieldLabel + FieldDescription)
+```
+
+## Accessibility
+
+- Always associate a `FieldLabel` (via `htmlFor`/`id`) so the control is labeled.
+- Use `aria-invalid` on the checkbox and `data-invalid` on the `Field` for the invalid state.
+- Use `Space` to toggle the focused checkbox.
 
 ## Examples
 
-<ComponentExamples name="checkbox" />
+### Description
+
+Use `FieldContent` and `FieldDescription` for helper text beside the label.
+
+<ComponentPreview name="checkbox-description" />
+
+### Group
+
+Group related checkboxes with `FieldSet` and `FieldLegend`.
+
+<ComponentPreview name="checkbox-group" />
+
+### Choice Card
+
+Wrap the whole `Field` in a `FieldLabel` for a clickable card-style selection that
+highlights when checked.
+
+<ComponentPreview name="checkbox-choice-card" />
+
+### Indeterminate
+
+Set the `indeterminate` prop to render the mixed (minus) state, e.g. a "select all" control.
+
+<ComponentPreview name="checkbox-indeterminate" />
+
+### Disabled
+
+Use the `disabled` prop, and add `data-disabled` to the `Field` for the disabled label styles.
+
+<ComponentPreview name="checkbox-disabled" />
+
+### Invalid
+
+Set `aria-invalid` on the checkbox and `data-invalid` on the `Field` to show validation errors.
+
+<ComponentPreview name="checkbox-invalid" />
 
 ## API Reference
 
-<ComponentApi name="checkbox" />
+### Checkbox
+
+Built on the Base UI `Checkbox.Root` primitive. Accepts all of its props plus `className`.
+
+| Prop              | Type                         | Default |
+| ----------------- | ---------------------------- | ------- |
+| `checked`         | `boolean`                    | -       |
+| `defaultChecked`  | `boolean`                    | `false` |
+| `onCheckedChange` | `(checked: boolean) => void` | -       |
+| `indeterminate`   | `boolean`                    | `false` |
+| `disabled`        | `boolean`                    | `false` |
+| `aria-invalid`    | `boolean`                    | -       |
+| `className`       | `string`                     | -       |
+
+The component exposes `data-slot="checkbox"` on the root, `data-slot="checkbox-box"` on the
+visual, and `data-slot="checkbox-indicator"` on the check/minus icon for styling hooks.

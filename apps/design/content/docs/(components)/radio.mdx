@@ -1,11 +1,11 @@
 ---
 title: Radio Group
-description: Radio and radio group examples.
+description: A set of checkable buttons where no more than one button can be checked at a time.
 component: true
 base: base
 ---
 
-<ComponentPreview name="radio" />
+<ComponentPreview name="radio-group-demo" />
 
 ## Installation
 
@@ -16,17 +16,129 @@ bunx shadcn@latest add radio-group
 ## Usage
 
 ```tsx
-import { RadioGroup } from "@/components/ui/radio-group";
-
-export function RadioGroupDemo() {
-  return <RadioGroup>Radio Group</RadioGroup>;
-}
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 ```
+
+```tsx
+<RadioGroup defaultValue="comfortable">
+  <div className="flex items-center gap-3">
+    <RadioGroupItem value="default" id="r1" />
+    <Label htmlFor="r1">Default</Label>
+  </div>
+  <div className="flex items-center gap-3">
+    <RadioGroupItem value="comfortable" id="r2" />
+    <Label htmlFor="r2">Comfortable</Label>
+  </div>
+</RadioGroup>
+```
+
+## Composition
+
+Use the following composition to build a `RadioGroup`.
+
+```text
+RadioGroup
+├── RadioGroupItem
+├── RadioGroupItem
+└── RadioGroupItem
+```
+
+Each `RadioGroupItem` should be paired with a `Label` (or `FieldLabel`) via matching
+`id` and `htmlFor` so the control and its text are associated.
 
 ## Examples
 
-<ComponentExamples name="radio" />
+### Description
+
+Pair each item with a `FieldLabel` and `FieldDescription` inside a `Field` to add
+supporting copy.
+
+<ComponentPreview name="radio-group-description" />
+
+### Choice Card
+
+Wrap a `Field` with `FieldLabel` to make the entire option a clickable card-style
+selection.
+
+<ComponentPreview name="radio-group-choice-card" />
+
+### Fieldset
+
+Use `FieldSet` and `FieldLegend` to group radio items under a shared label and
+description.
+
+<ComponentPreview name="radio-group-fieldset" />
+
+### Disabled
+
+Use the `disabled` prop on `RadioGroup` to disable all items at once.
+
+<ComponentPreview name="radio-group-disabled" />
+
+### Invalid
+
+Set `aria-invalid` on `RadioGroupItem` and `data-invalid` on the surrounding `Field`
+to surface validation errors.
+
+<ComponentPreview name="radio-group-invalid" />
+
+## Accessibility
+
+- Associate each `RadioGroupItem` with its `Label` using matching `id` and `htmlFor`.
+- Use `FieldSet` with `FieldLegend` to give a group of radios an accessible group label.
+- Use the arrow keys to move between items within a group; `Tab` moves focus in and out
+  of the group.
+
+```tsx
+<RadioGroup aria-label="Display density" defaultValue="comfortable">
+  <div className="flex items-center gap-3">
+    <RadioGroupItem value="comfortable" id="density-comfortable" />
+    <Label htmlFor="density-comfortable">Comfortable</Label>
+  </div>
+</RadioGroup>
+```
 
 ## API Reference
 
-<ComponentApi name="radio" />
+### RadioGroup
+
+The `RadioGroup` component is the container that manages selection state. It extends the
+Base UI [`RadioGroup`](https://base-ui.com/react/components/radio-group) props.
+
+| Prop            | Type                                | Default |
+| --------------- | ----------------------------------- | ------- |
+| `value`         | `string`                            | -       |
+| `defaultValue`  | `string`                            | -       |
+| `onValueChange` | `(value: unknown) => void`          | -       |
+| `disabled`      | `boolean`                           | `false` |
+| `name`          | `string`                            | -       |
+| `className`     | `string`                            | -       |
+
+```tsx
+<RadioGroup defaultValue="comfortable" disabled>
+  <RadioGroupItem value="default" id="r1" />
+  <RadioGroupItem value="comfortable" id="r2" />
+</RadioGroup>
+```
+
+### RadioGroupItem
+
+The `RadioGroupItem` component is a single selectable radio. It extends the Base UI
+[`Radio.Root`](https://base-ui.com/react/components/radio) props.
+
+| Prop           | Type      | Default |
+| -------------- | --------- | ------- |
+| `value`        | `unknown` | -       |
+| `disabled`     | `boolean` | `false` |
+| `aria-invalid` | `boolean` | -       |
+| `className`    | `string`  | -       |
+
+```tsx
+<RadioGroup>
+  <div className="flex items-center gap-3">
+    <RadioGroupItem value="default" id="r1" />
+    <Label htmlFor="r1">Default</Label>
+  </div>
+</RadioGroup>
+```

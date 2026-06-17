@@ -1,14 +1,32 @@
+import * as React from "react";
 import {
   CheckCircle2Icon,
+  CheckIcon,
   ChevronDownIcon,
+  CopyIcon,
   MoreHorizontalIcon,
   PlusIcon,
   XIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 
-import { Code, CodeBlock } from "@/components/design/code";
+import {
+  Code,
+  CodeBlock,
+  CodeBlockBody,
+  CodeBlockContent,
+  CodeBlockSource,
+} from "@/components/design/code";
 import { catalogById } from "@/components/design/component-catalog";
+import { getExampleSource } from "@/components/design/example-source";
+import {
+  aiAssistantPreviewTitles,
+  renderAIAssistantPreview,
+} from "@/components/design/examples/ai-assistant-examples";
+import {
+  badgePreviewTitles,
+  renderBadgePreview,
+} from "@/components/design/examples/badge-examples";
 import {
   buttonGroupPreviewTitles,
   renderButtonGroupPreview,
@@ -17,8 +35,43 @@ import {
   buttonPreviewTitles,
   renderButtonPreview,
 } from "@/components/design/examples/button-examples";
-import { DatePicker, FilterPanel } from "@/components/design/form-compositions";
-import { AIAssistant, ChatBlock, ChatMessage, PromptInput } from "@/components/design/prompt-kit";
+import {
+  checkboxPreviewTitles,
+  renderCheckboxPreview,
+} from "@/components/design/examples/checkbox-examples";
+import {
+  codeBlockPreviewTitles,
+  renderCodeBlockPreview,
+} from "@/components/design/examples/code-block-examples";
+import {
+  comboboxPreviewTitles,
+  renderComboboxPreview,
+} from "@/components/design/examples/combobox-examples";
+import {
+  inputPreviewTitles,
+  renderInputPreview,
+} from "@/components/design/examples/input-examples";
+import {
+  modalPreviewTitles,
+  renderModalPreview,
+} from "@/components/design/examples/modal-examples";
+import {
+  popoverPreviewTitles,
+  renderPopoverPreview,
+} from "@/components/design/examples/popover-examples";
+import {
+  radioGroupPreviewTitles,
+  renderRadioGroupPreview,
+} from "@/components/design/examples/radio-group-examples";
+import {
+  renderSelectPreview,
+  selectPreviewTitles,
+} from "@/components/design/examples/select-examples";
+import {
+  renderSwitchPreview,
+  switchPreviewTitles,
+} from "@/components/design/examples/switch-examples";
+import { DatePicker } from "@/components/design/form-compositions";
 import {
   Accordion,
   AccordionContent,
@@ -26,7 +79,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount } from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarGroupCount,
+} from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
@@ -37,8 +95,18 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@/components/ui/button-group";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  ButtonGroup,
+  ButtonGroupSeparator,
+  ButtonGroupText,
+} from "@/components/ui/button-group";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CommandBar, CommandBarAction } from "@/components/ui/command";
 import {
@@ -56,9 +124,19 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { Input } from "@/components/ui/input";
-import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item";
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "@/components/ui/item";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { Label } from "@/components/ui/label";
 import {
@@ -89,11 +167,49 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 function getComponent(name: string) {
   return catalogById[name];
+}
+
+// Copy button composed from the Button primitive (no bespoke code-block wrapper).
+function CopyButton({
+  value,
+  className,
+}: {
+  value: string;
+  className?: string;
+}) {
+  const [copied, setCopied] = React.useState(false);
+
+  return (
+    <Tooltip>
+      <TooltipTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon"
+            type="button"
+            aria-label="Copy code"
+            className={className}
+          />
+        }
+        onClick={() => {
+          void navigator.clipboard?.writeText(value);
+          setCopied(true);
+          window.setTimeout(() => setCopied(false), 1200);
+        }}
+      >
+        {copied ? <CheckIcon /> : <CopyIcon />}
+      </TooltipTrigger>
+      <TooltipContent>{copied ? "Copied" : "Copy"}</TooltipContent>
+    </Tooltip>
+  );
 }
 
 function ComponentPreview({
@@ -105,24 +221,74 @@ function ComponentPreview({
 }) {
   const component = getComponent(name);
   const title =
-    component?.title ?? buttonGroupPreviewTitles[name] ?? buttonPreviewTitles[name] ?? name;
+    component?.title ??
+    aiAssistantPreviewTitles[name] ??
+    badgePreviewTitles[name] ??
+    buttonGroupPreviewTitles[name] ??
+    buttonPreviewTitles[name] ??
+    checkboxPreviewTitles[name] ??
+    comboboxPreviewTitles[name] ??
+    inputPreviewTitles[name] ??
+    modalPreviewTitles[name] ??
+    popoverPreviewTitles[name] ??
+    radioGroupPreviewTitles[name] ??
+    selectPreviewTitles[name] ??
+    switchPreviewTitles[name] ??
+    codeBlockPreviewTitles[name] ??
+    name;
+  const source = getExampleSource(name);
+  // Only offer expand/collapse when the source actually overflows the collapsed
+  // height (~12 lines); short snippets show in full with no expand control.
+  const collapsible = source !== undefined && source.split("\n").length > 12;
+  const badge = (
+    <Badge variant={component?.custom ? "outline" : "secondary"}>
+      {component?.custom ? "composition" : "primitive"}
+    </Badge>
+  );
 
+  // shadcn-style: the source sits in a header-less block attached directly under
+  // the preview (shared border, no gap), collapsed with copy + click-to-expand.
   return (
     <div className="medusa-doc-preview">
       <div className="medusa-doc-preview-toolbar">
         <span>{title}</span>
-        <Badge variant={component?.custom ? "outline" : "secondary"}>
-          {component?.custom ? "composition" : "primitive"}
-        </Badge>
+        {badge}
       </div>
       <div className="medusa-doc-preview-body" dir={direction}>
         {renderPreview(name)}
       </div>
+      {source ? (
+        <CodeBlock variant="bare" className="border-t border-[var(--border)]">
+          <CodeBlockBody collapsible={collapsible} flush>
+            <CopyButton
+              value={source}
+              className="absolute top-2.5 right-2.5 z-10"
+            />
+            <CodeBlockContent
+              code={source}
+              language="tsx"
+              showLineNumbers={false}
+            />
+          </CodeBlockBody>
+        </CodeBlock>
+      ) : null}
     </div>
   );
 }
 
 function renderPreview(name: string) {
+  const aiAssistantPreview = renderAIAssistantPreview(name);
+
+  if (aiAssistantPreview) {
+    return aiAssistantPreview;
+  }
+
+  const badgePreview = renderBadgePreview(name);
+
+  if (badgePreview) {
+    return badgePreview;
+  }
+
   const buttonGroupPreview = renderButtonGroupPreview(name);
 
   if (buttonGroupPreview) {
@@ -135,6 +301,60 @@ function renderPreview(name: string) {
     return buttonPreview;
   }
 
+  const checkboxPreview = renderCheckboxPreview(name);
+
+  if (checkboxPreview) {
+    return checkboxPreview;
+  }
+
+  const comboboxPreview = renderComboboxPreview(name);
+
+  if (comboboxPreview) {
+    return comboboxPreview;
+  }
+
+  const inputPreview = renderInputPreview(name);
+
+  if (inputPreview) {
+    return inputPreview;
+  }
+
+  const modalPreview = renderModalPreview(name);
+
+  if (modalPreview) {
+    return modalPreview;
+  }
+
+  const popoverPreview = renderPopoverPreview(name);
+
+  if (popoverPreview) {
+    return popoverPreview;
+  }
+
+  const radioGroupPreview = renderRadioGroupPreview(name);
+
+  if (radioGroupPreview) {
+    return radioGroupPreview;
+  }
+
+  const selectPreview = renderSelectPreview(name);
+
+  if (selectPreview) {
+    return selectPreview;
+  }
+
+  const switchPreview = renderSwitchPreview(name);
+
+  if (switchPreview) {
+    return switchPreview;
+  }
+
+  const codeBlockPreview = renderCodeBlockPreview(name);
+
+  if (codeBlockPreview) {
+    return codeBlockPreview;
+  }
+
   switch (name) {
     case "accordion":
       return (
@@ -143,7 +363,8 @@ function renderPreview(name: string) {
             <AccordionTrigger>Shipping settings</AccordionTrigger>
             <AccordionContent>
               <p className="medusa-small">
-                Configure fulfillment windows and carrier defaults for this region.
+                Configure fulfillment windows and carrier defaults for this
+                region.
               </p>
             </AccordionContent>
           </AccordionItem>
@@ -196,13 +417,23 @@ function renderPreview(name: string) {
             <Button type="button" variant="outline">
               Code
             </Button>
-            <Button type="button" variant="outline" size="icon" aria-label="More options">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              aria-label="More options"
+            >
               <MoreHorizontalIcon />
             </Button>
           </ButtonGroup>
 
           <ButtonGroup variant="base">
-            <Button type="button" variant="outline" size="icon" aria-label="Add item">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              aria-label="Add item"
+            >
               <PlusIcon />
             </Button>
             <Button type="button" variant="outline">
@@ -211,7 +442,12 @@ function renderPreview(name: string) {
             <Button type="button" variant="outline">
               Label
             </Button>
-            <Button type="button" variant="outline" size="icon" aria-label="Clear">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              aria-label="Clear"
+            >
               <XIcon />
             </Button>
           </ButtonGroup>
@@ -222,7 +458,12 @@ function renderPreview(name: string) {
             </Button>
             <ButtonGroupSeparator />
             <ButtonGroupText>Slot</ButtonGroupText>
-            <Button type="button" variant="outline" size="icon-xs" aria-label="Open menu">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon-xs"
+              aria-label="Open menu"
+            >
               <ChevronDownIcon />
             </Button>
           </ButtonGroup>
@@ -255,7 +496,7 @@ function renderPreview(name: string) {
       );
     case "code-block":
       return (
-        <CodeBlock
+        <CodeBlockSource
           code={`import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
 
@@ -268,26 +509,9 @@ export function ToolbarActions() {
     </ButtonGroup>
   )
 }`}
-          collapseAfterLines={6}
-          expandable
-          path="toolbar-actions.tsx"
+          language="tsx"
+          collapsible
         />
-      );
-    case "chat-blocks":
-      return (
-        <div className="grid w-full max-w-md gap-2">
-          <ChatBlock title="Order summary">12 orders are ready to fulfill.</ChatBlock>
-          <ChatBlock title="Inventory check">2 variants are below threshold.</ChatBlock>
-        </div>
-      );
-    case "chat-items":
-      return (
-        <div className="grid w-full max-w-md gap-3">
-          <ChatMessage sender="user">Summarize today's fulfillment queue.</ChatMessage>
-          <ChatMessage sender="assistant">
-            12 orders are ready and 3 need inventory review.
-          </ChatMessage>
-        </div>
       );
     case "code":
       return (
@@ -305,12 +529,12 @@ export function ToolbarActions() {
       );
     case "date-picker":
       return <DatePicker />;
-    case "filter":
-      return <FilterPanel />;
     case "hovercard":
       return (
         <HoverCard>
-          <HoverCardTrigger render={<Button variant="outline" />}>Open preview</HoverCardTrigger>
+          <HoverCardTrigger render={<Button variant="outline" />}>
+            Open preview
+          </HoverCardTrigger>
           <HoverCardContent align="start" className="w-[210px]">
             <p className="medusa-small-plus">Product owner</p>
             <p className="medusa-small">Avery Stone manages this collection.</p>
@@ -349,7 +573,9 @@ export function ToolbarActions() {
     case "menu":
       return (
         <DropdownMenu>
-          <DropdownMenuTrigger render={<Button variant="outline" />}>Open menu</DropdownMenuTrigger>
+          <DropdownMenuTrigger render={<Button variant="outline" />}>
+            Open menu
+          </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>Duplicate</DropdownMenuItem>
@@ -360,11 +586,15 @@ export function ToolbarActions() {
     case "modal":
       return (
         <Dialog>
-          <DialogTrigger render={<Button variant="outline" />}>Open modal</DialogTrigger>
+          <DialogTrigger render={<Button variant="outline" />}>
+            Open modal
+          </DialogTrigger>
           <DialogContent className="h-auto max-w-md rounded-lg">
             <DialogHeader>
               <DialogTitle>Publish changes</DialogTitle>
-              <DialogDescription>Review this update before it goes live.</DialogDescription>
+              <DialogDescription>
+                Review this update before it goes live.
+              </DialogDescription>
             </DialogHeader>
           </DialogContent>
         </Dialog>
@@ -372,7 +602,9 @@ export function ToolbarActions() {
     case "popover":
       return (
         <Popover>
-          <PopoverTrigger render={<Button variant="outline" />}>Open popover</PopoverTrigger>
+          <PopoverTrigger render={<Button variant="outline" />}>
+            Open popover
+          </PopoverTrigger>
           <PopoverContent align="start">
             <PopoverHeader>
               <PopoverTitle>Inventory note</PopoverTitle>
@@ -383,32 +615,28 @@ export function ToolbarActions() {
           </PopoverContent>
         </Popover>
       );
-    case "prompt":
-      return <PromptInput active placeholder="Ask anything about Medusa..." />;
     case "radio":
       return (
         <RadioGroup defaultValue="standard" className="max-w-sm">
           <div className="flex items-center gap-3">
             <RadioGroupItem id="radio-preview-standard" value="standard" />
-            <Label htmlFor="radio-preview-standard" className="medusa-small-plus">
+            <Label
+              htmlFor="radio-preview-standard"
+              className="medusa-small-plus"
+            >
               Standard fulfillment
             </Label>
           </div>
           <div className="flex items-center gap-3">
             <RadioGroupItem id="radio-preview-priority" value="priority" />
-            <Label htmlFor="radio-preview-priority" className="medusa-small-plus">
+            <Label
+              htmlFor="radio-preview-priority"
+              className="medusa-small-plus"
+            >
               Priority fulfillment
             </Label>
           </div>
         </RadioGroup>
-      );
-    case "segmented-control":
-      return (
-        <ToggleGroup defaultValue={["preview"]} variant="segmented" spacing={0}>
-          <ToggleGroupItem value="preview">Preview</ToggleGroupItem>
-          <ToggleGroupItem value="code">Code</ToggleGroupItem>
-          <ToggleGroupItem value="props">Props</ToggleGroupItem>
-        </ToggleGroup>
       );
     case "select":
       return (
@@ -452,7 +680,11 @@ export function ToolbarActions() {
         <Button
           type="button"
           variant="outline"
-          onClick={() => toast.success("Component saved", { description: "The preview is ready." })}
+          onClick={() =>
+            toast.success("Component saved", {
+              description: "The preview is ready.",
+            })
+          }
         >
           Show toast
         </Button>
@@ -490,13 +722,12 @@ export function ToolbarActions() {
     case "tooltip":
       return (
         <Tooltip>
-          <TooltipTrigger render={<Button variant="outline" />}>Hover me</TooltipTrigger>
+          <TooltipTrigger render={<Button variant="outline" />}>
+            Hover me
+          </TooltipTrigger>
           <TooltipContent>Compact contextual help</TooltipContent>
         </Tooltip>
       );
-    case "ai-assistant":
-    case "chat":
-      return <AIAssistant state="default" />;
     default:
       return null;
   }
@@ -514,13 +745,14 @@ function ComponentExamples({ name }: { name: string }) {
             Default anatomy
           </CardTitle>
           <CardDescription>
-            Start with the source-owned primitive and compose product-specific behavior around it.
+            Start with the source-owned primitive and compose product-specific
+            behavior around it.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <p className="medusa-small">
-            {component?.primitive ?? "Component primitive"} is the documented base shape for this
-            page.
+            {component?.primitive ?? "Component primitive"} is the documented
+            base shape for this page.
           </p>
         </CardContent>
       </Card>
@@ -555,7 +787,9 @@ function ComponentApi({ name }: { name: string }) {
           <TableRow>
             <TableCell>Source</TableCell>
             <TableCell>
-              {component.custom ? "Local composition" : "shadcn/Base UI primitive"}
+              {component.custom
+                ? "Local composition"
+                : "shadcn/Base UI primitive"}
             </TableCell>
           </TableRow>
         </TableBody>

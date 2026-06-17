@@ -1,11 +1,11 @@
 ---
 title: Modal
-description: Dialog mapped to the requested modal naming.
+description: A focused prompt dialog for destructive, confirmative, and feedback workflows.
 component: true
 base: base
 ---
 
-<ComponentPreview name="modal" />
+<ComponentPreview name="modal-demo" />
 
 ## Installation
 
@@ -16,17 +16,81 @@ bunx shadcn@latest add dialog
 ## Usage
 
 ```tsx
-import { Dialog } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogBody,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+```
 
-export function DialogDemo() {
-  return <Dialog>Modal</Dialog>;
-}
+```tsx
+<Dialog>
+  <DialogTrigger render={<Button variant="outline" />}>Open modal</DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Delete something</DialogTitle>
+      <DialogDescription>Are you sure? This cannot be undone.</DialogDescription>
+    </DialogHeader>
+    <DialogBody>
+      <p>
+        Please type <strong>medusa-ui</strong> to confirm.
+      </p>
+      <Input placeholder="Confirmation text" />
+    </DialogBody>
+    <DialogFooter>
+      <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
+      <Button variant="destructive">Delete</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
 ```
 
 ## Examples
 
-<ComponentExamples name="modal" />
+### Destructive
+
+Use `DialogBody` for additional confirmation content between the header and footer.
+
+<ComponentPreview name="modal-demo" />
+
+### Confirmative
+
+Use only the header and footer for shorter prompts.
+
+<ComponentPreview name="modal-confirmative" />
 
 ## API Reference
 
-<ComponentApi name="modal" />
+### DialogContent
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `showCloseButton` | `boolean` | `false` |
+| `className` | `string` | - |
+
+### DialogHeader
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `className` | `string` | - |
+
+### DialogBody
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `className` | `string` | - |
+
+### DialogFooter
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `showCloseButton` | `boolean` | `false` |
+| `className` | `string` | - |

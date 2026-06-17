@@ -1,11 +1,11 @@
 ---
 title: Input
-description: Text entry primitives with prefix, suffix, and textarea variants.
+description: A text input component for forms and user data entry with built-in styling and accessibility.
 component: true
 base: base
 ---
 
-<ComponentPreview name="input" />
+<ComponentPreview name="input-demo" />
 
 ## Installation
 
@@ -17,16 +17,80 @@ bunx shadcn@latest add input
 
 ```tsx
 import { Input } from "@/components/ui/input";
+```
 
-export function InputDemo() {
-  return <Input placeholder="Email" />;
-}
+```tsx
+<Input type="email" placeholder="Email" />
 ```
 
 ## Examples
 
-<ComponentExamples name="input" />
+### Sizes
+
+Use the `controlSize` prop to switch between the default and small densities.
+
+<ComponentPreview name="input-sizes" />
+
+### Radius
+
+Use the `radius` prop to switch between squared and fully rounded corners.
+
+<ComponentPreview name="input-radius" />
+
+### Variants
+
+Use the `variant` prop to change the input surface. `component` sits on the
+background surface and `muted` uses the muted surface.
+
+<ComponentPreview name="input-variants" />
+
+### Disabled
+
+Use the `disabled` prop to disable the input.
+
+<ComponentPreview name="input-disabled" />
+
+### Invalid
+
+Use the `aria-invalid` prop to mark the input as invalid.
+
+<ComponentPreview name="input-invalid" />
+
+### File
+
+Use `type="file"` to create a file input.
+
+<ComponentPreview name="input-file" />
+
+### With Label
+
+Pair `Input` with `Field`, `FieldLabel`, and `FieldDescription` to add a label and description.
+
+<ComponentPreview name="input-with-label" />
+
+### Button Group
+
+Wrap `Input` in a `ButtonGroup` to attach an icon button.
+
+<ComponentPreview name="input-button-group" />
+
+### Input Group
+
+Use `InputGroup` with an addon to place an icon inside the input.
+
+<ComponentPreview name="input-group" />
 
 ## API Reference
 
-<ComponentApi name="input" />
+The `Input` component accepts all native `<input>` props plus the following styling props.
+
+| Prop           | Type                                  | Default     |
+| -------------- | ------------------------------------- | ----------- |
+| `controlSize`  | `"default" \| "sm"`                   | `"default"` |
+| `radius`       | `"squared" \| "rounded"`              | `"squared"` |
+| `variant`      | `"default" \| "component" \| "muted"` | `"default"` |
+| `type`         | `React.HTMLInputTypeAttribute`        | -           |
+| `disabled`     | `boolean`                             | `false`     |
+| `aria-invalid` | `boolean`                             | -           |
+| `className`    | `string`                              | -           |
+```

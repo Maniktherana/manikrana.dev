@@ -1,11 +1,11 @@
 ---
 title: Popover
-description: Floating content with title and description slots.
+description: Floating inverted content with title, description, close, arrow, and footer slots.
 component: true
 base: base
 ---
 
-<ComponentPreview name="popover" />
+<ComponentPreview name="popover-demo" />
 
 ## Installation
 
@@ -16,17 +16,88 @@ bunx shadcn@latest add popover
 ## Usage
 
 ```tsx
-import { Popover } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverFooter,
+  PopoverFooterActions,
+  PopoverFooterButton,
+  PopoverHeader,
+  PopoverSeparator,
+  PopoverStep,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+```
 
-export function PopoverDemo() {
-  return <Popover>Popover</Popover>;
-}
+```tsx
+<Popover>
+  <PopoverTrigger>Open popover</PopoverTrigger>
+  <PopoverContent showArrow showCloseButton>
+    <PopoverHeader>
+      <PopoverTitle>Insert Popover</PopoverTitle>
+      <PopoverDescription>
+        Insert popover description here. It would look much better as three lines of text.
+      </PopoverDescription>
+    </PopoverHeader>
+    <PopoverSeparator />
+    <PopoverFooter>
+      <PopoverStep>Step 1 of 5</PopoverStep>
+      <PopoverFooterActions>
+        <PopoverFooterButton>Back</PopoverFooterButton>
+        <PopoverFooterButton tone="primary" stretch>
+          Next
+        </PopoverFooterButton>
+      </PopoverFooterActions>
+    </PopoverFooter>
+  </PopoverContent>
+</Popover>
 ```
 
 ## Examples
 
-<ComponentExamples name="popover" />
+### Footer
+
+Use `PopoverFooter`, `PopoverStep`, and `PopoverFooterActions` for stepper-style popovers.
+
+<ComponentPreview name="popover-footer" />
+
+### Stretch
+
+Use `stretch` on `PopoverFooterButton` when the footer has only actions.
+
+<ComponentPreview name="popover-stretch" />
 
 ## API Reference
 
-<ComponentApi name="popover" />
+### Popover
+
+`Popover` is the Base UI popover root.
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `defaultOpen` | `boolean` | - |
+| `open` | `boolean` | - |
+| `onOpenChange` | `(open: boolean) => void` | - |
+
+### PopoverContent
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `side` | `"top" \| "bottom" \| "left" \| "right" \| "inline-start" \| "inline-end"` | `"bottom"` |
+| `sideOffset` | `number` | `4` |
+| `align` | `"start" \| "center" \| "end"` | `"center"` |
+| `alignOffset` | `number` | `0` |
+| `showArrow` | `boolean` | `false` |
+| `showCloseButton` | `boolean` | `false` |
+| `className` | `string` | - |
+
+### PopoverFooterButton
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `tone` | `"muted" \| "primary"` | `"muted"` |
+| `stretch` | `boolean` | `false` |
+| `size` | `"default" \| "xs" \| "sm" \| "lg" \| "icon" \| "icon-xs" \| "icon-sm" \| "icon-lg"` | `"sm"` |
+| `className` | `string` | - |

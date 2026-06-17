@@ -1,11 +1,11 @@
 ---
 title: Select
-description: Select menus with grouped items and searchable option sets.
+description: A trigger and popover list for choosing one value from a small option set.
 component: true
 base: base
 ---
 
-<ComponentPreview name="select" />
+<ComponentPreview name="select-demo" />
 
 ## Installation
 
@@ -16,17 +16,87 @@ bunx shadcn@latest add select
 ## Usage
 
 ```tsx
-import { Select } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+```
 
-export function SelectDemo() {
-  return <Select>Select</Select>;
-}
+```tsx
+<Select defaultValue="us">
+  <SelectTrigger>
+    <SelectValue placeholder="Choose region" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectGroup>
+      <SelectItem value="us">United States</SelectItem>
+      <SelectItem value="in">India</SelectItem>
+    </SelectGroup>
+  </SelectContent>
+</Select>
 ```
 
 ## Examples
 
-<ComponentExamples name="select" />
+### Width
+
+`SelectContent` starts at the trigger width and grows when an option needs more room.
+
+<ComponentPreview name="select-width" />
+
+### Group
+
+Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize options.
+
+<ComponentPreview name="select-group" />
+
+### Size
+
+Use the `size` prop on `SelectTrigger` for compact controls.
+
+<ComponentPreview name="select-size" />
 
 ## API Reference
 
-<ComponentApi name="select" />
+### Select
+
+`Select` is the Base UI select root.
+
+| Prop           | Type     | Default |
+| -------------- | -------- | ------- |
+| `defaultValue` | `string` | -       |
+| `value`        | `string` | -       |
+| `onValueChange`| `(value: string) => void` | - |
+| `disabled`     | `boolean` | -      |
+
+### SelectTrigger
+
+| Prop        | Type                  | Default     |
+| ----------- | --------------------- | ----------- |
+| `size`      | `"sm" \| "default"`   | `"default"` |
+| `className` | `string`              | -           |
+
+### SelectContent
+
+By default, content aligns to the trigger start. Its minimum width is the trigger width, and it can grow for longer options.
+
+| Prop                   | Type                                      | Default   |
+| ---------------------- | ----------------------------------------- | --------- |
+| `side`                 | `"top" \| "bottom" \| "left" \| "right" \| "inline-start" \| "inline-end"` | `"bottom"` |
+| `sideOffset`           | `number`                                  | `4`       |
+| `align`                | `"start" \| "center" \| "end"`            | `"start"` |
+| `alignOffset`          | `number`                                  | `0`       |
+| `alignItemWithTrigger` | `boolean`                                 | `false`   |
+| `className`            | `string`                                  | -         |
+
+### SelectItem
+
+| Prop        | Type     | Default |
+| ----------- | -------- | ------- |
+| `value`     | `string` | -       |
+| `disabled`  | `boolean`| -       |
+| `className` | `string` | -       |
