@@ -1,11 +1,11 @@
 ---
 title: Button Group
-description: Grouped actions with shared borders and separator support.
+description: A container that groups related buttons together with consistent styling.
 component: true
 base: base
 ---
 
-<ComponentPreview name="button-group" />
+<ComponentPreview name="button-group-demo" />
 
 ## Installation
 
@@ -17,23 +17,207 @@ bunx shadcn@latest add button-group
 
 ```tsx
 import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
+import {
+  ButtonGroup,
+  ButtonGroupSeparator,
+  ButtonGroupText,
+} from "@/components/ui/button-group";
+```
 
-export function ButtonGroupDemo() {
+```tsx
+<ButtonGroup variant="base">
+  <Button>Button 1</Button>
+  <Button>Button 2</Button>
+</ButtonGroup>
+```
+
+## Composition
+
+Use the following composition to build a `ButtonGroup`.
+
+```text
+ButtonGroup
+├── Button or Input
+├── ButtonGroupSeparator
+├── ButtonGroupText
+└── ButtonGroup
+```
+
+## Accessibility
+
+- The `ButtonGroup` component has `role="group"`.
+- Use `Tab` to navigate between controls in the group.
+- Use `aria-label` or `aria-labelledby` to label the button group.
+
+```tsx
+<ButtonGroup aria-label="Button group">
+  <Button>Button 1</Button>
+  <Button>Button 2</Button>
+</ButtonGroup>
+```
+
+## ButtonGroup vs ToggleGroup
+
+- Use `ButtonGroup` when controls perform actions.
+- Use `ToggleGroup` when controls toggle or select state.
+
+## Examples
+
+### Orientation
+
+Set the `orientation` prop to change the button group layout.
+
+<ComponentPreview name="button-group-orientation" />
+
+### Size
+
+Use the `size` prop on `ButtonGroup` to switch between the default and compact densities.
+
+<ComponentPreview name="button-group-size" />
+
+### Nested
+
+Use `variant="toolbar"` on the outer `ButtonGroup` to create spaced button groups.
+
+<ComponentPreview name="button-group-nested" />
+
+### Separator
+
+Use `ButtonGroupSeparator` to visually divide controls inside a group.
+
+Buttons with variant `outline` do not need a separator since they already have a border.
+For other variants, a separator improves visual hierarchy.
+
+<ComponentPreview name="button-group-separator" />
+
+### Text
+
+Use `ButtonGroupText` for non-interactive labels inside the group.
+
+<ComponentPreview name="button-group-text" />
+
+### Split
+
+Create a split button group by separating the primary action from the icon action.
+
+<ComponentPreview name="button-group-split" />
+
+### Input
+
+Wrap an `Input` component with buttons.
+
+<ComponentPreview name="button-group-input" />
+
+### Input Group
+
+Wrap an `InputGroup` component to create complex input layouts.
+
+<ComponentPreview name="button-group-input-group" />
+
+### Dropdown Menu
+
+Create a split button group with a `DropdownMenu` component.
+
+<ComponentPreview name="button-group-dropdown" />
+
+### Select
+
+Pair with a `Select` component.
+
+<ComponentPreview name="button-group-select" />
+
+### Popover
+
+Use with a `Popover` component.
+
+<ComponentPreview name="button-group-popover" />
+
+### RTL
+
+<ComponentPreview name="button-group-rtl" direction="rtl" />
+
+## API Reference
+
+### ButtonGroup
+
+The `ButtonGroup` component is a container that groups related controls together with
+consistent styling.
+
+| Prop          | Type                                  | Default        |
+| ------------- | ------------------------------------- | -------------- |
+| `orientation` | `"horizontal" \| "vertical"`          | `"horizontal"` |
+| `variant`     | `"default" \| "base" \| "toolbar"`   | `"default"`    |
+| `size`        | `"default" \| "compact"`             | `"default"`    |
+| `className`   | `string`                              | -              |
+
+```tsx
+<ButtonGroup variant="base" size="compact">
+  <Button>Button 1</Button>
+  <Button>Button 2</Button>
+</ButtonGroup>
+```
+
+Use `variant="default"` when the group should use the component surface. Use `variant="base"`
+when the group should sit on the page background. Use `variant="toolbar"` when the group
+is only spacing multiple child `ButtonGroup` clusters.
+
+Nested button groups also get toolbar spacing automatically, so simple nested composition works.
+
+```tsx
+<ButtonGroup variant="toolbar">
+  <ButtonGroup variant="base" />
+  <ButtonGroup variant="base" />
+</ButtonGroup>
+```
+
+### ButtonGroupSeparator
+
+The `ButtonGroupSeparator` component visually divides buttons within a group.
+
+| Prop          | Type                         | Default      |
+| ------------- | ---------------------------- | ------------ |
+| `orientation` | `"horizontal" \| "vertical"` | `"vertical"` |
+| `className`   | `string`                     | -            |
+
+```tsx
+<ButtonGroup>
+  <Button>Button 1</Button>
+  <ButtonGroupSeparator />
+  <Button>Button 2</Button>
+</ButtonGroup>
+```
+
+### ButtonGroupText
+
+Use `ButtonGroupText` to display text within a button group.
+
+| Prop        | Type           | Default |
+| ----------- | -------------- | ------- |
+| `render`    | `ReactElement` | -       |
+| `className` | `string`       | -       |
+
+```tsx
+<ButtonGroup>
+  <ButtonGroupText>Text</ButtonGroupText>
+  <Button>Button</Button>
+</ButtonGroup>
+```
+
+Use the `render` prop to render a custom component as the text, for example a label.
+
+```tsx
+import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+export function ButtonGroupTextDemo() {
   return (
     <ButtonGroup>
-      <Button variant="outline">Preview</Button>
-      <Button variant="outline">Code</Button>
-      <Button variant="outline">Settings</Button>
+      <ButtonGroupText render={<Label htmlFor="name" />}>
+        Text
+      </ButtonGroupText>
+      <Input placeholder="Type something here..." id="name" />
     </ButtonGroup>
   );
 }
 ```
-
-## Examples
-
-<ComponentExamples name="button-group" />
-
-## API Reference
-
-<ComponentApi name="button-group" />

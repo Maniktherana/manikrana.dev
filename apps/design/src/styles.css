@@ -1504,83 +1504,6 @@ html:not(.dark) [data-medusa] .medusa-code-block-text {
   color: var(--muted-foreground);
 }
 
-[data-medusa] [data-slot="button-group"] {
-  background: var(--component);
-  border-radius: 6px;
-  box-shadow: var(--shadow-control);
-  overflow: hidden;
-}
-
-[data-medusa] [data-slot="button-group"] > [data-slot="button"],
-[data-medusa] [data-slot="button-group"] > [data-slot="button-group-text"] {
-  background: var(--component);
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  color: var(--secondary-foreground);
-  height: 28px;
-  min-height: 28px;
-}
-
-[data-medusa] [data-slot="button-group"] > [data-slot="button"] {
-  gap: 8px;
-  padding: 7px 8px;
-}
-
-[data-medusa] [data-slot="button-group"] > [data-slot="button"][data-size^="icon"] {
-  padding: 6.5px;
-  width: 28px;
-}
-
-[data-medusa]
-  [data-slot="button-group"][data-orientation="horizontal"]
-  > [data-slot]:not([data-slot="button-group-separator"])
-  + [data-slot]:not([data-slot="button-group-separator"]) {
-  box-shadow: inset 1px 0 0 var(--border);
-}
-
-[data-medusa]
-  [data-slot="button-group"][data-orientation="vertical"]
-  > [data-slot]:not([data-slot="button-group-separator"])
-  + [data-slot]:not([data-slot="button-group-separator"]) {
-  box-shadow: inset 0 1px 0 var(--border);
-}
-
-[data-medusa] [data-slot="button-group"] > [data-slot="button"]:hover,
-[data-medusa] [data-slot="button-group"] > [data-slot="button"][aria-expanded="true"] {
-  background: var(--accent);
-  color: var(--foreground);
-}
-
-[data-medusa] [data-slot="button-group"] [data-slot="button-group-separator"] {
-  background: var(--border);
-}
-
-[data-medusa] [data-slot="button-group"].medusa-button-group-base,
-[data-medusa] [data-slot="button-group"].medusa-button-group-base > [data-slot="button"],
-[data-medusa]
-  [data-slot="button-group"].medusa-button-group-base
-  > [data-slot="button-group-text"] {
-  background: var(--background);
-}
-
-[data-medusa] [data-slot="button-group"].medusa-button-group-compact > [data-slot="button"],
-[data-medusa]
-  [data-slot="button-group"].medusa-button-group-compact
-  > [data-slot="button-group-text"] {
-  font-size: 12px;
-  height: 20px;
-  min-height: 20px;
-  padding: 4px 6px;
-}
-
-[data-medusa]
-  [data-slot="button-group"].medusa-button-group-compact
-  > [data-slot="button"][data-size^="icon"] {
-  padding: 3.5px;
-  width: 20px;
-}
-
 [data-medusa] [data-slot="input"][aria-invalid="true"],
 [data-medusa] [data-slot="textarea"][aria-invalid="true"],
 [data-medusa] [data-slot="select-trigger"][aria-invalid="true"],
@@ -2734,16 +2657,20 @@ html:not(.dark) [data-medusa] .medusa-code-block-text {
 }
 
 [data-medusa] .medusa-doc-grid {
-  display: grid;
-  grid-template-columns: 288px minmax(0, 1fr) 256px;
+  display: block;
   margin-inline: auto;
-  max-width: 1536px;
   min-height: calc(100svh - 56px);
 }
 
 [data-medusa] .medusa-doc-sidebar {
   border-inline-end: 1px solid var(--border);
+  bottom: 0;
+  inset-inline-start: 0;
   min-width: 0;
+  position: fixed;
+  top: 56px;
+  width: 288px;
+  z-index: 10;
 }
 
 [data-medusa] .medusa-doc-sidebar-inner {
@@ -2841,12 +2768,16 @@ html:not(.dark) [data-medusa] .medusa-code-block-text {
 
 [data-medusa] .medusa-doc-article {
   --medusa-doc-content-width: 704px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   padding: 38px 48px 56px;
 }
 
 [data-medusa] .medusa-doc-mobile-nav {
   display: none;
+  width: 100%;
 }
 
 [data-medusa] .medusa-doc-intro-row {
@@ -2912,6 +2843,10 @@ html:not(.dark) [data-medusa] .medusa-code-block-text {
   width: 100%;
 }
 
+[data-medusa] .medusa-doc-mdx > :first-child {
+  margin-top: 0;
+}
+
 [data-medusa] .medusa-doc-h1,
 [data-medusa] .medusa-doc-h2,
 [data-medusa] .medusa-doc-h3 {
@@ -2928,13 +2863,13 @@ html:not(.dark) [data-medusa] .medusa-code-block-text {
 [data-medusa] .medusa-doc-h2 {
   font-size: 24px;
   line-height: 1.2;
-  margin-top: 48px;
+  margin-top: 44px;
 }
 
 [data-medusa] .medusa-doc-h3 {
   font-size: 17px;
   line-height: 1.3;
-  margin-top: 32px;
+  margin-top: 28px;
 }
 
 [data-medusa] .medusa-doc-heading-anchor {
@@ -2955,8 +2890,8 @@ html:not(.dark) [data-medusa] .medusa-code-block-text {
 [data-medusa] .medusa-doc-p {
   color: var(--secondary-foreground);
   font-size: 15px;
-  line-height: 1.7;
-  margin-top: 16px;
+  line-height: 1.55;
+  margin-top: 12px;
 }
 
 [data-medusa] .medusa-doc-link {
@@ -2971,9 +2906,9 @@ html:not(.dark) [data-medusa] .medusa-code-block-text {
   display: grid;
   font-size: 15px;
   gap: 8px;
-  line-height: 1.7;
+  line-height: 1.55;
   list-style: disc;
-  margin: 16px 0 0 22px;
+  margin: 12px 0 0 22px;
 }
 
 [data-medusa] .medusa-doc-list-ordered {
@@ -2983,7 +2918,7 @@ html:not(.dark) [data-medusa] .medusa-code-block-text {
 [data-medusa] .medusa-doc-table-wrap {
   border: 1px solid var(--border);
   border-radius: 8px;
-  margin-top: 16px;
+  margin-top: 14px;
   max-width: 100%;
   overflow: auto;
   width: 100%;
@@ -3088,8 +3023,17 @@ html:not(.dark) [data-medusa] .medusa-code-block-text {
   border: 1px solid var(--border);
   border-radius: 7px;
   margin-bottom: 36px;
+  margin-top: 16px;
   overflow: hidden;
   width: 100%;
+}
+
+[data-medusa] .medusa-doc-mdx > .medusa-code-block {
+  margin-top: 14px;
+}
+
+[data-medusa] .medusa-doc-mdx > .medusa-code-block + .medusa-code-block {
+  margin-top: 8px;
 }
 
 [data-medusa] .medusa-doc-preview-toolbar {
@@ -3117,7 +3061,13 @@ html:not(.dark) [data-medusa] .medusa-code-block-text {
 
 [data-medusa] .medusa-doc-toc {
   border-inline-start: 1px solid var(--border);
+  bottom: 0;
+  inset-inline-end: 0;
   min-width: 0;
+  position: fixed;
+  top: 56px;
+  width: 256px;
+  z-index: 10;
 }
 
 [data-medusa] .medusa-doc-toc-inner {
@@ -3238,11 +3188,23 @@ html:not(.dark) [data-medusa] .medusa-code-block-text {
 
 @media (max-width: 1180px) {
   [data-medusa] .medusa-doc-grid {
+    display: grid;
     grid-template-columns: 288px minmax(0, 1fr);
+    margin-inline: auto;
+    max-width: 1536px;
+  }
+
+  [data-medusa] .medusa-doc-sidebar {
+    bottom: auto;
+    inset-inline-start: auto;
+    position: static;
+    top: auto;
+    width: auto;
   }
 
   [data-medusa] .medusa-doc-toc {
     display: none;
+    position: static;
   }
 }
 

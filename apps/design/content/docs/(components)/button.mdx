@@ -1,12 +1,12 @@
 ---
 title: Button
-description: Primary action, outline action, ghost action, and icon-only sizes.
+description: Displays a button or a component that looks like a button.
 component: true
 base: base
 featured: true
 ---
 
-<ComponentPreview name="button" />
+<ComponentPreview name="button-demo" />
 
 ## Installation
 
@@ -18,16 +18,108 @@ bunx shadcn@latest add button
 
 ```tsx
 import { Button } from "@/components/ui/button";
+```
 
-export function ButtonDemo() {
-  return <Button>Button</Button>;
+```tsx
+<Button variant="outline">Button</Button>
+```
+
+## Cursor
+
+Tailwind v4 switched from `cursor: pointer` to `cursor: default` for buttons.
+
+If you want to keep the pointer cursor behavior, add the following code to your global CSS.
+
+You can also enable this during project setup with `bunx shadcn@latest init --pointer`.
+
+```css
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }
 ```
 
 ## Examples
 
-<ComponentExamples name="button" />
+### Size
+
+Use the `size` prop to change the size of the button.
+
+<ComponentPreview name="button-size" />
+
+### Default
+
+<ComponentPreview name="button-default" />
+
+### Outline
+
+<ComponentPreview name="button-outline" />
+
+### Secondary
+
+<ComponentPreview name="button-secondary" />
+
+### Ghost
+
+<ComponentPreview name="button-ghost" />
+
+### Destructive
+
+<ComponentPreview name="button-destructive" />
+
+### Link
+
+<ComponentPreview name="button-link" />
+
+### Icon
+
+<ComponentPreview name="button-icon" />
+
+### With Icon
+
+Add `data-icon="inline-start"` or `data-icon="inline-end"` to the icon for the correct spacing.
+
+<ComponentPreview name="button-with-icon" />
+
+### Rounded
+
+Use `rounded-full` to make the button fully rounded.
+
+<ComponentPreview name="button-rounded" />
+
+### Spinner
+
+Render a `Spinner` inside the button for a loading state. Add `data-icon` to keep icon spacing consistent.
+
+<ComponentPreview name="button-spinner" />
+
+### Button Group
+
+Use `ButtonGroup` when multiple buttons share one control surface.
+
+<ComponentPreview name="button-group-demo" />
+
+### As Link
+
+Use `buttonVariants` with a plain `a` element when a link should look like a button.
+
+Do not use `<Button render={<a />} nativeButton={false} />` for links. Base UI button behavior is for button semantics; use `buttonVariants` with a plain `a` instead.
+
+<ComponentPreview name="button-render" />
+
+### RTL
+
+<ComponentPreview name="button-rtl" direction="rtl" />
 
 ## API Reference
 
-<ComponentApi name="button" />
+### Button
+
+The `Button` component is a wrapper around the `button` element that adds a variety of styles and functionality.
+
+| Prop      | Type                                                                                 | Default     |
+| --------- | ------------------------------------------------------------------------------------ | ----------- |
+| `variant` | `"default" \| "outline" \| "ghost" \| "destructive" \| "secondary" \| "link"`        | `"default"` |
+| `size`    | `"default" \| "xs" \| "sm" \| "lg" \| "icon" \| "icon-xs" \| "icon-sm" \| "icon-lg"` | `"default"` |

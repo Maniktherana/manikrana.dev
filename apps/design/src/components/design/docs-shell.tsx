@@ -210,6 +210,7 @@ function DocsNeighbours({ page, pageTree }: { page: SerializedComponentDocPage; 
         <Button
           variant="secondary"
           size="sm"
+          nativeButton={false}
           render={
             <a
               aria-label={`Open ${nodeLabel(neighbours.previous.name)}`}
@@ -226,6 +227,7 @@ function DocsNeighbours({ page, pageTree }: { page: SerializedComponentDocPage; 
           className="ml-auto"
           variant="secondary"
           size="sm"
+          nativeButton={false}
           render={
             <a aria-label={`Open ${nodeLabel(neighbours.next.name)}`} href={neighbours.next.url} />
           }
@@ -250,6 +252,7 @@ function DocsPageActions({ page, pageTree }: { page: SerializedComponentDocPage;
       <Button
         aria-label={previousLabel}
         disabled={!neighbours.previous}
+        nativeButton={!neighbours.previous}
         render={
           neighbours.previous ? (
             <a href={neighbours.previous.url} aria-label={previousLabel} />
@@ -265,6 +268,7 @@ function DocsPageActions({ page, pageTree }: { page: SerializedComponentDocPage;
       <Button
         aria-label={nextLabel}
         disabled={!neighbours.next}
+        nativeButton={!neighbours.next}
         render={
           neighbours.next ? (
             <a href={neighbours.next.url} aria-label={nextLabel} />

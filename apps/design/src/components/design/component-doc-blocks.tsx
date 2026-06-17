@@ -9,6 +9,14 @@ import { toast } from "sonner";
 
 import { Code, CodeBlock } from "@/components/design/code";
 import { catalogById } from "@/components/design/component-catalog";
+import {
+  buttonGroupPreviewTitles,
+  renderButtonGroupPreview,
+} from "@/components/design/examples/button-group-examples";
+import {
+  buttonPreviewTitles,
+  renderButtonPreview,
+} from "@/components/design/examples/button-examples";
 import { DatePicker, FilterPanel } from "@/components/design/form-compositions";
 import { AIAssistant, ChatBlock, ChatMessage, PromptInput } from "@/components/design/prompt-kit";
 import {
@@ -88,23 +96,45 @@ function getComponent(name: string) {
   return catalogById[name];
 }
 
-function ComponentPreview({ name }: { name: string }) {
+function ComponentPreview({
+  name,
+  direction,
+}: {
+  name: string;
+  direction?: "ltr" | "rtl" | "auto";
+}) {
   const component = getComponent(name);
+  const title =
+    component?.title ?? buttonGroupPreviewTitles[name] ?? buttonPreviewTitles[name] ?? name;
 
   return (
     <div className="medusa-doc-preview">
       <div className="medusa-doc-preview-toolbar">
-        <span>{component?.title ?? name}</span>
+        <span>{title}</span>
         <Badge variant={component?.custom ? "outline" : "secondary"}>
           {component?.custom ? "composition" : "primitive"}
         </Badge>
       </div>
-      <div className="medusa-doc-preview-body">{renderPreview(name)}</div>
+      <div className="medusa-doc-preview-body" dir={direction}>
+        {renderPreview(name)}
+      </div>
     </div>
   );
 }
 
 function renderPreview(name: string) {
+  const buttonGroupPreview = renderButtonGroupPreview(name);
+
+  if (buttonGroupPreview) {
+    return buttonGroupPreview;
+  }
+
+  const buttonPreview = renderButtonPreview(name);
+
+  if (buttonPreview) {
+    return buttonPreview;
+  }
+
   switch (name) {
     case "accordion":
       return (
@@ -156,18 +186,6 @@ function renderPreview(name: string) {
           <Badge variant="outline">Draft</Badge>
         </div>
       );
-    case "button":
-      return (
-        <div className="flex flex-wrap gap-2">
-          <Button type="button">Default</Button>
-          <Button type="button" variant="outline">
-            Outline
-          </Button>
-          <Button type="button" variant="secondary">
-            Secondary
-          </Button>
-        </div>
-      );
     case "button-group":
       return (
         <div className="grid w-full max-w-lg gap-4">
@@ -183,7 +201,7 @@ function renderPreview(name: string) {
             </Button>
           </ButtonGroup>
 
-          <ButtonGroup className="medusa-button-group-base">
+          <ButtonGroup variant="base">
             <Button type="button" variant="outline" size="icon" aria-label="Add item">
               <PlusIcon />
             </Button>
@@ -198,7 +216,7 @@ function renderPreview(name: string) {
             </Button>
           </ButtonGroup>
 
-          <ButtonGroup className="medusa-button-group-compact medusa-button-group-base">
+          <ButtonGroup variant="base" size="compact">
             <Button type="button" variant="outline" size="xs">
               Compact
             </Button>

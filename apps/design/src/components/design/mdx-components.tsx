@@ -178,7 +178,19 @@ const mdxComponents = {
       return <code className={className} {...props} />;
     }
 
-    return <Code className={className} {...props} />;
+    const text = getNodeText(props.children);
+    const shouldWrap = text.length > 48 || text.includes("|");
+
+    return (
+      <Code
+        className={cn(
+          shouldWrap &&
+            "inline-block h-auto min-h-[18px] w-auto overflow-visible whitespace-normal break-words py-0.5 text-left leading-[1.45] align-top",
+          className,
+        )}
+        {...props}
+      />
+    );
   },
   ComponentApi,
   ComponentExamples,
