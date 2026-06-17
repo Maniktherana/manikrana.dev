@@ -1,0 +1,39 @@
+---
+title: Button Group
+description: Grouped actions with shared borders and separator support.
+component: true
+base: base
+---
+
+<ComponentPreview name="button-group" />
+
+## Installation
+
+```bash
+bunx shadcn@latest add button-group
+```
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+
+export function ButtonGroupDemo() {
+  return (
+    <ButtonGroup>
+      <Button variant="outline">Preview</Button>
+      <Button variant="outline">Code</Button>
+      <Button variant="outline">Settings</Button>
+    </ButtonGroup>
+  );
+}
+```
+
+## Examples
+
+<ComponentExamples name="button-group" />
+
+## API Reference
+
+<ComponentApi name="button-group" />

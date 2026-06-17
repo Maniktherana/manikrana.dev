@@ -1,0 +1,32 @@
+---
+title: Code Block
+description: Prompt Kit style code block with a compact header and copy action.
+component: true
+base: base
+---
+
+<ComponentPreview name="code-block" />
+
+## Installation
+
+```bash
+# Code Block is a local composition in src/components/design.
+```
+
+## Usage
+
+```tsx
+import { CodeBlock } from "@/components/design/code";
+
+export function CodeBlockDemo() {
+  return <CodeBlock code={source} expandable collapseAfterLines={12} />;
+}
+```
+
+## Examples
+
+<ComponentExamples name="code-block" />
+
+## API Reference
+
+<ComponentApi name="code-block" />

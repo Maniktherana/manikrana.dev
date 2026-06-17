@@ -1,10 +1,29 @@
 import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
+import { TanstackProvider } from "fumadocs-core/framework/tanstack";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import appCss from "../styles.css?url";
+
+const themeInitScript = `
+(() => {
+  try {
+    const stored = window.localStorage.getItem("medusa-ui-theme");
+    const preference = stored === "light" || stored === "dark" ? stored : "system";
+    const resolved =
+      preference === "system"
+        ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+        : preference;
+
+    document.documentElement.classList.toggle("dark", resolved === "dark");
+    document.documentElement.style.colorScheme = resolved;
+  } catch {
+    document.documentElement.style.colorScheme = "light dark";
+  }
+})();
+`;
 
 export const Route = createRootRoute({
   head: () => ({
@@ -42,15 +61,18 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <HeadContent />
       </head>
       <body>
-        <TooltipProvider>
-          {children}
-          <Toaster />
-        </TooltipProvider>
+        <TanstackProvider>
+          <TooltipProvider>
+            {children}
+            <Toaster />
+          </TooltipProvider>
+        </TanstackProvider>
         <TanStackDevtools
           config={{
             position: "bottom-right",

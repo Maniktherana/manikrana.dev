@@ -1,20 +1,22 @@
-# Component Worker Brief
+# Component Docs Worker Brief
 
-Build functional UI-library pages for the design app. Do not create static Figma state-sheet translations.
+Build functional UI-library docs for the design app. The app now uses Fumadocs MDX content under `content/docs/(components)` and the `/docs` route.
 
 ## Non-Negotiables
 
 - Use the actual shadcn/Base UI primitive wrappers from `src/components/ui`.
 - Treat Figma code as exact visual input, not exact component structure. Copy the tokens, spacing, shadows, radii, typography, and state colors into the existing design token layer; do not copy Figma's state-gallery frames as fake UI.
-- Do not edit primitive wrappers, global CSS, routes, catalog, or unrelated files.
-- Do not add raw color, shadow, radius, font, or border approximations in component page files. Use the shadcn tokens/classes in `src/styles.css` and existing shadcn variants.
+- Do not recreate the old `/components/$componentId` route or `src/components/design/pages` page layer.
+- Keep docs content in `content/docs/(components)` and reusable live examples in `src/components/design/component-doc-blocks.tsx`.
+- Update `src/components/design/component-catalog.ts` only when component metadata changes.
+- Do not edit primitive wrappers, global CSS, routes, catalog, or unrelated files unless the component change requires it.
+- Do not add raw color, shadow, radius, font, or border approximations in docs examples. Use the shadcn tokens/classes in `src/styles.css` and existing shadcn variants.
 - Do not override open/close, checked, selected, focus, disabled, menu, popover, dialog, or keyboard behavior.
 - Base UI/shadcn owns behavior, ARIA, state attributes, keyboard interactions, and animation lifecycle.
 - Figma informs visual tokens, density, spacing, shadows, and which real variants exist.
 - Figma state sheets are references for how default, hover, active, disabled, checked, and open states should look when the real component naturally enters those states.
 - Do not render separate fake cards for `hover`, `active hover`, `open`, or similar state labels unless the component's real API exposes that as a variant. Let browser hover and real interaction show those states.
 - Infer the smallest real component API. Example: Accordion has two meaningful variants: `standard` and `progress`; open/closed/hover are states, not variants.
-- Keep pages inspectable: one page per component, using `ComponentPageShell` and `ComponentDemoBand`.
 - Use only existing shell classes and shadcn tokens from `src/styles.css`; do not add CSS.
 - Keep examples operational and domain-realistic: settings, inventory, orders, payments, command palettes, filters.
 - ASCII only.
@@ -40,25 +42,21 @@ Build functional UI-library pages for the design app. Do not create static Figma
 
 ## Page Shape
 
-Each page should export a named component, for example `ButtonPage`.
+Each component doc is an MDX file under `content/docs/(components)`.
 
-Use:
+Use frontmatter plus reusable doc blocks:
 
-```tsx
-import {
-  ComponentDemoBand,
-  ComponentPageShell,
-} from "@/components/design/pages/component-page-shell";
+```mdx
+---
+title: Button
+description: Action primitives for forms, toolbars, and compact panels.
+---
 
-function ButtonPage() {
-  return (
-    <ComponentPageShell title="Button">
-      <ComponentDemoBand label="VARIANTS">{/* functional examples */}</ComponentDemoBand>
-    </ComponentPageShell>
-  );
-}
+import { Button } from "@/components/ui/button";
 
-export { ButtonPage };
+# Button
+
+<ComponentPreview name="button" />
 ```
 
 ## Acceptance Checklist
