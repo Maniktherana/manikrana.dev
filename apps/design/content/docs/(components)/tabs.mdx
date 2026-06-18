@@ -1,11 +1,11 @@
 ---
 title: Tabs
-description: Tabbed interface styled as a compact segmented rail.
+description: Tabbed interface styled as compact rails.
 component: true
 base: base
 ---
 
-<ComponentPreview name="tabs" />
+<ComponentPreview name="tabs-demo" />
 
 ## Installation
 
@@ -16,17 +16,83 @@ bunx shadcn@latest add tabs
 ## Usage
 
 ```tsx
-import { Tabs } from "@/components/ui/tabs";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
+```
 
-export function TabsDemo() {
-  return <Tabs>Tabs</Tabs>;
-}
+```tsx
+<Tabs defaultValue="preview">
+  <TabsList variant="line">
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">Preview panel</TabsContent>
+  <TabsContent value="code">Code panel</TabsContent>
+</Tabs>
 ```
 
 ## Examples
 
-<ComponentExamples name="tabs" />
+### Default
+
+Use the default variant for a larger card rail.
+
+<ComponentPreview name="tabs-default" />
+
+### Line
+
+Use `variant="line"` for compact navigation inside panels.
+
+<ComponentPreview name="tabs-line" />
+
+### Browser
+
+Use `variant="browser"` when the tabs should look like document or preview tabs.
+
+<ComponentPreview name="tabs-browser" />
+
+### Vertical
+
+Set `orientation="vertical"` on `Tabs` when the list should sit beside the panel.
+
+<ComponentPreview name="tabs-vertical" />
 
 ## API Reference
 
-<ComponentApi name="tabs" />
+### Tabs
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `defaultValue` | `string` | - |
+| `value` | `string` | - |
+| `onValueChange` | `(value: string) => void` | - |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` |
+| `className` | `string` | - |
+
+### TabsList
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `variant` | `"default" \| "progress" \| "line" \| "browser"` | `"default"` |
+| `className` | `string` | - |
+
+### TabsTrigger
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `value` | `string` | - |
+| `disabled` | `boolean` | `false` |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |
+
+### TabsContent
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `value` | `string` | - |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |

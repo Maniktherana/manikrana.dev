@@ -1,32 +1,46 @@
 ---
 title: Code
-description: Inline code token aligned to Medusa monospace labels.
+description: Inline code token aligned to compact monospace labels.
 component: true
-base: base
+base: local
 ---
 
-<ComponentPreview name="code" />
+<ComponentPreview name="code-demo" />
 
 ## Installation
 
-```bash
-# Code is a local composition in src/components/design.
-```
+`Code` is a local docs/design primitive.
 
 ## Usage
 
 ```tsx
 import { Code } from "@/components/design/code";
+```
 
-export function CodeDemo() {
-  return <Code>Code</Code>;
-}
+```tsx
+Use <Code>order.total</Code> inside prose.
 ```
 
 ## Examples
 
-<ComponentExamples name="code" />
+### Background
+
+Use `background="muted"` when the inline token sits inside a heavier surface.
+
+<ComponentPreview name="code-background" />
+
+### Inline
+
+Use `Code` inside text for prop names, file fragments, and compact tokens.
+
+<ComponentPreview name="code-inline" />
 
 ## API Reference
 
-<ComponentApi name="code" />
+### Code
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `background` | `"default" \| "muted"` | `"default"` |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |

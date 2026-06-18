@@ -1,11 +1,11 @@
 ---
 title: Accordion
-description: Base UI accordion restyled to the compact Medusa card row.
+description: Base UI accordion restyled as a compact card row.
 component: true
 base: base
 ---
 
-<ComponentPreview name="accordion" />
+<ComponentPreview name="accordion-demo" />
 
 ## Installation
 
@@ -16,17 +16,71 @@ bunx shadcn@latest add accordion
 ## Usage
 
 ```tsx
-import { Accordion } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+```
 
-export function AccordionDemo() {
-  return <Accordion>Accordion</Accordion>;
-}
+```tsx
+<Accordion defaultValue={["shipping"]}>
+  <AccordionItem value="shipping">
+    <AccordionTrigger>Shipping settings</AccordionTrigger>
+    <AccordionContent>
+      Configure fulfillment windows and carrier defaults.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
 ```
 
 ## Examples
 
-<ComponentExamples name="accordion" />
+### Multiple
+
+Use `defaultValue` with several item values when multiple sections should open
+by default.
+
+<ComponentPreview name="accordion-multiple" />
+
+### Status
+
+Compose `AccordionTrigger` with inline badges or other text primitives.
+
+<ComponentPreview name="accordion-status" />
 
 ## API Reference
 
-<ComponentApi name="accordion" />
+### Accordion
+
+The root wraps Base UI's accordion root and accepts the primitive props.
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `defaultValue` | `string[]` | - |
+| `value` | `string[]` | - |
+| `onValueChange` | `(value: string[]) => void` | - |
+| `className` | `string` | - |
+
+### AccordionItem
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `value` | `string` | - |
+| `disabled` | `boolean` | `false` |
+| `className` | `string` | - |
+
+### AccordionTrigger
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |
+
+### AccordionContent
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |

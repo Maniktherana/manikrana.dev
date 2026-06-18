@@ -1,10 +1,6 @@
 import * as React from "react";
 
-import {
-  ComponentApi,
-  ComponentExamples,
-  ComponentPreview,
-} from "@/components/design/component-doc-blocks";
+import { ComponentPreview } from "@/components/design/component-doc-blocks";
 import { Code, CodeBlockSource } from "@/components/design/code";
 import { slugify } from "@/lib/docs-shared";
 import { cn } from "@/lib/utils";
@@ -33,9 +29,9 @@ function HeadingAnchor({ children, id }: { children: React.ReactNode; id?: strin
   if (!id) return children;
 
   return (
-    <a className="medusa-doc-heading-anchor group" href={`#${id}`}>
+    <a className="group text-inherit no-underline" href={`#${id}`}>
       <span>{children}</span>
-      <span aria-hidden="true" className="medusa-doc-heading-hash">
+      <span aria-hidden="true" className="ms-2 text-muted-foreground opacity-0 group-hover:opacity-100">
         #
       </span>
     </a>
@@ -84,7 +80,14 @@ const mdxComponents = {
     const headingId = getHeadingId(children, id);
 
     return (
-      <h1 id={headingId} className={cn("medusa-doc-h1", className)} {...props}>
+      <h1
+        id={headingId}
+        className={cn(
+          "mt-10 scroll-mt-24 font-sans text-[32px] leading-[1.15] font-medium tracking-normal text-foreground",
+          className,
+        )}
+        {...props}
+      >
         <HeadingAnchor id={headingId}>{children}</HeadingAnchor>
       </h1>
     );
@@ -93,7 +96,14 @@ const mdxComponents = {
     const headingId = getHeadingId(children, id);
 
     return (
-      <h2 id={headingId} className={cn("medusa-doc-h2", className)} {...props}>
+      <h2
+        id={headingId}
+        className={cn(
+          "mt-11 scroll-mt-24 font-sans text-2xl leading-[1.2] font-medium tracking-normal text-foreground",
+          className,
+        )}
+        {...props}
+      >
         <HeadingAnchor id={headingId}>{children}</HeadingAnchor>
       </h2>
     );
@@ -102,31 +112,68 @@ const mdxComponents = {
     const headingId = getHeadingId(children, id);
 
     return (
-      <h3 id={headingId} className={cn("medusa-doc-h3", className)} {...props}>
+      <h3
+        id={headingId}
+        className={cn(
+          "mt-7 scroll-mt-24 font-sans text-[17px] leading-[1.3] font-medium tracking-normal text-foreground",
+          className,
+        )}
+        {...props}
+      >
         <HeadingAnchor id={headingId}>{children}</HeadingAnchor>
       </h3>
     );
   },
   a: ({ children, className, ...props }: React.ComponentProps<"a">) => (
-    <a className={cn("medusa-doc-link", className)} {...props}>
+    <a
+      className={cn(
+        "font-medium text-foreground underline underline-offset-4",
+        className,
+      )}
+      {...props}
+    >
       {children}
     </a>
   ),
   p: ({ className, ...props }: React.ComponentProps<"p">) => (
-    <p className={cn("medusa-doc-p", className)} {...props} />
+    <p
+      className={cn(
+        "mt-3 text-[15px] leading-[1.55] text-secondary-foreground",
+        className,
+      )}
+      {...props}
+    />
   ),
   ul: ({ className, ...props }: React.ComponentProps<"ul">) => (
-    <ul className={cn("medusa-doc-list", className)} {...props} />
+    <ul
+      className={cn(
+        "mt-3 ms-[22px] grid list-disc gap-2 text-[15px] leading-[1.55] text-secondary-foreground",
+        className,
+      )}
+      {...props}
+    />
   ),
   ol: ({ className, ...props }: React.ComponentProps<"ol">) => (
-    <ol className={cn("medusa-doc-list medusa-doc-list-ordered", className)} {...props} />
+    <ol
+      className={cn(
+        "mt-3 ms-[22px] grid list-decimal gap-2 text-[15px] leading-[1.55] text-secondary-foreground",
+        className,
+      )}
+      {...props}
+    />
   ),
   li: ({ className, ...props }: React.ComponentProps<"li">) => (
-    <li className={cn("medusa-doc-list-item", className)} {...props} />
+    <li className={className} {...props} />
   ),
   table: ({ className, ...props }: React.ComponentProps<"table">) => (
-    <div className="medusa-doc-table-wrap">
-      <table className={cn("medusa-doc-table", className)} {...props} />
+    <div className="mt-3.5 w-full max-w-full overflow-x-auto overflow-y-hidden rounded-lg border border-border">
+      <table
+        className={cn(
+          "w-full min-w-[max(680px,100%)] border-collapse [&_code]:whitespace-nowrap [&_tr+tr]:border-t [&_tr+tr]:border-border",
+          className,
+        )}
+        {...props}
+      />
     </div>
   ),
   figure: ({ children, className, ...props }: React.ComponentProps<"figure">) => {
@@ -146,10 +193,22 @@ const mdxComponents = {
     );
   },
   th: ({ className, ...props }: React.ComponentProps<"th">) => (
-    <th className={cn("medusa-doc-th", className)} {...props} />
+    <th
+      className={cn(
+        "bg-muted px-3 py-2.5 text-start align-top text-[13px] leading-[1.6] font-medium text-foreground",
+        className,
+      )}
+      {...props}
+    />
   ),
   td: ({ className, ...props }: React.ComponentProps<"td">) => (
-    <td className={cn("medusa-doc-td", className)} {...props} />
+    <td
+      className={cn(
+        "px-3 py-2.5 text-start align-top text-[13px] leading-[1.6] text-secondary-foreground",
+        className,
+      )}
+      {...props}
+    />
   ),
   pre: ({ children, className, ...props }: React.ComponentProps<"pre">) => {
     const code = getNodeText(children).trimEnd();
@@ -191,8 +250,6 @@ const mdxComponents = {
       />
     );
   },
-  ComponentApi,
-  ComponentExamples,
   ComponentPreview,
 };
 

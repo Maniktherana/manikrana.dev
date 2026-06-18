@@ -5,7 +5,7 @@ component: true
 base: base
 ---
 
-<ComponentPreview name="alert" />
+<ComponentPreview name="alert-demo" />
 
 ## Installation
 
@@ -16,17 +16,68 @@ bunx shadcn@latest add alert
 ## Usage
 
 ```tsx
-import { Alert } from "@/components/ui/alert";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert";
+```
 
-export function AlertDemo() {
-  return <Alert>Alert</Alert>;
-}
+```tsx
+<Alert status="information">
+  <AlertTitle>Heads up</AlertTitle>
+  <AlertDescription>New inventory data is available.</AlertDescription>
+</Alert>
 ```
 
 ## Examples
 
-<ComponentExamples name="alert" />
+### Status
+
+Use the `status` prop to set the indicator and surface color.
+
+<ComponentPreview name="alert-status" />
+
+### Action
+
+Use `AlertAction` for compact follow-up actions.
+
+<ComponentPreview name="alert-action" />
+
+### Icon
+
+Place an icon as the first child when the alert needs stronger hierarchy.
+
+<ComponentPreview name="alert-icon" />
 
 ## API Reference
 
-<ComponentApi name="alert" />
+### Alert
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `status` | `"neutral" \| "information" \| "success" \| "warning" \| "error"` | `"neutral"` |
+| `variant` | `"default" \| "destructive"` | - |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |
+
+### AlertTitle
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |
+
+### AlertDescription
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |
+
+### AlertAction
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |

@@ -1,11 +1,11 @@
 ---
 title: Label
-description: Field label text aligned to Medusa compact plus.
+description: Field label text aligned to compact plus.
 component: true
 base: base
 ---
 
-<ComponentPreview name="label" />
+<ComponentPreview name="label-demo" />
 
 ## Installation
 
@@ -17,16 +17,38 @@ bunx shadcn@latest add label
 
 ```tsx
 import { Label } from "@/components/ui/label";
+```
 
-export function LabelDemo() {
-  return <Label>Label</Label>;
-}
+```tsx
+<Label htmlFor="email">Customer email</Label>
 ```
 
 ## Examples
 
-<ComponentExamples name="label" />
+### Input
+
+Pair `Label` with a text input by matching `htmlFor` to the control `id`.
+
+<ComponentPreview name="label-input" />
+
+### Checkbox
+
+Use labels with checkbox and radio controls so the text toggles the control.
+
+<ComponentPreview name="label-checkbox" />
+
+### Disabled
+
+Wrap disabled fields in a `data-disabled` group to dim the label and control.
+
+<ComponentPreview name="label-disabled" />
 
 ## API Reference
 
-<ComponentApi name="label" />
+### Label
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `htmlFor` | `string` | - |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |

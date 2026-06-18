@@ -9,7 +9,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 type ThemePreference = "light" | "dark" | "system";
 type ResolvedTheme = "light" | "dark";
 
-const themeStorageKey = "medusa-ui-theme";
+const themeStorageKey = "design-ui-theme";
 
 function getStoredTheme(): ThemePreference {
   const storedTheme = window.localStorage.getItem(themeStorageKey);
@@ -34,9 +34,21 @@ function applyTheme(theme: ResolvedTheme) {
   document.documentElement.style.colorScheme = theme;
 }
 
+function getInitialThemePreference(): ThemePreference {
+  if (typeof window === "undefined") return "system";
+
+  return getStoredTheme();
+}
+
+function getInitialResolvedTheme(): ResolvedTheme {
+  if (typeof document === "undefined") return "light";
+
+  return document.documentElement.classList.contains("dark") ? "dark" : "light";
+}
+
 function ThemeToggle() {
-  const [themePreference, setThemePreference] = useState<ThemePreference>("system");
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>("light");
+  const [themePreference, setThemePreference] = useState<ThemePreference>(getInitialThemePreference);
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(getInitialResolvedTheme);
 
   useEffect(() => {
     const systemQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -63,7 +75,6 @@ function ThemeToggle() {
   const nextTheme = resolvedTheme === "dark" ? "light" : "dark";
   const label = resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode";
   const tooltipLabel = themePreference === "system" ? `${label} (system default)` : label;
-  const ThemeIcon = resolvedTheme === "dark" ? SunIcon : MoonIcon;
 
   return (
     <Tooltip>
@@ -87,7 +98,10 @@ function ThemeToggle() {
           />
         }
       >
-        <ThemeIcon />
+        <span aria-hidden="true" className="relative size-[15px]">
+          <MoonIcon className="absolute inset-0 size-[15px] dark:hidden" />
+          <SunIcon className="absolute inset-0 hidden size-[15px] dark:block" />
+        </span>
       </TooltipTrigger>
       <TooltipContent>{tooltipLabel}</TooltipContent>
     </Tooltip>

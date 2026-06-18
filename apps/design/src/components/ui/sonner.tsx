@@ -30,13 +30,19 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }
       toastOptions={{
         classNames: {
-          toast: "medusa-toast",
-          title: "medusa-toast-title",
-          description: "medusa-toast-description",
-          actionButton: "medusa-toast-action",
-          cancelButton: "medusa-toast-action",
-          closeButton: "medusa-toast-close",
-          icon: "medusa-toast-icon",
+          toast:
+            "!w-[360px] !min-h-0 !items-start !gap-2 !rounded-lg !border-0 !bg-[var(--component)] !p-3 !text-foreground !shadow-[var(--shadow-flyout)]",
+          title: "!font-sans !text-[13px] !leading-[1.6] !font-medium !text-foreground",
+          description:
+            "!font-sans !text-[13px] !leading-[1.6] !font-normal !text-secondary-foreground",
+          actionButton:
+            "!m-0 !mr-3 !h-auto !rounded !border-0 !bg-transparent !p-0 !font-sans !text-[13px] !leading-[1.6] !font-medium !text-foreground hover:!underline",
+          cancelButton:
+            "!m-0 !mr-3 !h-auto !rounded !border-0 !bg-transparent !p-0 !font-sans !text-[13px] !leading-[1.6] !font-medium !text-foreground hover:!underline",
+          closeButton:
+            "!top-2 !right-2 !size-5 !border-0 !bg-transparent !text-muted-foreground",
+          icon:
+            "!m-0 flex !size-5 items-center justify-center !text-muted-foreground [&_svg]:!size-[15px]",
         },
       }}
       {...props}

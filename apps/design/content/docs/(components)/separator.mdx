@@ -1,11 +1,11 @@
 ---
 title: Separator
-description: Line and dotted separators matching the Figma divider page.
+description: Visual divider for grouping related controls and content.
 component: true
 base: base
 ---
 
-<ComponentPreview name="separator" />
+<ComponentPreview name="separator-demo" />
 
 ## Installation
 
@@ -17,16 +17,31 @@ bunx shadcn@latest add separator
 
 ```tsx
 import { Separator } from "@/components/ui/separator";
+```
 
-export function SeparatorDemo() {
-  return <Separator>Separator</Separator>;
-}
+```tsx
+<Separator />
 ```
 
 ## Examples
 
-<ComponentExamples name="separator" />
+### Vertical
+
+Set `orientation="vertical"` when the divider sits between inline items.
+
+<ComponentPreview name="separator-vertical" />
+
+### With Content
+
+Compose two separators with text when the divider needs a label.
+
+<ComponentPreview name="separator-content" />
 
 ## API Reference
 
-<ComponentApi name="separator" />
+### Separator
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` |
+| `className` | `string` | - |

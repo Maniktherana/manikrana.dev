@@ -1,11 +1,11 @@
 ---
 title: Hover Card
-description: Preview card on hover with the same compact surface model.
+description: Preview card on hover with the compact surface model.
 component: true
 base: base
 ---
 
-<ComponentPreview name="hovercard" />
+<ComponentPreview name="hovercard-demo" />
 
 ## Installation
 
@@ -16,17 +16,59 @@ bunx shadcn@latest add hovercard
 ## Usage
 
 ```tsx
-import { HoverCard } from "@/components/ui/hover-card";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+```
 
-export function HoverCardDemo() {
-  return <HoverCard>Hover Card</HoverCard>;
-}
+```tsx
+<HoverCard>
+  <HoverCardTrigger render={<button type="button" />}>
+    Open preview
+  </HoverCardTrigger>
+  <HoverCardContent>Preview content</HoverCardContent>
+</HoverCard>
 ```
 
 ## Examples
 
-<ComponentExamples name="hovercard" />
+### Align
+
+Use `align` to pin the popup to the start, center, or end of the trigger.
+
+<ComponentPreview name="hovercard-align" />
+
+### Composition
+
+Use normal primitives inside `HoverCardContent` when the preview needs richer content.
+
+<ComponentPreview name="hovercard-composition" />
 
 ## API Reference
 
-<ComponentApi name="hovercard" />
+### HoverCard
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `open` | `boolean` | - |
+| `defaultOpen` | `boolean` | - |
+| `onOpenChange` | `(open: boolean) => void` | - |
+
+### HoverCardTrigger
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `render` | `ReactElement \| (props, state) => ReactElement` | - |
+| `className` | `string` | - |
+
+### HoverCardContent
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `side` | `"top" \| "right" \| "bottom" \| "left" \| "inline-start" \| "inline-end"` | `"bottom"` |
+| `sideOffset` | `number` | `4` |
+| `align` | `"start" \| "center" \| "end"` | `"center"` |
+| `alignOffset` | `number` | `4` |
+| `className` | `string` | - |

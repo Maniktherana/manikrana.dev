@@ -10,7 +10,7 @@ import appCss from "../styles.css?url";
 const themeInitScript = `
 (() => {
   try {
-    const stored = window.localStorage.getItem("medusa-ui-theme");
+    const stored = window.localStorage.getItem("design-ui-theme");
     const preference = stored === "light" || stored === "dark" ? stored : "system";
     const resolved =
       preference === "system"
@@ -36,11 +36,11 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "Medusa UI for shadcn Base",
+        title: "Design UI for shadcn Base",
       },
       {
         name: "description",
-        content: "A Medusa UI styled shadcn Base component lab built in TanStack Start.",
+        content: "A shadcn Base component lab built in TanStack Start.",
       },
     ],
     links: [

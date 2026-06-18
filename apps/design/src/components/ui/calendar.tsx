@@ -1,18 +1,36 @@
 "use client";
 
 import * as React from "react";
-import { DayPicker, getDefaultClassNames, type DayButton, type Locale } from "react-day-picker";
+import {
+  DayPicker,
+  getDefaultClassNames,
+  type DayButton,
+  type DropdownProps,
+  type Locale,
+} from "react-day-picker";
+import {
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function Calendar({
   className,
   classNames,
   showOutsideDays = true,
   captionLayout = "label",
-  buttonVariant = "ghost",
+  buttonVariant = "default",
   locale,
   formatters,
   components,
@@ -27,14 +45,13 @@ function Calendar({
       showOutsideDays={showOutsideDays}
       className={cn(
         "group/calendar w-[296px] bg-background p-3 [--cell-radius:6px] [--cell-size:32px] in-data-[slot=card-content]:bg-transparent in-data-[slot=popover-content]:bg-transparent",
-        String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
-        String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         className,
       )}
       captionLayout={captionLayout}
       locale={locale}
       formatters={{
-        formatMonthDropdown: (date) => date.toLocaleString(locale?.code, { month: "short" }),
+        formatMonthDropdown: (date) =>
+          date.toLocaleString(locale?.code, { month: "short" }),
         ...formatters,
       }}
       classNames={{
@@ -42,17 +59,17 @@ function Calendar({
         months: cn("relative flex flex-col gap-2 md:flex-row", defaultClassNames.months),
         month: cn("flex w-full flex-col gap-2", defaultClassNames.month),
         nav: cn(
-          "absolute inset-x-3 top-3 z-10 flex h-8 items-center justify-between gap-1 rounded-[6px] bg-[var(--component)] shadow-[var(--shadow-control)]",
+          "pointer-events-none absolute inset-x-3 top-2 z-10 flex h-8 items-center justify-between gap-1",
           defaultClassNames.nav,
         ),
         button_previous: cn(
-          buttonVariants({ variant: buttonVariant }),
-          "ml-0.5 size-7 p-0 shadow-none! select-none aria-disabled:opacity-50",
+          buttonVariants({ variant: buttonVariant, size: "icon" }),
+          "pointer-events-auto select-none aria-disabled:opacity-50",
           defaultClassNames.button_previous,
         ),
         button_next: cn(
-          buttonVariants({ variant: buttonVariant }),
-          "mr-0.5 size-7 p-0 shadow-none! select-none aria-disabled:opacity-50",
+          buttonVariants({ variant: buttonVariant, size: "icon" }),
+          "pointer-events-auto select-none aria-disabled:opacity-50",
           defaultClassNames.button_next,
         ),
         month_caption: cn(
@@ -73,12 +90,12 @@ function Calendar({
           defaultClassNames.caption_label,
         ),
         month_grid: "w-full border-collapse",
-        weekdays: cn("flex gap-2", defaultClassNames.weekdays),
+        weekdays: cn("flex gap-0", defaultClassNames.weekdays),
         weekday: cn(
           "flex h-8 flex-1 items-center justify-center rounded-(--cell-radius) text-[13px] leading-[1.1] font-medium text-muted-foreground select-none",
           defaultClassNames.weekday,
         ),
-        week: cn("mt-2 flex w-full gap-2", defaultClassNames.week),
+        week: cn("mt-2 flex w-full gap-0", defaultClassNames.week),
         week_number_header: cn("w-(--cell-size) select-none", defaultClassNames.week_number_header),
         week_number: cn(
           "text-[0.8rem] text-muted-foreground select-none",
@@ -116,6 +133,7 @@ function Calendar({
         Root: ({ className, rootRef, ...props }) => {
           return <div data-slot="calendar" ref={rootRef} className={cn(className)} {...props} />;
         },
+        Dropdown: CalendarDropdown,
         Chevron: ({ className, orientation, ...props }) => {
           if (orientation === "left") {
             return <ChevronLeftIcon className={cn("size-4", className)} {...props} />;
@@ -144,11 +162,54 @@ function Calendar({
   );
 }
 
+function CalendarDropdown({
+  value,
+  onChange,
+  options,
+  disabled,
+  "aria-label": ariaLabel,
+}: DropdownProps) {
+  const selectedValue = typeof value === "number" ? value : Number(value);
+
+  return (
+    <Select
+      value={selectedValue}
+      disabled={disabled}
+      onValueChange={(nextValue) => {
+        onChange?.({
+          target: { value: String(nextValue) },
+        } as React.ChangeEvent<HTMLSelectElement>);
+      }}
+    >
+      <SelectTrigger
+        size="sm"
+        aria-label={ariaLabel}
+        className="h-7 min-h-7 w-auto min-w-20 px-0 shadow-none hover:bg-accent focus-visible:shadow-[var(--shadow-control-focus)] data-[size=sm]:*:data-[slot=select-value]:px-2"
+      >
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent align="center" sideOffset={6}>
+        <SelectGroup>
+          {options?.map((option) => (
+            <SelectItem
+              key={option.value}
+              value={option.value}
+              disabled={option.disabled}
+            >
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+}
+
 function CalendarDayButton({
   className,
   day,
   modifiers,
-  locale: _locale,
+  locale,
   ...props
 }: React.ComponentProps<typeof DayButton> & { locale?: Partial<Locale> }) {
   const defaultClassNames = getDefaultClassNames();
@@ -158,17 +219,11 @@ function CalendarDayButton({
     if (modifiers.focused) ref.current?.focus();
   }, [modifiers.focused]);
 
-  const dataDay = [
-    day.date.getFullYear(),
-    String(day.date.getMonth() + 1).padStart(2, "0"),
-    String(day.date.getDate()).padStart(2, "0"),
-  ].join("-");
-
   return (
     <Button
       variant="ghost"
       size="icon"
-      data-day={dataDay}
+      data-day={day.date.toLocaleDateString(locale?.code)}
       data-selected-single={
         modifiers.selected &&
         !modifiers.range_start &&

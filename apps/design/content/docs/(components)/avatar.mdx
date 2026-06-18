@@ -5,7 +5,7 @@ component: true
 base: base
 ---
 
-<ComponentPreview name="avatar" />
+<ComponentPreview name="avatar-demo" />
 
 ## Installation
 
@@ -16,17 +16,94 @@ bunx shadcn@latest add avatar
 ## Usage
 
 ```tsx
-import { Avatar } from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
+```
 
-export function AvatarDemo() {
-  return <Avatar>Avatar</Avatar>;
-}
+```tsx
+<Avatar>
+  <AvatarImage src="/avatar.png" alt="Manik Rana" />
+  <AvatarFallback>MR</AvatarFallback>
+</Avatar>
 ```
 
 ## Examples
 
-<ComponentExamples name="avatar" />
+### Image
+
+Use `AvatarImage` with `AvatarFallback` so the identity still renders when the
+image is missing.
+
+<ComponentPreview name="avatar-image" />
+
+### Size
+
+Use the `size` prop for the supported avatar sizes.
+
+<ComponentPreview name="avatar-size" />
+
+### Radius
+
+Use `radius` to switch between the rounded and full treatments.
+
+<ComponentPreview name="avatar-radius" />
+
+### Badge
+
+Compose `AvatarBadge` inside the root for online or status indicators.
+
+<ComponentPreview name="avatar-badge" />
+
+### Group
+
+Wrap avatars in `AvatarGroup` and finish with `AvatarGroupCount` for overflow.
+
+<ComponentPreview name="avatar-group" />
 
 ## API Reference
 
-<ComponentApi name="avatar" />
+### Avatar
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `size` | `"3xs" \| "2xs" \| "xs" \| "sm" \| "default" \| "lg" \| "xl"` | `"default"` |
+| `radius` | `"rounded" \| "full"` | `"full"` |
+| `className` | `string` | - |
+
+### AvatarImage
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `src` | `string` | - |
+| `alt` | `string` | - |
+| `className` | `string` | - |
+
+### AvatarFallback
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |
+
+### AvatarBadge
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `className` | `string` | - |
+
+### AvatarGroup
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |
+
+### AvatarGroupCount
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |

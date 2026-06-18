@@ -1,11 +1,11 @@
 ---
 title: Tooltip
-description: Small contextual overlay for compact icon controls.
+description: Small contextual overlay for compact controls.
 component: true
 base: base
 ---
 
-<ComponentPreview name="tooltip" />
+<ComponentPreview name="tooltip-demo" />
 
 ## Installation
 
@@ -16,17 +16,57 @@ bunx shadcn@latest add tooltip
 ## Usage
 
 ```tsx
-import { Tooltip } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+```
 
-export function TooltipDemo() {
-  return <Tooltip>Tooltip</Tooltip>;
-}
+```tsx
+<Tooltip>
+  <TooltipTrigger render={<button type="button" />}>Hover me</TooltipTrigger>
+  <TooltipContent>Compact contextual help</TooltipContent>
+</Tooltip>
 ```
 
 ## Examples
 
-<ComponentExamples name="tooltip" />
+### Side
+
+Use `side` on `TooltipContent` to place the popup around the trigger.
+
+<ComponentPreview name="tooltip-side" />
+
+### Shortcut
+
+Tooltips can compose with `Kbd` when the hint includes a keyboard command.
+
+<ComponentPreview name="tooltip-shortcut" />
 
 ## API Reference
 
-<ComponentApi name="tooltip" />
+### Tooltip
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `open` | `boolean` | - |
+| `defaultOpen` | `boolean` | - |
+| `onOpenChange` | `(open: boolean) => void` | - |
+
+### TooltipTrigger
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `render` | `ReactElement \| (props, state) => ReactElement` | - |
+| `className` | `string` | - |
+
+### TooltipContent
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `side` | `"top" \| "right" \| "bottom" \| "left" \| "inline-start" \| "inline-end"` | `"top"` |
+| `sideOffset` | `number` | `4` |
+| `align` | `"start" \| "center" \| "end"` | `"center"` |
+| `alignOffset` | `number` | `0` |
+| `className` | `string` | - |

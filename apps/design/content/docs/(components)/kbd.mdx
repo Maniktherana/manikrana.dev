@@ -5,7 +5,7 @@ component: true
 base: base
 ---
 
-<ComponentPreview name="kbd" />
+<ComponentPreview name="kbd-demo" />
 
 ## Installation
 
@@ -17,21 +17,48 @@ bunx shadcn@latest add kbd
 
 ```tsx
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
+```
 
-export function KbdDemo() {
-  return (
-    <KbdGroup>
-      <Kbd>Cmd</Kbd>
-      <Kbd>K</Kbd>
-    </KbdGroup>
-  );
-}
+```tsx
+<KbdGroup>
+  <Kbd>Cmd</Kbd>
+  <Kbd>K</Kbd>
+</KbdGroup>
 ```
 
 ## Examples
 
-<ComponentExamples name="kbd" />
+### Background
+
+Use `background` when the key is sitting on a field, component surface, or contrast surface.
+
+<ComponentPreview name="kbd-background" />
+
+### Group
+
+Use `KbdGroup` to keep shortcuts evenly spaced.
+
+<ComponentPreview name="kbd-group" />
+
+### Icon
+
+Icons inherit the compact key sizing.
+
+<ComponentPreview name="kbd-icon" />
 
 ## API Reference
 
-<ComponentApi name="kbd" />
+### Kbd
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `background` | `"field" \| "component" \| "contrast"` | `"field"` |
+| `className` | `string` | - |
+| `children` | `ReactNode` | - |
+
+### KbdGroup
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `className` | `string` | - |
+| `children` | `ReactNode` | - |

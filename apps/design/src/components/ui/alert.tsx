@@ -136,7 +136,10 @@ function AlertAction({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="alert-action"
-      className={cn("col-span-full flex items-start gap-3", className)}
+      className={cn(
+        "col-span-full flex items-start gap-3 [&_[data-slot=button][data-variant=link]]:text-xs [&_[data-slot=button][data-variant=link]]:leading-[1.6]",
+        className,
+      )}
       {...props}
     />
   );

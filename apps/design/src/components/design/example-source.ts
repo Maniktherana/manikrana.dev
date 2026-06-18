@@ -11,32 +11,66 @@
 // map. If a demo function ever contains an unbalanced `{`/`}` inside a string
 // literal it would mis-slice; none of the current demos do.
 
+import accordionSource from "@/components/design/examples/accordion-examples.tsx?raw";
 import aiAssistantSource from "@/components/design/examples/ai-assistant-examples.tsx?raw";
+import alertSource from "@/components/design/examples/alert-examples.tsx?raw";
+import avatarSource from "@/components/design/examples/avatar-examples.tsx?raw";
 import badgeSource from "@/components/design/examples/badge-examples.tsx?raw";
+import breadcrumbSource from "@/components/design/examples/breadcrumb-examples.tsx?raw";
 import buttonSource from "@/components/design/examples/button-examples.tsx?raw";
 import buttonGroupSource from "@/components/design/examples/button-group-examples.tsx?raw";
+import cardSource from "@/components/design/examples/card-examples.tsx?raw";
+import calendarSource from "@/components/design/examples/calendar-examples.tsx?raw";
+import codeSource from "@/components/design/examples/code-examples.tsx?raw";
 import codeBlockSource from "@/components/design/examples/code-block-examples.tsx?raw";
+import commandbarSource from "@/components/design/examples/commandbar-examples.tsx?raw";
 import comboboxSource from "@/components/design/examples/combobox-examples.tsx?raw";
+import hoverCardSource from "@/components/design/examples/hover-card-examples.tsx?raw";
 import inputSource from "@/components/design/examples/input-examples.tsx?raw";
+import labelSource from "@/components/design/examples/label-examples.tsx?raw";
+import menuSource from "@/components/design/examples/menu-examples.tsx?raw";
+import kbdSource from "@/components/design/examples/kbd-examples.tsx?raw";
 import modalSource from "@/components/design/examples/modal-examples.tsx?raw";
 import popoverSource from "@/components/design/examples/popover-examples.tsx?raw";
 import radioGroupSource from "@/components/design/examples/radio-group-examples.tsx?raw";
 import selectSource from "@/components/design/examples/select-examples.tsx?raw";
+import searchSource from "@/components/design/examples/search-examples.tsx?raw";
+import separatorSource from "@/components/design/examples/separator-examples.tsx?raw";
 import switchSource from "@/components/design/examples/switch-examples.tsx?raw";
+import tabsSource from "@/components/design/examples/tabs-examples.tsx?raw";
+import tooltipSource from "@/components/design/examples/tooltip-examples.tsx?raw";
+import toastSource from "@/components/design/examples/toast-examples.tsx?raw";
 
 const rawSources = [
+  accordionSource,
   aiAssistantSource,
+  alertSource,
+  avatarSource,
   badgeSource,
+  breadcrumbSource,
   buttonSource,
   buttonGroupSource,
+  cardSource,
+  calendarSource,
+  codeSource,
   codeBlockSource,
+  commandbarSource,
   comboboxSource,
+  hoverCardSource,
   inputSource,
+  labelSource,
+  menuSource,
+  kbdSource,
   modalSource,
   popoverSource,
   radioGroupSource,
   selectSource,
+  searchSource,
+  separatorSource,
   switchSource,
+  tabsSource,
+  tooltipSource,
+  toastSource,
 ];
 
 // Returns the source of a top-level `function name(...) { ... }` declaration,

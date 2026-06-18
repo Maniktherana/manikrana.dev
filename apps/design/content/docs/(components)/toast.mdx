@@ -1,11 +1,11 @@
 ---
 title: Toast
-description: Sonner toast surface aligned to Medusa tokens.
+description: Sonner toast surface aligned to local tokens.
 component: true
 base: base
 ---
 
-<ComponentPreview name="toast" />
+<ComponentPreview name="toast-demo" />
 
 ## Installation
 
@@ -15,18 +15,55 @@ bunx shadcn@latest add sonner
 
 ## Usage
 
-```tsx
-import { Toast } from "@/components/ui/sonner";
+Add the toaster once near the app root.
 
-export function ToastDemo() {
-  return <Toast>Toast</Toast>;
-}
+```tsx
+import { Toaster } from "@/components/ui/sonner";
+```
+
+```tsx
+<Toaster />
+```
+
+Trigger toasts with `toast` from `sonner`.
+
+```tsx
+import { toast } from "sonner";
+
+toast("Component saved", {
+  description: "The preview is ready.",
+});
 ```
 
 ## Examples
 
-<ComponentExamples name="toast" />
+### Action
+
+Use an action when the toast exposes a quick recovery path.
+
+<ComponentPreview name="toast-action" />
+
+### Status
+
+Use Sonner status helpers for success, warning, and error states.
+
+<ComponentPreview name="toast-status" />
 
 ## API Reference
 
-<ComponentApi name="toast" />
+### Toaster
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `position` | `ToasterProps["position"]` | - |
+| `theme` | `"light" \| "dark" \| "system"` | `"system"` |
+| `toastOptions` | `ToasterProps["toastOptions"]` | Local defaults |
+
+### toast
+
+| API | Type |
+| --- | --- |
+| `toast(message, options)` | `(message: string, options?: ExternalToast) => string \| number` |
+| `toast.success(message, options)` | `(message: string, options?: ExternalToast) => string \| number` |
+| `toast.warning(message, options)` | `(message: string, options?: ExternalToast) => string \| number` |
+| `toast.error(message, options)` | `(message: string, options?: ExternalToast) => string \| number` |

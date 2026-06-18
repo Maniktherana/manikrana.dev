@@ -25,7 +25,7 @@ function Code({ background = "base", className, ...props }: CodeProps) {
       data-slot="code"
       data-background={background}
       className={cn(
-        "inline-flex h-[18px] w-fit max-w-full items-center justify-center self-start overflow-hidden rounded border-[0.5px] border-[var(--inline-code-border)] bg-[var(--inline-code-bg)] px-[5.5px] py-px font-mono text-xs leading-[1.1] font-normal text-[var(--inline-code-text)] transition-colors data-[background=muted]:border-[var(--inline-code-muted-border)] data-[background=muted]:bg-[var(--inline-code-muted-bg)]",
+        "inline-flex h-[18px] w-fit max-w-full items-center justify-center self-start overflow-hidden rounded border-[0.5px] border-[var(--inline-code-border)] bg-[var(--inline-code-bg)] px-[5.5px] py-px font-mono text-xs leading-[1.1] font-normal text-[var(--inline-code-text)] transition-colors hover:bg-[var(--inline-code-bg-hover)] data-[background=muted]:border-[var(--inline-code-muted-border)] data-[background=muted]:bg-[var(--inline-code-muted-bg)] data-[background=muted]:hover:bg-[var(--inline-code-muted-bg-hover)]",
         className,
       )}
       {...props}
@@ -138,7 +138,8 @@ function CodeBlock({
           // standalone chrome: rounding + border + elevation. Light uses a real
           // border; dark uses the inset double-border look.
           variant === "surface" &&
-            "rounded-[12px] border border-[var(--border)] shadow-[var(--shadow-card)] dark:border-0 dark:shadow-[inset_0_0_0_1px_#18181b,inset_0_0_0_1.5px_rgb(255_255_255/20%)]",
+            "rounded-[12px] border border-[var(--border)] shadow-[var(--shadow-card)] dark:border-transparent dark:shadow-[inset_0_0_0_1px_#18181b,inset_0_0_0_1.5px_rgb(255_255_255/20%)]",
+          variant === "bare" && "border-t border-[var(--border)]",
           className,
         )}
         {...props}

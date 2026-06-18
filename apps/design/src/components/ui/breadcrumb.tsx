@@ -11,12 +11,19 @@ function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
   );
 }
 
-function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
+function BreadcrumbList({
+  className,
+  theme,
+  ...props
+}: React.ComponentProps<"ol"> & {
+  theme?: "default" | "subtle";
+}) {
   return (
     <ol
       data-slot="breadcrumb-list"
+      data-theme={theme}
       className={cn(
-        "flex flex-wrap items-center gap-1.5 text-xs leading-[1.1] font-medium wrap-break-word text-muted-foreground",
+        "group/breadcrumb-list flex flex-wrap items-center gap-1.5 text-xs leading-[1.1] font-medium wrap-break-word text-muted-foreground data-[theme=subtle]:text-secondary-foreground",
         className,
       )}
       {...props}
@@ -41,6 +48,7 @@ function BreadcrumbLink({ className, render, ...props }: useRender.ComponentProp
       {
         className: cn(
           "inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground",
+          "group-data-[theme=subtle]/breadcrumb-list:text-secondary-foreground",
           className,
         ),
       },
@@ -59,7 +67,10 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
       data-slot="breadcrumb-page"
       aria-disabled="true"
       aria-current="page"
-      className={cn("inline-flex items-center gap-1 font-medium text-foreground", className)}
+      className={cn(
+        "inline-flex items-center gap-1 font-medium text-foreground group-data-[theme=subtle]/breadcrumb-list:text-secondary-foreground",
+        className,
+      )}
       {...props}
     />
   );
@@ -71,7 +82,10 @@ function BreadcrumbSeparator({ children, className, ...props }: React.ComponentP
       data-slot="breadcrumb-separator"
       role="presentation"
       aria-hidden="true"
-      className={cn("flex items-center text-muted-foreground [&>svg]:size-[15px]", className)}
+      className={cn(
+        "flex items-center text-muted-foreground group-data-[theme=subtle]/breadcrumb-list:text-secondary-foreground [&>svg]:size-[15px]",
+        className,
+      )}
       {...props}
     >
       {children ?? <ChevronRightIcon />}
@@ -86,7 +100,7 @@ function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"span"
       role="presentation"
       aria-hidden="true"
       className={cn(
-        "flex h-[13px] items-center justify-center text-muted-foreground [&>svg]:size-[15px]",
+        "flex h-[13px] items-center justify-center text-muted-foreground group-data-[theme=subtle]/breadcrumb-list:text-secondary-foreground [&>svg]:size-[15px]",
         className,
       )}
       {...props}

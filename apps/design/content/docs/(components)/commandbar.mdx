@@ -1,11 +1,11 @@
 ---
 title: Commandbar
-description: Command palette primitives styled as a Medusa commandbar.
+description: Floating toolbar for bulk actions and selected states.
 component: true
 base: base
 ---
 
-<ComponentPreview name="commandbar" />
+<ComponentPreview name="commandbar-demo" />
 
 ## Installation
 
@@ -16,17 +16,45 @@ bunx shadcn@latest add command
 ## Usage
 
 ```tsx
-import { Command } from "@/components/ui/command";
+import { CommandBar, CommandBarAction } from "@/components/ui/command";
+```
 
-export function CommandDemo() {
-  return <Command>Commandbar</Command>;
-}
+```tsx
+<CommandBar selectedLabel="3 selected">
+  <CommandBarAction shortcuts={["Cmd", "A"]}>Archive</CommandBarAction>
+  <CommandBarAction shortcuts={["Cmd", "E"]}>Export</CommandBarAction>
+</CommandBar>
 ```
 
 ## Examples
 
-<ComponentExamples name="commandbar" />
+### Edge
+
+Use `edge` on the last action when the action should round into the commandbar edge.
+
+<ComponentPreview name="commandbar-edge" />
+
+### Icons
+
+Actions can compose icons and shortcut keys.
+
+<ComponentPreview name="commandbar-icons" />
 
 ## API Reference
 
-<ComponentApi name="commandbar" />
+### CommandBar
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `selectedLabel` | `string` | `"1 selected"` |
+| `className` | `string` | - |
+| `children` | `ReactNode` | - |
+
+### CommandBarAction
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `shortcuts` | `string[]` | `["⌘", "⌘"]` |
+| `edge` | `boolean` | `false` |
+| `className` | `string` | - |
+| `children` | `ReactNode` | - |

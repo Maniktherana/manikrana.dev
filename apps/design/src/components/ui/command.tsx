@@ -20,7 +20,7 @@ function Command({ className, ...props }: React.ComponentProps<typeof CommandPri
     <CommandPrimitive
       data-slot="command"
       className={cn(
-        "flex size-full flex-col overflow-hidden rounded-xl! bg-popover p-1 text-popover-foreground",
+        "flex size-full flex-col overflow-hidden rounded-lg border border-transparent bg-background p-1 text-popover-foreground shadow-[var(--shadow-card)]",
         className,
       )}
       {...props}
@@ -206,11 +206,16 @@ function CommandBar({
     <div
       data-slot="commandbar"
       role="toolbar"
-      className={cn("medusa-commandbar", className)}
+      className={cn(
+        "inline-flex min-h-9 items-center overflow-hidden rounded-full bg-[#212124] text-[rgb(255_255_255_/_88%)] shadow-[var(--shadow-commandbar)]",
+        className,
+      )}
       {...props}
     >
-      <span className="medusa-commandbar-selected">{selectedLabel}</span>
-      <span aria-hidden="true" className="medusa-commandbar-divider" />
+      <span className="whitespace-nowrap px-2 py-2 pr-2 pl-3 text-[13px] leading-[1.1] font-medium text-[rgb(255_255_255_/_56%)]">
+        {selectedLabel}
+      </span>
+      <span aria-hidden="true" className="h-3 w-px bg-[rgb(255_255_255_/_16%)]" />
       {children}
     </div>
   );
@@ -231,17 +236,25 @@ function CommandBarAction({
       type="button"
       data-slot="commandbar-action"
       data-edge={edge ? "true" : undefined}
-      className={cn("medusa-commandbar-action", className)}
+      className={cn(
+        "inline-flex min-h-9 items-center gap-1.5 border-0 bg-[#212124] px-2 py-2.5 font-sans text-[13px] leading-[1.1] font-medium whitespace-nowrap text-[rgb(255_255_255_/_88%)] outline-none hover:bg-[#27272a] focus-visible:bg-[#27272a] data-[edge=true]:rounded-r-full data-[edge=true]:pr-3 [&_svg]:size-[15px] [&_svg]:shrink-0",
+        className,
+      )}
       {...props}
     >
       <span>{children}</span>
-      <span className="medusa-commandbar-shortcuts">
-        {shortcuts.map((shortcut, index) => (
-          <Kbd key={`${shortcut}-${index}`} className="medusa-commandbar-kbd">
-            {shortcut}
-          </Kbd>
-        ))}
-      </span>
+      {shortcuts.length > 0 ? (
+        <span className="inline-flex gap-[5px]">
+          {shortcuts.map((shortcut, index) => (
+            <Kbd
+              key={`${shortcut}-${index}`}
+              className="h-4 min-w-4 border-[0.5px] border-[rgb(255_255_255_/_16%)] bg-[#27272a] p-0 text-[11px] leading-[1.1] font-medium text-[rgb(255_255_255_/_56%)] shadow-none"
+            >
+              {shortcut}
+            </Kbd>
+          ))}
+        </span>
+      ) : null}
     </button>
   );
 }

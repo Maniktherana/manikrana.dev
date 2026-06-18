@@ -50,10 +50,10 @@ export function ToolbarFooter() {
   );
 }`;
 
-const bashCode = `bun add @medusajs/ui
+const bashCode = `bun add @acme/ui
 bun run build`;
 
-const envCode = `DATABASE_URL="postgres://localhost:5432/medusa"
+const envCode = `DATABASE_URL="postgres://localhost:5432/app"
 JWT_SECRET="supersecret"
 STORE_CORS="http://localhost:8000"`;
 

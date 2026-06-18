@@ -5,7 +5,7 @@ component: true
 base: base
 ---
 
-<ComponentPreview name="breadcrumbs" />
+<ComponentPreview name="breadcrumbs-demo" />
 
 ## Installation
 
@@ -16,17 +16,91 @@ bunx shadcn@latest add breadcrumb
 ## Usage
 
 ```tsx
-import { Breadcrumb } from "@/components/ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+```
 
-export function BreadcrumbDemo() {
-  return <Breadcrumb>Breadcrumbs</Breadcrumb>;
-}
+```tsx
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/docs">Docs</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbPage>Button</BreadcrumbPage>
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
 ```
 
 ## Examples
 
-<ComponentExamples name="breadcrumbs" />
+### Ellipsis
+
+Use `BreadcrumbEllipsis` when the path is too deep for the current surface.
+
+<ComponentPreview name="breadcrumbs-ellipsis" />
+
+### Custom Separator
+
+Pass an icon or text node to `BreadcrumbSeparator` for custom separators.
+
+<ComponentPreview name="breadcrumbs-custom-separator" />
+
+### Subtle
+
+Use `theme="subtle"` on `BreadcrumbList` for low-emphasis page chrome.
+
+<ComponentPreview name="breadcrumbs-subtle" />
 
 ## API Reference
 
-<ComponentApi name="breadcrumbs" />
+### Breadcrumb
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |
+
+### BreadcrumbList
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `theme` | `"default" \| "subtle"` | `"default"` |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |
+
+### BreadcrumbLink
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `href` | `string` | - |
+| `render` | `React.ReactElement` | - |
+| `className` | `string` | - |
+
+### BreadcrumbPage
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |
+
+### BreadcrumbSeparator
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `React.ReactNode` | - |
+| `className` | `string` | - |
+
+### BreadcrumbEllipsis
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `className` | `string` | - |

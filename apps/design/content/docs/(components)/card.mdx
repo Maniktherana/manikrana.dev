@@ -1,0 +1,104 @@
+---
+title: Card
+description: Static modal-like surface for grouped content and actions.
+component: true
+base: base
+---
+
+<ComponentPreview name="card-demo" />
+
+## Installation
+
+```bash
+bunx shadcn@latest add card
+```
+
+## Usage
+
+```tsx
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+```
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>Publish changes</CardTitle>
+    <CardDescription>Review this update before it goes live.</CardDescription>
+  </CardHeader>
+  <CardContent>Content</CardContent>
+  <CardFooter>Actions</CardFooter>
+</Card>
+```
+
+## Examples
+
+### Action
+
+Use `CardAction` when metadata or a small control belongs in the header.
+
+<ComponentPreview name="card-action" />
+
+### Compact
+
+Use `size="sm"` when the card sits inside a denser layout.
+
+<ComponentPreview name="card-compact" />
+
+## API Reference
+
+### Card
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `size` | `"default" \| "sm"` | `"default"` |
+| `className` | `string` | - |
+| `children` | `ReactNode` | - |
+
+### CardHeader
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `className` | `string` | - |
+| `children` | `ReactNode` | - |
+
+### CardTitle
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `className` | `string` | - |
+| `children` | `ReactNode` | - |
+
+### CardDescription
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `className` | `string` | - |
+| `children` | `ReactNode` | - |
+
+### CardContent
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `className` | `string` | - |
+| `children` | `ReactNode` | - |
+
+### CardAction
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `className` | `string` | - |
+| `children` | `ReactNode` | - |
+
+### CardFooter
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `className` | `string` | - |
+| `children` | `ReactNode` | - |

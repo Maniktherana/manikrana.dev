@@ -25,7 +25,7 @@ function ModalDemo() {
         </DialogHeader>
         <DialogBody>
           <p className="text-[13px] leading-[1.6] text-muted-foreground">
-            Please type <span className="font-medium text-foreground">medusa-ui</span> to confirm.
+            Please type <span className="font-medium text-foreground">delete</span> to confirm.
           </p>
           <Input placeholder="Confirmation text" />
         </DialogBody>

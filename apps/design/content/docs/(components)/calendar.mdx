@@ -1,0 +1,137 @@
+---
+title: Calendar
+description: A calendar primitive for selecting dates, ranges, and composing date pickers.
+component: true
+base: base
+---
+
+<ComponentPreview name="calendar-demo" />
+
+## Installation
+
+```bash
+bunx shadcn@latest add calendar
+```
+
+## Usage
+
+```tsx
+import { Calendar } from "@/components/ui/calendar";
+```
+
+```tsx
+const [date, setDate] = React.useState<Date | undefined>(new Date());
+
+return (
+  <Calendar
+    mode="single"
+    selected={date}
+    onSelect={setDate}
+  />
+);
+```
+
+## About
+
+`Calendar` is built on top of `react-day-picker` and keeps the shadcn/Base UI
+composition: a source-owned `Calendar` wrapper, a replaceable `CalendarDayButton`,
+and DayPicker props passed through.
+
+## Date Picker
+
+There is no exported date picker component. Compose date pickers from `Calendar`
+with `Popover`, `Button`, `InputGroup`, or other local primitives.
+
+<ComponentPreview name="calendar-popover" />
+
+## Selected Date With Timezone
+
+Pass the `timeZone` prop to keep selected dates aligned with the user's local
+timezone. Detect it client-side to avoid hydration differences.
+
+<ComponentPreview name="calendar-timezone" />
+
+## Examples
+
+### Single
+
+Use `mode="single"` for one selected date.
+
+<ComponentPreview name="calendar-single" />
+
+### Multiple
+
+Use `mode="multiple"` for several selected dates.
+
+<ComponentPreview name="calendar-multiple" />
+
+### Range
+
+Use `mode="range"` for a start and end date.
+
+<ComponentPreview name="calendar-range" />
+
+### Week Numbers
+
+Use `showWeekNumber` when week rows matter.
+
+<ComponentPreview name="calendar-week-numbers" />
+
+### Booked Dates
+
+Use `disabled`, `modifiers`, and `modifiersClassNames` for unavailable dates.
+
+<ComponentPreview name="calendar-booked" />
+
+### With Time
+
+Compose the calendar with input primitives when the date needs time fields.
+
+<ComponentPreview name="calendar-time" />
+
+### Presets
+
+Control `month` and `onMonthChange` when preset actions should move the visible
+month.
+
+<ComponentPreview name="calendar-presets" />
+
+### Custom Cell Size
+
+Set `--cell-size` and override `CalendarDayButton` when a product view needs
+extra per-day content.
+
+<ComponentPreview name="calendar-custom-days" />
+
+### Input
+
+Wrap the calendar in a popover button inside `InputGroup` for editable date
+fields.
+
+<ComponentPreview name="calendar-input" />
+
+## API Reference
+
+### Calendar
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `mode` | `"single" \| "multiple" \| "range"` | - |
+| `selected` | DayPicker selected value for the active mode | - |
+| `onSelect` | DayPicker select handler for the active mode | - |
+| `captionLayout` | `"label" \| "dropdown" \| "dropdown-months" \| "dropdown-years"` | `"label"` |
+| `showOutsideDays` | `boolean` | `true` |
+| `buttonVariant` | `Button["variant"]` | `"default"` |
+| `timeZone` | `string` | - |
+| `locale` | `Locale` | - |
+| `classNames` | `Partial<ClassNames>` | - |
+| `components` | `Partial<CustomComponents>` | - |
+
+### CalendarDayButton
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `day` | `DayPicker` day object | - |
+| `modifiers` | `DayPicker` modifiers object | - |
+| `locale` | `Partial<Locale>` | - |
+| `className` | `string` | - |

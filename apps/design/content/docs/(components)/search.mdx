@@ -1,32 +1,73 @@
 ---
 title: Search
-description: Search input variants plus the Medusa command-style search modal.
+description: Search input variants composed from InputGroup primitives.
 component: true
-base: base
+base: local
 ---
 
-<ComponentPreview name="search" />
+<ComponentPreview name="search-demo" />
 
 ## Installation
 
-```bash
-# Search is a local composition in src/components/design.
-```
+Search is a local composition built from `InputGroup`, `InputGroupInput`, and
+`InputGroupAddon`.
 
 ## Usage
 
 ```tsx
-import { InputGroup } from "@/components/ui/input-group";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+```
 
-export function InputGroupDemo() {
-  return <InputGroup>Search</InputGroup>;
-}
+```tsx
+<InputGroup variant="component">
+  <InputGroupAddon>
+    <SearchIcon />
+  </InputGroupAddon>
+  <InputGroupInput placeholder="Search products" />
+</InputGroup>
 ```
 
 ## Examples
 
-<ComponentExamples name="search" />
+### Small
+
+Use `size="sm"` for dense toolbars and sidebars.
+
+<ComponentPreview name="search-small" />
+
+### Rounded
+
+Use `radius="rounded"` when the search field sits as a standalone chip.
+
+<ComponentPreview name="search-rounded" />
+
+### State
+
+Use `variant`, `aria-invalid`, and disabled controls for stateful search
+surfaces.
+
+<ComponentPreview name="search-state" />
 
 ## API Reference
 
-<ComponentApi name="search" />
+### Search Composition
+
+| Primitive | Purpose |
+| --- | --- |
+| `InputGroup` | Owns the search surface, size, radius, variant, focus, and invalid state. |
+| `InputGroupAddon` | Holds icons, keyboard hints, or inline actions. |
+| `InputGroupInput` | Provides the actual input field. |
+| `InputGroupButton` | Adds clear, submit, or filter actions inside the group. |
+
+### InputGroup Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `variant` | `"default" \| "component" \| "muted"` | `"default"` |
+| `size` | `"default" \| "sm"` | `"default"` |
+| `radius` | `"squared" \| "rounded"` | `"squared"` |
+| `className` | `string` | - |

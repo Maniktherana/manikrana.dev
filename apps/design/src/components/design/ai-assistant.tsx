@@ -132,7 +132,7 @@ function AIAssistantInput({
   className,
   onChange,
   onSubmit,
-  placeholder = "Ask anything about Medusa...",
+  placeholder = "Ask anything...",
   value,
 }: {
   active?: boolean;
