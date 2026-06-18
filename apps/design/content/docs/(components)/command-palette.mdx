@@ -1,0 +1,53 @@
+---
+title: Command Palette
+description: Site-wide docs search palette with keyboard actions for selected results.
+component: true
+base: local
+---
+
+The command palette is the docs shell search surface. It is a local composition
+around `CommandDialog`, the Fumadocs search index, and a nested Actions menu for
+the selected result.
+
+Use `CommandBar` when you need a floating toolbar for selected items. Use this
+composition when the user needs to search pages and run actions against the
+selected search result.
+
+## Files
+
+| File | Purpose |
+| --- | --- |
+| `src/components/design/docs-search.tsx` | Client composition for the trigger, palette, search rows, and nested Actions menu. |
+| `src/lib/docs-search.ts` | Server search function backed by Fumadocs `createFromSource`. |
+| `src/components/ui/command.tsx` | Reusable command primitives and `CommandDialog`. |
+| `src/components/ui/dialog.tsx` | Dialog primitive with overlay customization. |
+
+## Behavior
+
+- `Cmd-K` opens the command palette.
+- Empty search shows docs pages grouped by `Components` and `Blocks`.
+- Typed search uses the Fumadocs index and keeps page descriptions from the
+  component catalog.
+- Page rows show the page title first, then its catalog description.
+- Heading hits show the heading title with parent component context.
+- Result rows use text labels only; no decorative icons.
+
+## Actions
+
+Press `Cmd-K` again while the palette is open to move focus into Actions for the
+selected result.
+
+| Key | Behavior |
+| --- | --- |
+| `ArrowDown` / `ArrowUp` | Move only through Actions while the Actions menu is open. |
+| `Home` / `End` | Jump to the first or last Action. |
+| `Enter` / `Space` | Run the focused Action. |
+| `Esc` | Close Actions and return focus to the palette input. |
+| `Esc` again | Close the command palette. |
+
+## Implementation Notes
+
+The palette does not use the `CommandBar` selected-state toolbar. The bottom bar
+inside the palette is part of `DocsSearch`, and the nested Actions surface traps
+its own keyboard handling while it is open so the main result list does not keep
+receiving arrow keys.

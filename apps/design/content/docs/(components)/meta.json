@@ -16,7 +16,6 @@
     "combobox",
     "code",
     "code-block",
-    "commandbar",
     "hovercard",
     "input",
     "kbd",
@@ -34,6 +33,9 @@
     "toast",
     "tooltip",
     "---Blocks---",
-    "ai-assistant"
+    "command-palette",
+    "message-composer",
+    "dynamic-island",
+    "family-drawer"
   ]
 }

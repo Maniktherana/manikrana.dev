@@ -13,10 +13,6 @@ import {
   renderAccordionPreview,
 } from "@/components/design/examples/accordion-examples";
 import {
-  aiAssistantPreviewTitles,
-  renderAIAssistantPreview,
-} from "@/components/design/examples/ai-assistant-examples";
-import {
   alertPreviewTitles,
   renderAlertPreview,
 } from "@/components/design/examples/alert-examples";
@@ -69,6 +65,14 @@ import {
   renderComboboxPreview,
 } from "@/components/design/examples/combobox-examples";
 import {
+  dynamicIslandPreviewTitles,
+  renderDynamicIslandPreview,
+} from "@/components/design/examples/dynamic-island-examples";
+import {
+  familyDrawerPreviewTitles,
+  renderFamilyDrawerPreview,
+} from "@/components/design/examples/family-drawer-examples";
+import {
   hoverCardPreviewTitles,
   renderHoverCardPreview,
 } from "@/components/design/examples/hover-card-examples";
@@ -84,6 +88,10 @@ import {
   menuPreviewTitles,
   renderMenuPreview,
 } from "@/components/design/examples/menu-examples";
+import {
+  messageComposerPreviewTitles,
+  renderMessageComposerPreview,
+} from "@/components/design/examples/message-composer-examples";
 import {
   modalPreviewTitles,
   renderModalPreview,
@@ -186,7 +194,6 @@ function ComponentPreview({
   const title =
     component?.title ??
     accordionPreviewTitles[name] ??
-    aiAssistantPreviewTitles[name] ??
     alertPreviewTitles[name] ??
     avatarPreviewTitles[name] ??
     badgePreviewTitles[name] ??
@@ -199,10 +206,13 @@ function ComponentPreview({
     codePreviewTitles[name] ??
     comboboxPreviewTitles[name] ??
     commandbarPreviewTitles[name] ??
+    dynamicIslandPreviewTitles[name] ??
+    familyDrawerPreviewTitles[name] ??
     hoverCardPreviewTitles[name] ??
     inputPreviewTitles[name] ??
     labelPreviewTitles[name] ??
     menuPreviewTitles[name] ??
+    messageComposerPreviewTitles[name] ??
     modalPreviewTitles[name] ??
     popoverPreviewTitles[name] ??
     radioGroupPreviewTitles[name] ??
@@ -221,7 +231,10 @@ function ComponentPreview({
   // height (~12 lines); short snippets show in full with no expand control.
   const collapsible = source !== undefined && source.split("\n").length > 12;
   const badge = (
-    <Badge variant={component?.custom ? "outline" : "secondary"}>
+    <Badge
+      variant={component?.custom ? "outline" : "secondary"}
+      className="h-auto min-h-[18px] w-auto max-w-none overflow-visible px-1.5 py-[3px] leading-none"
+    >
       {component?.custom ? "composition" : "primitive"}
     </Badge>
   );
@@ -230,8 +243,8 @@ function ComponentPreview({
   // the preview (shared border, no gap), collapsed with copy + click-to-expand.
   return (
     <div className="mt-4 mb-9 w-full overflow-hidden rounded-[7px] border border-border">
-      <div className="flex min-h-10 items-center justify-between border-b border-border bg-muted px-3 py-2">
-        <span>{title}</span>
+      <div className="flex min-h-10 items-center justify-between gap-3 border-b border-border bg-muted px-3 py-2">
+        <span className="min-w-0 truncate">{title}</span>
         {badge}
       </div>
       <div
@@ -264,12 +277,6 @@ function renderPreview(name: string) {
 
   if (accordionPreview) {
     return accordionPreview;
-  }
-
-  const aiAssistantPreview = renderAIAssistantPreview(name);
-
-  if (aiAssistantPreview) {
-    return aiAssistantPreview;
   }
 
   const alertPreview = renderAlertPreview(name);
@@ -338,6 +345,18 @@ function renderPreview(name: string) {
     return commandbarPreview;
   }
 
+  const dynamicIslandPreview = renderDynamicIslandPreview(name);
+
+  if (dynamicIslandPreview) {
+    return dynamicIslandPreview;
+  }
+
+  const familyDrawerPreview = renderFamilyDrawerPreview(name);
+
+  if (familyDrawerPreview) {
+    return familyDrawerPreview;
+  }
+
   const calendarPreview = renderCalendarPreview(name);
 
   if (calendarPreview) {
@@ -366,6 +385,12 @@ function renderPreview(name: string) {
 
   if (menuPreview) {
     return menuPreview;
+  }
+
+  const messageComposerPreview = renderMessageComposerPreview(name);
+
+  if (messageComposerPreview) {
+    return messageComposerPreview;
   }
 
   const modalPreview = renderModalPreview(name);

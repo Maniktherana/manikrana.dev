@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import * as React from "react";
 
+import { DocsSearch } from "@/components/design/docs-search";
 import { ThemeToggle } from "@/components/design/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -371,6 +372,7 @@ function DocsShell({
               <span className="hidden truncate text-muted-foreground sm:inline">{page.title}</span>
             </div>
             <div className="flex items-center gap-2 text-muted-foreground">
+              <DocsSearch activeUrl={page.url} pageTree={rootTree} />
               <span className="hidden sm:inline">Component system for shadcn Base</span>
               <ThemeToggle />
             </div>

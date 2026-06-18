@@ -11,8 +11,8 @@
 // map. If a demo function ever contains an unbalanced `{`/`}` inside a string
 // literal it would mis-slice; none of the current demos do.
 
+/* eslint-disable import/default */
 import accordionSource from "@/components/design/examples/accordion-examples.tsx?raw";
-import aiAssistantSource from "@/components/design/examples/ai-assistant-examples.tsx?raw";
 import alertSource from "@/components/design/examples/alert-examples.tsx?raw";
 import avatarSource from "@/components/design/examples/avatar-examples.tsx?raw";
 import badgeSource from "@/components/design/examples/badge-examples.tsx?raw";
@@ -25,10 +25,13 @@ import codeSource from "@/components/design/examples/code-examples.tsx?raw";
 import codeBlockSource from "@/components/design/examples/code-block-examples.tsx?raw";
 import commandbarSource from "@/components/design/examples/commandbar-examples.tsx?raw";
 import comboboxSource from "@/components/design/examples/combobox-examples.tsx?raw";
+import dynamicIslandSource from "@/components/design/examples/dynamic-island-examples.tsx?raw";
+import familyDrawerSource from "@/components/design/examples/family-drawer-examples.tsx?raw";
 import hoverCardSource from "@/components/design/examples/hover-card-examples.tsx?raw";
 import inputSource from "@/components/design/examples/input-examples.tsx?raw";
 import labelSource from "@/components/design/examples/label-examples.tsx?raw";
 import menuSource from "@/components/design/examples/menu-examples.tsx?raw";
+import messageComposerSource from "@/components/design/examples/message-composer-examples.tsx?raw";
 import kbdSource from "@/components/design/examples/kbd-examples.tsx?raw";
 import modalSource from "@/components/design/examples/modal-examples.tsx?raw";
 import popoverSource from "@/components/design/examples/popover-examples.tsx?raw";
@@ -43,7 +46,6 @@ import toastSource from "@/components/design/examples/toast-examples.tsx?raw";
 
 const rawSources = [
   accordionSource,
-  aiAssistantSource,
   alertSource,
   avatarSource,
   badgeSource,
@@ -56,10 +58,13 @@ const rawSources = [
   codeBlockSource,
   commandbarSource,
   comboboxSource,
+  dynamicIslandSource,
+  familyDrawerSource,
   hoverCardSource,
   inputSource,
   labelSource,
   menuSource,
+  messageComposerSource,
   kbdSource,
   modalSource,
   popoverSource,

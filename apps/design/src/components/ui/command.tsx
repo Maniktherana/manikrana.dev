@@ -33,12 +33,14 @@ function CommandDialog({
   description = "Search for a command to run...",
   children,
   className,
+  overlayClassName,
   showCloseButton = false,
   ...props
 }: Omit<React.ComponentProps<typeof Dialog>, "children"> & {
   title?: string;
   description?: string;
   className?: string;
+  overlayClassName?: string;
   showCloseButton?: boolean;
   children: React.ReactNode;
 }) {
@@ -50,9 +52,10 @@ function CommandDialog({
       </DialogHeader>
       <DialogContent
         className={cn(
-          "top-1/3 w-[560px] translate-y-0 overflow-hidden rounded-xl! p-0",
+          "top-1/2 w-[560px] -translate-y-1/2 overflow-hidden rounded-xl! p-0",
           className,
         )}
+        overlayClassName={overlayClassName}
         showCloseButton={showCloseButton}
       >
         {children}

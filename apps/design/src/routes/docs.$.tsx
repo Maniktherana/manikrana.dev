@@ -1,4 +1,4 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import browserCollections from "collections/browser";
 
@@ -36,6 +36,15 @@ const loadComponentDoc = createServerFn({
 export const Route = createFileRoute("/docs/$")({
   loader: async ({ params }) => {
     const slugs = params._splat?.split("/").filter(Boolean) ?? [];
+
+    if (slugs.length === 1 && slugs[0] === "commandbar") {
+      throw redirect({
+        to: "/docs/$",
+        params: { _splat: "command-palette" },
+        replace: true,
+      });
+    }
+
     const data = await loadComponentDoc({ data: slugs });
 
     await docsClientLoader.preload(data.page.path);
