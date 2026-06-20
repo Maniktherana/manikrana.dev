@@ -24,8 +24,7 @@ function CodeBackground() {
 function CodeInline() {
   return (
     <p className="max-w-md text-[13px] leading-[1.6] text-secondary-foreground">
-      Use <Code>Code</Code> for prop names, file fragments, and compact inline
-      tokens inside prose.
+      Use <Code>Code</Code> for prop names, file fragments, and compact inline tokens inside prose.
     </p>
   );
 }

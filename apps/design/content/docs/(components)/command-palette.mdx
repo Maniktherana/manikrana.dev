@@ -15,12 +15,12 @@ selected search result.
 
 ## Files
 
-| File | Purpose |
-| --- | --- |
+| File                                    | Purpose                                                                            |
+| --------------------------------------- | ---------------------------------------------------------------------------------- |
 | `src/components/design/docs-search.tsx` | Client composition for the trigger, palette, search rows, and nested Actions menu. |
-| `src/lib/docs-search.ts` | Server search function backed by Fumadocs `createFromSource`. |
-| `src/components/ui/command.tsx` | Reusable command primitives and `CommandDialog`. |
-| `src/components/ui/dialog.tsx` | Dialog primitive with overlay customization. |
+| `src/lib/docs-search.ts`                | Server search function backed by Fumadocs `createFromSource`.                      |
+| `src/components/ui/command.tsx`         | Reusable command primitives and `CommandDialog`.                                   |
+| `src/components/ui/dialog.tsx`          | Dialog primitive with overlay customization.                                       |
 
 ## Behavior
 
@@ -37,13 +37,13 @@ selected search result.
 Press `Cmd-K` again while the palette is open to move focus into Actions for the
 selected result.
 
-| Key | Behavior |
-| --- | --- |
+| Key                     | Behavior                                                  |
+| ----------------------- | --------------------------------------------------------- |
 | `ArrowDown` / `ArrowUp` | Move only through Actions while the Actions menu is open. |
-| `Home` / `End` | Jump to the first or last Action. |
-| `Enter` / `Space` | Run the focused Action. |
-| `Esc` | Close Actions and return focus to the palette input. |
-| `Esc` again | Close the command palette. |
+| `Home` / `End`          | Jump to the first or last Action.                         |
+| `Enter` / `Space`       | Run the focused Action.                                   |
+| `Esc`                   | Close Actions and return focus to the palette input.      |
+| `Esc` again             | Close the command palette.                                |
 
 ## Implementation Notes
 

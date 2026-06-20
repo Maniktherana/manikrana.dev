@@ -22,9 +22,7 @@ function CopyButton({
   return (
     <Tooltip>
       <TooltipTrigger
-        render={
-          <Button variant={variant} size={size} type="button" aria-label="Copy" {...props} />
-        }
+        render={<Button variant={variant} size={size} type="button" aria-label="Copy" {...props} />}
         onClick={() => {
           void navigator.clipboard?.writeText(value);
           setCopied(true);

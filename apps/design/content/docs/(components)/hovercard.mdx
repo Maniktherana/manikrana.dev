@@ -16,18 +16,12 @@ bunx shadcn@latest add hovercard
 ## Usage
 
 ```tsx
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 ```
 
 ```tsx
 <HoverCard>
-  <HoverCardTrigger render={<button type="button" />}>
-    Open preview
-  </HoverCardTrigger>
+  <HoverCardTrigger render={<button type="button" />}>Open preview</HoverCardTrigger>
   <HoverCardContent>Preview content</HoverCardContent>
 </HoverCard>
 ```
@@ -50,25 +44,25 @@ Use normal primitives inside `HoverCardContent` when the preview needs richer co
 
 ### HoverCard
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `open` | `boolean` | - |
-| `defaultOpen` | `boolean` | - |
-| `onOpenChange` | `(open: boolean) => void` | - |
+| Prop           | Type                      | Default |
+| -------------- | ------------------------- | ------- |
+| `open`         | `boolean`                 | -       |
+| `defaultOpen`  | `boolean`                 | -       |
+| `onOpenChange` | `(open: boolean) => void` | -       |
 
 ### HoverCardTrigger
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `render` | `ReactElement \| (props, state) => ReactElement` | - |
-| `className` | `string` | - |
+| Prop        | Type                                             | Default |
+| ----------- | ------------------------------------------------ | ------- |
+| `render`    | `ReactElement \| (props, state) => ReactElement` | -       |
+| `className` | `string`                                         | -       |
 
 ### HoverCardContent
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `side` | `"top" \| "right" \| "bottom" \| "left" \| "inline-start" \| "inline-end"` | `"bottom"` |
-| `sideOffset` | `number` | `4` |
-| `align` | `"start" \| "center" \| "end"` | `"center"` |
-| `alignOffset` | `number` | `4` |
-| `className` | `string` | - |
+| Prop          | Type                                                                       | Default    |
+| ------------- | -------------------------------------------------------------------------- | ---------- |
+| `side`        | `"top" \| "right" \| "bottom" \| "left" \| "inline-start" \| "inline-end"` | `"bottom"` |
+| `sideOffset`  | `number`                                                                   | `8`        |
+| `align`       | `"start" \| "center" \| "end"`                                             | `"center"` |
+| `alignOffset` | `number`                                                                   | `4`        |
+| `className`   | `string`                                                                   | -          |

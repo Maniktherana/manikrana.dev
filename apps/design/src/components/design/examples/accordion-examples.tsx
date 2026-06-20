@@ -55,22 +55,17 @@ function AccordionBorderless() {
 
 function AccordionMultiple() {
   return (
-    <Accordion
-      className="w-full max-w-md"
-      defaultValue={["inventory", "pricing"]}
-    >
+    <Accordion className="w-full max-w-md" defaultValue={["inventory", "pricing"]}>
       <AccordionItem value="inventory">
         <AccordionTrigger>Inventory policy</AccordionTrigger>
         <AccordionContent>
-          Keep selling when stock is low, or pause the listing when it reaches
-          zero.
+          Keep selling when stock is low, or pause the listing when it reaches zero.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="pricing">
         <AccordionTrigger>Regional pricing</AccordionTrigger>
         <AccordionContent>
-          Use price lists to control currency-specific sale and compare-at
-          prices.
+          Use price lists to control currency-specific sale and compare-at prices.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="metadata">
@@ -93,9 +88,7 @@ function AccordionStatus() {
             <Badge variant="success">Ready</Badge>
           </span>
         </AccordionTrigger>
-        <AccordionContent>
-          The product catalog is synced and ready for publishing.
-        </AccordionContent>
+        <AccordionContent>The product catalog is synced and ready for publishing.</AccordionContent>
       </AccordionItem>
       <AccordionItem value="review">
         <AccordionTrigger>

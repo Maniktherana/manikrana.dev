@@ -88,19 +88,15 @@
   --compact-height: 28px;
   --page-gutter: 128px;
   --shadow-card:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 1px 2px -1px rgb(0 0 0 / 8%),
-    0 2px 4px 0 rgb(0 0 0 / 4%);
+    0 0 0 1px rgb(0 0 0 / 8%), 0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
   --shadow-control:
-    inset 0 0 0 1px var(--border), 0 1px 2px -1px rgb(0 0 0 / 8%),
-    0 2px 4px 0 rgb(0 0 0 / 4%);
+    inset 0 0 0 1px var(--border), 0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
   --shadow-control-hover:
     inset 0 0 0 1px var(--border-strong), 0 1px 2px -1px rgb(0 0 0 / 8%),
     0 2px 4px 0 rgb(0 0 0 / 4%);
-  --shadow-button-secondary:
-    0 1px 2px 0 rgb(0 0 0 / 12%), 0 0 0 1px rgb(0 0 0 / 8%);
+  --shadow-button-secondary: 0 1px 2px 0 rgb(0 0 0 / 12%), 0 0 0 1px rgb(0 0 0 / 8%);
   --shadow-button-primary:
-    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b,
-    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b, inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-button-neutral: var(--shadow-button-secondary);
   --shadow-button-inverted: var(--shadow-button-primary);
   --shadow-button-primary-focus:
@@ -108,43 +104,33 @@
     0 0 0 2px color-mix(in srgb, var(--ring) 50%, transparent),
     inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-control-focus:
-    inset 0 0 0 1px var(--ring), 0 1px 2px -1px rgb(0 0 0 / 8%),
-    0 2px 4px 0 rgb(0 0 0 / 4%);
-  --shadow-control-interactive:
-    0 1px 2px 0 rgb(30 58 138 / 50%), 0 0 0 1px #2563eb;
+    inset 0 0 0 1px var(--ring), 0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
+  --shadow-control-interactive: 0 1px 2px 0 rgb(30 58 138 / 50%), 0 0 0 1px #2563eb;
   --shadow-control-unchecked:
     0 1px 2px 0 rgb(0 0 0 / 10%), 0 0 0 1px var(--control-unchecked-border);
   --shadow-control-unchecked-hover:
-    0 1px 2px 0 rgb(0 0 0 / 12%),
-    0 0 0 1px var(--control-unchecked-hover-border);
+    0 1px 2px 0 rgb(0 0 0 / 12%), 0 0 0 1px var(--control-unchecked-hover-border);
   --shadow-switch-track:
     0 2px 4px 0 rgb(0 0 0 / 4%), inset 0 1px 1px 0 rgb(0 0 0 / 4%),
     inset 0 2px 4px 0 rgb(0 0 0 / 4%), inset 0 0 0 0.75px rgb(0 0 0 / 6%),
     inset 0 0 8px 0 rgb(0 0 0 / 2%);
   --shadow-switch-thumb:
-    0 0 0 0.5px rgb(0 0 0 / 2%), 0 5px 4px 0 rgb(0 0 0 / 2%),
-    0 3px 3px 0 rgb(0 0 0 / 4%), 0 1px 2px 0 rgb(0 0 0 / 12%),
-    0 0 1px 0 rgb(0 0 0 / 8%), inset 0 0 2px 1px #ffffff,
+    0 0 0 0.5px rgb(0 0 0 / 2%), 0 5px 4px 0 rgb(0 0 0 / 2%), 0 3px 3px 0 rgb(0 0 0 / 4%),
+    0 1px 2px 0 rgb(0 0 0 / 12%), 0 0 1px 0 rgb(0 0 0 / 8%), inset 0 0 2px 1px #ffffff,
     inset 0 1px 0 0 #ffffff;
   --shadow-flyout:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 8%),
-    0 8px 16px 0 rgb(0 0 0 / 8%);
+    0 0 0 1px rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 8%), 0 8px 16px 0 rgb(0 0 0 / 8%);
   --shadow-modal:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 8px 16px 0 rgb(0 0 0 / 8%),
-    0 16px 32px 0 rgb(0 0 0 / 8%);
+    0 0 0 1px rgb(0 0 0 / 8%), 0 8px 16px 0 rgb(0 0 0 / 8%), 0 16px 32px 0 rgb(0 0 0 / 8%);
   --shadow-commandbar:
-    0 4px 8px 0 rgb(0 0 0 / 12%), 0 0 0 1px #18181b,
-    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+    0 4px 8px 0 rgb(0 0 0 / 12%), 0 0 0 1px #18181b, inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-button-danger:
-    0 1px 2px 0 rgb(190 18 60 / 32%),
-    inset 0 0.75px 0 0 rgb(255 255 255 / 16%);
+    0 1px 2px 0 rgb(190 18 60 / 32%), inset 0 0.75px 0 0 rgb(255 255 255 / 16%);
   --shadow-button-destructive: var(--shadow-button-danger);
   --shadow-tooltip:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 8%),
-    0 4px 8px 0 rgb(0 0 0 / 8%);
+    0 0 0 1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 8%);
   --shadow-popover:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 10%),
-    0 12px 24px 0 rgb(0 0 0 / 8%);
+    0 0 0 1px rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 10%), 0 12px 24px 0 rgb(0 0 0 / 8%);
   --shadow-thumbnail:
     0 6px 6.5px 0 rgb(0 0 0 / 22%), 0 23px 11.5px 0 rgb(0 0 0 / 20%),
     0 51px 15.5px 0 rgb(0 0 0 / 12%), 0 91px 18.5px 0 rgb(0 0 0 / 4%),
@@ -234,61 +220,50 @@
   --chart-4: #52525b;
   --chart-5: #3f3f46;
   --shadow-card:
-    0 0 0 1px rgb(255 255 255 / 6%), 0 -1px 0 0 rgb(255 255 255 / 6%),
-    0 0 0 1px #27272a, 0 1px 2px 0 rgb(0 0 0 / 32%),
-    0 2px 4px 0 rgb(0 0 0 / 32%);
+    0 0 0 1px rgb(255 255 255 / 6%), 0 -1px 0 0 rgb(255 255 255 / 6%), 0 0 0 1px #27272a,
+    0 1px 2px 0 rgb(0 0 0 / 32%), 0 2px 4px 0 rgb(0 0 0 / 32%);
   --shadow-control:
     inset 0 0 0 1px var(--border), inset 0 1px 0 0 rgb(255 255 255 / 4%),
     0 1px 1px 0 rgb(0 0 0 / 16%);
   --shadow-control-hover:
-    inset 0 0 0 1px var(--border-strong),
-    inset 0 1px 0 0 rgb(255 255 255 / 6%), 0 1px 1px 0 rgb(0 0 0 / 16%);
-  --shadow-control-focus:
-    inset 0 0 0 1px var(--ring), inset 0 1px 0 0 rgb(255 255 255 / 6%),
+    inset 0 0 0 1px var(--border-strong), inset 0 1px 0 0 rgb(255 255 255 / 6%),
     0 1px 1px 0 rgb(0 0 0 / 16%);
-  --shadow-button-secondary:
-    0 1px 2px 0 rgb(0 0 0 / 32%), 0 0 0 1px rgb(255 255 255 / 16%);
+  --shadow-control-focus:
+    inset 0 0 0 1px var(--ring), inset 0 1px 0 0 rgb(255 255 255 / 6%), 0 1px 1px 0 rgb(0 0 0 / 16%);
+  --shadow-button-secondary: 0 1px 2px 0 rgb(0 0 0 / 32%), 0 0 0 1px rgb(255 255 255 / 16%);
   --shadow-button-primary:
-    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b,
-    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b, inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-button-neutral: var(--shadow-button-secondary);
   --shadow-button-inverted: var(--shadow-button-primary);
   --shadow-button-primary-focus:
     0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b,
     0 0 0 2px color-mix(in srgb, var(--ring) 50%, transparent),
     inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
-  --shadow-control-interactive:
-    0 1px 2px 0 rgb(30 58 138 / 50%), 0 0 0 1px #3b82f6;
+  --shadow-control-interactive: 0 1px 2px 0 rgb(30 58 138 / 50%), 0 0 0 1px #3b82f6;
   --shadow-control-unchecked:
     0 1px 2px 0 rgb(0 0 0 / 32%), 0 0 0 1px var(--control-unchecked-border);
   --shadow-control-unchecked-hover:
-    0 1px 2px 0 rgb(0 0 0 / 36%),
-    0 0 0 1px var(--control-unchecked-hover-border);
+    0 1px 2px 0 rgb(0 0 0 / 36%), 0 0 0 1px var(--control-unchecked-hover-border);
   --shadow-switch-track:
     0 2px 4px 0 rgb(0 0 0 / 24%), inset 0 1px 1px 0 rgb(255 255 255 / 4%),
     inset 0 0 0 0.75px rgb(255 255 255 / 8%), inset 0 0 8px 0 rgb(0 0 0 / 24%);
   --shadow-switch-thumb:
-    0 0 0 0.5px rgb(255 255 255 / 10%), 0 5px 4px 0 rgb(0 0 0 / 18%),
-    0 3px 3px 0 rgb(0 0 0 / 20%), 0 1px 2px 0 rgb(0 0 0 / 32%),
-    0 0 1px 0 rgb(0 0 0 / 32%), inset 0 0 2px 1px rgb(255 255 255 / 16%),
-    inset 0 1px 0 0 rgb(255 255 255 / 20%);
+    0 0 0 0.5px rgb(255 255 255 / 10%), 0 5px 4px 0 rgb(0 0 0 / 18%), 0 3px 3px 0 rgb(0 0 0 / 20%),
+    0 1px 2px 0 rgb(0 0 0 / 32%), 0 0 1px 0 rgb(0 0 0 / 32%),
+    inset 0 0 2px 1px rgb(255 255 255 / 16%), inset 0 1px 0 0 rgb(255 255 255 / 20%);
   --shadow-flyout:
     0 -1px 0 0 rgb(255 255 255 / 4%), 0 0 0 1px rgb(255 255 255 / 10%),
     0 4px 8px 0 rgb(0 0 0 / 32%), 0 8px 16px 0 rgb(0 0 0 / 32%);
   --shadow-modal:
-    0 0 0 1px rgb(255 255 255 / 10%), 0 4px 8px 0 rgb(0 0 0 / 32%),
-    0 8px 16px 0 rgb(0 0 0 / 32%);
+    0 0 0 1px rgb(255 255 255 / 10%), 0 4px 8px 0 rgb(0 0 0 / 32%), 0 8px 16px 0 rgb(0 0 0 / 32%);
   --shadow-commandbar:
     0 4px 8px 0 rgb(0 0 0 / 36%), 0 0 0 1px rgb(255 255 255 / 8%),
     inset 0 0.75px 0 0 rgb(255 255 255 / 12%);
-  --shadow-button-danger:
-    0 1px 2px 0 rgb(0 0 0 / 32%),
-    inset 0 0.75px 0 0 rgb(255 255 255 / 14%);
+  --shadow-button-danger: 0 1px 2px 0 rgb(0 0 0 / 32%), inset 0 0.75px 0 0 rgb(255 255 255 / 14%);
   --shadow-button-destructive: var(--shadow-button-danger);
   --shadow-tooltip:
-    0 -1px 0 0 rgb(255 255 255 / 6%), 0 0 0 1px rgb(255 255 255 / 6%),
-    0 0 0 1px #27272a, 0 4px 8px 0 rgb(0 0 0 / 32%),
-    0 2px 4px 0 rgb(0 0 0 / 28%);
+    0 -1px 0 0 rgb(255 255 255 / 6%), 0 0 0 1px rgb(255 255 255 / 6%), 0 0 0 1px #27272a,
+    0 4px 8px 0 rgb(0 0 0 / 32%), 0 2px 4px 0 rgb(0 0 0 / 28%);
   --shadow-popover:
     0 -1px 0 0 rgb(255 255 255 / 4%), 0 0 0 1px rgb(255 255 255 / 10%),
     0 4px 8px 0 rgb(0 0 0 / 18%), 0 12px 24px 0 rgb(0 0 0 / 18%);

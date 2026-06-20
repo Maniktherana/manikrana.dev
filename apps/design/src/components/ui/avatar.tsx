@@ -10,7 +10,8 @@ const avatarVariants = cva(
     variants: {
       variant: {
         default: "bg-muted",
-        border: "border border-transparent bg-background bg-clip-border shadow-[var(--shadow-card)]",
+        border:
+          "border border-transparent bg-background bg-clip-border shadow-[var(--shadow-card)]",
       },
       radius: {
         full: "rounded-full",
@@ -57,7 +58,10 @@ function AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"
-      className={cn("aspect-square size-full overflow-hidden rounded-[inherit] object-cover", className)}
+      className={cn(
+        "aspect-square size-full overflow-hidden rounded-[inherit] object-cover",
+        className,
+      )}
       {...props}
     />
   );

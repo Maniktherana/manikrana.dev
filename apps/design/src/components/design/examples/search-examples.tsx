@@ -28,9 +28,7 @@ function SearchDemo() {
       </InputGroupAddon>
       <InputGroupInput placeholder="Search products" />
       <InputGroupAddon align="inline-end">
-        <Kbd className="h-[17px] min-w-0 px-1">
-          ⌘K
-        </Kbd>
+        <Kbd className="h-[17px] min-w-0 px-1">⌘K</Kbd>
       </InputGroupAddon>
     </InputGroup>
   );
@@ -83,9 +81,7 @@ function SearchState() {
         </InputGroupAddon>
         <InputGroupInput placeholder="Muted search" />
       </InputGroup>
-      <InputGroup
-        className="gap-2 px-2 *:data-[slot=input-group-addon]:px-0 *:data-[slot=input-group-control]:px-0"
-      >
+      <InputGroup className="gap-2 px-2 *:data-[slot=input-group-addon]:px-0 *:data-[slot=input-group-control]:px-0">
         <InputGroupAddon>
           <SearchIcon />
         </InputGroupAddon>

@@ -17,13 +17,22 @@ function TabsDemo() {
         <TabsTrigger value="settings">Settings</TabsTrigger>
         <TabsTrigger value="activity">Activity</TabsTrigger>
       </TabsList>
-      <TabsContent value="overview" className="pt-3 text-[13px] leading-[1.6] text-secondary-foreground">
+      <TabsContent
+        value="overview"
+        className="pt-3 text-[13px] leading-[1.6] text-secondary-foreground"
+      >
         Review the current resource before making changes.
       </TabsContent>
-      <TabsContent value="settings" className="pt-3 text-[13px] leading-[1.6] text-secondary-foreground">
+      <TabsContent
+        value="settings"
+        className="pt-3 text-[13px] leading-[1.6] text-secondary-foreground"
+      >
         Configure defaults, limits, and notification behavior.
       </TabsContent>
-      <TabsContent value="activity" className="pt-3 text-[13px] leading-[1.6] text-secondary-foreground">
+      <TabsContent
+        value="activity"
+        className="pt-3 text-[13px] leading-[1.6] text-secondary-foreground"
+      >
         Inspect recent updates from your team and integrations.
       </TabsContent>
     </Tabs>
@@ -38,13 +47,22 @@ function TabsDefault() {
         <TabsTrigger value="billing">Billing</TabsTrigger>
         <TabsTrigger value="team">Team</TabsTrigger>
       </TabsList>
-      <TabsContent value="profile" className="pt-3 text-[13px] leading-[1.6] text-secondary-foreground">
+      <TabsContent
+        value="profile"
+        className="pt-3 text-[13px] leading-[1.6] text-secondary-foreground"
+      >
         Default tabs use the full-width card rail treatment.
       </TabsContent>
-      <TabsContent value="billing" className="pt-3 text-[13px] leading-[1.6] text-secondary-foreground">
+      <TabsContent
+        value="billing"
+        className="pt-3 text-[13px] leading-[1.6] text-secondary-foreground"
+      >
         Billing settings and payment methods live here.
       </TabsContent>
-      <TabsContent value="team" className="pt-3 text-[13px] leading-[1.6] text-secondary-foreground">
+      <TabsContent
+        value="team"
+        className="pt-3 text-[13px] leading-[1.6] text-secondary-foreground"
+      >
         Invite teammates and manage roles.
       </TabsContent>
     </Tabs>

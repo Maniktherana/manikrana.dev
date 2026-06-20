@@ -18,8 +18,7 @@ const buttonVariants = cva(
           "text-foreground shadow-none hover:bg-white/10 hover:text-foreground active:bg-white/10 data-[active=true]:bg-white/10 aria-expanded:bg-white/10 aria-expanded:text-foreground data-popup-open:bg-white/10 data-popup-open:text-foreground",
         destructive:
           "border-[var(--button-danger-border)] bg-[var(--button-danger)] bg-clip-border text-[var(--button-danger-foreground)] shadow-[var(--shadow-button-danger)] hover:border-[var(--button-danger-border)] hover:bg-[var(--button-danger-hover)] hover:text-[var(--button-danger-foreground)] active:bg-[var(--button-danger-pressed)]",
-        link:
-          "h-auto min-h-0 gap-0 self-center border-transparent bg-transparent p-0 leading-[1.6] text-foreground shadow-none no-underline hover:bg-transparent hover:text-foreground hover:underline",
+        link: "h-auto min-h-0 gap-0 self-center border-transparent bg-transparent p-0 leading-[1.6] text-foreground shadow-none no-underline hover:bg-transparent hover:text-foreground hover:underline",
       },
       size: {
         default:

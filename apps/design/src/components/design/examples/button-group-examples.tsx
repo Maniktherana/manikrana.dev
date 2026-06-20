@@ -25,11 +25,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  ButtonGroup,
-  ButtonGroupSeparator,
-  ButtonGroupText,
-} from "@/components/ui/button-group";
+import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@/components/ui/button-group";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,14 +42,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import {
-  Popover,
-  PopoverContent,
-  PopoverDescription,
-  PopoverHeader,
-  PopoverTitle,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -103,12 +92,7 @@ function ButtonGroupDemo() {
         <DropdownMenu>
           <DropdownMenuTrigger
             render={
-              <Button
-                type="button"
-                variant="secondary"
-                size="icon"
-                aria-label="More options"
-              />
+              <Button type="button" variant="secondary" size="icon" aria-label="More options" />
             }
           >
             <MoreHorizontalIcon />
@@ -213,9 +197,7 @@ function ButtonGroupNested() {
         <InputGroup>
           <InputGroupInput placeholder="Send a message..." />
           <Tooltip>
-            <TooltipTrigger
-              render={<InputGroupAddon align="inline-end" className="w-7 px-0" />}
-            >
+            <TooltipTrigger render={<InputGroupAddon align="inline-end" className="w-7 px-0" />}>
               <AudioLinesIcon />
             </TooltipTrigger>
             <TooltipContent>Voice mode</TooltipContent>
@@ -247,12 +229,7 @@ function ButtonGroupTextDemo() {
       <Button type="button" variant="secondary">
         Published
       </Button>
-      <Button
-        type="button"
-        variant="secondary"
-        size="icon"
-        aria-label="More options"
-      >
+      <Button type="button" variant="secondary" size="icon" aria-label="More options">
         <MoreHorizontalIcon />
       </Button>
     </ButtonGroup>
@@ -382,15 +359,12 @@ function ButtonGroupSelect() {
           value={currency}
           onValueChange={(value) => setCurrency(value as string)}
         >
-          <SelectTrigger className="w-[72px] font-mono">
-            {currency}
-          </SelectTrigger>
+          <SelectTrigger className="w-[72px] font-mono">{currency}</SelectTrigger>
           <SelectContent alignItemWithTrigger={false} align="start">
             <SelectGroup>
               {currencies.map((item) => (
                 <SelectItem key={item.value} value={item.value}>
-                  {item.value}{" "}
-                  <span className="text-muted-foreground">{item.label}</span>
+                  {item.value} <span className="text-muted-foreground">{item.label}</span>
                 </SelectItem>
               ))}
             </SelectGroup>
@@ -417,30 +391,25 @@ function ButtonGroupPopover() {
       <Popover>
         <PopoverTrigger
           render={
-            <Button
-              type="button"
-              variant="secondary"
-              size="icon"
-              aria-label="Open popover"
-            />
+            <Button type="button" variant="secondary" size="icon" aria-label="Open popover" />
           }
         >
           <ChevronDownIcon />
         </PopoverTrigger>
-        <PopoverContent align="end" className="rounded-xl text-sm">
-          <PopoverHeader>
-            <PopoverTitle>Start a new task with Copilot</PopoverTitle>
-            <PopoverDescription>Describe your task in natural language.</PopoverDescription>
-          </PopoverHeader>
+        <PopoverContent align="end" className="w-72">
+          <div className="mb-3">
+            <p className="text-[13px] leading-[1.6] font-medium text-foreground">
+              Start a new task with Copilot
+            </p>
+            <p className="mt-1 text-[13px] leading-[1.6] text-secondary-foreground">
+              Describe your task in natural language.
+            </p>
+          </div>
           <Field>
             <FieldLabel htmlFor="button-group-task" className="sr-only">
               Task Description
             </FieldLabel>
-            <Textarea
-              id="button-group-task"
-              placeholder="I need to..."
-              className="resize-none"
-            />
+            <Textarea id="button-group-task" placeholder="I need to..." className="resize-none" />
             <FieldDescription>Copilot will open a pull request for review.</FieldDescription>
           </Field>
         </PopoverContent>
@@ -465,12 +434,7 @@ function ButtonGroupRtl() {
           <Button type="button" variant="secondary">
             Snooze
           </Button>
-          <Button
-            type="button"
-            variant="secondary"
-            size="icon"
-            aria-label="More options"
-          >
+          <Button type="button" variant="secondary" size="icon" aria-label="More options">
             <MoreHorizontalIcon />
           </Button>
         </ButtonGroup>

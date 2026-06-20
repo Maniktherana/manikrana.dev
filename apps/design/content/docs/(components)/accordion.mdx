@@ -28,9 +28,7 @@ import {
 <Accordion defaultValue={["shipping"]}>
   <AccordionItem value="shipping">
     <AccordionTrigger>Shipping settings</AccordionTrigger>
-    <AccordionContent>
-      Configure fulfillment windows and carrier defaults.
-    </AccordionContent>
+    <AccordionContent>Configure fulfillment windows and carrier defaults.</AccordionContent>
   </AccordionItem>
 </Accordion>
 ```
@@ -62,32 +60,32 @@ Compose `AccordionTrigger` with inline badges or other text primitives.
 
 The root wraps Base UI's accordion root and accepts the primitive props.
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `defaultValue` | `string[]` | - |
-| `value` | `string[]` | - |
-| `onValueChange` | `(value: string[]) => void` | - |
-| `className` | `string` | - |
+| Prop            | Type                        | Default |
+| --------------- | --------------------------- | ------- |
+| `defaultValue`  | `string[]`                  | -       |
+| `value`         | `string[]`                  | -       |
+| `onValueChange` | `(value: string[]) => void` | -       |
+| `className`     | `string`                    | -       |
 
 ### AccordionItem
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `value` | `string` | - |
-| `disabled` | `boolean` | `false` |
-| `variant` | `"default" \| "ghost"` | `"default"` |
-| `className` | `string` | - |
+| Prop        | Type                   | Default     |
+| ----------- | ---------------------- | ----------- |
+| `value`     | `string`               | -           |
+| `disabled`  | `boolean`              | `false`     |
+| `variant`   | `"default" \| "ghost"` | `"default"` |
+| `className` | `string`               | -           |
 
 ### AccordionTrigger
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `children` | `React.ReactNode` | - |
-| `className` | `string` | - |
+| Prop        | Type              | Default |
+| ----------- | ----------------- | ------- |
+| `children`  | `React.ReactNode` | -       |
+| `className` | `string`          | -       |
 
 ### AccordionContent
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `children` | `React.ReactNode` | - |
-| `className` | `string` | - |
+| Prop        | Type              | Default |
+| ----------- | ----------------- | ------- |
+| `children`  | `React.ReactNode` | -       |
+| `className` | `string`          | -       |

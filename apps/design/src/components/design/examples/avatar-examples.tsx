@@ -31,7 +31,7 @@ function AvatarDemo() {
 function AvatarImageDemo() {
   return (
     <Avatar>
-      <AvatarImage src="https://github.com/manik.png" alt="Manik Rana" />
+      <AvatarImage src="/manik.png" alt="Manik Rana" />
       <AvatarFallback>MR</AvatarFallback>
     </Avatar>
   );
@@ -41,7 +41,7 @@ function AvatarBorder() {
   return (
     <div className="flex items-center gap-3">
       <Avatar variant="border">
-        <AvatarImage src="https://github.com/manik.png" alt="Manik Rana" />
+        <AvatarImage src="/manik.png" alt="Manik Rana" />
         <AvatarFallback>MR</AvatarFallback>
       </Avatar>
       <Avatar variant="default">

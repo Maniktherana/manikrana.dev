@@ -12,9 +12,7 @@ function SeparatorDemo() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-3">
       <div>
-        <p className="text-[13px] leading-[1.6] font-medium text-foreground">
-          Order summary
-        </p>
+        <p className="text-[13px] leading-[1.6] font-medium text-foreground">Order summary</p>
         <p className="text-[13px] leading-[1.6] text-secondary-foreground">
           Review totals before capture.
         </p>

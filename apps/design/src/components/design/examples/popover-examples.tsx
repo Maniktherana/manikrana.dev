@@ -3,135 +3,97 @@ import type { ComponentType } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
+  PopoverClose,
   PopoverContent,
   PopoverDescription,
-  PopoverFooter,
-  PopoverFooterActions,
-  PopoverHeader,
-  PopoverSeparator,
-  PopoverStep,
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover";
 
 const popoverPreviewTitles: Record<string, string> = {
   popover: "Popover",
-  "popover-demo": "Popover Demo",
-  "popover-footer": "Popover Footer",
-  "popover-sides": "Popover Sides",
-  "popover-stretch": "Popover Stretch",
+  "popover-demo": "Popover",
+  "popover-align": "Popover Align",
+  "popover-close": "Popover Close",
+  "popover-composition": "Popover Composition",
 };
 
 function PopoverDemo() {
   return (
     <Popover>
       <PopoverTrigger render={<Button variant="secondary" />}>Open popover</PopoverTrigger>
-      <PopoverContent align="center" showArrow showCloseButton>
-        <PopoverHeader>
-          <PopoverTitle>Insert Popover</PopoverTitle>
-          <PopoverDescription>
-            Insert popover description here. It would look much better as three lines of text.
-          </PopoverDescription>
-        </PopoverHeader>
-        <PopoverSeparator />
-        <PopoverFooter>
-          <PopoverStep>Step 1 of 5</PopoverStep>
-          <PopoverFooterActions>
-            <Button type="button" variant="ghost" size="sm">
-              Back
-            </Button>
-            <Button type="button" size="sm" className="flex-1">
-              Next
-            </Button>
-          </PopoverFooterActions>
-        </PopoverFooter>
+      <PopoverContent>
+        <PopoverTitle>Project status</PopoverTitle>
+        <PopoverDescription>This workspace is synced and ready for review.</PopoverDescription>
       </PopoverContent>
     </Popover>
   );
 }
 
-function PopoverFooterDemo() {
+function PopoverAlign() {
   return (
-    <Popover>
-      <PopoverTrigger render={<Button variant="secondary" />}>Open popover</PopoverTrigger>
-      <PopoverContent align="center" showArrow>
-        <PopoverHeader>
-          <PopoverTitle>Publish changes</PopoverTitle>
-          <PopoverDescription>Review this update before it goes live.</PopoverDescription>
-        </PopoverHeader>
-        <PopoverSeparator />
-        <PopoverFooter>
-          <PopoverStep>Step 1 of 5</PopoverStep>
-          <PopoverFooterActions>
-            <Button type="button" variant="ghost" size="sm">
-              Back
-            </Button>
-            <Button type="button" size="sm" className="flex-1">
-              Next
-            </Button>
-          </PopoverFooterActions>
-        </PopoverFooter>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-function PopoverStretch() {
-  return (
-    <Popover>
-      <PopoverTrigger render={<Button variant="secondary" />}>Open popover</PopoverTrigger>
-      <PopoverContent align="center" showArrow>
-        <PopoverHeader>
-          <PopoverTitle>Confirm action</PopoverTitle>
-          <PopoverDescription>Use stretched actions when the footer has no step text.</PopoverDescription>
-        </PopoverHeader>
-        <PopoverSeparator />
-        <PopoverFooter>
-          <PopoverFooterActions>
-            <Button type="button" variant="ghost" size="sm" className="flex-1">
-              Back
-            </Button>
-            <Button type="button" size="sm" className="flex-1">
-              Next
-            </Button>
-          </PopoverFooterActions>
-        </PopoverFooter>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-function PopoverSides() {
-  return (
-    <div className="flex w-full flex-wrap items-center justify-center gap-16">
+    <div className="flex flex-wrap items-center gap-2">
       <Popover>
-        <PopoverTrigger render={<Button variant="secondary" />}>Left side</PopoverTrigger>
-        <PopoverContent side="left" align="center" showArrow className="w-[240px]">
-          <PopoverHeader>
-            <PopoverTitle>Left Arrow</PopoverTitle>
-            <PopoverDescription>Arrow spacing for left-side placement.</PopoverDescription>
-          </PopoverHeader>
-        </PopoverContent>
+        <PopoverTrigger render={<Button variant="secondary" />}>Start</PopoverTrigger>
+        <PopoverContent align="start">Aligned to start.</PopoverContent>
       </Popover>
       <Popover>
-        <PopoverTrigger render={<Button variant="secondary" />}>Right side</PopoverTrigger>
-        <PopoverContent side="right" align="center" showArrow className="w-[240px]">
-          <PopoverHeader>
-            <PopoverTitle>Right Arrow</PopoverTitle>
-            <PopoverDescription>Arrow spacing for right-side placement.</PopoverDescription>
-          </PopoverHeader>
-        </PopoverContent>
+        <PopoverTrigger render={<Button variant="secondary" />}>Center</PopoverTrigger>
+        <PopoverContent align="center">Aligned to center.</PopoverContent>
+      </Popover>
+      <Popover>
+        <PopoverTrigger render={<Button variant="secondary" />}>End</PopoverTrigger>
+        <PopoverContent align="end">Aligned to end.</PopoverContent>
       </Popover>
     </div>
+  );
+}
+
+function PopoverCloseDemo() {
+  return (
+    <Popover>
+      <PopoverTrigger render={<Button variant="secondary" />}>Open popover</PopoverTrigger>
+      <PopoverContent className="w-64">
+        <PopoverTitle>Publish changes</PopoverTitle>
+        <PopoverDescription>Review this update before it goes live.</PopoverDescription>
+        <div className="mt-3 flex justify-end">
+          <PopoverClose render={<Button type="button" variant="secondary" size="sm" />}>
+            Close
+          </PopoverClose>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+function PopoverComposition() {
+  return (
+    <Popover>
+      <PopoverTrigger render={<Button variant="secondary" />}>Invite</PopoverTrigger>
+      <PopoverContent className="w-72">
+        <div className="flex flex-col gap-2">
+          <PopoverTitle>Invite teammate</PopoverTitle>
+          <PopoverDescription>Send a review invite to someone on your team.</PopoverDescription>
+          <div className="flex items-center gap-2 pt-1">
+            <Button type="button" variant="secondary" size="sm" className="flex-1">
+              Copy link
+            </Button>
+            <Button type="button" size="sm" className="flex-1">
+              Send
+            </Button>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }
 
 const popoverPreviews: Record<string, ComponentType> = {
   popover: PopoverDemo,
   "popover-demo": PopoverDemo,
-  "popover-footer": PopoverFooterDemo,
-  "popover-sides": PopoverSides,
-  "popover-stretch": PopoverStretch,
+  "popover-align": PopoverAlign,
+  "popover-close": PopoverCloseDemo,
+  "popover-composition": PopoverComposition,
 };
 
 function renderPopoverPreview(name: string) {

@@ -2,11 +2,7 @@ import type * as React from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 const hoverCardPreviewTitles: Record<string, string> = {
   "hovercard-demo": "Hover Card",
@@ -17,13 +13,9 @@ const hoverCardPreviewTitles: Record<string, string> = {
 function HoverCardDemo() {
   return (
     <HoverCard>
-      <HoverCardTrigger render={<Button variant="secondary" />}>
-        Open preview
-      </HoverCardTrigger>
-      <HoverCardContent align="start" className="w-[210px]">
-        <p className="text-[13px] leading-[1.6] font-medium text-foreground">
-          Product owner
-        </p>
+      <HoverCardTrigger render={<Button variant="secondary" />}>Open preview</HoverCardTrigger>
+      <HoverCardContent className="w-[210px]">
+        <p className="text-[13px] leading-[1.6] font-medium text-foreground">Product owner</p>
         <p className="text-[13px] leading-[1.6] text-secondary-foreground">
           Avery Stone manages this collection.
         </p>
@@ -36,21 +28,15 @@ function HoverCardAlign() {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <HoverCard>
-        <HoverCardTrigger render={<Button variant="secondary" />}>
-          Start
-        </HoverCardTrigger>
+        <HoverCardTrigger render={<Button variant="secondary" />}>Start</HoverCardTrigger>
         <HoverCardContent align="start">Aligned to start.</HoverCardContent>
       </HoverCard>
       <HoverCard>
-        <HoverCardTrigger render={<Button variant="secondary" />}>
-          Center
-        </HoverCardTrigger>
+        <HoverCardTrigger render={<Button variant="secondary" />}>Center</HoverCardTrigger>
         <HoverCardContent align="center">Aligned to center.</HoverCardContent>
       </HoverCard>
       <HoverCard>
-        <HoverCardTrigger render={<Button variant="secondary" />}>
-          End
-        </HoverCardTrigger>
+        <HoverCardTrigger render={<Button variant="secondary" />}>End</HoverCardTrigger>
         <HoverCardContent align="end">Aligned to end.</HoverCardContent>
       </HoverCard>
     </div>
@@ -60,15 +46,11 @@ function HoverCardAlign() {
 function HoverCardComposition() {
   return (
     <HoverCard>
-      <HoverCardTrigger render={<Button variant="secondary" />}>
-        Inventory
-      </HoverCardTrigger>
-      <HoverCardContent align="start" className="w-64">
+      <HoverCardTrigger render={<Button variant="secondary" />}>Inventory</HoverCardTrigger>
+      <HoverCardContent className="w-64">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between gap-3">
-            <p className="text-[13px] leading-[1.6] font-medium text-foreground">
-              Warehouse stock
-            </p>
+            <p className="text-[13px] leading-[1.6] font-medium text-foreground">Warehouse stock</p>
             <Badge variant="success">Synced</Badge>
           </div>
           <p className="text-[13px] leading-[1.6] text-secondary-foreground">

@@ -27,13 +27,9 @@ export const componentCatalog = [
     title: "Message Composer",
     category: "Blocks",
     primitive: "MessageComposer",
-    files: [
-      "src/components/ui/button.tsx",
-      "src/components/design/message-composer.tsx",
-    ],
+    files: ["src/components/ui/button.tsx", "src/components/design/message-composer.tsx"],
     figmaSource: "Puch app message composer",
-    description:
-      "A composed chat input bar with multiline and attachment states.",
+    description: "A composed chat input bar with multiline and attachment states.",
     custom: true,
   },
   {
@@ -48,8 +44,7 @@ export const componentCatalog = [
       "src/components/ui/dialog.tsx",
     ],
     figmaSource: "Raycast-style command palette reference",
-    description:
-      "Site-wide docs search palette with keyboard actions for selected results.",
+    description: "Site-wide docs search palette with keyboard actions for selected results.",
     custom: true,
   },
   {
@@ -89,8 +84,7 @@ export const componentCatalog = [
     primitive: "Avatar, AvatarImage, AvatarFallback, AvatarBadge, AvatarGroup",
     files: ["src/components/ui/avatar.tsx"],
     figmaSource: "Icon and item density",
-    description:
-      "Profile identity primitives for user rows and compact item surfaces.",
+    description: "Profile identity primitives for user rows and compact item surfaces.",
     custom: false,
   },
   {
@@ -107,12 +101,10 @@ export const componentCatalog = [
     id: "breadcrumbs",
     title: "Breadcrumbs",
     category: "Components",
-    primitive:
-      "Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage",
+    primitive: "Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage",
     files: ["src/components/ui/breadcrumb.tsx"],
     figmaSource: "File info / Path",
-    description:
-      "The docs path row from the Figma file, mapped to shadcn breadcrumb primitives.",
+    description: "The docs path row from the Figma file, mapped to shadcn breadcrumb primitives.",
     custom: false,
   },
   {
@@ -122,8 +114,7 @@ export const componentCatalog = [
     primitive: "Button",
     files: ["src/components/ui/button.tsx"],
     figmaSource: "Button base token references in Figma file headers",
-    description:
-      "Primary action, secondary action, ghost action, and icon-only sizes.",
+    description: "Primary action, secondary action, ghost action, and icon-only sizes.",
     custom: false,
   },
   {
@@ -131,10 +122,7 @@ export const componentCatalog = [
     title: "Button Group",
     category: "Components",
     primitive: "ButtonGroup, ButtonGroupText, ButtonGroupSeparator",
-    files: [
-      "src/components/ui/button-group.tsx",
-      "src/components/ui/button.tsx",
-    ],
+    files: ["src/components/ui/button-group.tsx", "src/components/ui/button.tsx"],
     figmaSource: "Compact grouped control density",
     description: "Grouped actions with shared borders and separator support.",
     custom: false,
@@ -143,8 +131,7 @@ export const componentCatalog = [
     id: "card",
     title: "Card",
     category: "Components",
-    primitive:
-      "Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter",
+    primitive: "Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter",
     files: ["src/components/ui/card.tsx"],
     figmaSource: "Modal/card-rest elevation",
     description: "Static modal-like surface for grouped content and actions.",
@@ -199,8 +186,7 @@ export const componentCatalog = [
     primitive: "CodeBlock, Code",
     files: ["src/components/design/code.tsx", "src/components/ui/button.tsx"],
     figmaSource: "Code label token plus card-rest elevation",
-    description:
-      "Prompt Kit style code block with a compact header and copy action.",
+    description: "Prompt Kit style code block with a compact header and copy action.",
     custom: true,
   },
   {
@@ -240,8 +226,7 @@ export const componentCatalog = [
     primitive: "Input, InputGroup, InputGroupInput, Textarea",
     files: ["src/components/ui/input.tsx", "src/components/ui/input-group.tsx"],
     figmaSource: "Compact controls",
-    description:
-      "Text entry primitives with prefix, suffix, and textarea variants.",
+    description: "Text entry primitives with prefix, suffix, and textarea variants.",
     custom: false,
   },
   {
@@ -269,13 +254,9 @@ export const componentCatalog = [
     title: "Menu",
     category: "Components",
     primitive: "DropdownMenu and Menubar",
-    files: [
-      "src/components/ui/dropdown-menu.tsx",
-      "src/components/ui/menubar.tsx",
-    ],
+    files: ["src/components/ui/dropdown-menu.tsx", "src/components/ui/menubar.tsx"],
     figmaSource: "Popover and compact item rows",
-    description:
-      "Action menus and top-level menubars backed by Base UI menu primitives.",
+    description: "Action menus and top-level menubars backed by Base UI menu primitives.",
     custom: false,
   },
   {

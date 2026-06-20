@@ -71,12 +71,12 @@ function Badge({
   return useRender({
     defaultTagName: "span",
     props: mergeProps<"span">(
-      ({
+      {
         "data-radius": radius,
         "data-slot": "badge",
         "data-variant": variant,
         className: cn(badgeVariants({ radius, variant }), className),
-      } as React.ComponentProps<"span">),
+      } as React.ComponentProps<"span">,
       props,
     ),
     render,

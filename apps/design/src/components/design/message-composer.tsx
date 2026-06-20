@@ -94,12 +94,8 @@ function MessageComposer({
   const stackEntryTimeoutRef = React.useRef<number | null>(null);
   const prefersReducedMotion = useReducedMotion();
   const draft = value ?? internalValue;
-  const uploadInProgress = attachments.some(
-    (attachment) => attachment.status === "uploading",
-  );
-  const uploadFailed = attachments.some(
-    (attachment) => attachment.status === "failed",
-  );
+  const uploadInProgress = attachments.some((attachment) => attachment.status === "uploading");
+  const uploadFailed = attachments.some((attachment) => attachment.status === "failed");
   const canSend =
     !disabled &&
     !sending &&
@@ -108,8 +104,7 @@ function MessageComposer({
     (draft.trim().length > 0 || attachments.length > 0);
   const hasComposerContentAbove = attachments.length > 0 || Boolean(limitMessage);
   const isTextareaStacked = draft.includes("\n") || isTextOverflowing;
-  const isEnteringTextareaStack =
-    isTextareaStacked && !wasTextareaStackedRef.current;
+  const isEnteringTextareaStack = isTextareaStacked && !wasTextareaStackedRef.current;
   const shouldAnimateComposerLayout =
     !isTextareaStacked || isEnteringTextareaStack || stackEntryAnimating;
   const shouldAnimateTextareaHeight =
@@ -183,77 +178,70 @@ function MessageComposer({
     };
   }, [disabled, onDropFiles]);
 
-  const syncTextareaHeight = React.useCallback(
-    (scrollToBottom = false, animateHeight = false) => {
-      const el = textareaRef.current;
-      if (!el) return;
+  const syncTextareaHeight = React.useCallback((scrollToBottom = false, animateHeight = false) => {
+    const el = textareaRef.current;
+    if (!el) return;
 
-      if (overflowTimeoutRef.current !== null) {
-        window.clearTimeout(overflowTimeoutRef.current);
-        overflowTimeoutRef.current = null;
-      }
-      if (heightAnimationFrameRef.current !== null) {
-        window.cancelAnimationFrame(heightAnimationFrameRef.current);
+    if (overflowTimeoutRef.current !== null) {
+      window.clearTimeout(overflowTimeoutRef.current);
+      overflowTimeoutRef.current = null;
+    }
+    if (heightAnimationFrameRef.current !== null) {
+      window.cancelAnimationFrame(heightAnimationFrameRef.current);
+      heightAnimationFrameRef.current = null;
+    }
+    if (stackEntryTimeoutRef.current !== null) {
+      window.clearTimeout(stackEntryTimeoutRef.current);
+      stackEntryTimeoutRef.current = null;
+    }
+
+    const previousHeight = el.getBoundingClientRect().height || textareaHeightRef.current;
+
+    el.style.height = "auto";
+    const scrollHeight = el.scrollHeight;
+    const nextHeight = Math.min(Math.max(scrollHeight, MIN_TEXTAREA_HEIGHT), MAX_TEXTAREA_HEIGHT);
+    const isCapped = scrollHeight > MAX_TEXTAREA_HEIGHT;
+
+    const enableOverflowWhenReady = (delay: number) => {
+      if (!isCapped) return;
+      overflowTimeoutRef.current = window.setTimeout(() => {
+        if (textareaRef.current !== el) return;
+        el.style.overflowY = "auto";
+        if (scrollToBottom) {
+          el.scrollTop = el.scrollHeight;
+        }
+      }, delay);
+    };
+
+    el.style.overflowY = "hidden";
+
+    if (animateHeight && previousHeight !== nextHeight) {
+      setStackEntryAnimating(true);
+      textareaHeightRef.current = previousHeight;
+      setTextareaHeight(previousHeight);
+      el.style.height = `${previousHeight}px`;
+      void el.offsetHeight;
+
+      heightAnimationFrameRef.current = window.requestAnimationFrame(() => {
         heightAnimationFrameRef.current = null;
-      }
-      if (stackEntryTimeoutRef.current !== null) {
-        window.clearTimeout(stackEntryTimeoutRef.current);
-        stackEntryTimeoutRef.current = null;
-      }
+        if (textareaRef.current !== el) return;
+        textareaHeightRef.current = nextHeight;
+        setTextareaHeight(nextHeight);
+        el.style.height = `${nextHeight}px`;
+        enableOverflowWhenReady(160);
+        stackEntryTimeoutRef.current = window.setTimeout(() => {
+          stackEntryTimeoutRef.current = null;
+          setStackEntryAnimating(false);
+        }, 180);
+      });
+      return;
+    }
 
-      const previousHeight =
-        el.getBoundingClientRect().height || textareaHeightRef.current;
-
-      el.style.height = "auto";
-      const scrollHeight = el.scrollHeight;
-      const nextHeight = Math.min(
-        Math.max(scrollHeight, MIN_TEXTAREA_HEIGHT),
-        MAX_TEXTAREA_HEIGHT,
-      );
-      const isCapped = scrollHeight > MAX_TEXTAREA_HEIGHT;
-
-      const enableOverflowWhenReady = (delay: number) => {
-        if (!isCapped) return;
-        overflowTimeoutRef.current = window.setTimeout(() => {
-          if (textareaRef.current !== el) return;
-          el.style.overflowY = "auto";
-          if (scrollToBottom) {
-            el.scrollTop = el.scrollHeight;
-          }
-        }, delay);
-      };
-
-      el.style.overflowY = "hidden";
-
-      if (animateHeight && previousHeight !== nextHeight) {
-        setStackEntryAnimating(true);
-        textareaHeightRef.current = previousHeight;
-        setTextareaHeight(previousHeight);
-        el.style.height = `${previousHeight}px`;
-        void el.offsetHeight;
-
-        heightAnimationFrameRef.current = window.requestAnimationFrame(() => {
-          heightAnimationFrameRef.current = null;
-          if (textareaRef.current !== el) return;
-          textareaHeightRef.current = nextHeight;
-          setTextareaHeight(nextHeight);
-          el.style.height = `${nextHeight}px`;
-          enableOverflowWhenReady(160);
-          stackEntryTimeoutRef.current = window.setTimeout(() => {
-            stackEntryTimeoutRef.current = null;
-            setStackEntryAnimating(false);
-          }, 180);
-        });
-        return;
-      }
-
-      textareaHeightRef.current = nextHeight;
-      setTextareaHeight(nextHeight);
-      el.style.height = `${nextHeight}px`;
-      enableOverflowWhenReady(0);
-    },
-    [],
-  );
+    textareaHeightRef.current = nextHeight;
+    setTextareaHeight(nextHeight);
+    el.style.height = `${nextHeight}px`;
+    enableOverflowWhenReady(0);
+  }, []);
 
   const resetTextareaHeight = React.useCallback(() => {
     if (overflowTimeoutRef.current !== null) {
@@ -365,9 +353,7 @@ function MessageComposer({
             onRetry={onRetryAttachment}
           />
           {limitMessage ? (
-            <p className="mb-1 px-2 text-xs text-muted-foreground">
-              {limitMessage}
-            </p>
+            <p className="mb-1 px-2 text-xs text-muted-foreground">{limitMessage}</p>
           ) : null}
           <motion.form
             ref={gridRef}
@@ -426,8 +412,7 @@ function MessageComposer({
               style={{ height: textareaHeight }}
               className={cn(
                 "min-h-10 resize-none overflow-y-hidden border-0 bg-transparent text-base text-foreground shadow-none outline-none placeholder:text-muted-foreground focus:outline-none focus-visible:outline-none disabled:cursor-not-allowed disabled:text-muted-foreground motion-reduce:transition-none",
-                shouldAnimateTextareaHeight &&
-                  "transition-[height] duration-150 ease-out",
+                shouldAnimateTextareaHeight && "transition-[height] duration-150 ease-out",
                 isTextareaStacked
                   ? "col-span-3 row-start-1 w-full px-3 pt-3 pb-1 leading-6"
                   : "col-start-2 row-start-1 w-full px-1 py-2.5 leading-5",
@@ -508,9 +493,7 @@ function DropOverlay({
         <motion.div
           className={cn(
             "pointer-events-none z-[100] flex items-center justify-center bg-black/72",
-            contained
-              ? "absolute inset-0 rounded-3xl"
-              : "fixed inset-0",
+            contained ? "absolute inset-0 rounded-3xl" : "fixed inset-0",
           )}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -519,30 +502,16 @@ function DropOverlay({
         >
           <motion.div
             className="flex flex-col items-center gap-3 text-center text-white"
-            initial={
-              prefersReducedMotion
-                ? { opacity: 0 }
-                : { opacity: 0, y: 8, scale: 0.98 }
-            }
-            animate={
-              prefersReducedMotion
-                ? { opacity: 1 }
-                : { opacity: 1, y: 0, scale: 1 }
-            }
-            exit={
-              prefersReducedMotion
-                ? { opacity: 0 }
-                : { opacity: 0, y: 4, scale: 0.99 }
-            }
+            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.98 }}
+            animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
+            exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 4, scale: 0.99 }}
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="flex size-20 items-center justify-center rounded-3xl bg-white/10 shadow-[inset_0_0_0_1px_rgb(255_255_255_/_12%)] backdrop-blur-sm">
               <UploadIcon className="size-8" aria-hidden="true" />
             </div>
             <div className="space-y-1">
-              <div className="text-2xl font-semibold tracking-normal">
-                Add anything
-              </div>
+              <div className="text-2xl font-semibold tracking-normal">Add anything</div>
               <div className="text-base font-medium text-white">
                 Drop files anywhere to add them to this message
               </div>
@@ -664,11 +633,7 @@ function PendingAttachmentTile({
   );
 }
 
-function PendingAttachmentPreview({
-  attachment,
-}: {
-  attachment: MessageComposerAttachment;
-}) {
+function PendingAttachmentPreview({ attachment }: { attachment: MessageComposerAttachment }) {
   if (attachment.kind === "image" && attachment.objectUrl) {
     return (
       <img
@@ -699,21 +664,10 @@ function PendingAttachmentPreview({
     );
   }
 
-  return (
-    <DocumentTile
-      fileName={attachment.name}
-      mimeType={attachment.mimeType}
-    />
-  );
+  return <DocumentTile fileName={attachment.name} mimeType={attachment.mimeType} />;
 }
 
-function DocumentTile({
-  fileName,
-  mimeType,
-}: {
-  fileName: string;
-  mimeType?: string;
-}) {
+function DocumentTile({ fileName, mimeType }: { fileName: string; mimeType?: string }) {
   const label = documentFormatLabel(mimeType, fileName);
   const { stem, extension } = splitDisplayName(fileName, label);
 

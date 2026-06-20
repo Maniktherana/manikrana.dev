@@ -2,11 +2,7 @@ import type * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Kbd } from "@/components/ui/kbd";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const tooltipPreviewTitles: Record<string, string> = {
   "tooltip-demo": "Tooltip",
@@ -17,9 +13,7 @@ const tooltipPreviewTitles: Record<string, string> = {
 function TooltipDemo() {
   return (
     <Tooltip>
-      <TooltipTrigger render={<Button variant="secondary" />}>
-        Hover me
-      </TooltipTrigger>
+      <TooltipTrigger render={<Button variant="secondary" />}>Hover me</TooltipTrigger>
       <TooltipContent>Compact contextual help</TooltipContent>
     </Tooltip>
   );
@@ -33,15 +27,11 @@ function TooltipSide() {
         <TooltipContent side="top">Placed above</TooltipContent>
       </Tooltip>
       <Tooltip>
-        <TooltipTrigger render={<Button variant="secondary" />}>
-          Bottom
-        </TooltipTrigger>
+        <TooltipTrigger render={<Button variant="secondary" />}>Bottom</TooltipTrigger>
         <TooltipContent side="bottom">Placed below</TooltipContent>
       </Tooltip>
       <Tooltip>
-        <TooltipTrigger render={<Button variant="secondary" />}>
-          Right
-        </TooltipTrigger>
+        <TooltipTrigger render={<Button variant="secondary" />}>Right</TooltipTrigger>
         <TooltipContent side="right">Placed to the right</TooltipContent>
       </Tooltip>
     </div>
@@ -51,9 +41,7 @@ function TooltipSide() {
 function TooltipShortcut() {
   return (
     <Tooltip>
-      <TooltipTrigger render={<Button variant="secondary" />}>
-        Command menu
-      </TooltipTrigger>
+      <TooltipTrigger render={<Button variant="secondary" />}>Command menu</TooltipTrigger>
       <TooltipContent>
         Open command menu <Kbd>Cmd</Kbd>
         <Kbd>K</Kbd>

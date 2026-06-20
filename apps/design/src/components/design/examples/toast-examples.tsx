@@ -48,25 +48,13 @@ function ToastAction() {
 function ToastStatus() {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <Button
-        type="button"
-        variant="secondary"
-        onClick={() => toast.success("Published")}
-      >
+      <Button type="button" variant="secondary" onClick={() => toast.success("Published")}>
         Success
       </Button>
-      <Button
-        type="button"
-        variant="secondary"
-        onClick={() => toast.warning("Inventory is low")}
-      >
+      <Button type="button" variant="secondary" onClick={() => toast.warning("Inventory is low")}>
         Warning
       </Button>
-      <Button
-        type="button"
-        variant="secondary"
-        onClick={() => toast.error("Could not sync")}
-      >
+      <Button type="button" variant="secondary" onClick={() => toast.error("Could not sync")}>
         Error
       </Button>
     </div>

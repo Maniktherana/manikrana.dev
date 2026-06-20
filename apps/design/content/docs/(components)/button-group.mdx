@@ -17,11 +17,7 @@ bunx shadcn@latest add button-group
 
 ```tsx
 import { Button } from "@/components/ui/button";
-import {
-  ButtonGroup,
-  ButtonGroupSeparator,
-  ButtonGroupText,
-} from "@/components/ui/button-group";
+import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@/components/ui/button-group";
 ```
 
 ```tsx
@@ -143,12 +139,12 @@ Use with a `Popover` component.
 The `ButtonGroup` component is a container that groups related controls together with
 consistent styling.
 
-| Prop          | Type                                  | Default        |
-| ------------- | ------------------------------------- | -------------- |
-| `orientation` | `"horizontal" \| "vertical"`          | `"horizontal"` |
-| `variant`     | `"default" \| "base" \| "toolbar"`   | `"default"`    |
-| `size`        | `"default" \| "compact"`             | `"default"`    |
-| `className`   | `string`                              | -              |
+| Prop          | Type                               | Default        |
+| ------------- | ---------------------------------- | -------------- |
+| `orientation` | `"horizontal" \| "vertical"`       | `"horizontal"` |
+| `variant`     | `"default" \| "base" \| "toolbar"` | `"default"`    |
+| `size`        | `"default" \| "compact"`           | `"default"`    |
+| `className`   | `string`                           | -              |
 
 ```tsx
 <ButtonGroup variant="base" size="compact">
@@ -213,9 +209,7 @@ import { Label } from "@/components/ui/label";
 export function ButtonGroupTextDemo() {
   return (
     <ButtonGroup>
-      <ButtonGroupText render={<Label htmlFor="name" />}>
-        Text
-      </ButtonGroupText>
+      <ButtonGroupText render={<Label htmlFor="name" />}>Text</ButtonGroupText>
       <Input placeholder="Type something here..." id="name" />
     </ButtonGroup>
   );

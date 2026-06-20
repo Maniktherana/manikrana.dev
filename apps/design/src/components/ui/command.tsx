@@ -249,10 +249,7 @@ function CommandBarAction({
       {shortcuts.length > 0 ? (
         <span className="inline-flex gap-[5px]">
           {shortcuts.map((shortcut, index) => (
-            <Kbd
-              key={`${shortcut}-${index}`}
-              className="h-4 min-w-4 p-0"
-            >
+            <Kbd key={`${shortcut}-${index}`} className="h-4 min-w-4 p-0">
               {shortcut}
             </Kbd>
           ))}

@@ -1,10 +1,5 @@
 import type * as React from "react";
-import {
-  ArchiveIcon,
-  DownloadIcon,
-  MoreHorizontalIcon,
-  Trash2Icon,
-} from "lucide-react";
+import { ArchiveIcon, DownloadIcon, MoreHorizontalIcon, Trash2Icon } from "lucide-react";
 
 import { CommandBar, CommandBarAction } from "@/components/ui/command";
 

@@ -34,11 +34,7 @@ function SwitchSize() {
   );
 }
 
-function SwitchText({
-  hiddenContent,
-}: {
-  hiddenContent?: React.ReactNode;
-}) {
+function SwitchText({ hiddenContent }: { hiddenContent?: React.ReactNode }) {
   return (
     <div className={cn("flex min-w-0 flex-col items-start", hiddenContent && "gap-3")}>
       <div className="flex items-center gap-1">
@@ -75,12 +71,7 @@ function SwitchCard() {
         setChecked((value) => !value);
       }}
     >
-      <Switch
-        checked={checked}
-        onCheckedChange={setChecked}
-        size="sm"
-        className="mt-0"
-      />
+      <Switch checked={checked} onCheckedChange={setChecked} size="sm" className="mt-0" />
       <SwitchText />
     </div>
   );
@@ -98,12 +89,7 @@ function SwitchCardContent() {
         setChecked((value) => !value);
       }}
     >
-      <Switch
-        checked={checked}
-        onCheckedChange={setChecked}
-        size="sm"
-        className="mt-0"
-      />
+      <Switch checked={checked} onCheckedChange={setChecked} size="sm" className="mt-0" />
       <SwitchText
         hiddenContent={
           <div className="flex h-8 w-full items-center overflow-hidden rounded-[6px] bg-background shadow-[var(--shadow-control)]">

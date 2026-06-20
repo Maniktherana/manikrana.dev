@@ -53,17 +53,17 @@ Use Sonner status helpers for success, warning, and error states.
 
 ### Toaster
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `position` | `ToasterProps["position"]` | - |
-| `theme` | `"light" \| "dark" \| "system"` | `"system"` |
-| `toastOptions` | `ToasterProps["toastOptions"]` | Local defaults |
+| Prop           | Type                            | Default        |
+| -------------- | ------------------------------- | -------------- |
+| `position`     | `ToasterProps["position"]`      | -              |
+| `theme`        | `"light" \| "dark" \| "system"` | `"system"`     |
+| `toastOptions` | `ToasterProps["toastOptions"]`  | Local defaults |
 
 ### toast
 
-| API | Type |
-| --- | --- |
-| `toast(message, options)` | `(message: string, options?: ExternalToast) => string \| number` |
+| API                               | Type                                                             |
+| --------------------------------- | ---------------------------------------------------------------- |
+| `toast(message, options)`         | `(message: string, options?: ExternalToast) => string \| number` |
 | `toast.success(message, options)` | `(message: string, options?: ExternalToast) => string \| number` |
 | `toast.warning(message, options)` | `(message: string, options?: ExternalToast) => string \| number` |
-| `toast.error(message, options)` | `(message: string, options?: ExternalToast) => string \| number` |
+| `toast.error(message, options)`   | `(message: string, options?: ExternalToast) => string \| number` |

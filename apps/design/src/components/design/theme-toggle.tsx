@@ -47,7 +47,8 @@ function getInitialResolvedTheme(): ResolvedTheme {
 }
 
 function ThemeToggle() {
-  const [themePreference, setThemePreference] = useState<ThemePreference>(getInitialThemePreference);
+  const [themePreference, setThemePreference] =
+    useState<ThemePreference>(getInitialThemePreference);
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(getInitialResolvedTheme);
 
   useEffect(() => {

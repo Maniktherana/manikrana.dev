@@ -31,7 +31,10 @@ function HeadingAnchor({ children, id }: { children: React.ReactNode; id?: strin
   return (
     <a className="group text-inherit no-underline" href={`#${id}`}>
       <span>{children}</span>
-      <span aria-hidden="true" className="ms-2 text-muted-foreground opacity-0 group-hover:opacity-100">
+      <span
+        aria-hidden="true"
+        className="ms-2 text-muted-foreground opacity-0 group-hover:opacity-100"
+      >
         #
       </span>
     </a>
@@ -126,10 +129,7 @@ const mdxComponents = {
   },
   a: ({ children, className, ...props }: React.ComponentProps<"a">) => (
     <a
-      className={cn(
-        "font-medium text-foreground underline underline-offset-4",
-        className,
-      )}
+      className={cn("font-medium text-foreground underline underline-offset-4", className)}
       {...props}
     >
       {children}
@@ -137,10 +137,7 @@ const mdxComponents = {
   ),
   p: ({ className, ...props }: React.ComponentProps<"p">) => (
     <p
-      className={cn(
-        "mt-3 text-[15px] leading-[1.55] text-secondary-foreground",
-        className,
-      )}
+      className={cn("mt-3 text-[15px] leading-[1.55] text-secondary-foreground", className)}
       {...props}
     />
   ),

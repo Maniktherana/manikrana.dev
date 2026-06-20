@@ -1,9 +1,4 @@
-import {
-  ChevronRightIcon,
-  CircleIcon,
-  CreditCardIcon,
-  MoreHorizontalIcon,
-} from "lucide-react";
+import { ChevronRightIcon, CircleIcon, CreditCardIcon, MoreHorizontalIcon } from "lucide-react";
 
 function ComponentMapIcon({ id }: { id: string }) {
   if (id.includes("button")) return <CircleIcon />;

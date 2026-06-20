@@ -35,13 +35,7 @@ function DocsLink({ href, ...props }: DocsLinkProps) {
   }
 
   if (href.startsWith("/docs/")) {
-    return (
-      <Link
-        to="/docs/$"
-        params={{ _splat: href.slice("/docs/".length) }}
-        {...props}
-      />
-    );
+    return <Link to="/docs/$" params={{ _splat: href.slice("/docs/".length) }} {...props} />;
   }
 
   return <a href={href} {...props} />;
@@ -177,7 +171,12 @@ function DocsSidebarFolder({ activeUrl, node }: { activeUrl: string; node: Folde
 
 function DocsMobileNav({ activeUrl, pageTree }: { activeUrl: string; pageTree: Root }) {
   return (
-    <details className={cn("group hidden w-full max-[900px]:mb-[22px] max-[900px]:block", contentWidthClassName)}>
+    <details
+      className={cn(
+        "group hidden w-full max-[900px]:mb-[22px] max-[900px]:block",
+        contentWidthClassName,
+      )}
+    >
       <summary className="flex min-h-[38px] cursor-pointer list-none items-center justify-between rounded-[7px] border border-border px-2.5 py-2 text-[13px] leading-[1.3] font-medium text-foreground [&::-webkit-details-marker]:hidden [&_svg]:size-[15px]">
         <span className="flex min-w-0 items-center gap-2">
           <PanelLeftIcon />
@@ -231,7 +230,10 @@ function DocsTableOfContents({ page }: { page: SerializedComponentDocPage }) {
 
   return (
     <aside className="fixed end-0 top-14 bottom-0 z-10 w-64 min-w-0 border-s border-border max-[1180px]:hidden">
-      <div className="sticky top-14 max-h-[calc(100svh-56px)] overflow-auto px-[22px] py-[42px]" ref={containerRef}>
+      <div
+        className="sticky top-14 max-h-[calc(100svh-56px)] overflow-auto px-[22px] py-[42px]"
+        ref={containerRef}
+      >
         <p className="font-mono text-xs leading-[1.1] font-normal tracking-normal text-secondary-foreground uppercase">
           On This Page
         </p>
@@ -391,7 +393,9 @@ function DocsShell({
                 <DocsBreadcrumbs page={page} pageTree={rootTree} />
                 <DocsPageActions page={page} pageTree={rootTree} />
               </div>
-              <header className={cn("mb-9 border-b border-border pb-[34px]", contentWidthClassName)}>
+              <header
+                className={cn("mb-9 border-b border-border pb-[34px]", contentWidthClassName)}
+              >
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="outline">{page.component.category}</Badge>
                   <Badge variant={page.component.custom ? "outline" : "secondary"}>

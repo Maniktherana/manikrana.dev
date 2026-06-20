@@ -13,7 +13,8 @@ const buttonGroupVariants = cva(
         default:
           "bg-[var(--component)] [&>[data-slot]:not([data-slot=button-group]):not([data-slot=button-group-separator])]:bg-[var(--component)]",
         base: "bg-background [&>[data-slot]:not([data-slot=button-group]):not([data-slot=button-group-separator])]:bg-background",
-        toolbar: "items-center gap-2 overflow-visible rounded-none border-0 bg-transparent shadow-none",
+        toolbar:
+          "items-center gap-2 overflow-visible rounded-none border-0 bg-transparent shadow-none",
       },
       size: {
         default:

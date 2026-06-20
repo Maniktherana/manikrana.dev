@@ -1,11 +1,7 @@
 import * as React from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
 
-import {
-  CodeBlock,
-  CodeBlockBody,
-  CodeBlockContent,
-} from "@/components/design/code";
+import { CodeBlock, CodeBlockBody, CodeBlockContent } from "@/components/design/code";
 import { catalogById } from "@/components/design/component-catalog";
 import { getExampleSource } from "@/components/design/example-source";
 import {
@@ -36,10 +32,7 @@ import {
   buttonPreviewTitles,
   renderButtonPreview,
 } from "@/components/design/examples/button-examples";
-import {
-  cardPreviewTitles,
-  renderCardPreview,
-} from "@/components/design/examples/card-examples";
+import { cardPreviewTitles, renderCardPreview } from "@/components/design/examples/card-examples";
 import {
   calendarPreviewTitles,
   renderCalendarPreview,
@@ -48,10 +41,7 @@ import {
   checkboxPreviewTitles,
   renderCheckboxPreview,
 } from "@/components/design/examples/checkbox-examples";
-import {
-  codePreviewTitles,
-  renderCodePreview,
-} from "@/components/design/examples/code-examples";
+import { codePreviewTitles, renderCodePreview } from "@/components/design/examples/code-examples";
 import {
   codeBlockPreviewTitles,
   renderCodeBlockPreview,
@@ -84,10 +74,7 @@ import {
   labelPreviewTitles,
   renderLabelPreview,
 } from "@/components/design/examples/label-examples";
-import {
-  menuPreviewTitles,
-  renderMenuPreview,
-} from "@/components/design/examples/menu-examples";
+import { menuPreviewTitles, renderMenuPreview } from "@/components/design/examples/menu-examples";
 import {
   messageComposerPreviewTitles,
   renderMessageComposerPreview,
@@ -116,18 +103,16 @@ import {
   renderSeparatorPreview,
   separatorPreviewTitles,
 } from "@/components/design/examples/separator-examples";
-import {
-  kbdPreviewTitles,
-  renderKbdPreview,
-} from "@/components/design/examples/kbd-examples";
+import { kbdPreviewTitles, renderKbdPreview } from "@/components/design/examples/kbd-examples";
 import {
   renderSwitchPreview,
   switchPreviewTitles,
 } from "@/components/design/examples/switch-examples";
+import { renderTabsPreview, tabsPreviewTitles } from "@/components/design/examples/tabs-examples";
 import {
-  renderTabsPreview,
-  tabsPreviewTitles,
-} from "@/components/design/examples/tabs-examples";
+  renderTablePreview,
+  tablePreviewTitles,
+} from "@/components/design/examples/table-examples";
 import {
   renderTooltipPreview,
   tooltipPreviewTitles,
@@ -138,24 +123,14 @@ import {
 } from "@/components/design/examples/toast-examples";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 function getComponent(name: string) {
   return catalogById[name];
 }
 
 // Copy button composed from the Button primitive (no bespoke code-block wrapper).
-function CopyButton({
-  value,
-  className,
-}: {
-  value: string;
-  className?: string;
-}) {
+function CopyButton({ value, className }: { value: string; className?: string }) {
   const [copied, setCopied] = React.useState(false);
 
   return (
@@ -221,6 +196,7 @@ function ComponentPreview({
     separatorPreviewTitles[name] ??
     switchPreviewTitles[name] ??
     tabsPreviewTitles[name] ??
+    tablePreviewTitles[name] ??
     kbdPreviewTitles[name] ??
     tooltipPreviewTitles[name] ??
     toastPreviewTitles[name] ??
@@ -256,15 +232,8 @@ function ComponentPreview({
       {source ? (
         <CodeBlock variant="bare">
           <CodeBlockBody collapsible={collapsible} flush>
-            <CopyButton
-              value={source}
-              className="absolute top-2.5 right-2.5 z-10"
-            />
-            <CodeBlockContent
-              code={source}
-              language="tsx"
-              showLineNumbers={false}
-            />
+            <CopyButton value={source} className="absolute top-2.5 right-2.5 z-10" />
+            <CodeBlockContent code={source} language="tsx" showLineNumbers={false} />
           </CodeBlockBody>
         </CodeBlock>
       ) : null}
@@ -439,6 +408,12 @@ function renderPreview(name: string) {
 
   if (tabsPreview) {
     return tabsPreview;
+  }
+
+  const tablePreview = renderTablePreview(name);
+
+  if (tablePreview) {
+    return tablePreview;
   }
 
   const kbdPreview = renderKbdPreview(name);

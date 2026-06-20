@@ -67,9 +67,7 @@ function ComboboxWidth() {
         <ComboboxList>
           {(region: (typeof regions)[number]) => (
             <ComboboxItem key={region.value} value={region}>
-              {region.label === "European Union"
-                ? "European Union commerce region"
-                : region.label}
+              {region.label === "European Union" ? "European Union commerce region" : region.label}
             </ComboboxItem>
           )}
         </ComboboxList>
@@ -102,10 +100,7 @@ function ComboboxGroupDemo() {
 
 function ComboboxMultiple() {
   const anchor = useComboboxAnchor();
-  const [value, setValue] = useState<(typeof statuses)[number][]>([
-    statuses[0],
-    statuses[1],
-  ]);
+  const [value, setValue] = useState<(typeof statuses)[number][]>([statuses[0], statuses[1]]);
 
   return (
     <Combobox

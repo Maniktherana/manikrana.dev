@@ -74,62 +74,62 @@ Use `ComboboxEmpty` for filtered states with no results.
 
 `Combobox` is the Base UI combobox root.
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `items` | `Value[]` | - |
-| `multiple` | `boolean` | `false` |
-| `defaultValue` | `Value \| Value[] \| null` | - |
-| `value` | `Value \| Value[] \| null` | - |
-| `onValueChange` | `(value: Value \| Value[]) => void` | - |
-| `itemToStringLabel` | `(item: Value) => string` | - |
-| `isItemEqualToValue` | `(item: Value, value: Value) => boolean` | - |
-| `disabled` | `boolean` | - |
+| Prop                 | Type                                     | Default |
+| -------------------- | ---------------------------------------- | ------- |
+| `items`              | `Value[]`                                | -       |
+| `multiple`           | `boolean`                                | `false` |
+| `defaultValue`       | `Value \| Value[] \| null`               | -       |
+| `value`              | `Value \| Value[] \| null`               | -       |
+| `onValueChange`      | `(value: Value \| Value[]) => void`      | -       |
+| `itemToStringLabel`  | `(item: Value) => string`                | -       |
+| `isItemEqualToValue` | `(item: Value, value: Value) => boolean` | -       |
+| `disabled`           | `boolean`                                | -       |
 
 ### ComboboxInput
 
 `ComboboxInput` composes the project `InputGroup` and adds trigger / clear affordances.
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `placeholder` | `string` | - |
-| `showTrigger` | `boolean` | `true` |
-| `showClear` | `boolean` | `false` |
-| `disabled` | `boolean` | `false` |
-| `className` | `string` | - |
+| Prop          | Type      | Default |
+| ------------- | --------- | ------- |
+| `placeholder` | `string`  | -       |
+| `showTrigger` | `boolean` | `true`  |
+| `showClear`   | `boolean` | `false` |
+| `disabled`    | `boolean` | `false` |
+| `className`   | `string`  | -       |
 
 ### ComboboxContent
 
 By default, content aligns to the trigger start. Its minimum width is the trigger width, and it can grow for longer options.
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `side` | `"top" \| "bottom" \| "left" \| "right" \| "inline-start" \| "inline-end"` | `"bottom"` |
-| `sideOffset` | `number` | `4` |
-| `align` | `"start" \| "center" \| "end"` | `"start"` |
-| `alignOffset` | `number` | `0` |
-| `anchor` | `RefObject<HTMLElement \| null>` | - |
-| `className` | `string` | - |
+| Prop          | Type                                                                       | Default    |
+| ------------- | -------------------------------------------------------------------------- | ---------- |
+| `side`        | `"top" \| "bottom" \| "left" \| "right" \| "inline-start" \| "inline-end"` | `"bottom"` |
+| `sideOffset`  | `number`                                                                   | `4`        |
+| `align`       | `"start" \| "center" \| "end"`                                             | `"start"`  |
+| `alignOffset` | `number`                                                                   | `0`        |
+| `anchor`      | `RefObject<HTMLElement \| null>`                                           | -          |
+| `className`   | `string`                                                                   | -          |
 
 ### ComboboxItem
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `value` | `Value` | `null` |
-| `disabled` | `boolean` | `false` |
-| `className` | `string` | - |
+| Prop        | Type      | Default |
+| ----------- | --------- | ------- |
+| `value`     | `Value`   | `null`  |
+| `disabled`  | `boolean` | `false` |
+| `className` | `string`  | -       |
 
 ### ComboboxChips
 
 `ComboboxChips` is the selected-value control for `multiple` comboboxes.
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `className` | `string` | - |
-| `ref` | `Ref<HTMLDivElement>` | - |
+| Prop        | Type                  | Default |
+| ----------- | --------------------- | ------- |
+| `className` | `string`              | -       |
+| `ref`       | `Ref<HTMLDivElement>` | -       |
 
 ### ComboboxChip
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `showRemove` | `boolean` | `true` |
-| `className` | `string` | - |
+| Prop         | Type      | Default |
+| ------------ | --------- | ------- |
+| `showRemove` | `boolean` | `true`  |
+| `className`  | `string`  | -       |

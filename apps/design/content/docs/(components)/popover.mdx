@@ -1,6 +1,6 @@
 ---
 title: Popover
-description: Floating inverted content with title, description, close, arrow, and footer slots.
+description: An accessible popup anchored to a button.
 component: true
 base: base
 ---
@@ -16,16 +16,11 @@ bunx shadcn@latest add popover
 ## Usage
 
 ```tsx
-import { Button } from "@/components/ui/button";
 import {
   Popover,
+  PopoverClose,
   PopoverContent,
   PopoverDescription,
-  PopoverFooter,
-  PopoverFooterActions,
-  PopoverHeader,
-  PopoverSeparator,
-  PopoverStep,
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover";
@@ -33,70 +28,77 @@ import {
 
 ```tsx
 <Popover>
-  <PopoverTrigger>Open popover</PopoverTrigger>
-  <PopoverContent showArrow showCloseButton>
-    <PopoverHeader>
-      <PopoverTitle>Insert Popover</PopoverTitle>
-      <PopoverDescription>
-        Insert popover description here. It would look much better as three lines of text.
-      </PopoverDescription>
-    </PopoverHeader>
-    <PopoverSeparator />
-    <PopoverFooter>
-      <PopoverStep>Step 1 of 5</PopoverStep>
-      <PopoverFooterActions>
-        <Button type="button" variant="ghost" size="sm">
-          Back
-        </Button>
-        <Button type="button" size="sm" className="flex-1">
-          Next
-        </Button>
-      </PopoverFooterActions>
-    </PopoverFooter>
+  <PopoverTrigger render={<button type="button" />}>Open popover</PopoverTrigger>
+  <PopoverContent>
+    <PopoverTitle>Popover title</PopoverTitle>
+    <PopoverDescription>Popover description.</PopoverDescription>
+    <PopoverClose>Close</PopoverClose>
   </PopoverContent>
 </Popover>
 ```
 
 ## Examples
 
-### Footer
+### Align
 
-Use `PopoverFooter`, `PopoverStep`, and `PopoverFooterActions` for stepper-style popovers.
+Use `align` to pin the popup to the start, center, or end of the trigger.
 
-<ComponentPreview name="popover-footer" />
+<ComponentPreview name="popover-align" />
 
-### Stretch
+### Close
 
-Use flex layout on standard `Button` actions when the footer has only actions.
+Use `PopoverClose` when the popup needs an explicit close action.
 
-<ComponentPreview name="popover-stretch" />
+<ComponentPreview name="popover-close" />
 
-### Sides
+### Composition
 
-Use `side="left"` or `side="right"` for side-mounted popovers.
+Use normal primitives inside `PopoverContent` when the popup needs richer content.
 
-<ComponentPreview name="popover-sides" />
+<ComponentPreview name="popover-composition" />
 
 ## API Reference
 
 ### Popover
 
-`Popover` is the Base UI popover root.
+Root component. Alias for `Popover.Root` from Base UI.
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `defaultOpen` | `boolean` | - |
-| `open` | `boolean` | - |
-| `onOpenChange` | `(open: boolean) => void` | - |
+| Prop           | Type                      | Default |
+| -------------- | ------------------------- | ------- |
+| `open`         | `boolean`                 | -       |
+| `defaultOpen`  | `boolean`                 | -       |
+| `onOpenChange` | `(open: boolean) => void` | -       |
+
+### PopoverTrigger
+
+Trigger button that opens the popover. Alias for `Popover.Trigger` from Base UI.
+
+| Prop        | Type                                             | Default |
+| ----------- | ------------------------------------------------ | ------- |
+| `render`    | `ReactElement \| (props, state) => ReactElement` | -       |
+| `className` | `string`                                         | -       |
 
 ### PopoverContent
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `side` | `"top" \| "bottom" \| "left" \| "right" \| "inline-start" \| "inline-end"` | `"bottom"` |
-| `sideOffset` | `number` | `16` |
-| `align` | `"start" \| "center" \| "end"` | `"center"` |
-| `alignOffset` | `number` | `0` |
-| `showArrow` | `boolean` | `false` |
-| `showCloseButton` | `boolean` | `false` |
-| `className` | `string` | - |
+Popup container that displays the popover content. Also exported as `PopoverPopup`.
+
+| Prop          | Type                                                                       | Default    |
+| ------------- | -------------------------------------------------------------------------- | ---------- |
+| `side`        | `"top" \| "right" \| "bottom" \| "left" \| "inline-start" \| "inline-end"` | `"bottom"` |
+| `sideOffset`  | `number`                                                                   | `8`        |
+| `align`       | `"start" \| "center" \| "end"`                                             | `"center"` |
+| `alignOffset` | `number`                                                                   | `4`        |
+| `portalProps` | `Popover.Portal.Props`                                                     | -          |
+| `className`   | `string`                                                                   | -          |
+
+### PopoverTitle
+
+Title text for the popover. Styled wrapper for `Popover.Title` from Base UI.
+
+### PopoverDescription
+
+Description text for the popover. Styled wrapper for `Popover.Description` from Base UI.
+
+### PopoverClose
+
+Close button for the popover. Alias for `Popover.Close` from Base UI.

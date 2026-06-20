@@ -3,8 +3,8 @@
 // Each `*-examples.tsx` file exports a `<x>Previews` map of `"preview-key":
 // DemoComponent`. We import those files as raw text (Vite `?raw`) and synthesize
 // the source for a single demo: relevant imports, any top-level helpers/constants
-// it uses, and the demo function itself. That keeps the docs snippet close to an
-// actual one-demo file instead of showing registry maps or wrapper plumbing.
+// it uses, and the returned JSX for simple demos. That keeps the docs snippet
+// focused on what you copy instead of registry maps or wrapper plumbing.
 
 /* eslint-disable import/default */
 import accordionSource from "@/components/design/examples/accordion-examples.tsx?raw";
@@ -36,8 +36,12 @@ import searchSource from "@/components/design/examples/search-examples.tsx?raw";
 import separatorSource from "@/components/design/examples/separator-examples.tsx?raw";
 import switchSource from "@/components/design/examples/switch-examples.tsx?raw";
 import tabsSource from "@/components/design/examples/tabs-examples.tsx?raw";
+import tableSource from "@/components/design/examples/table-examples.tsx?raw";
 import tooltipSource from "@/components/design/examples/tooltip-examples.tsx?raw";
 import toastSource from "@/components/design/examples/toast-examples.tsx?raw";
+import dynamicIslandBlockSource from "@/components/design/dynamic-island.tsx?raw";
+import familyDrawerBlockSource from "@/components/design/family-drawer.tsx?raw";
+import messageComposerBlockSource from "@/components/design/message-composer.tsx?raw";
 
 const rawSources = [
   accordionSource,
@@ -69,9 +73,16 @@ const rawSources = [
   separatorSource,
   switchSource,
   tabsSource,
+  tableSource,
   tooltipSource,
   toastSource,
 ];
+
+const blockSources: Record<string, string> = {
+  "dynamic-island": dynamicIslandBlockSource.trim(),
+  "family-drawer": familyDrawerBlockSource.trim(),
+  "message-composer": messageComposerBlockSource.trim(),
+};
 
 type Declaration = {
   name: string;
@@ -283,12 +294,7 @@ function findStatementEnd(source: string, start: number) {
     else if (char === "]") bracketDepth -= 1;
     else if (char === "(") parenDepth += 1;
     else if (char === ")") parenDepth -= 1;
-    else if (
-      char === ";" &&
-      braceDepth === 0 &&
-      bracketDepth === 0 &&
-      parenDepth === 0
-    ) {
+    else if (char === ";" && braceDepth === 0 && bracketDepth === 0 && parenDepth === 0) {
       return index + 1;
     }
   }
@@ -423,7 +429,8 @@ function formatImportDeclaration(declaration: ImportDeclaration, usedNames: Set<
   const hasTypeNamed = named.some((item) => item.isType);
   const namedSource = named
     .map((item) => {
-      const alias = item.imported === item.local ? item.imported : `${item.imported} as ${item.local}`;
+      const alias =
+        item.imported === item.local ? item.imported : `${item.imported} as ${item.local}`;
       return item.isType && (hasRuntimeNamed || defaultName) ? `type ${alias}` : alias;
     })
     .join(", ");
@@ -436,13 +443,10 @@ function formatImportDeclaration(declaration: ImportDeclaration, usedNames: Set<
     return `import ${declaration.isTypeOnly ? "type " : ""}${defaultName} from "${declaration.module}";`;
   }
 
-  return `import ${declaration.isTypeOnly || !hasRuntimeNamed && hasTypeNamed ? "type " : ""}{ ${namedSource} } from "${declaration.module}";`;
+  return `import ${declaration.isTypeOnly || (!hasRuntimeNamed && hasTypeNamed) ? "type " : ""}{ ${namedSource} } from "${declaration.module}";`;
 }
 
-function collectDemoDeclarations(
-  declarations: Map<string, Declaration>,
-  functionName: string,
-) {
+function collectDemoDeclarations(declarations: Map<string, Declaration>, functionName: string) {
   const target = declarations.get(functionName);
 
   if (!target) return [];
@@ -468,14 +472,171 @@ function collectDemoDeclarations(
     .sort((a, b) => a.start - b.start);
 }
 
+function findMatchingParen(source: string, parenStart: number) {
+  let blockComment = false;
+  let depth = 0;
+  let escaped = false;
+  let lineComment = false;
+  let quote: '"' | "'" | "`" | undefined;
+
+  for (let index = parenStart; index < source.length; index += 1) {
+    const char = source[index];
+    const next = source[index + 1];
+
+    if (lineComment) {
+      if (char === "\n") lineComment = false;
+      continue;
+    }
+
+    if (blockComment) {
+      if (char === "*" && next === "/") {
+        blockComment = false;
+        index += 1;
+      }
+      continue;
+    }
+
+    if (quote) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === "\\") {
+        escaped = true;
+      } else if (char === quote) {
+        quote = undefined;
+      }
+      continue;
+    }
+
+    if (char === "/" && next === "/") {
+      lineComment = true;
+      index += 1;
+      continue;
+    }
+
+    if (char === "/" && next === "*") {
+      blockComment = true;
+      index += 1;
+      continue;
+    }
+
+    if (char === '"' || char === "'" || char === "`") {
+      quote = char;
+      continue;
+    }
+
+    if (char === "(") depth += 1;
+    else if (char === ")") {
+      depth -= 1;
+
+      if (depth === 0) return index;
+    }
+  }
+
+  return -1;
+}
+
+function dedentSource(source: string) {
+  const lines = source.split("\n");
+
+  while (lines.length > 0 && !lines[0].trim()) lines.shift();
+  while (lines.length > 0 && !lines[lines.length - 1].trim()) lines.pop();
+
+  const indents = lines
+    .filter((line) => line.trim())
+    .map((line) => line.match(/^[ \t]*/)?.[0].length ?? 0);
+
+  if (indents.length === 0) return "";
+
+  const minIndent = Math.min(...indents);
+
+  return lines
+    .map((line) => (line.trim() ? line.slice(minIndent) : ""))
+    .join("\n")
+    .trim();
+}
+
+function stripWrappingParens(source: string) {
+  const trimmed = source.trim();
+
+  if (!trimmed.startsWith("(") || !trimmed.endsWith(")")) {
+    return dedentSource(trimmed);
+  }
+
+  const parenEnd = findMatchingParen(trimmed, 0);
+
+  return parenEnd === trimmed.length - 1
+    ? dedentSource(trimmed.slice(1, -1))
+    : dedentSource(trimmed);
+}
+
+function extractSimpleReturnExpression(functionSource: string) {
+  const signature = /^function\s+[A-Za-z]\w*\s*\(([\s\S]*?)\)\s*\{/.exec(functionSource);
+
+  if (!signature || signature[1].trim()) return undefined;
+
+  const braceStart = functionSource.indexOf("{");
+  const braceEnd = functionSource.lastIndexOf("}");
+
+  if (braceStart === -1 || braceEnd === -1 || braceEnd <= braceStart) return undefined;
+
+  const body = functionSource.slice(braceStart + 1, braceEnd).trim();
+
+  if (!body.startsWith("return")) return undefined;
+
+  const statementEnd = findStatementEnd(body, 0);
+
+  if (statementEnd === -1 || body.slice(statementEnd).trim()) return undefined;
+
+  const returnStatement = body.slice(0, statementEnd).trim();
+  const expression = returnStatement
+    .replace(/^return\b/, "")
+    .replace(/;$/, "")
+    .trim();
+
+  return expression ? stripWrappingParens(expression) : undefined;
+}
+
+function collectReferencedDeclarations(
+  declarations: Map<string, Declaration>,
+  seedSource: string,
+  excludedNames: Set<string> = new Set(),
+) {
+  const collected = new Set<string>();
+  const queue = [seedSource];
+
+  for (let index = 0; index < queue.length; index += 1) {
+    const currentSource = queue[index];
+
+    for (const [name, declaration] of declarations) {
+      if (collected.has(name) || excludedNames.has(name)) continue;
+      if (!containsIdentifier(currentSource, name)) continue;
+
+      collected.add(name);
+      queue.push(declaration.source);
+    }
+  }
+
+  return [...collected]
+    .map((name) => declarations.get(name))
+    .filter((declaration): declaration is Declaration => declaration !== undefined)
+    .sort((a, b) => a.start - b.start);
+}
+
 function buildDemoSource(source: string, functionName: string) {
   const declarations = extractTopLevelDeclarations(source);
   const target = declarations.get(functionName);
 
   if (!target) return undefined;
 
-  const demoDeclarations = collectDemoDeclarations(declarations, functionName);
-  const declarationSource = demoDeclarations.map((declaration) => declaration.source).join("\n\n");
+  const simpleReturnExpression = extractSimpleReturnExpression(target.source);
+  const demoDeclarations = simpleReturnExpression
+    ? collectReferencedDeclarations(declarations, simpleReturnExpression, new Set([functionName]))
+    : collectDemoDeclarations(declarations, functionName);
+  const declarationSource = simpleReturnExpression
+    ? [...demoDeclarations.map((declaration) => declaration.source), simpleReturnExpression]
+        .filter(Boolean)
+        .join("\n\n")
+    : demoDeclarations.map((declaration) => declaration.source).join("\n\n");
   const usedSource = declarationSource;
   const usedNames = new Set(usedSource.match(/\b[A-Za-z]\w*\b/g) ?? []);
   const imports = extractImportDeclarations(source)
@@ -542,6 +703,8 @@ function buildSourceMap() {
 const exampleSources = buildSourceMap();
 
 function getExampleSource(name: string): string | undefined {
+  if (blockSources[name]) return blockSources[name];
+
   return exampleSources[name];
 }
 

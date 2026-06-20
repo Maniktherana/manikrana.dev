@@ -77,10 +77,7 @@ function DynamicIslandRoot() {
   const [variantKey, setVariantKey] = React.useState("idle");
   const reduceMotion = useReducedMotion();
   const bounce = reduceMotion ? 0 : (BOUNCE_VARIANTS[variantKey] ?? 0.35);
-  const content = getIslandContent(
-    view,
-    () => selectView("idle"),
-  );
+  const content = getIslandContent(view, () => selectView("idle"));
   const exitTarget = reduceMotion ? {} : (ANIMATION_VARIANTS[variantKey] ?? {});
   const transition = reduceMotion
     ? { duration: 0.01 }
@@ -106,9 +103,7 @@ function DynamicIslandRoot() {
               className="mx-auto w-fit min-w-[100px] overflow-hidden rounded-full bg-black"
               style={{ borderRadius: 32 }}
               transition={transition}
-              whileTap={
-                view === "idle" && !reduceMotion ? { scale: 0.9 } : undefined
-              }
+              whileTap={view === "idle" && !reduceMotion ? { scale: 0.9 } : undefined}
             >
               <motion.div
                 animate={{
@@ -140,16 +135,8 @@ function DynamicIslandRoot() {
             </motion.div>
 
             <div className="pointer-events-none absolute top-0 left-1/2 flex h-[220px] w-[320px] -translate-x-1/2 items-start justify-center">
-              <AnimatePresence
-                custom={exitTarget}
-                mode="popLayout"
-              >
-                <motion.div
-                  exit="exit"
-                  initial={{ opacity: 0 }}
-                  key={view}
-                  variants={exitVariants}
-                >
+              <AnimatePresence custom={exitTarget} mode="popLayout">
+                <motion.div exit="exit" initial={{ opacity: 0 }} key={view} variants={exitVariants}>
                   {content}
                 </motion.div>
               </AnimatePresence>
@@ -177,10 +164,7 @@ function DynamicIslandRoot() {
   );
 }
 
-function getIslandContent(
-  view: IslandView,
-  onTimerExit: () => void,
-) {
+function getIslandContent(view: IslandView, onTimerExit: () => void) {
   switch (view) {
     case "ring":
       return <Ring />;
@@ -282,9 +266,7 @@ function Ring() {
               filter: "blur(0px)",
             }}
             className={
-              isSilent
-                ? "text-xs font-medium text-[#FD4F30]"
-                : "text-xs font-medium text-white"
+              isSilent ? "text-xs font-medium text-[#FD4F30]" : "text-xs font-medium text-white"
             }
             exit={{
               opacity: 0,
@@ -337,9 +319,7 @@ function Timer({ onExit }: { onExit: () => void }) {
       </button>
 
       <div className="ml-auto flex items-baseline gap-1.5 pr-0.5 text-[#F7A815]">
-        <span className="text-sm leading-none font-medium text-inherit">
-          Timer
-        </span>
+        <span className="text-sm leading-none font-medium text-inherit">Timer</span>
         <Counter paused={isPaused} />
       </div>
     </div>
@@ -452,11 +432,7 @@ function CloseSvg() {
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path
-        d="M6 18L18 6M6 6l12 12"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

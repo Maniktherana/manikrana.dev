@@ -13,11 +13,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const calendarPreviewTitles: Record<string, string> = {
   "calendar-demo": "Calendar",
@@ -57,9 +53,7 @@ function CalendarFrame({ children }: { children: React.ReactNode }) {
 }
 
 function CalendarDemo() {
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date(2026, 5, 16),
-  );
+  const [date, setDate] = React.useState<Date | undefined>(new Date(2026, 5, 16));
 
   return (
     <CalendarFrame>
@@ -69,18 +63,11 @@ function CalendarDemo() {
 }
 
 function CalendarSingle() {
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date(2026, 5, 16),
-  );
+  const [date, setDate] = React.useState<Date | undefined>(new Date(2026, 5, 16));
 
   return (
     <CalendarFrame>
-      <Calendar
-        mode="single"
-        selected={date}
-        onSelect={setDate}
-        captionLayout="dropdown"
-      />
+      <Calendar mode="single" selected={date} onSelect={setDate} captionLayout="dropdown" />
     </CalendarFrame>
   );
 }
@@ -118,9 +105,7 @@ function CalendarRange() {
 }
 
 function CalendarWeekNumbers() {
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date(2026, 1, 3),
-  );
+  const [date, setDate] = React.useState<Date | undefined>(new Date(2026, 1, 3));
 
   return (
     <CalendarFrame>
@@ -136,13 +121,8 @@ function CalendarWeekNumbers() {
 }
 
 function CalendarBooked() {
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date(2026, 1, 3),
-  );
-  const bookedDates = Array.from(
-    { length: 10 },
-    (_, index) => new Date(2026, 1, 12 + index),
-  );
+  const [date, setDate] = React.useState<Date | undefined>(new Date(2026, 1, 3));
+  const bookedDates = Array.from({ length: 10 }, (_, index) => new Date(2026, 1, 12 + index));
 
   return (
     <CalendarFrame>
@@ -164,9 +144,7 @@ function CalendarBooked() {
 }
 
 function CalendarTime() {
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date(2026, 5, 16),
-  );
+  const [date, setDate] = React.useState<Date | undefined>(new Date(2026, 5, 16));
 
   return (
     <Card size="sm" className="w-fit p-0">
@@ -210,12 +188,8 @@ function CalendarTime() {
 }
 
 function CalendarPresets() {
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date(2026, 1, 12),
-  );
-  const [currentMonth, setCurrentMonth] = React.useState<Date>(
-    new Date(2026, 5, 1),
-  );
+  const [date, setDate] = React.useState<Date | undefined>(new Date(2026, 1, 12));
+  const [currentMonth, setCurrentMonth] = React.useState<Date>(new Date(2026, 5, 1));
 
   return (
     <Card size="sm" className="w-fit max-w-[300px] p-0">
@@ -245,9 +219,7 @@ function CalendarPresets() {
             onClick={() => {
               const nextDate = addDays(new Date(2026, 5, 16), preset.value);
               setDate(nextDate);
-              setCurrentMonth(
-                new Date(nextDate.getFullYear(), nextDate.getMonth(), 1),
-              );
+              setCurrentMonth(new Date(nextDate.getFullYear(), nextDate.getMonth(), 1));
             }}
           >
             {preset.label}
@@ -274,11 +246,6 @@ function CalendarCustomDays() {
         numberOfMonths={1}
         captionLayout="dropdown"
         className="[--cell-size:40px]"
-        formatters={{
-          formatMonthDropdown: (date) => {
-            return date.toLocaleString("default", { month: "long" });
-          },
-        }}
         components={{
           DayButton: ({ children, modifiers, day, ...props }) => {
             const isWeekend = day.date.getDay() === 0 || day.date.getDay() === 6;
@@ -297,19 +264,12 @@ function CalendarCustomDays() {
 }
 
 function CalendarPopover() {
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date(2026, 5, 16),
-  );
+  const [date, setDate] = React.useState<Date | undefined>(new Date(2026, 5, 16));
 
   return (
     <Popover>
       <PopoverTrigger
-        render={
-          <Button
-            variant="secondary"
-            className="w-44 justify-start px-2.5 font-normal"
-          />
-        }
+        render={<Button variant="secondary" className="w-44 justify-start px-2.5 font-normal" />}
       >
         <CalendarIcon data-icon="inline-start" />
         {date ? format(date, "PPP") : <span>Pick a date</span>}
@@ -318,12 +278,7 @@ function CalendarPopover() {
         className="w-auto overflow-hidden bg-popover p-0 text-popover-foreground shadow-[var(--shadow-flyout)]"
         align="start"
       >
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          defaultMonth={date}
-        />
+        <Calendar mode="single" selected={date} onSelect={setDate} defaultMonth={date} />
       </PopoverContent>
     </Popover>
   );
@@ -331,9 +286,7 @@ function CalendarPopover() {
 
 function CalendarInput() {
   const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date(2026, 5, 1),
-  );
+  const [date, setDate] = React.useState<Date | undefined>(new Date(2026, 5, 1));
   const [month, setMonth] = React.useState<Date | undefined>(date);
   const [value, setValue] = React.useState(formatDate(date));
 
@@ -403,9 +356,7 @@ function CalendarInput() {
 }
 
 function CalendarTimezone() {
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date(2026, 5, 16),
-  );
+  const [date, setDate] = React.useState<Date | undefined>(new Date(2026, 5, 16));
   const [timeZone, setTimeZone] = React.useState<string | undefined>(undefined);
 
   React.useEffect(() => {
@@ -416,12 +367,7 @@ function CalendarTimezone() {
     <Field className="w-fit">
       <FieldLabel>Selected date with timezone</FieldLabel>
       <CalendarFrame>
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          timeZone={timeZone}
-        />
+        <Calendar mode="single" selected={date} onSelect={setDate} timeZone={timeZone} />
       </CalendarFrame>
     </Field>
   );

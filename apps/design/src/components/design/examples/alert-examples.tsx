@@ -1,18 +1,8 @@
 import type * as React from "react";
-import {
-  AlertCircleIcon,
-  CheckCircle2Icon,
-  InfoIcon,
-  TriangleAlertIcon,
-} from "lucide-react";
+import { AlertCircleIcon, CheckCircle2Icon, InfoIcon, TriangleAlertIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Alert,
-  AlertAction,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/ui/alert";
+import { Alert, AlertAction, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const alertPreviewTitles: Record<string, string> = {
   "alert-demo": "Alert",
@@ -25,9 +15,7 @@ function AlertDemo() {
   return (
     <Alert status="information" className="max-w-md">
       <AlertTitle>Heads up</AlertTitle>
-      <AlertDescription>
-        This component follows the compact status pattern.
-      </AlertDescription>
+      <AlertDescription>This component follows the compact status pattern.</AlertDescription>
     </Alert>
   );
 }

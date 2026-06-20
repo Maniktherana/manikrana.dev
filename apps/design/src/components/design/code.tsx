@@ -67,7 +67,10 @@ function lineNumberTransformer(showLineNumbers: boolean): ShikiTransformer {
         node.children.unshift({
           type: "element",
           tagName: "span",
-          properties: { "data-slot": "code-block-line-number", "aria-hidden": "true" },
+          properties: {
+            "data-slot": "code-block-line-number",
+            "aria-hidden": "true",
+          },
           children: [{ type: "text", value: String(line) }],
         });
       }
@@ -154,7 +157,7 @@ function CodeBlockHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="code-block-header"
       className={cn(
-        "flex items-center gap-3 px-4 pt-2",
+        "flex items-center gap-3 px-2 pt-1",
         // transparent — the CodeBlock outer surface shows through in both themes
         "bg-transparent",
         className,
@@ -190,9 +193,7 @@ function CodeBlockBody({
         "relative flex flex-col overflow-hidden",
         // surface — same treatment in both themes (body sits one step off the outer)
         "bg-[var(--background)] text-[var(--foreground)] dark:bg-[#27272a] dark:text-[rgb(255_255_255/88%)]",
-        flush
-          ? "m-0 rounded-[inherit] border-0"
-          : "m-[6px] rounded-[8px] border-0",
+        flush ? "m-0 rounded-[inherit] border-0" : "m-[6px] rounded-[8px] border-0",
         className,
       )}
       {...props}

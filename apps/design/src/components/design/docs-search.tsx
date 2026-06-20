@@ -2,12 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import type { Root, Node } from "fumadocs-core/page-tree";
 import type { SortedResult } from "fumadocs-core/search";
 import { useDocsSearch } from "fumadocs-core/search/client";
-import {
-  ClipboardIcon,
-  CornerDownLeftIcon,
-  SearchIcon,
-  XIcon,
-} from "lucide-react";
+import { ClipboardIcon, CornerDownLeftIcon, SearchIcon, XIcon } from "lucide-react";
 import * as React from "react";
 
 import { catalogById } from "@/components/design/component-catalog";
@@ -307,9 +302,7 @@ function DocsSearchActions({
       className="docs-search-actions absolute right-2.5 bottom-10 z-20 w-[min(330px,calc(100%-20px))] overflow-hidden rounded-[11px] border border-white/[.13] bg-[#1b1b1d]/95 text-white shadow-[0_18px_70px_rgb(0_0_0_/_55%),0_0_0_1px_rgb(255_255_255_/_4%),inset_0_1px_0_rgb(255_255_255_/_8%)] backdrop-blur-xl"
     >
       <div className="border-b border-white/[.09] px-3 py-2.5">
-        <div className="text-[11px] leading-none font-semibold text-[#9a9aa0]">
-          Actions
-        </div>
+        <div className="text-[11px] leading-none font-semibold text-[#9a9aa0]">Actions</div>
         <div className="mt-1.5 truncate text-[13px] leading-none font-semibold text-[#f4f4f5]">
           {target?.title ?? "No result selected"}
         </div>
@@ -327,9 +320,7 @@ function DocsSearchActions({
         >
           <CornerDownLeftIcon className="size-[15px] text-[#b8b8bf]" aria-hidden="true" />
           <span className="min-w-0 flex-1 truncate">Open selected result</span>
-          <Kbd className="h-5 min-w-5 px-1.5">
-            ↵
-          </Kbd>
+          <Kbd className="h-5 min-w-5 px-1.5">↵</Kbd>
         </button>
         <button
           type="button"
@@ -342,12 +333,8 @@ function DocsSearchActions({
           <ClipboardIcon className="size-[15px] text-[#b8b8bf]" aria-hidden="true" />
           <span className="min-w-0 flex-1 truncate">Copy link</span>
           <KbdGroup>
-            <Kbd className="h-5 min-w-5 px-1.5">
-              ⌘
-            </Kbd>
-            <Kbd className="h-5 min-w-5 px-1.5">
-              C
-            </Kbd>
+            <Kbd className="h-5 min-w-5 px-1.5">⌘</Kbd>
+            <Kbd className="h-5 min-w-5 px-1.5">C</Kbd>
           </KbdGroup>
         </button>
         <button
@@ -365,10 +352,7 @@ function DocsSearchActions({
   );
 }
 
-function navigateToDocsUrl(
-  navigate: ReturnType<typeof useNavigate>,
-  url: string,
-) {
+function navigateToDocsUrl(navigate: ReturnType<typeof useNavigate>, url: string) {
   const [pathname, hash] = url.split("#");
 
   if (pathname === "/docs" || pathname === "/docs/") {
@@ -414,22 +398,13 @@ function DocsSearchTrigger({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-function DocsSearch({
-  activeUrl,
-  pageTree,
-}: {
-  activeUrl: string;
-  pageTree: Root;
-}) {
+function DocsSearch({ activeUrl, pageTree }: { activeUrl: string; pageTree: Root }) {
   const [open, setOpen] = React.useState(false);
   const [actionsOpen, setActionsOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState("");
   const searchInputRef = React.useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const pages = React.useMemo(
-    () => collectDocsSearchPages(pageTree.children),
-    [pageTree],
-  );
+  const pages = React.useMemo(() => collectDocsSearchPages(pageTree.children), [pageTree]);
   const searchClient = React.useMemo(
     () => ({
       search: (query: string) => searchDocs({ data: query }),
@@ -450,38 +425,23 @@ function DocsSearch({
         : [],
     [query.data],
   );
-  const pageGroups = React.useMemo(
-    () => groupBySection(pages, (page) => page.section),
-    [pages],
-  );
-  const resultGroups = React.useMemo(
-    () => groupBySection(results, resultSection),
-    [results],
-  );
+  const pageGroups = React.useMemo(() => groupBySection(pages, (page) => page.section), [pages]);
+  const resultGroups = React.useMemo(() => groupBySection(results, resultSection), [results]);
   const showSuggestions = search.trim().length === 0;
   const showLoading = !showSuggestions && query.isLoading;
   const showNoResults = !showSuggestions && !showLoading && results.length === 0;
   const activeItems = React.useMemo(
-    () =>
-      showSuggestions
-        ? pages.map(pageToSearchItem)
-        : results.map(resultToSearchItem),
+    () => (showSuggestions ? pages.map(pageToSearchItem) : results.map(resultToSearchItem)),
     [pages, results, showSuggestions],
   );
   const selectedItem = React.useMemo(
-    () =>
-      activeItems.find((item) => item.value === selectedValue) ??
-      activeItems[0],
+    () => activeItems.find((item) => item.value === selectedValue) ?? activeItems[0],
     [activeItems, selectedValue],
   );
 
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (
-        !open &&
-        (event.metaKey || event.ctrlKey) &&
-        event.key.toLowerCase() === "k"
-      ) {
+      if (!open && (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         setOpen(true);
       }
@@ -571,9 +531,7 @@ function DocsSearch({
 
   function actionButtons() {
     return Array.from(
-      document.querySelectorAll<HTMLButtonElement>(
-        "[data-docs-search-action]:not(:disabled)",
-      ),
+      document.querySelectorAll<HTMLButtonElement>("[data-docs-search-action]:not(:disabled)"),
     );
   }
 
@@ -629,10 +587,7 @@ function DocsSearch({
     setOpen(false);
   }
 
-  function handleOpenChange(
-    nextOpen: boolean,
-    eventDetails: DialogOpenChangeDetails,
-  ) {
+  function handleOpenChange(nextOpen: boolean, eventDetails: DialogOpenChangeDetails) {
     if (!nextOpen && actionsOpen && eventDetails.reason === "escape-key") {
       eventDetails.cancel();
       dismissActions();
@@ -714,11 +669,7 @@ function DocsSearch({
             {showSuggestions ? (
               <>
                 {pageGroups.map((group) => (
-                  <CommandGroup
-                    key={group.section}
-                    heading={group.section}
-                    className="p-0"
-                  >
+                  <CommandGroup key={group.section} heading={group.section} className="p-0">
                     {group.items.map((page) => (
                       <SearchRow
                         key={page.url}
@@ -738,11 +689,7 @@ function DocsSearch({
             {!showSuggestions && results.length > 0 ? (
               <>
                 {resultGroups.map((group) => (
-                  <CommandGroup
-                    key={group.section}
-                    heading={group.section}
-                    className="p-0"
-                  >
+                  <CommandGroup key={group.section} heading={group.section} className="p-0">
                     {group.items.map((result) => {
                       const description = resultDescription(result);
 
@@ -805,12 +752,8 @@ function DocsSearch({
               >
                 Actions
                 <KbdGroup>
-                  <Kbd className="h-5 min-w-5 px-1.5">
-                    ⌘
-                  </Kbd>
-                  <Kbd className="h-5 min-w-5 px-1.5">
-                    K
-                  </Kbd>
+                  <Kbd className="h-5 min-w-5 px-1.5">⌘</Kbd>
+                  <Kbd className="h-5 min-w-5 px-1.5">K</Kbd>
                 </KbdGroup>
               </button>
             </span>

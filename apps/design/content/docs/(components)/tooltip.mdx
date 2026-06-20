@@ -16,11 +16,7 @@ bunx shadcn@latest add tooltip
 ## Usage
 
 ```tsx
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 ```
 
 ```tsx
@@ -48,25 +44,25 @@ Tooltips can compose with `Kbd` when the hint includes a keyboard command.
 
 ### Tooltip
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `open` | `boolean` | - |
-| `defaultOpen` | `boolean` | - |
-| `onOpenChange` | `(open: boolean) => void` | - |
+| Prop           | Type                      | Default |
+| -------------- | ------------------------- | ------- |
+| `open`         | `boolean`                 | -       |
+| `defaultOpen`  | `boolean`                 | -       |
+| `onOpenChange` | `(open: boolean) => void` | -       |
 
 ### TooltipTrigger
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `render` | `ReactElement \| (props, state) => ReactElement` | - |
-| `className` | `string` | - |
+| Prop        | Type                                             | Default |
+| ----------- | ------------------------------------------------ | ------- |
+| `render`    | `ReactElement \| (props, state) => ReactElement` | -       |
+| `className` | `string`                                         | -       |
 
 ### TooltipContent
 
-| Prop | Type | Default |
-| --- | --- | --- |
-| `side` | `"top" \| "right" \| "bottom" \| "left" \| "inline-start" \| "inline-end"` | `"top"` |
-| `sideOffset` | `number` | `8` |
-| `align` | `"start" \| "center" \| "end"` | `"center"` |
-| `alignOffset` | `number` | `0` |
-| `className` | `string` | - |
+| Prop          | Type                                                                       | Default    |
+| ------------- | -------------------------------------------------------------------------- | ---------- |
+| `side`        | `"top" \| "right" \| "bottom" \| "left" \| "inline-start" \| "inline-end"` | `"top"`    |
+| `sideOffset`  | `number`                                                                   | `8`        |
+| `align`       | `"start" \| "center" \| "end"`                                             | `"center"` |
+| `alignOffset` | `number`                                                                   | `0`        |
+| `className`   | `string`                                                                   | -          |
