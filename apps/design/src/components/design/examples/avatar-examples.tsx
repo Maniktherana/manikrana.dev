@@ -13,6 +13,7 @@ import {
 const avatarPreviewTitles: Record<string, string> = {
   "avatar-demo": "Avatar",
   "avatar-image": "Avatar Image",
+  "avatar-border": "Avatar Border",
   "avatar-size": "Avatar Size",
   "avatar-radius": "Avatar Radius",
   "avatar-badge": "Avatar Badge",
@@ -33,6 +34,20 @@ function AvatarImageDemo() {
       <AvatarImage src="https://github.com/manik.png" alt="Manik Rana" />
       <AvatarFallback>MR</AvatarFallback>
     </Avatar>
+  );
+}
+
+function AvatarBorder() {
+  return (
+    <div className="flex items-center gap-3">
+      <Avatar variant="border">
+        <AvatarImage src="https://github.com/manik.png" alt="Manik Rana" />
+        <AvatarFallback>MR</AvatarFallback>
+      </Avatar>
+      <Avatar variant="default">
+        <AvatarFallback>MR</AvatarFallback>
+      </Avatar>
+    </div>
   );
 }
 
@@ -111,6 +126,7 @@ function AvatarGroupDemo() {
 const avatarPreviews: Record<string, React.ComponentType> = {
   "avatar-demo": AvatarDemo,
   "avatar-image": AvatarImageDemo,
+  "avatar-border": AvatarBorder,
   "avatar-size": AvatarSize,
   "avatar-radius": AvatarRadius,
   "avatar-badge": AvatarBadgeDemo,

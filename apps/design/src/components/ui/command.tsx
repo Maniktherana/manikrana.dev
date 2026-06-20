@@ -251,7 +251,7 @@ function CommandBarAction({
           {shortcuts.map((shortcut, index) => (
             <Kbd
               key={`${shortcut}-${index}`}
-              className="h-4 min-w-4 border-[0.5px] border-[rgb(255_255_255_/_16%)] bg-[#27272a] p-0 text-[11px] leading-[1.1] font-medium text-[rgb(255_255_255_/_56%)] shadow-none"
+              className="h-4 min-w-4 p-0"
             >
               {shortcut}
             </Kbd>

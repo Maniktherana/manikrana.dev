@@ -25,7 +25,7 @@ function Menubar({ className, ...props }: MenubarPrimitive.Props) {
     <MenubarPrimitive
       data-slot="menubar"
       className={cn(
-        "flex h-7 w-fit items-center overflow-hidden rounded-[6px] bg-[var(--component)] shadow-[var(--shadow-control)]",
+        "flex h-7 w-fit items-center overflow-hidden rounded-[6px] border border-transparent bg-[var(--component)] bg-clip-border shadow-[var(--shadow-control)]",
         className,
       )}
       {...props}
@@ -72,7 +72,7 @@ function MenubarContent({
       alignOffset={alignOffset}
       sideOffset={sideOffset}
       className={cn(
-        "min-w-56 rounded-lg bg-popover p-1 text-popover-foreground shadow-[var(--shadow-flyout)] duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95",
+        "min-w-32 rounded-lg bg-popover p-1 text-popover-foreground shadow-[var(--shadow-flyout)] duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95",
         className,
       )}
       {...props}
@@ -92,7 +92,7 @@ function MenubarItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        "group/menubar-item h-7 gap-2 rounded px-2 text-[13px] leading-[1.1] font-medium text-secondary-foreground focus:bg-accent focus:text-foreground not-data-[variant=destructive]:focus:**:text-foreground data-inset:pl-[31px] data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-[15px] data-[variant=destructive]:*:[svg]:text-destructive!",
+        "group/menubar-item h-6 gap-1.5 rounded-[5px] px-1.5 text-xs leading-[1.1] font-medium text-secondary-foreground focus:bg-accent focus:text-foreground not-data-[variant=destructive]:focus:**:text-foreground data-inset:pl-[26px] data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-3.5 data-[variant=destructive]:*:[svg]:text-destructive!",
         className,
       )}
       {...props}
@@ -114,13 +114,13 @@ function MenubarCheckboxItem({
       data-slot="menubar-checkbox-item"
       data-inset={inset}
       className={cn(
-        "relative flex h-7 cursor-default items-center gap-2 rounded py-0 pr-8 pl-[31px] text-[13px] leading-[1.1] font-medium text-secondary-foreground outline-hidden select-none focus:bg-accent focus:text-foreground focus:**:text-foreground data-inset:pl-[31px] data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[15px]",
+        "relative flex h-6 cursor-default items-center gap-1.5 rounded-[5px] py-0 pr-6 pl-[26px] text-xs leading-[1.1] font-medium text-secondary-foreground outline-hidden select-none focus:bg-accent focus:text-foreground focus:**:text-foreground data-inset:pl-[26px] data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
         className,
       )}
       checked={checked}
       {...props}
     >
-      <span className="pointer-events-none absolute left-2 flex size-[15px] items-center justify-center [&_svg:not([class*='size-'])]:size-[15px]">
+      <span className="pointer-events-none absolute left-1.5 flex size-3.5 items-center justify-center [&_svg:not([class*='size-'])]:size-3.5">
         <MenuPrimitive.CheckboxItemIndicator>
           <CheckIcon />
         </MenuPrimitive.CheckboxItemIndicator>
@@ -147,12 +147,12 @@ function MenubarRadioItem({
       data-slot="menubar-radio-item"
       data-inset={inset}
       className={cn(
-        "relative flex h-7 cursor-default items-center gap-2 rounded py-0 pr-8 pl-[31px] text-[13px] leading-[1.1] font-medium text-secondary-foreground outline-hidden select-none focus:bg-accent focus:text-foreground focus:**:text-foreground data-inset:pl-[31px] data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[15px]",
+        "relative flex h-6 cursor-default items-center gap-1.5 rounded-[5px] py-0 pr-6 pl-[26px] text-xs leading-[1.1] font-medium text-secondary-foreground outline-hidden select-none focus:bg-accent focus:text-foreground focus:**:text-foreground data-inset:pl-[26px] data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
         className,
       )}
       {...props}
     >
-      <span className="pointer-events-none absolute left-2 flex size-[15px] items-center justify-center [&_svg:not([class*='size-'])]:size-[15px]">
+      <span className="pointer-events-none absolute left-1.5 flex size-3.5 items-center justify-center [&_svg:not([class*='size-'])]:size-3.5">
         <MenuPrimitive.RadioItemIndicator>
           <CheckIcon />
         </MenuPrimitive.RadioItemIndicator>
@@ -174,7 +174,7 @@ function MenubarLabel({
       data-slot="menubar-label"
       data-inset={inset}
       className={cn(
-        "flex h-[27px] items-center px-2 text-xs leading-[1.1] font-medium text-muted-foreground data-inset:pl-[31px]",
+        "flex h-6 items-center px-1.5 text-[11px] leading-[1.1] font-medium text-muted-foreground data-inset:pl-[26px]",
         className,
       )}
       {...props}
@@ -206,7 +206,7 @@ function MenubarShortcut({
     <DropdownMenuShortcut
       data-slot="menubar-shortcut"
       className={cn(
-        "ml-auto text-[13px] leading-[1.1] tracking-normal text-secondary-foreground group-focus/menubar-item:text-foreground",
+        "ml-auto text-xs leading-[1.1] font-medium tracking-widest text-muted-foreground group-focus/menubar-item:text-foreground",
         className,
       )}
       {...props}
@@ -230,7 +230,7 @@ function MenubarSubTrigger({
       data-slot="menubar-sub-trigger"
       data-inset={inset}
       className={cn(
-        "h-7 gap-2 rounded px-2 text-[13px] leading-[1.1] font-medium text-secondary-foreground focus:bg-accent focus:text-foreground data-inset:pl-[31px] data-open:bg-accent data-open:text-foreground [&_svg:not([class*='size-'])]:size-[15px]",
+        "h-6 gap-1.5 rounded-[5px] px-1.5 text-xs leading-[1.1] font-medium text-secondary-foreground focus:bg-accent focus:text-foreground data-inset:pl-[26px] data-open:bg-accent data-open:text-foreground [&_svg:not([class*='size-'])]:size-3.5",
         className,
       )}
       {...props}
@@ -246,7 +246,7 @@ function MenubarSubContent({
     <DropdownMenuSubContent
       data-slot="menubar-sub-content"
       className={cn(
-        "min-w-56 rounded-lg bg-popover p-1 text-popover-foreground shadow-[var(--shadow-flyout)] duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+        "min-w-32 rounded-lg bg-popover p-1 text-popover-foreground shadow-[var(--shadow-flyout)] duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
         className,
       )}
       {...props}

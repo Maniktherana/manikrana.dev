@@ -1,15 +1,10 @@
-// Source extraction for the docs Preview/Code tabs.
+// Source extraction for the docs Preview/Code blocks.
 //
 // Each `*-examples.tsx` file exports a `<x>Previews` map of `"preview-key":
-// DemoComponent`. We import those files as raw text (Vite `?raw`) and, for each
-// entry, slice out the demo function's source so the Code tab can show the real
-// composition next to the rendered preview.
-//
-// This is a deterministic heuristic (regex + brace matching), not a full
-// parser: it relies on the established file shape — top-level `function Name() {
-// ... }` declarations referenced from a `const ...Previews = { "key": Name }`
-// map. If a demo function ever contains an unbalanced `{`/`}` inside a string
-// literal it would mis-slice; none of the current demos do.
+// DemoComponent`. We import those files as raw text (Vite `?raw`) and synthesize
+// the source for a single demo: relevant imports, any top-level helpers/constants
+// it uses, and the demo function itself. That keeps the docs snippet close to an
+// actual one-demo file instead of showing registry maps or wrapper plumbing.
 
 /* eslint-disable import/default */
 import accordionSource from "@/components/design/examples/accordion-examples.tsx?raw";
@@ -78,35 +73,416 @@ const rawSources = [
   toastSource,
 ];
 
-// Returns the source of a top-level `function name(...) { ... }` declaration,
-// brace-matched from its signature to the closing brace.
-function extractFunctionSource(source: string, name: string) {
-  const signature = new RegExp(`function\\s+${name}\\s*\\(`).exec(source);
+type Declaration = {
+  name: string;
+  source: string;
+  start: number;
+};
 
-  if (!signature) return undefined;
+type ImportDeclaration = {
+  defaultName?: string;
+  isTypeOnly: boolean;
+  module: string;
+  named: Array<{ imported: string; local: string; isType: boolean }>;
+  namespaceName?: string;
+};
 
-  const braceStart = source.indexOf("{", signature.index);
+function escapeRegex(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
-  if (braceStart === -1) return undefined;
+function containsIdentifier(source: string, name: string) {
+  return new RegExp(`\\b${escapeRegex(name)}\\b`).test(source);
+}
 
+function scanStateAt(source: string, index: number) {
+  let blockComment = false;
   let depth = 0;
-  let end = braceStart;
+  let escaped = false;
+  let lineComment = false;
+  let quote: '"' | "'" | "`" | undefined;
 
-  for (; end < source.length; end += 1) {
-    const char = source[end];
+  for (let i = 0; i < index; i += 1) {
+    const char = source[i];
+    const next = source[i + 1];
+
+    if (lineComment) {
+      if (char === "\n") lineComment = false;
+      continue;
+    }
+
+    if (blockComment) {
+      if (char === "*" && next === "/") {
+        blockComment = false;
+        i += 1;
+      }
+      continue;
+    }
+
+    if (quote) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === "\\") {
+        escaped = true;
+      } else if (char === quote) {
+        quote = undefined;
+      }
+      continue;
+    }
+
+    if (char === "/" && next === "/") {
+      lineComment = true;
+      i += 1;
+      continue;
+    }
+
+    if (char === "/" && next === "*") {
+      blockComment = true;
+      i += 1;
+      continue;
+    }
+
+    if (char === '"' || char === "'" || char === "`") {
+      quote = char;
+      continue;
+    }
+
+    if (char === "{") depth += 1;
+    else if (char === "}") depth -= 1;
+  }
+
+  return { blockComment, depth, lineComment, quote };
+}
+
+function isTopLevelCodePosition(source: string, index: number) {
+  const state = scanStateAt(source, index);
+
+  return state.depth === 0 && !state.quote && !state.lineComment && !state.blockComment;
+}
+
+function findMatchingBrace(source: string, braceStart: number) {
+  let blockComment = false;
+  let depth = 0;
+  let escaped = false;
+  let lineComment = false;
+  let quote: '"' | "'" | "`" | undefined;
+
+  for (let index = braceStart; index < source.length; index += 1) {
+    const char = source[index];
+    const next = source[index + 1];
+
+    if (lineComment) {
+      if (char === "\n") lineComment = false;
+      continue;
+    }
+
+    if (blockComment) {
+      if (char === "*" && next === "/") {
+        blockComment = false;
+        index += 1;
+      }
+      continue;
+    }
+
+    if (quote) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === "\\") {
+        escaped = true;
+      } else if (char === quote) {
+        quote = undefined;
+      }
+      continue;
+    }
+
+    if (char === "/" && next === "/") {
+      lineComment = true;
+      index += 1;
+      continue;
+    }
+
+    if (char === "/" && next === "*") {
+      blockComment = true;
+      index += 1;
+      continue;
+    }
+
+    if (char === '"' || char === "'" || char === "`") {
+      quote = char;
+      continue;
+    }
 
     if (char === "{") depth += 1;
     else if (char === "}") {
       depth -= 1;
 
-      if (depth === 0) {
-        end += 1;
-        break;
-      }
+      if (depth === 0) return index;
     }
   }
 
-  return source.slice(signature.index, end);
+  return -1;
+}
+
+function findStatementEnd(source: string, start: number) {
+  let blockComment = false;
+  let braceDepth = 0;
+  let bracketDepth = 0;
+  let escaped = false;
+  let lineComment = false;
+  let parenDepth = 0;
+  let quote: '"' | "'" | "`" | undefined;
+
+  for (let index = start; index < source.length; index += 1) {
+    const char = source[index];
+    const next = source[index + 1];
+
+    if (lineComment) {
+      if (char === "\n") lineComment = false;
+      continue;
+    }
+
+    if (blockComment) {
+      if (char === "*" && next === "/") {
+        blockComment = false;
+        index += 1;
+      }
+      continue;
+    }
+
+    if (quote) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === "\\") {
+        escaped = true;
+      } else if (char === quote) {
+        quote = undefined;
+      }
+      continue;
+    }
+
+    if (char === "/" && next === "/") {
+      lineComment = true;
+      index += 1;
+      continue;
+    }
+
+    if (char === "/" && next === "*") {
+      blockComment = true;
+      index += 1;
+      continue;
+    }
+
+    if (char === '"' || char === "'" || char === "`") {
+      quote = char;
+      continue;
+    }
+
+    if (char === "{") braceDepth += 1;
+    else if (char === "}") braceDepth -= 1;
+    else if (char === "[") bracketDepth += 1;
+    else if (char === "]") bracketDepth -= 1;
+    else if (char === "(") parenDepth += 1;
+    else if (char === ")") parenDepth -= 1;
+    else if (
+      char === ";" &&
+      braceDepth === 0 &&
+      bracketDepth === 0 &&
+      parenDepth === 0
+    ) {
+      return index + 1;
+    }
+  }
+
+  return -1;
+}
+
+function extractFunctionSource(source: string, name: string): Declaration | undefined {
+  const signature = new RegExp(`function\\s+${name}\\s*\\(`).exec(source);
+
+  if (!signature) return undefined;
+  if (!isTopLevelCodePosition(source, signature.index)) return undefined;
+
+  const braceStart = source.indexOf("{", signature.index);
+
+  if (braceStart === -1) return undefined;
+
+  const braceEnd = findMatchingBrace(source, braceStart);
+
+  if (braceEnd === -1) return undefined;
+
+  return {
+    name,
+    source: source.slice(signature.index, braceEnd + 1).trim(),
+    start: signature.index,
+  };
+}
+
+function extractTopLevelDeclarations(source: string) {
+  const declarations = new Map<string, Declaration>();
+
+  for (const match of source.matchAll(/\bfunction\s+([A-Za-z]\w*)\s*\(/g)) {
+    const [, name] = match;
+    const declaration = extractFunctionSource(source, name);
+
+    if (declaration) declarations.set(name, declaration);
+  }
+
+  for (const match of source.matchAll(/\b(?:const|let|var)\s+([A-Za-z]\w*)\b/g)) {
+    const [, name] = match;
+    const start = match.index ?? 0;
+
+    if (!isTopLevelCodePosition(source, start)) continue;
+
+    const end = findStatementEnd(source, start);
+
+    if (end !== -1) {
+      declarations.set(name, {
+        name,
+        source: source.slice(start, end).trim(),
+        start,
+      });
+    }
+  }
+
+  return declarations;
+}
+
+function parseNamedImports(source: string, isTypeOnly: boolean) {
+  return source
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => {
+      const isType = isTypeOnly || part.startsWith("type ");
+      const specifier = part.replace(/^type\s+/, "").trim();
+      const [imported, local = imported] = specifier.split(/\s+as\s+/);
+
+      return { imported: imported.trim(), local: local.trim(), isType };
+    });
+}
+
+function extractImportDeclarations(source: string) {
+  const declarations: ImportDeclaration[] = [];
+
+  for (const match of source.matchAll(/import\s+([\s\S]*?)\s+from\s+["']([^"']+)["'];/g)) {
+    const statementStart = match.index ?? 0;
+
+    if (!isTopLevelCodePosition(source, statementStart)) continue;
+
+    let clause = match[1].trim();
+    const module = match[2];
+    let isTypeOnly = false;
+    let defaultName: string | undefined;
+    let namespaceName: string | undefined;
+    let named: ImportDeclaration["named"] = [];
+
+    if (clause.startsWith("type ")) {
+      isTypeOnly = true;
+      clause = clause.slice("type ".length).trim();
+    }
+
+    const namespaceMatch = /^\*\s+as\s+([A-Za-z]\w*)$/.exec(clause);
+
+    if (namespaceMatch) {
+      namespaceName = namespaceMatch[1];
+    } else {
+      const namedMatch = /\{([\s\S]*)\}$/.exec(clause);
+
+      if (namedMatch) {
+        named = parseNamedImports(namedMatch[1], isTypeOnly);
+        defaultName = clause.slice(0, namedMatch.index).replace(/,$/, "").trim() || undefined;
+      } else {
+        defaultName = clause;
+      }
+    }
+
+    declarations.push({ defaultName, isTypeOnly, module, named, namespaceName });
+  }
+
+  return declarations;
+}
+
+function formatImportDeclaration(declaration: ImportDeclaration, usedNames: Set<string>) {
+  const named = declaration.named.filter((item) => usedNames.has(item.local));
+  const defaultName =
+    declaration.defaultName && usedNames.has(declaration.defaultName)
+      ? declaration.defaultName
+      : undefined;
+  const namespaceName =
+    declaration.namespaceName && usedNames.has(declaration.namespaceName)
+      ? declaration.namespaceName
+      : undefined;
+
+  if (namespaceName) {
+    return `import ${declaration.isTypeOnly ? "type " : ""}* as ${namespaceName} from "${declaration.module}";`;
+  }
+
+  if (!defaultName && named.length === 0) return undefined;
+
+  const hasRuntimeNamed = named.some((item) => !item.isType);
+  const hasTypeNamed = named.some((item) => item.isType);
+  const namedSource = named
+    .map((item) => {
+      const alias = item.imported === item.local ? item.imported : `${item.imported} as ${item.local}`;
+      return item.isType && (hasRuntimeNamed || defaultName) ? `type ${alias}` : alias;
+    })
+    .join(", ");
+
+  if (defaultName && namedSource) {
+    return `import ${defaultName}, { ${namedSource} } from "${declaration.module}";`;
+  }
+
+  if (defaultName) {
+    return `import ${declaration.isTypeOnly ? "type " : ""}${defaultName} from "${declaration.module}";`;
+  }
+
+  return `import ${declaration.isTypeOnly || !hasRuntimeNamed && hasTypeNamed ? "type " : ""}{ ${namedSource} } from "${declaration.module}";`;
+}
+
+function collectDemoDeclarations(
+  declarations: Map<string, Declaration>,
+  functionName: string,
+) {
+  const target = declarations.get(functionName);
+
+  if (!target) return [];
+
+  const collected = new Set<string>([functionName]);
+  const queue = [target.source];
+
+  for (let index = 0; index < queue.length; index += 1) {
+    const currentSource = queue[index];
+
+    for (const [name, declaration] of declarations) {
+      if (collected.has(name)) continue;
+      if (!containsIdentifier(currentSource, name)) continue;
+
+      collected.add(name);
+      queue.push(declaration.source);
+    }
+  }
+
+  return [...collected]
+    .map((name) => declarations.get(name))
+    .filter((declaration): declaration is Declaration => declaration !== undefined)
+    .sort((a, b) => a.start - b.start);
+}
+
+function buildDemoSource(source: string, functionName: string) {
+  const declarations = extractTopLevelDeclarations(source);
+  const target = declarations.get(functionName);
+
+  if (!target) return undefined;
+
+  const demoDeclarations = collectDemoDeclarations(declarations, functionName);
+  const declarationSource = demoDeclarations.map((declaration) => declaration.source).join("\n\n");
+  const usedSource = declarationSource;
+  const usedNames = new Set(usedSource.match(/\b[A-Za-z]\w*\b/g) ?? []);
+  const imports = extractImportDeclarations(source)
+    .map((declaration) => formatImportDeclaration(declaration, usedNames))
+    .filter((declaration): declaration is string => declaration !== undefined);
+
+  return [...imports, declarationSource].filter(Boolean).join("\n\n").trim();
 }
 
 // Returns the body of the `const ...Previews = { ... }` object literal.
@@ -152,7 +528,7 @@ function buildSourceMap() {
     const entries = block.matchAll(/"([\w-]+)":\s*([A-Za-z]\w*)/g);
 
     for (const [, key, fnName] of entries) {
-      const fnSource = extractFunctionSource(source, fnName);
+      const fnSource = buildDemoSource(source, fnName);
 
       if (fnSource) {
         map[key] = fnSource.trim();

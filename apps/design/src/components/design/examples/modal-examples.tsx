@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 function ModalDemo() {
   return (
     <Dialog>
-      <DialogTrigger render={<Button variant="outline" />}>
+      <DialogTrigger render={<Button variant="secondary" />}>
         Open modal
       </DialogTrigger>
       <DialogContent>
@@ -30,7 +30,7 @@ function ModalDemo() {
           <Input placeholder="Confirmation text" />
         </DialogBody>
         <DialogFooter>
-          <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
+          <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
           <Button variant="destructive">Delete</Button>
         </DialogFooter>
       </DialogContent>
@@ -41,7 +41,7 @@ function ModalDemo() {
 function ModalConfirmative() {
   return (
     <Dialog>
-      <DialogTrigger render={<Button variant="outline" />}>
+      <DialogTrigger render={<Button variant="secondary" />}>
         Publish changes
       </DialogTrigger>
       <DialogContent>
@@ -50,7 +50,7 @@ function ModalConfirmative() {
           <DialogDescription>Review this update before it goes live.</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
+          <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
           <Button>Publish</Button>
         </DialogFooter>
       </DialogContent>

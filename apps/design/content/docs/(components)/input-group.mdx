@@ -1,16 +1,17 @@
 ---
-title: Search
-description: Search input variants composed from InputGroup primitives.
+title: Input Group
+description: Composable grouped inputs with addons, inline actions, sizes, radius, and state handling.
 component: true
-base: local
+base: primitive
 ---
 
 <ComponentPreview name="search-demo" />
 
 ## Installation
 
-Search is a local composition built from `InputGroup`, `InputGroupInput`, and
-`InputGroupAddon`.
+`InputGroup` is the primitive for inputs that need leading icons, trailing
+actions, keyboard hints, helper text, or multiline addons inside one control
+surface.
 
 ## Usage
 
@@ -41,27 +42,29 @@ Use `size="sm"` for dense toolbars and sidebars.
 
 ### Rounded
 
-Use `radius="rounded"` when the search field sits as a standalone chip.
+Use `radius="rounded"` when the field sits as a standalone chip.
 
 <ComponentPreview name="search-rounded" />
 
 ### State
 
-Use `variant`, `aria-invalid`, and disabled controls for stateful search
-surfaces.
+Use `variant`, `aria-invalid`, and disabled controls for stateful grouped
+inputs. Invalid state belongs to the outer group border; addons and internal
+controls keep their normal separator color.
 
 <ComponentPreview name="search-state" />
 
 ## API Reference
 
-### Search Composition
+### Composition
 
 | Primitive | Purpose |
 | --- | --- |
-| `InputGroup` | Owns the search surface, size, radius, variant, focus, and invalid state. |
-| `InputGroupAddon` | Holds icons, keyboard hints, or inline actions. |
+| `InputGroup` | Owns the control surface, size, radius, variant, focus, and invalid state. |
+| `InputGroupAddon` | Holds icons, keyboard hints, text, or inline actions. |
 | `InputGroupInput` | Provides the actual input field. |
 | `InputGroupButton` | Adds clear, submit, or filter actions inside the group. |
+| `InputGroupTextarea` | Provides a multiline grouped control. |
 
 ### InputGroup Props
 

@@ -1,4 +1,5 @@
 import { Accordion as AccordionPrimitive } from "@base-ui/react/accordion";
+import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
@@ -13,14 +14,31 @@ function Accordion({ className, ...props }: AccordionPrimitive.Root.Props) {
   );
 }
 
-function AccordionItem({ className, ...props }: AccordionPrimitive.Item.Props) {
+const accordionItemVariants = cva(
+  "overflow-hidden rounded-lg bg-transparent bg-clip-border transition-colors hover:bg-accent",
+  {
+    variants: {
+      variant: {
+        default: "border border-transparent shadow-[var(--shadow-card)]",
+        ghost: "border border-transparent shadow-none",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  },
+);
+
+function AccordionItem({
+  className,
+  variant = "default",
+  ...props
+}: AccordionPrimitive.Item.Props & VariantProps<typeof accordionItemVariants>) {
   return (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
-      className={cn(
-        "overflow-hidden rounded-lg border border-transparent shadow-[var(--shadow-card)] transition-colors hover:bg-accent data-open:bg-accent",
-        className,
-      )}
+      data-variant={variant}
+      className={cn(accordionItemVariants({ variant, className }))}
       {...props}
     />
   );
@@ -60,7 +78,7 @@ function AccordionContent({ className, children, ...props }: AccordionPrimitive.
     >
       <div
         className={cn(
-          "h-(--accordion-panel-height) px-3 pb-3 pl-[39px] pt-0 text-[13px] leading-[1.6] text-secondary-foreground data-ending-style:h-0 data-starting-style:h-0 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4",
+          "h-(--accordion-panel-height) px-3 pt-0 pb-3 text-[13px] leading-[1.6] text-secondary-foreground data-ending-style:h-0 data-starting-style:h-0 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4",
           className,
         )}
       >
@@ -70,4 +88,4 @@ function AccordionContent({ className, children, ...props }: AccordionPrimitive.
   );
 }
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent, accordionItemVariants };

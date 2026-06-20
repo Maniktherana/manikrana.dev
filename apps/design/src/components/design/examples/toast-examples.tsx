@@ -13,7 +13,7 @@ function ToastDemo() {
   return (
     <Button
       type="button"
-      variant="outline"
+      variant="secondary"
       onClick={() =>
         toast("Component saved", {
           description: "The preview is ready.",
@@ -29,7 +29,7 @@ function ToastAction() {
   return (
     <Button
       type="button"
-      variant="outline"
+      variant="secondary"
       onClick={() =>
         toast("Draft archived", {
           description: "You can restore it from activity.",
@@ -50,21 +50,21 @@ function ToastStatus() {
     <div className="flex flex-wrap items-center gap-2">
       <Button
         type="button"
-        variant="outline"
+        variant="secondary"
         onClick={() => toast.success("Published")}
       >
         Success
       </Button>
       <Button
         type="button"
-        variant="outline"
+        variant="secondary"
         onClick={() => toast.warning("Inventory is low")}
       >
         Warning
       </Button>
       <Button
         type="button"
-        variant="outline"
+        variant="secondary"
         onClick={() => toast.error("Could not sync")}
       >
         Error

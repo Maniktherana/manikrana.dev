@@ -33,7 +33,7 @@ import { Input } from "@/components/ui/input";
 
 ```tsx
 <Dialog>
-  <DialogTrigger render={<Button variant="outline" />}>Open modal</DialogTrigger>
+  <DialogTrigger render={<Button variant="secondary" />}>Open modal</DialogTrigger>
   <DialogContent>
     <DialogHeader>
       <DialogTitle>Delete something</DialogTitle>
@@ -46,7 +46,7 @@ import { Input } from "@/components/ui/input";
       <Input placeholder="Confirmation text" />
     </DialogBody>
     <DialogFooter>
-      <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
+      <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
       <Button variant="destructive">Delete</Button>
     </DialogFooter>
   </DialogContent>

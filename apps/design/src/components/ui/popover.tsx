@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 import { XIcon } from "lucide-react";
-import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -22,13 +21,30 @@ function PopoverContent({
   showArrow = false,
   showCloseButton = false,
   side = "bottom",
-  sideOffset = 4,
+  sideOffset = 16,
+  style,
   ...props
 }: PopoverPrimitive.Popup.Props &
   Pick<PopoverPrimitive.Positioner.Props, "align" | "alignOffset" | "side" | "sideOffset"> & {
     showArrow?: boolean;
     showCloseButton?: boolean;
   }) {
+  const contentStyle = {
+    "--foreground": "#ffffff",
+    "--color-foreground": "#ffffff",
+    "--accent": "rgb(255 255 255 / 10%)",
+    "--color-accent": "rgb(255 255 255 / 10%)",
+    "--accent-foreground": "#ffffff",
+    "--color-accent-foreground": "#ffffff",
+    "--button-primary": "#ffffff",
+    "--button-primary-hover": "rgb(255 255 255 / 88%)",
+    "--button-primary-pressed": "rgb(255 255 255 / 76%)",
+    "--button-primary-foreground": "#27272a",
+    "--ring": "rgb(255 255 255 / 36%)",
+    "--shadow-button-primary": "0 1px 2px 0 rgb(0 0 0 / 16%)",
+    ...style,
+  } as React.CSSProperties;
+
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Positioner
@@ -44,6 +60,7 @@ function PopoverContent({
             "group/popover-content relative isolate z-50 flex w-[320px] origin-(--transform-origin) flex-col items-start overflow-visible rounded-lg bg-[#27272a] p-0 text-[13px] leading-[1.6] font-medium text-white shadow-[var(--shadow-popover)] outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
             className,
           )}
+          style={contentStyle}
           {...props}
         >
           {showArrow ? (
@@ -61,7 +78,7 @@ function PopoverContent({
                   type="button"
                   variant="ghost"
                   size="icon-xs"
-                  className="absolute top-2 right-2 z-10 size-6 rounded-md p-[4.5px] text-white shadow-none hover:bg-white/10 hover:text-white focus-visible:ring-0 focus-visible:shadow-[var(--shadow-control-focus)] [&_svg]:size-[15px]"
+                  className="absolute top-2 right-2 z-10 size-6 rounded-md p-[4.5px] shadow-none focus-visible:ring-0 focus-visible:shadow-[var(--shadow-control-focus)] [&_svg]:size-[15px]"
                   aria-label="Close popover"
                 />
               }
@@ -149,31 +166,11 @@ function PopoverFooterActions({ className, ...props }: React.ComponentProps<"div
   return (
     <div
       data-slot="popover-footer-actions"
-      className={cn("flex min-w-0 flex-1 items-start gap-2", className)}
+      className={cn("flex min-w-0 flex-1 items-center justify-end gap-2", className)}
       {...props}
     />
   );
 }
-
-const popoverFooterButtonVariants = cva(
-  "rounded-md px-2 text-[13px] leading-[1.1] font-medium shadow-none focus-visible:ring-0 focus-visible:shadow-[var(--shadow-control-focus)]",
-  {
-    variants: {
-      tone: {
-        muted: "bg-white/16 text-white hover:bg-white/24 hover:text-white",
-        primary: "bg-white text-[#27272a] hover:bg-white/88 hover:text-[#27272a]",
-      },
-      stretch: {
-        true: "flex-1",
-        false: "",
-      },
-    },
-    defaultVariants: {
-      tone: "muted",
-      stretch: false,
-    },
-  },
-);
 
 function PopoverFooterButton({
   className,
@@ -182,12 +179,17 @@ function PopoverFooterButton({
   stretch = false,
   variant = "ghost",
   ...props
-}: React.ComponentProps<typeof Button> & VariantProps<typeof popoverFooterButtonVariants>) {
+}: React.ComponentProps<typeof Button> & {
+  tone?: "muted" | "primary";
+  stretch?: boolean;
+}) {
+  const resolvedVariant = tone === "primary" && variant === "ghost" ? "default" : variant;
+
   return (
     <Button
       size={size}
-      variant={variant}
-      className={cn(popoverFooterButtonVariants({ tone, stretch }), className)}
+      variant={resolvedVariant}
+      className={cn(stretch && "flex-1", className)}
       {...props}
     />
   );

@@ -94,7 +94,7 @@ function InputButtonGroup() {
   return (
     <ButtonGroup variant="base" className="w-full max-w-xs">
       <Input placeholder="Search..." />
-      <Button type="button" variant="outline" size="icon" aria-label="Search">
+      <Button type="button" variant="secondary" size="icon" aria-label="Search">
         <SearchIcon />
       </Button>
     </ButtonGroup>

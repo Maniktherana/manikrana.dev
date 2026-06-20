@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 
 const accordionPreviewTitles: Record<string, string> = {
   "accordion-demo": "Accordion",
+  "accordion-borderless": "Accordion Borderless",
   "accordion-multiple": "Accordion Multiple",
   "accordion-status": "Accordion Status",
 };
@@ -24,6 +25,25 @@ function AccordionDemo() {
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="payments">
+        <AccordionTrigger>Payment capture</AccordionTrigger>
+        <AccordionContent>
+          Decide whether orders are captured immediately or after review.
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}
+
+function AccordionBorderless() {
+  return (
+    <Accordion className="w-full max-w-md" defaultValue={["shipping"]}>
+      <AccordionItem value="shipping" variant="ghost">
+        <AccordionTrigger>Shipping settings</AccordionTrigger>
+        <AccordionContent>
+          Configure fulfillment windows and carrier defaults for this region.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="payments" variant="ghost">
         <AccordionTrigger>Payment capture</AccordionTrigger>
         <AccordionContent>
           Decide whether orders are captured immediately or after review.
@@ -94,6 +114,7 @@ function AccordionStatus() {
 
 const accordionPreviews: Record<string, React.ComponentType> = {
   "accordion-demo": AccordionDemo,
+  "accordion-borderless": AccordionBorderless,
   "accordion-multiple": AccordionMultiple,
   "accordion-status": AccordionStatus,
 };

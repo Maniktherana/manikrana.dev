@@ -132,13 +132,12 @@ function CodeBlock({
         data-slot="code-block"
         data-variant={variant}
         className={cn(
-          "w-full min-w-0 max-w-full overflow-hidden",
+          "group/code-block w-full min-w-0 max-w-full overflow-hidden",
           // outer surface colour (shared by both variants)
           "bg-[var(--muted)] text-[var(--foreground)] dark:bg-[#212124] dark:text-[rgb(255_255_255/88%)]",
-          // standalone chrome: rounding + border + elevation. Light uses a real
-          // border; dark uses the inset double-border look.
+          // Header blocks get the shared framed-surface edge. Header-less source blocks stay bare.
           variant === "surface" &&
-            "rounded-[12px] border border-[var(--border)] shadow-[var(--shadow-card)] dark:border-transparent dark:shadow-[inset_0_0_0_1px_#18181b,inset_0_0_0_1.5px_rgb(255_255_255/20%)]",
+            "rounded-[12px] has-[>[data-slot=code-block-header]]:border has-[>[data-slot=code-block-header]]:border-transparent has-[>[data-slot=code-block-header]]:bg-clip-border has-[>[data-slot=code-block-header]]:shadow-[var(--shadow-card)]",
           variant === "bare" && "border-t border-[var(--border)]",
           className,
         )}
@@ -193,7 +192,7 @@ function CodeBlockBody({
         "bg-[var(--background)] text-[var(--foreground)] dark:bg-[#27272a] dark:text-[rgb(255_255_255/88%)]",
         flush
           ? "m-0 rounded-[inherit] border-0"
-          : "m-[6px] rounded-[8px] border border-[var(--border)] dark:border-[rgb(255_255_255/10%)]",
+          : "m-[6px] rounded-[8px] border-0",
         className,
       )}
       {...props}
@@ -260,7 +259,7 @@ function CodeBlockContent({
     // code element as a grid (ignores shiki's whitespace "\n" text nodes so lines
     // do not get double-spaced) + each generated line spans a full row
     "[&_code]:grid [&_code]:min-w-full [&_code]:bg-transparent [&_code]:font-mono [&_code]:whitespace-pre",
-    "[&_[data-line]]:w-full",
+    "[&_[data-line]]:block [&_[data-line]]:min-h-[1.6em] [&_[data-line]]:w-full",
     "[&_span]:text-[var(--shiki-light)] dark:[&_span]:text-[var(--shiki-dark)]",
     gutterClassName,
     "in-data-[collapsed]:[&_pre]:max-h-[220px] in-data-[collapsed]:[&_pre]:overflow-hidden in-data-[collapsed]:[&_pre]:pb-[56px]",
@@ -362,6 +361,7 @@ type CodeBlockSourceProps = Omit<CodeBlockProps, "children"> & {
 
 function CodeBlockSource({
   code,
+  className,
   language = "tsx",
   highlighted,
   collapsible = false,
@@ -370,7 +370,11 @@ function CodeBlockSource({
   ...props
 }: CodeBlockSourceProps) {
   return (
-    <CodeBlock defaultExpanded={defaultExpanded} {...props}>
+    <CodeBlock
+      defaultExpanded={defaultExpanded}
+      className={cn("border-0 border-t-0 shadow-none dark:border-0", className)}
+      {...props}
+    >
       <CodeBlockBody collapsible={collapsible} flush>
         <CopyButton value={code} size="icon-sm" className="absolute top-2 right-2 z-10" />
         <CodeBlockContent

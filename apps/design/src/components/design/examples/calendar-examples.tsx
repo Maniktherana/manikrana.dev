@@ -239,7 +239,7 @@ function CalendarPresets() {
         ].map((preset) => (
           <Button
             key={preset.value}
-            variant="outline"
+            variant="secondary"
             size="sm"
             className="flex-1"
             onClick={() => {
@@ -306,7 +306,7 @@ function CalendarPopover() {
       <PopoverTrigger
         render={
           <Button
-            variant="outline"
+            variant="secondary"
             className="w-44 justify-start px-2.5 font-normal"
           />
         }

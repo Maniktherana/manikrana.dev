@@ -6,22 +6,22 @@ import { cn } from "@/lib/utils";
 
 const inputVariants = cva(
   cn(
-    "flex h-8 min-h-[var(--control-height)] w-full min-w-0 rounded-[6px] border border-transparent px-2 py-0 font-sans text-[13px] leading-[1.1] font-normal outline-none transition-colors",
+    "flex h-8 min-h-[var(--control-height)] w-full min-w-0 rounded-[6px] border border-transparent bg-clip-border px-2 py-0 font-sans text-[13px] leading-[1.1] font-normal outline-none transition-colors",
     // surface + elevation
-    "bg-[color-mix(in_srgb,var(--background)_70%,var(--muted))] shadow-[var(--shadow-control)]",
+    "bg-transparent shadow-[var(--shadow-card)]",
     // file input
     "file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
     // placeholder
     "placeholder:text-muted-foreground",
     // hover keeps the transparent border (elevation only)
     "hover:border-transparent",
-    // focus ring (keyboard / text-entry focus only — shared control ring)
-    "focus-visible:shadow-[var(--shadow-control-focus)]",
+    // focus ring (keyboard / text-entry focus only)
+    "focus-visible:ring-1 focus-visible:ring-ring focus-visible:shadow-[var(--shadow-card)]",
     // disabled
     "disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-muted-foreground disabled:opacity-60",
     // invalid
-    "aria-invalid:border-[var(--destructive)] aria-invalid:shadow-[0_0_0_1px_var(--destructive),var(--shadow-control)]",
-    "aria-invalid:focus-visible:border-[var(--destructive)] aria-invalid:focus-visible:shadow-[0_0_0_1px_var(--destructive),0_0_0_2px_color-mix(in_srgb,var(--destructive)_36%,transparent),var(--shadow-control)]",
+    "aria-invalid:shadow-[0_0_0_1px_var(--destructive),var(--shadow-card)]",
+    "aria-invalid:focus-visible:ring-destructive/40 aria-invalid:focus-visible:shadow-[0_0_0_1px_var(--destructive),var(--shadow-card)]",
   ),
   {
     variants: {

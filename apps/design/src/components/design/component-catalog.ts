@@ -123,7 +123,7 @@ export const componentCatalog = [
     files: ["src/components/ui/button.tsx"],
     figmaSource: "Button base token references in Figma file headers",
     description:
-      "Primary action, outline action, ghost action, and icon-only sizes.",
+      "Primary action, secondary action, ghost action, and icon-only sizes.",
     custom: false,
   },
   {
@@ -319,18 +319,15 @@ export const componentCatalog = [
     custom: false,
   },
   {
-    id: "search",
-    title: "Search",
+    id: "input-group",
+    title: "Input Group",
     category: "Components",
-    primitive: "SearchInput = InputGroup + Input, SearchModal = Command",
-    files: [
-      "src/components/ui/input-group.tsx",
-      "src/components/ui/command.tsx",
-    ],
+    primitive: "InputGroup, InputGroupAddon, InputGroupInput, InputGroupButton",
+    files: ["src/components/ui/input-group.tsx"],
     figmaSource: "Compact input and icon sizing",
     description:
-      "Search input variants plus the command-style search modal.",
-    custom: true,
+      "Composable grouped inputs with addons, inline actions, sizes, radius, and state handling.",
+    custom: false,
   },
   {
     id: "switch",

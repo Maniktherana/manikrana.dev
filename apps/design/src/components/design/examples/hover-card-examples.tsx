@@ -17,7 +17,7 @@ const hoverCardPreviewTitles: Record<string, string> = {
 function HoverCardDemo() {
   return (
     <HoverCard>
-      <HoverCardTrigger render={<Button variant="outline" />}>
+      <HoverCardTrigger render={<Button variant="secondary" />}>
         Open preview
       </HoverCardTrigger>
       <HoverCardContent align="start" className="w-[210px]">
@@ -36,19 +36,19 @@ function HoverCardAlign() {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <HoverCard>
-        <HoverCardTrigger render={<Button variant="outline" />}>
+        <HoverCardTrigger render={<Button variant="secondary" />}>
           Start
         </HoverCardTrigger>
         <HoverCardContent align="start">Aligned to start.</HoverCardContent>
       </HoverCard>
       <HoverCard>
-        <HoverCardTrigger render={<Button variant="outline" />}>
+        <HoverCardTrigger render={<Button variant="secondary" />}>
           Center
         </HoverCardTrigger>
         <HoverCardContent align="center">Aligned to center.</HoverCardContent>
       </HoverCard>
       <HoverCard>
-        <HoverCardTrigger render={<Button variant="outline" />}>
+        <HoverCardTrigger render={<Button variant="secondary" />}>
           End
         </HoverCardTrigger>
         <HoverCardContent align="end">Aligned to end.</HoverCardContent>
@@ -60,7 +60,7 @@ function HoverCardAlign() {
 function HoverCardComposition() {
   return (
     <HoverCard>
-      <HoverCardTrigger render={<Button variant="outline" />}>
+      <HoverCardTrigger render={<Button variant="secondary" />}>
         Inventory
       </HoverCardTrigger>
       <HoverCardContent align="start" className="w-64">

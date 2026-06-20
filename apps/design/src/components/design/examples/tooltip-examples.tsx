@@ -17,7 +17,7 @@ const tooltipPreviewTitles: Record<string, string> = {
 function TooltipDemo() {
   return (
     <Tooltip>
-      <TooltipTrigger render={<Button variant="outline" />}>
+      <TooltipTrigger render={<Button variant="secondary" />}>
         Hover me
       </TooltipTrigger>
       <TooltipContent>Compact contextual help</TooltipContent>
@@ -29,17 +29,17 @@ function TooltipSide() {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <Tooltip>
-        <TooltipTrigger render={<Button variant="outline" />}>Top</TooltipTrigger>
+        <TooltipTrigger render={<Button variant="secondary" />}>Top</TooltipTrigger>
         <TooltipContent side="top">Placed above</TooltipContent>
       </Tooltip>
       <Tooltip>
-        <TooltipTrigger render={<Button variant="outline" />}>
+        <TooltipTrigger render={<Button variant="secondary" />}>
           Bottom
         </TooltipTrigger>
         <TooltipContent side="bottom">Placed below</TooltipContent>
       </Tooltip>
       <Tooltip>
-        <TooltipTrigger render={<Button variant="outline" />}>
+        <TooltipTrigger render={<Button variant="secondary" />}>
           Right
         </TooltipTrigger>
         <TooltipContent side="right">Placed to the right</TooltipContent>
@@ -51,7 +51,7 @@ function TooltipSide() {
 function TooltipShortcut() {
   return (
     <Tooltip>
-      <TooltipTrigger render={<Button variant="outline" />}>
+      <TooltipTrigger render={<Button variant="secondary" />}>
         Command menu
       </TooltipTrigger>
       <TooltipContent>

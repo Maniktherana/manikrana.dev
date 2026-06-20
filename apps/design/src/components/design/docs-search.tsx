@@ -327,7 +327,7 @@ function DocsSearchActions({
         >
           <CornerDownLeftIcon className="size-[15px] text-[#b8b8bf]" aria-hidden="true" />
           <span className="min-w-0 flex-1 truncate">Open selected result</span>
-          <Kbd background="contrast" className="h-5 min-w-5 rounded-[5px] border-white/10 bg-white/10 px-1.5 text-[11px] text-[#e5e5e7]">
+          <Kbd className="h-5 min-w-5 px-1.5">
             ↵
           </Kbd>
         </button>
@@ -342,10 +342,10 @@ function DocsSearchActions({
           <ClipboardIcon className="size-[15px] text-[#b8b8bf]" aria-hidden="true" />
           <span className="min-w-0 flex-1 truncate">Copy link</span>
           <KbdGroup>
-            <Kbd background="contrast" className="h-5 min-w-5 rounded-[5px] border-white/10 bg-white/10 px-1.5 text-[11px] text-[#e5e5e7]">
+            <Kbd className="h-5 min-w-5 px-1.5">
               ⌘
             </Kbd>
-            <Kbd background="contrast" className="h-5 min-w-5 rounded-[5px] border-white/10 bg-white/10 px-1.5 text-[11px] text-[#e5e5e7]">
+            <Kbd className="h-5 min-w-5 px-1.5">
               C
             </Kbd>
           </KbdGroup>
@@ -402,7 +402,7 @@ function DocsSearchTrigger({ onOpen }: { onOpen: () => void }) {
       </button>
       <Button
         type="button"
-        variant="outline"
+        variant="secondary"
         size="icon-sm"
         className="md:hidden"
         aria-label="Search documentation"
@@ -794,7 +794,7 @@ function DocsSearch({
             <span className="flex shrink-0 items-center gap-3">
               <span className="hidden items-center gap-1.5 sm:flex">
                 Open
-                <Kbd background="contrast" className="h-5 min-w-5 rounded-[5px] border-white/10 bg-white/10 px-1.5 text-[11px] text-[#e5e5e7]">
+                <Kbd className="h-5 min-w-5 px-1.5">
                   <CornerDownLeftIcon className="size-3" />
                 </Kbd>
               </span>
@@ -805,10 +805,10 @@ function DocsSearch({
               >
                 Actions
                 <KbdGroup>
-                  <Kbd background="contrast" className="h-5 min-w-5 rounded-[5px] border-white/10 bg-white/10 px-1.5 text-[11px] text-[#e5e5e7]">
+                  <Kbd className="h-5 min-w-5 px-1.5">
                     ⌘
                   </Kbd>
-                  <Kbd background="contrast" className="h-5 min-w-5 rounded-[5px] border-white/10 bg-white/10 px-1.5 text-[11px] text-[#e5e5e7]">
+                  <Kbd className="h-5 min-w-5 px-1.5">
                     K
                   </Kbd>
                 </KbdGroup>

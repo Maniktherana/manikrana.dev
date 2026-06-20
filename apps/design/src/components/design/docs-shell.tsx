@@ -123,7 +123,7 @@ function DocsSidebarNode({ activeUrl, node }: { activeUrl: string; node: Node })
   return (
     <DocsLink
       aria-current={node.url === activeUrl ? "page" : undefined}
-      className={cn(sidebarItemClassName, node.url === activeUrl && "bg-accent text-foreground")}
+      className={cn(sidebarItemClassName, node.url === activeUrl && "bg-white/10 text-foreground")}
       href={node.url}
     >
       {node.name}
@@ -239,7 +239,7 @@ function DocsTableOfContents({ page }: { page: SerializedComponentDocPage }) {
           <nav className="mt-4 flex flex-col gap-1">
             {page.toc.map((item) => (
               <TOCItem
-                className="block rounded-[6px] px-2 py-[5px] text-[13px] leading-[1.4] text-muted-foreground no-underline hover:bg-accent hover:text-foreground data-[active=true]:bg-accent data-[active=true]:text-foreground data-[depth=3]:ps-5"
+                className="block rounded-[6px] px-2 py-[5px] text-[13px] leading-[1.4] text-muted-foreground no-underline hover:bg-accent hover:text-foreground data-[active=true]:bg-white/10 data-[active=true]:text-foreground data-[depth=3]:ps-5"
                 data-depth={item.depth}
                 href={item.url}
                 key={item.url}

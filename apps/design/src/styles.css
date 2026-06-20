@@ -42,6 +42,7 @@
   --button-danger: #e11d48;
   --button-danger-hover: #be123c;
   --button-danger-pressed: #9f1239;
+  --button-danger-border: #9f1239;
   --button-danger-foreground: #ffffff;
   --button-disabled: #f4f4f5;
   --button-disabled-border: #e4e4e7;
@@ -74,8 +75,9 @@
   --button-neutral-hover: var(--button-secondary-hover);
   --button-neutral-foreground: var(--button-secondary-foreground);
   --border: #e4e4e7;
+  --border-strong: #a1a1aa;
   --input: #e4e4e7;
-  --ring: #2563eb;
+  --ring: #d4d4d8;
   --chart-1: #e4e4e7;
   --chart-2: #71717a;
   --chart-3: #52525b;
@@ -89,7 +91,10 @@
     0 0 0 1px rgb(0 0 0 / 8%), 0 1px 2px -1px rgb(0 0 0 / 8%),
     0 2px 4px 0 rgb(0 0 0 / 4%);
   --shadow-control:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 1px 2px -1px rgb(0 0 0 / 8%),
+    inset 0 0 0 1px var(--border), 0 1px 2px -1px rgb(0 0 0 / 8%),
+    0 2px 4px 0 rgb(0 0 0 / 4%);
+  --shadow-control-hover:
+    inset 0 0 0 1px var(--border-strong), 0 1px 2px -1px rgb(0 0 0 / 8%),
     0 2px 4px 0 rgb(0 0 0 / 4%);
   --shadow-button-secondary:
     0 1px 2px 0 rgb(0 0 0 / 12%), 0 0 0 1px rgb(0 0 0 / 8%);
@@ -99,14 +104,12 @@
   --shadow-button-neutral: var(--shadow-button-secondary);
   --shadow-button-inverted: var(--shadow-button-primary);
   --shadow-button-primary-focus:
-    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b, 0 0 0 2px #ffffff,
-    0 0 0 4px rgb(59 130 246 / 60%), inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
-  /* Canonical keyboard-focus ring for form controls (input, select, checkbox,
-     radio, switch, tabs). Theme-aware via vars; no dark button border. */
+    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b,
+    0 0 0 2px color-mix(in srgb, var(--ring) 50%, transparent),
+    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-control-focus:
-    0 0 0 1px var(--background),
-    0 0 0 2px color-mix(in srgb, var(--ring) 42%, transparent),
-    var(--shadow-control);
+    inset 0 0 0 1px var(--ring), 0 1px 2px -1px rgb(0 0 0 / 8%),
+    0 2px 4px 0 rgb(0 0 0 / 4%);
   --shadow-control-interactive:
     0 1px 2px 0 rgb(30 58 138 / 50%), 0 0 0 1px #2563eb;
   --shadow-control-unchecked:
@@ -133,8 +136,8 @@
     0 4px 8px 0 rgb(0 0 0 / 12%), 0 0 0 1px #18181b,
     inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-button-danger:
-    0 1px 2px 0 rgb(190 18 60 / 40%), 0 0 0 1px var(--button-danger-hover),
-    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+    0 1px 2px 0 rgb(190 18 60 / 32%),
+    inset 0 0.75px 0 0 rgb(255 255 255 / 16%);
   --shadow-button-destructive: var(--shadow-button-danger);
   --shadow-tooltip:
     0 0 0 1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 8%),
@@ -153,7 +156,7 @@
   --sidebar-accent: #f4f4f5;
   --sidebar-accent-foreground: #18181b;
   --sidebar-border: #e4e4e7;
-  --sidebar-ring: #2563eb;
+  --sidebar-ring: #e4e4e7;
 }
 
 .dark {
@@ -189,6 +192,7 @@
   --button-danger: #be123c;
   --button-danger-hover: #e11d48;
   --button-danger-pressed: #9f1239;
+  --button-danger-border: #9f1239;
   --button-danger-foreground: #ffffff;
   --button-disabled: #27272a;
   --button-disabled-border: #3f3f46;
@@ -220,9 +224,10 @@
   --button-neutral: var(--button-secondary);
   --button-neutral-hover: var(--button-secondary-hover);
   --button-neutral-foreground: var(--button-secondary-foreground);
-  --border: #ffffff1a;
-  --input: #ffffff1a;
-  --ring: #60a5fa;
+  --border: rgb(255 255 255 / 8%);
+  --border-strong: rgb(255 255 255 / 20%);
+  --input: rgb(255 255 255 / 8%);
+  --ring: rgb(255 255 255 / 32%);
   --chart-1: #e4e4e7;
   --chart-2: #a1a1aa;
   --chart-3: #71717a;
@@ -233,9 +238,14 @@
     0 0 0 1px #27272a, 0 1px 2px 0 rgb(0 0 0 / 32%),
     0 2px 4px 0 rgb(0 0 0 / 32%);
   --shadow-control:
-    0 -1px 0 0 rgb(255 255 255 / 6%), 0 0 0 1px rgb(255 255 255 / 6%),
-    0 0 0 1px #27272a, 0 0 1px 1.5px rgb(0 0 0 / 24%),
-    0 2px 2px 0 rgb(0 0 0 / 24%);
+    inset 0 0 0 1px var(--border), inset 0 1px 0 0 rgb(255 255 255 / 4%),
+    0 1px 1px 0 rgb(0 0 0 / 16%);
+  --shadow-control-hover:
+    inset 0 0 0 1px var(--border-strong),
+    inset 0 1px 0 0 rgb(255 255 255 / 6%), 0 1px 1px 0 rgb(0 0 0 / 16%);
+  --shadow-control-focus:
+    inset 0 0 0 1px var(--ring), inset 0 1px 0 0 rgb(255 255 255 / 6%),
+    0 1px 1px 0 rgb(0 0 0 / 16%);
   --shadow-button-secondary:
     0 1px 2px 0 rgb(0 0 0 / 32%), 0 0 0 1px rgb(255 255 255 / 16%);
   --shadow-button-primary:
@@ -244,8 +254,9 @@
   --shadow-button-neutral: var(--shadow-button-secondary);
   --shadow-button-inverted: var(--shadow-button-primary);
   --shadow-button-primary-focus:
-    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b, 0 0 0 2px #212124,
-    0 0 0 4px rgb(59 130 246 / 60%), inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b,
+    0 0 0 2px color-mix(in srgb, var(--ring) 50%, transparent),
+    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-control-interactive:
     0 1px 2px 0 rgb(30 58 138 / 50%), 0 0 0 1px #3b82f6;
   --shadow-control-unchecked:
@@ -271,8 +282,8 @@
     0 4px 8px 0 rgb(0 0 0 / 36%), 0 0 0 1px rgb(255 255 255 / 8%),
     inset 0 0.75px 0 0 rgb(255 255 255 / 12%);
   --shadow-button-danger:
-    0 1px 2px 0 rgb(190 18 60 / 40%), 0 0 0 1px var(--button-danger-hover),
-    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+    0 1px 2px 0 rgb(0 0 0 / 32%),
+    inset 0 0.75px 0 0 rgb(255 255 255 / 14%);
   --shadow-button-destructive: var(--shadow-button-danger);
   --shadow-tooltip:
     0 -1px 0 0 rgb(255 255 255 / 6%), 0 0 0 1px rgb(255 255 255 / 6%),
@@ -291,8 +302,8 @@
   --sidebar-primary-foreground: #18181b;
   --sidebar-accent: #27272a;
   --sidebar-accent-foreground: #f4f4f5;
-  --sidebar-border: #ffffff1a;
-  --sidebar-ring: #60a5fa;
+  --sidebar-border: rgb(255 255 255 / 8%);
+  --sidebar-ring: rgb(255 255 255 / 32%);
 }
 
 @theme inline {
@@ -314,6 +325,7 @@
   --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
+  --color-border-strong: var(--border-strong);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);

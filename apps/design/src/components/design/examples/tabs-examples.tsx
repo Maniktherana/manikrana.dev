@@ -5,15 +5,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const tabsPreviewTitles: Record<string, string> = {
   "tabs-demo": "Tabs",
   "tabs-default": "Tabs Default",
-  "tabs-line": "Tabs Line",
-  "tabs-browser": "Tabs Browser",
+  "tabs-underline": "Tabs Underline",
   "tabs-vertical": "Tabs Vertical",
 };
 
 function TabsDemo() {
   return (
     <Tabs defaultValue="overview" className="w-full max-w-md">
-      <TabsList variant="line">
+      <TabsList>
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="settings">Settings</TabsTrigger>
         <TabsTrigger value="activity">Activity</TabsTrigger>
@@ -33,7 +32,7 @@ function TabsDemo() {
 
 function TabsDefault() {
   return (
-    <Tabs defaultValue="profile" className="w-full max-w-xl">
+    <Tabs defaultValue="profile" className="w-full max-w-md">
       <TabsList>
         <TabsTrigger value="profile">Profile</TabsTrigger>
         <TabsTrigger value="billing">Billing</TabsTrigger>
@@ -52,10 +51,10 @@ function TabsDefault() {
   );
 }
 
-function TabsLine() {
+function TabsUnderline() {
   return (
     <Tabs defaultValue="orders" className="w-full max-w-md">
-      <TabsList variant="line">
+      <TabsList variant="underline">
         <TabsTrigger value="orders">Orders</TabsTrigger>
         <TabsTrigger value="returns">Returns</TabsTrigger>
         <TabsTrigger value="drafts">Drafts</TabsTrigger>
@@ -64,21 +63,10 @@ function TabsLine() {
   );
 }
 
-function TabsBrowser() {
-  return (
-    <Tabs defaultValue="preview" className="w-full max-w-lg">
-      <TabsList variant="browser">
-        <TabsTrigger value="preview">Preview</TabsTrigger>
-        <TabsTrigger value="code">Code</TabsTrigger>
-      </TabsList>
-    </Tabs>
-  );
-}
-
 function TabsVertical() {
   return (
-    <Tabs defaultValue="general" orientation="vertical" className="w-full max-w-md flex-row">
-      <TabsList variant="browser">
+    <Tabs defaultValue="general" orientation="vertical" className="w-full max-w-md">
+      <TabsList>
         <TabsTrigger value="general">General</TabsTrigger>
         <TabsTrigger value="shipping">Shipping</TabsTrigger>
         <TabsTrigger value="taxes">Taxes</TabsTrigger>
@@ -99,8 +87,7 @@ function TabsVertical() {
 const tabsPreviews: Record<string, React.ComponentType> = {
   "tabs-demo": TabsDemo,
   "tabs-default": TabsDefault,
-  "tabs-line": TabsLine,
-  "tabs-browser": TabsBrowser,
+  "tabs-underline": TabsUnderline,
   "tabs-vertical": TabsVertical,
 };
 

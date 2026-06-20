@@ -19,6 +19,14 @@ bunx shadcn@latest add kbd
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 ```
 
+Single key:
+
+```tsx
+<Kbd>K</Kbd>
+```
+
+Multiple keys:
+
 ```tsx
 <KbdGroup>
   <Kbd>Cmd</Kbd>
@@ -27,12 +35,6 @@ import { Kbd, KbdGroup } from "@/components/ui/kbd";
 ```
 
 ## Examples
-
-### Background
-
-Use `background` when the key is sitting on a field, component surface, or contrast surface.
-
-<ComponentPreview name="kbd-background" />
 
 ### Group
 
@@ -46,13 +48,18 @@ Icons inherit the compact key sizing.
 
 <ComponentPreview name="kbd-icon" />
 
+### Input Group
+
+Use `Kbd` inside compact input affordances.
+
+<ComponentPreview name="kbd-input-group" />
+
 ## API Reference
 
 ### Kbd
 
 | Prop | Type | Default |
 | --- | --- | --- |
-| `background` | `"field" \| "component" \| "contrast"` | `"field"` |
 | `className` | `string` | - |
 | `children` | `ReactNode` | - |
 

@@ -166,7 +166,7 @@ function DynamicIslandRoot() {
               onClick={() => selectView(item)}
               size="sm"
               type="button"
-              variant={view === item ? "default" : "outline"}
+              variant={view === item ? "default" : "secondary"}
             >
               {capitalize(item)}
             </Button>

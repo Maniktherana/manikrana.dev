@@ -7,7 +7,6 @@ import {
   PopoverDescription,
   PopoverFooter,
   PopoverFooterActions,
-  PopoverFooterButton,
   PopoverHeader,
   PopoverSeparator,
   PopoverStep,
@@ -19,13 +18,14 @@ const popoverPreviewTitles: Record<string, string> = {
   popover: "Popover",
   "popover-demo": "Popover Demo",
   "popover-footer": "Popover Footer",
+  "popover-sides": "Popover Sides",
   "popover-stretch": "Popover Stretch",
 };
 
 function PopoverDemo() {
   return (
     <Popover>
-      <PopoverTrigger render={<Button variant="outline" />}>Open popover</PopoverTrigger>
+      <PopoverTrigger render={<Button variant="secondary" />}>Open popover</PopoverTrigger>
       <PopoverContent align="center" showArrow showCloseButton>
         <PopoverHeader>
           <PopoverTitle>Insert Popover</PopoverTitle>
@@ -37,10 +37,12 @@ function PopoverDemo() {
         <PopoverFooter>
           <PopoverStep>Step 1 of 5</PopoverStep>
           <PopoverFooterActions>
-            <PopoverFooterButton>Back</PopoverFooterButton>
-            <PopoverFooterButton tone="primary" stretch>
+            <Button type="button" variant="ghost" size="sm">
+              Back
+            </Button>
+            <Button type="button" size="sm" className="flex-1">
               Next
-            </PopoverFooterButton>
+            </Button>
           </PopoverFooterActions>
         </PopoverFooter>
       </PopoverContent>
@@ -51,7 +53,7 @@ function PopoverDemo() {
 function PopoverFooterDemo() {
   return (
     <Popover>
-      <PopoverTrigger render={<Button variant="outline" />}>Open popover</PopoverTrigger>
+      <PopoverTrigger render={<Button variant="secondary" />}>Open popover</PopoverTrigger>
       <PopoverContent align="center" showArrow>
         <PopoverHeader>
           <PopoverTitle>Publish changes</PopoverTitle>
@@ -61,10 +63,12 @@ function PopoverFooterDemo() {
         <PopoverFooter>
           <PopoverStep>Step 1 of 5</PopoverStep>
           <PopoverFooterActions>
-            <PopoverFooterButton>Back</PopoverFooterButton>
-            <PopoverFooterButton tone="primary" stretch>
+            <Button type="button" variant="ghost" size="sm">
+              Back
+            </Button>
+            <Button type="button" size="sm" className="flex-1">
               Next
-            </PopoverFooterButton>
+            </Button>
           </PopoverFooterActions>
         </PopoverFooter>
       </PopoverContent>
@@ -75,7 +79,7 @@ function PopoverFooterDemo() {
 function PopoverStretch() {
   return (
     <Popover>
-      <PopoverTrigger render={<Button variant="outline" />}>Open popover</PopoverTrigger>
+      <PopoverTrigger render={<Button variant="secondary" />}>Open popover</PopoverTrigger>
       <PopoverContent align="center" showArrow>
         <PopoverHeader>
           <PopoverTitle>Confirm action</PopoverTitle>
@@ -84,10 +88,12 @@ function PopoverStretch() {
         <PopoverSeparator />
         <PopoverFooter>
           <PopoverFooterActions>
-            <PopoverFooterButton stretch>Back</PopoverFooterButton>
-            <PopoverFooterButton tone="primary" stretch>
+            <Button type="button" variant="ghost" size="sm" className="flex-1">
+              Back
+            </Button>
+            <Button type="button" size="sm" className="flex-1">
               Next
-            </PopoverFooterButton>
+            </Button>
           </PopoverFooterActions>
         </PopoverFooter>
       </PopoverContent>
@@ -95,10 +101,36 @@ function PopoverStretch() {
   );
 }
 
+function PopoverSides() {
+  return (
+    <div className="flex w-full flex-wrap items-center justify-center gap-16">
+      <Popover>
+        <PopoverTrigger render={<Button variant="secondary" />}>Left side</PopoverTrigger>
+        <PopoverContent side="left" align="center" showArrow className="w-[240px]">
+          <PopoverHeader>
+            <PopoverTitle>Left Arrow</PopoverTitle>
+            <PopoverDescription>Arrow spacing for left-side placement.</PopoverDescription>
+          </PopoverHeader>
+        </PopoverContent>
+      </Popover>
+      <Popover>
+        <PopoverTrigger render={<Button variant="secondary" />}>Right side</PopoverTrigger>
+        <PopoverContent side="right" align="center" showArrow className="w-[240px]">
+          <PopoverHeader>
+            <PopoverTitle>Right Arrow</PopoverTitle>
+            <PopoverDescription>Arrow spacing for right-side placement.</PopoverDescription>
+          </PopoverHeader>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+}
+
 const popoverPreviews: Record<string, ComponentType> = {
   popover: PopoverDemo,
   "popover-demo": PopoverDemo,
   "popover-footer": PopoverFooterDemo,
+  "popover-sides": PopoverSides,
   "popover-stretch": PopoverStretch,
 };
 

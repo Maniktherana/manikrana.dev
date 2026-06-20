@@ -27,7 +27,7 @@ const badgeStateVariants = {
   alpha:
     "border-[rgb(24_24_27_/_10%)] bg-[rgb(24_24_27_/_40%)] text-white [text-shadow:0_2px_4px_rgb(0_0_0_/_4%),0_1px_2px_rgb(0_0_0_/_8%)] backdrop-blur-[10px] dark:border-white/10 dark:bg-white/40",
   outline: "border-border bg-background text-foreground",
-  ghost: "border-transparent bg-transparent text-muted-foreground hover:bg-muted",
+  ghost: "border-transparent bg-transparent text-muted-foreground hover:bg-accent",
   link: "h-auto border-transparent bg-transparent px-0 py-0 text-foreground hover:underline",
 };
 

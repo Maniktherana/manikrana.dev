@@ -11,10 +11,10 @@ import {
 import { Kbd } from "@/components/ui/kbd";
 
 const searchPreviewTitles: Record<string, string> = {
-  "search-demo": "Search",
-  "search-small": "Search Small",
-  "search-rounded": "Search Rounded",
-  "search-state": "Search State",
+  "search-demo": "Input Group",
+  "search-small": "Input Group Small",
+  "search-rounded": "Input Group Rounded",
+  "search-state": "Input Group State",
 };
 
 function SearchDemo() {
@@ -28,7 +28,7 @@ function SearchDemo() {
       </InputGroupAddon>
       <InputGroupInput placeholder="Search products" />
       <InputGroupAddon align="inline-end">
-        <Kbd className="h-[17px] min-w-0 border-[color-mix(in_srgb,var(--border)_75%,var(--foreground))] bg-background px-1">
+        <Kbd className="h-[17px] min-w-0 px-1">
           ⌘K
         </Kbd>
       </InputGroupAddon>

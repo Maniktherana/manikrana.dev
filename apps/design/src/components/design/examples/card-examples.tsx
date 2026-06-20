@@ -29,11 +29,11 @@ function CardDemo() {
       </CardHeader>
       <CardContent>
         <p className="text-[13px] leading-[1.6] text-secondary-foreground">
-          This card uses the same static surface treatment as the modal.
+          This card uses the shared framed surface treatment.
         </p>
       </CardContent>
       <CardFooter>
-        <Button variant="outline">Cancel</Button>
+        <Button variant="secondary">Cancel</Button>
         <Button>Publish</Button>
       </CardFooter>
     </Card>
@@ -71,7 +71,7 @@ function CardCompact() {
       </CardHeader>
       <CardContent>
         <p className="text-[13px] leading-[1.6] text-secondary-foreground">
-          The spacing tightens while keeping the modal-like frame.
+          The spacing tightens while keeping the same framed surface.
         </p>
       </CardContent>
     </Card>

@@ -16,8 +16,8 @@ const buttonPreviewTitles: Record<string, string> = {
   "button-demo": "Button Demo",
   "button-size": "Button Size",
   "button-default": "Button Default",
-  "button-outline": "Button Outline",
   "button-secondary": "Button Secondary",
+  "button-outline": "Button Outline",
   "button-ghost": "Button Ghost",
   "button-destructive": "Button Destructive",
   "button-link": "Button Link",
@@ -32,10 +32,10 @@ const buttonPreviewTitles: Record<string, string> = {
 function ButtonDemo() {
   return (
     <div className="flex flex-wrap items-center gap-2 md:flex-row">
-      <Button type="button" variant="outline">
+      <Button type="button" variant="secondary">
         Button
       </Button>
-      <Button type="button" variant="outline" size="icon" aria-label="Submit">
+      <Button type="button" variant="secondary" size="icon" aria-label="Submit">
         <ArrowUpIcon />
       </Button>
     </div>
@@ -46,34 +46,34 @@ function ButtonSize() {
   return (
     <div className="flex flex-col items-start gap-8 sm:flex-row">
       <div className="flex items-start gap-2">
-        <Button type="button" size="xs" variant="outline">
+        <Button type="button" size="xs" variant="secondary">
           Extra Small
         </Button>
-        <Button type="button" size="icon-xs" aria-label="Submit" variant="outline">
+        <Button type="button" size="icon-xs" aria-label="Submit" variant="secondary">
           <ArrowUpRightIcon />
         </Button>
       </div>
       <div className="flex items-start gap-2">
-        <Button type="button" size="sm" variant="outline">
+        <Button type="button" size="sm" variant="secondary">
           Small
         </Button>
-        <Button type="button" size="icon-sm" aria-label="Submit" variant="outline">
+        <Button type="button" size="icon-sm" aria-label="Submit" variant="secondary">
           <ArrowUpRightIcon />
         </Button>
       </div>
       <div className="flex items-start gap-2">
-        <Button type="button" variant="outline">
+        <Button type="button" variant="secondary">
           Default
         </Button>
-        <Button type="button" size="icon" aria-label="Submit" variant="outline">
+        <Button type="button" size="icon" aria-label="Submit" variant="secondary">
           <ArrowUpRightIcon />
         </Button>
       </div>
       <div className="flex items-start gap-2">
-        <Button type="button" variant="outline" size="lg">
+        <Button type="button" variant="secondary" size="lg">
           Large
         </Button>
-        <Button type="button" size="icon-lg" aria-label="Submit" variant="outline">
+        <Button type="button" size="icon-lg" aria-label="Submit" variant="secondary">
           <ArrowUpRightIcon />
         </Button>
       </div>
@@ -85,18 +85,18 @@ function ButtonDefault() {
   return <Button type="button">Button</Button>;
 }
 
-function ButtonOutline() {
-  return (
-    <Button type="button" variant="outline">
-      Outline
-    </Button>
-  );
-}
-
 function ButtonSecondary() {
   return (
     <Button type="button" variant="secondary">
       Secondary
+    </Button>
+  );
+}
+
+function ButtonOutline() {
+  return (
+    <Button type="button" variant="outline">
+      Outline
     </Button>
   );
 }
@@ -127,7 +127,7 @@ function ButtonLink() {
 
 function ButtonIcon() {
   return (
-    <Button type="button" variant="outline" size="icon" aria-label="Submit">
+    <Button type="button" variant="secondary" size="icon" aria-label="Submit">
       <ArrowUpRightIcon />
     </Button>
   );
@@ -136,11 +136,11 @@ function ButtonIcon() {
 function ButtonWithIcon() {
   return (
     <div className="flex flex-wrap gap-2">
-      <Button type="button" variant="outline">
+      <Button type="button" variant="secondary">
         <GitBranchIcon data-icon="inline-start" />
         New Branch
       </Button>
-      <Button type="button" variant="outline">
+      <Button type="button" variant="secondary">
         Fork
         <GitForkIcon data-icon="inline-end" />
       </Button>
@@ -156,7 +156,7 @@ function ButtonRounded() {
       </Button>
       <Button
         type="button"
-        variant="outline"
+        variant="secondary"
         size="icon"
         className="rounded-full"
         aria-label="Submit"
@@ -170,7 +170,7 @@ function ButtonRounded() {
 function ButtonSpinner() {
   return (
     <div className="flex flex-wrap gap-2">
-      <Button type="button" variant="outline" disabled>
+      <Button type="button" variant="secondary" disabled>
         <Spinner data-icon="inline-start" />
         Generating
       </Button>
@@ -193,17 +193,17 @@ function ButtonRender() {
 function ButtonRtl() {
   return (
     <div className="flex flex-wrap items-center gap-2 md:flex-row" dir="rtl">
-      <Button type="button" variant="outline">
+      <Button type="button" variant="secondary">
         Button
       </Button>
       <Button type="button" variant="destructive">
         Delete
       </Button>
-      <Button type="button" variant="outline">
+      <Button type="button" variant="secondary">
         Submit
         <ArrowRightIcon className="rtl:rotate-180" data-icon="inline-end" />
       </Button>
-      <Button type="button" variant="outline" size="icon" aria-label="Add">
+      <Button type="button" variant="secondary" size="icon" aria-label="Add">
         <PlusIcon />
       </Button>
       <Button type="button" variant="secondary" disabled>
@@ -219,8 +219,8 @@ const buttonPreviews: Record<string, ComponentType> = {
   "button-demo": ButtonDemo,
   "button-size": ButtonSize,
   "button-default": ButtonDefault,
-  "button-outline": ButtonOutline,
   "button-secondary": ButtonSecondary,
+  "button-outline": ButtonOutline,
   "button-ghost": ButtonGhost,
   "button-destructive": ButtonDestructive,
   "button-link": ButtonLink,

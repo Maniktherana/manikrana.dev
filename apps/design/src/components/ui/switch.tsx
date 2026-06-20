@@ -28,9 +28,9 @@ function Switch({
       className={cn(
         "peer group/switch relative inline-flex h-5 shrink-0 items-center rounded-full border border-transparent outline-none transition-[box-shadow,opacity] duration-100 after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50 data-disabled:cursor-not-allowed data-disabled:opacity-50",
         size === "sm" ? "w-7" : "w-8",
-        "focus-visible:[&_[data-slot=switch-track]]:shadow-[var(--shadow-control-focus)]",
+        "focus-visible:[&_[data-slot=switch-track]]:shadow-[0_0_0_1px_var(--ring),var(--shadow-switch-track)]",
         "aria-invalid:[&_[data-slot=switch-track]]:shadow-[0_0_0_1px_color-mix(in_srgb,var(--destructive)_35%,transparent),var(--shadow-switch-track)]",
-        "data-checked:[&_[data-slot=switch-track]]:bg-[var(--interactive)] data-unchecked:[&_[data-slot=switch-track]]:bg-input",
+        "data-checked:[&_[data-slot=switch-track]]:bg-[var(--button-primary-hover)] data-unchecked:[&_[data-slot=switch-track]]:bg-input",
         className,
       )}
       {...props}
