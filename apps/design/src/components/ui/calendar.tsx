@@ -71,7 +71,7 @@ function Calendar({
           defaultClassNames.month_caption,
         ),
         dropdowns: cn(
-          "flex h-(--cell-size) w-full items-center justify-center gap-1 text-[13px] leading-[1.1] font-medium",
+          "flex h-(--cell-size) w-full items-center justify-center gap-1 text-[13px] leading-[1.1] font-medium tabular-nums",
           defaultClassNames.dropdowns,
         ),
         dropdown_root: cn("relative rounded-(--cell-radius)", defaultClassNames.dropdown_root),
@@ -92,7 +92,7 @@ function Calendar({
         week: cn("mt-0 flex w-fit gap-0", defaultClassNames.week),
         week_number_header: cn("w-(--cell-size) select-none", defaultClassNames.week_number_header),
         week_number: cn(
-          "text-[0.8rem] text-muted-foreground select-none",
+          "text-[0.8rem] tabular-nums text-muted-foreground select-none",
           defaultClassNames.week_number,
         ),
         day: cn(
@@ -228,7 +228,7 @@ function CalendarDayButton({
       data-range-middle={modifiers.range_middle}
       data-outside={modifiers.outside}
       className={cn(
-        "relative isolate z-10 flex aspect-square size-(--cell-size) min-w-0 flex-col gap-1 border-0 leading-[1.1] font-medium shadow-none! group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:shadow-[var(--shadow-control-focus)] data-[outside=true]:text-muted-foreground data-[outside=true]:opacity-60 data-[outside=true]:hover:text-muted-foreground data-[range-end=true]:rounded-(--cell-radius) data-[range-end=true]:rounded-r-(--cell-radius) data-[range-end=true]:bg-[var(--interactive)] data-[range-end=true]:text-[var(--interactive-foreground)] data-[range-middle=true]:rounded-none data-[range-middle=true]:bg-muted data-[range-middle=true]:text-foreground data-[range-start=true]:rounded-(--cell-radius) data-[range-start=true]:rounded-l-(--cell-radius) data-[range-start=true]:bg-[var(--interactive)] data-[range-start=true]:text-[var(--interactive-foreground)] data-[selected-single=true]:bg-[var(--interactive)] data-[selected-single=true]:text-[var(--interactive-foreground)] data-[selected-single=true]:opacity-100 dark:hover:text-foreground [&>span]:text-xs [&>span]:opacity-70",
+        "relative isolate z-10 flex aspect-square size-(--cell-size) min-w-0 flex-col gap-1 border-0 leading-[1.1] font-medium tabular-nums shadow-none! group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:shadow-[var(--shadow-control-focus)] data-[outside=true]:text-muted-foreground data-[outside=true]:opacity-60 data-[outside=true]:hover:text-muted-foreground data-[range-end=true]:rounded-(--cell-radius) data-[range-end=true]:rounded-r-(--cell-radius) data-[range-end=true]:bg-[var(--interactive)] data-[range-end=true]:text-[var(--interactive-foreground)] data-[range-middle=true]:rounded-none data-[range-middle=true]:bg-muted data-[range-middle=true]:text-foreground data-[range-start=true]:rounded-(--cell-radius) data-[range-start=true]:rounded-l-(--cell-radius) data-[range-start=true]:bg-[var(--interactive)] data-[range-start=true]:text-[var(--interactive-foreground)] data-[selected-single=true]:bg-[var(--interactive)] data-[selected-single=true]:text-[var(--interactive-foreground)] data-[selected-single=true]:opacity-100 dark:hover:text-foreground [&>span]:text-xs [&>span]:opacity-70",
         defaultClassNames.day,
         className,
       )}

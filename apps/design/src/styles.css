@@ -77,48 +77,56 @@
   --radius: 8px;
   --control-height: 32px;
   --shadow-card:
-    0 0 0 1px var(--outline), 0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
+    0 0 0 1px var(--outline), 0 1px 2px -1px rgb(0 0 0 / 8%),
+    0 2px 4px 0 rgb(0 0 0 / 4%);
   --shadow-surface: var(--shadow-card);
   --shadow-surface-highlight: 0 1px 0 0 rgb(0 0 0 / 4%);
-  --shadow-control:
-    0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
+  --shadow-control: 0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
   --shadow-control-hover:
     0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
   --shadow-control-highlight: 0 1px 0 0 rgb(0 0 0 / 4%);
   --shadow-control-highlight-hover: 0 1px 0 0 rgb(0 0 0 / 5%);
   --shadow-button-primary:
-    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b, inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b,
+    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-control-focus:
-    0 0 0 1px var(--ring), 0 0 0 3px color-mix(in srgb, var(--ring) 24%, transparent),
+    0 0 0 1px var(--ring),
+    0 0 0 3px color-mix(in srgb, var(--ring) 24%, transparent),
     0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
   --shadow-control-unchecked:
     0 1px 2px 0 rgb(0 0 0 / 10%), 0 0 0 1px var(--control-unchecked-border);
   --shadow-control-unchecked-hover:
-    0 1px 2px 0 rgb(0 0 0 / 12%), 0 0 0 1px var(--control-unchecked-hover-border);
+    0 1px 2px 0 rgb(0 0 0 / 12%),
+    0 0 0 1px var(--control-unchecked-hover-border);
   --shadow-switch-track:
     0 2px 4px 0 rgb(0 0 0 / 4%), inset 0 1px 1px 0 rgb(0 0 0 / 4%),
     inset 0 2px 4px 0 rgb(0 0 0 / 4%), inset 0 0 0 0.75px rgb(0 0 0 / 6%),
     inset 0 0 8px 0 rgb(0 0 0 / 2%);
   --shadow-switch-thumb:
-    0 0 0 0.5px rgb(0 0 0 / 2%), 0 5px 4px 0 rgb(0 0 0 / 2%), 0 3px 3px 0 rgb(0 0 0 / 4%),
-    0 1px 2px 0 rgb(0 0 0 / 12%), 0 0 1px 0 rgb(0 0 0 / 8%), inset 0 0 2px 1px #ffffff,
+    0 0 0 0.5px rgb(0 0 0 / 2%), 0 5px 4px 0 rgb(0 0 0 / 2%),
+    0 3px 3px 0 rgb(0 0 0 / 4%), 0 1px 2px 0 rgb(0 0 0 / 12%),
+    0 0 1px 0 rgb(0 0 0 / 8%), inset 0 0 2px 1px #ffffff,
     inset 0 1px 0 0 #ffffff;
   --shadow-flyout:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 8%), 0 8px 16px 0 rgb(0 0 0 / 8%);
-  --shadow-toast:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 6px 16px -8px rgb(0 0 0 / 20%);
+    0 0 0 1px rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 8%),
+    0 8px 16px 0 rgb(0 0 0 / 8%);
+  --shadow-toast: 0 0 0 1px rgb(0 0 0 / 8%), 0 6px 16px -8px rgb(0 0 0 / 20%);
   --shadow-toast-stacked:
     0 0 0 1px rgb(0 0 0 / 6%), 0 4px 10px -8px rgb(0 0 0 / 16%);
   --shadow-modal:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 8px 16px 0 rgb(0 0 0 / 8%), 0 16px 32px 0 rgb(0 0 0 / 8%);
+    0 0 0 1px rgb(0 0 0 / 8%), 0 8px 16px 0 rgb(0 0 0 / 8%),
+    0 16px 32px 0 rgb(0 0 0 / 8%);
   --shadow-commandbar:
-    0 4px 8px 0 rgb(0 0 0 / 12%), 0 0 0 1px #18181b, inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+    0 4px 8px 0 rgb(0 0 0 / 12%), 0 0 0 1px #18181b,
+    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-destructive-action:
     0 1px 2px 0 rgb(190 18 60 / 32%), inset 0 0.75px 0 0 rgb(255 255 255 / 16%);
   --shadow-tooltip:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 8%);
+    0 0 0 1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 8%),
+    0 4px 8px 0 rgb(0 0 0 / 8%);
   --shadow-popover:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 10%), 0 12px 24px 0 rgb(0 0 0 / 8%);
+    0 0 0 1px rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 10%),
+    0 12px 24px 0 rgb(0 0 0 / 8%);
   --sidebar: #ffffff;
   --sidebar-foreground: #18181b;
   --sidebar-primary: #18181b;
@@ -132,7 +140,7 @@
 .dark {
   --black: #000000;
   --shell: #000000;
-  --page-background: #0C0C0C;
+  --page-background: #0c0c0c;
   --surface: #171719;
   --surface-raised: #212124;
   --surface-control: #212124;
@@ -195,8 +203,9 @@
   --chart-4: #52525b;
   --chart-5: #3f3f46;
   --shadow-card:
-    0 0 0 1px rgb(255 255 255 / 7%), 0 -1px 0 0 rgb(255 255 255 / 6%), 0 0 0 1px #27272a,
-    0 1px 2px 0 rgb(0 0 0 / 42%), 0 3px 6px -1px rgb(0 0 0 / 44%);
+    0 0 0 1px rgb(255 255 255 / 7%), 0 -1px 0 0 rgb(255 255 255 / 6%),
+    0 0 0 1px #27272a, 0 1px 2px 0 rgb(0 0 0 / 42%),
+    0 3px 6px -1px rgb(0 0 0 / 44%);
   --shadow-surface:
     0 0 0 1px rgb(255 255 255 / 8%), 0 1px 0 0 rgb(255 255 255 / 3%),
     0 2px 5px -2px rgb(0 0 0 / 42%);
@@ -210,22 +219,26 @@
   --shadow-control-highlight: 0 -1px 0 0 rgb(255 255 255 / 7%);
   --shadow-control-highlight-hover: 0 -1px 0 0 rgb(255 255 255 / 9%);
   --shadow-control-focus:
-    0 0 0 1px var(--ring), 0 0 0 3px color-mix(in srgb, var(--ring) 20%, transparent),
+    0 0 0 1px var(--ring),
+    0 0 0 3px color-mix(in srgb, var(--ring) 20%, transparent),
     0 -1px 0 0 rgb(255 255 255 / 8%), 0 1px 0 0 rgb(255 255 255 / 4%),
     0 1px 1px 0 rgb(0 0 0 / 24%), 0 2px 3px -2px rgb(0 0 0 / 38%);
   --shadow-button-primary:
-    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b, inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b,
+    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-control-unchecked:
     0 1px 2px 0 rgb(0 0 0 / 32%), 0 0 0 1px var(--control-unchecked-border);
   --shadow-control-unchecked-hover:
-    0 1px 2px 0 rgb(0 0 0 / 36%), 0 0 0 1px var(--control-unchecked-hover-border);
+    0 1px 2px 0 rgb(0 0 0 / 36%),
+    0 0 0 1px var(--control-unchecked-hover-border);
   --shadow-switch-track:
     0 2px 4px 0 rgb(0 0 0 / 24%), inset 0 1px 1px 0 rgb(255 255 255 / 4%),
     inset 0 0 0 0.75px rgb(255 255 255 / 8%), inset 0 0 8px 0 rgb(0 0 0 / 24%);
   --shadow-switch-thumb:
-    0 0 0 0.5px rgb(255 255 255 / 10%), 0 5px 4px 0 rgb(0 0 0 / 18%), 0 3px 3px 0 rgb(0 0 0 / 20%),
-    0 1px 2px 0 rgb(0 0 0 / 32%), 0 0 1px 0 rgb(0 0 0 / 32%),
-    inset 0 0 2px 1px rgb(255 255 255 / 16%), inset 0 1px 0 0 rgb(255 255 255 / 20%);
+    0 0 0 0.5px rgb(255 255 255 / 10%), 0 5px 4px 0 rgb(0 0 0 / 18%),
+    0 3px 3px 0 rgb(0 0 0 / 20%), 0 1px 2px 0 rgb(0 0 0 / 32%),
+    0 0 1px 0 rgb(0 0 0 / 32%), inset 0 0 2px 1px rgb(255 255 255 / 16%),
+    inset 0 1px 0 0 rgb(255 255 255 / 20%);
   --shadow-flyout:
     0 -1px 0 0 rgb(255 255 255 / 4%), 0 0 0 1px rgb(255 255 255 / 10%),
     0 4px 8px 0 rgb(0 0 0 / 32%), 0 8px 16px 0 rgb(0 0 0 / 32%);
@@ -239,10 +252,12 @@
   --shadow-commandbar:
     0 4px 8px 0 rgb(0 0 0 / 36%), 0 0 0 1px rgb(255 255 255 / 8%),
     inset 0 0.75px 0 0 rgb(255 255 255 / 12%);
-  --shadow-destructive-action: 0 1px 2px 0 rgb(0 0 0 / 32%), inset 0 0.75px 0 0 rgb(255 255 255 / 14%);
+  --shadow-destructive-action:
+    0 1px 2px 0 rgb(0 0 0 / 32%), inset 0 0.75px 0 0 rgb(255 255 255 / 14%);
   --shadow-tooltip:
-    0 -1px 0 0 rgb(255 255 255 / 6%), 0 0 0 1px rgb(255 255 255 / 6%), 0 0 0 1px #27272a,
-    0 4px 8px 0 rgb(0 0 0 / 32%), 0 2px 4px 0 rgb(0 0 0 / 28%);
+    0 -1px 0 0 rgb(255 255 255 / 6%), 0 0 0 1px rgb(255 255 255 / 6%),
+    0 0 0 1px #27272a, 0 4px 8px 0 rgb(0 0 0 / 32%),
+    0 2px 4px 0 rgb(0 0 0 / 28%);
   --shadow-popover:
     0 -1px 0 0 rgb(255 255 255 / 4%), 0 0 0 1px rgb(255 255 255 / 10%),
     0 4px 8px 0 rgb(0 0 0 / 18%), 0 12px 24px 0 rgb(0 0 0 / 18%);
@@ -322,6 +337,7 @@
     @apply font-sans;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-optical-sizing: auto;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
   }
@@ -406,23 +422,28 @@
     animation: docs-search-actions-in 140ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  [data-slot="accordion"] > [data-slot="accordion-item"] + [data-slot="accordion-item"] {
+  [data-slot="accordion"]
+    > [data-slot="accordion-item"]
+    + [data-slot="accordion-item"] {
     margin-top: 0.5rem;
   }
 
-  [data-slot="accordion"] > [data-slot="accordion-item"][data-variant="grouped"] {
+  [data-slot="accordion"]
+    > [data-slot="accordion-item"][data-variant="grouped"] {
     border-radius: 0;
     transition-duration: 270ms;
     transition-property: margin, border-radius, background-color, box-shadow;
     transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
   }
 
-  [data-slot="accordion"] > [data-slot="accordion-item"][data-variant="grouped"]:first-child {
+  [data-slot="accordion"]
+    > [data-slot="accordion-item"][data-variant="grouped"]:first-child {
     border-top-left-radius: var(--radius-2xl);
     border-top-right-radius: var(--radius-2xl);
   }
 
-  [data-slot="accordion"] > [data-slot="accordion-item"][data-variant="grouped"]:last-child {
+  [data-slot="accordion"]
+    > [data-slot="accordion-item"][data-variant="grouped"]:last-child {
     border-bottom-right-radius: var(--radius-2xl);
     border-bottom-left-radius: var(--radius-2xl);
   }
@@ -496,7 +517,9 @@
     );
   }
 
-  [data-slot="code-block-body"][data-collapsed] > [data-slot="code-block-content"] pre {
+  [data-slot="code-block-body"][data-collapsed]
+    > [data-slot="code-block-content"]
+    pre {
     max-height: 148px !important;
     overflow: hidden !important;
     pointer-events: none;

@@ -86,7 +86,7 @@ const mdxComponents = {
       <h1
         id={headingId}
         className={cn(
-          "mt-10 scroll-mt-24 font-sans text-[32px] leading-[1.15] font-medium tracking-normal text-foreground",
+          "mt-10 scroll-mt-24 text-balance font-sans text-[32px] leading-[1.15] font-medium tracking-normal text-foreground",
           className,
         )}
         {...props}
@@ -102,7 +102,7 @@ const mdxComponents = {
       <h2
         id={headingId}
         className={cn(
-          "mt-11 scroll-mt-24 font-sans text-2xl leading-[1.2] font-medium tracking-normal text-foreground",
+          "mt-11 scroll-mt-24 text-balance font-sans text-2xl leading-[1.2] font-medium tracking-normal text-foreground",
           className,
         )}
         {...props}
@@ -118,7 +118,7 @@ const mdxComponents = {
       <h3
         id={headingId}
         className={cn(
-          "mt-7 scroll-mt-24 font-sans text-[17px] leading-[1.3] font-medium tracking-normal text-foreground",
+          "mt-7 scroll-mt-24 text-balance font-sans text-[17px] leading-[1.3] font-medium tracking-normal text-foreground",
           className,
         )}
         {...props}
@@ -137,14 +137,17 @@ const mdxComponents = {
   ),
   p: ({ className, ...props }: React.ComponentProps<"p">) => (
     <p
-      className={cn("mt-3 text-[15px] leading-[1.55] text-secondary-foreground", className)}
+      className={cn(
+        "mt-3 text-pretty text-[15px] leading-[1.55] text-secondary-foreground",
+        className,
+      )}
       {...props}
     />
   ),
   ul: ({ className, ...props }: React.ComponentProps<"ul">) => (
     <ul
       className={cn(
-        "mt-3 ms-[22px] grid list-disc gap-2 text-[15px] leading-[1.55] text-secondary-foreground",
+        "mt-3 ms-[22px] grid list-disc gap-2 text-pretty text-[15px] leading-[1.55] text-secondary-foreground",
         className,
       )}
       {...props}
@@ -153,7 +156,7 @@ const mdxComponents = {
   ol: ({ className, ...props }: React.ComponentProps<"ol">) => (
     <ol
       className={cn(
-        "mt-3 ms-[22px] grid list-decimal gap-2 text-[15px] leading-[1.55] text-secondary-foreground",
+        "mt-3 ms-[22px] grid list-decimal gap-2 text-pretty text-[15px] leading-[1.55] text-secondary-foreground",
         className,
       )}
       {...props}

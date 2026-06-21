@@ -7,7 +7,7 @@ function Kbd({ className, ...props }: KbdProps) {
     <kbd
       data-slot="kbd"
       className={cn(
-        "pointer-events-none inline-flex h-[18px] w-fit min-w-[18px] items-center justify-center gap-1 rounded-[4px] border border-transparent bg-[var(--kbd-field-bg)] bg-clip-border px-1.5 font-sans text-[11px] leading-[1.1] font-medium text-[var(--kbd-field-text)] shadow-[0_0_0_1px_var(--kbd-field-border)] select-none [&_svg:not([class*='size-'])]:size-3",
+        "pointer-events-none inline-flex h-[18px] w-fit min-w-[18px] translate-y-[-0.04em] items-center justify-center gap-1 rounded-[4px] border border-transparent bg-[var(--kbd-field-bg)] bg-clip-border px-[5px] pt-px align-middle font-sans text-[11px] leading-none font-medium tabular-nums text-[var(--kbd-field-text)] shadow-[0_0_0_1px_var(--kbd-field-border)] select-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3",
         className,
       )}
       {...props}

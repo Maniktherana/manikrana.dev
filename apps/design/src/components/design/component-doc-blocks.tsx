@@ -1,6 +1,3 @@
-import * as React from "react";
-import { CheckIcon, CopyIcon } from "lucide-react";
-
 import { CodeBlock, CodeBlockBody, CodeBlockContent } from "@/components/design/code";
 import { getExampleSource } from "@/components/design/example-source";
 import { renderAccordionPreview } from "@/components/design/examples/accordion-examples";
@@ -37,38 +34,8 @@ import { renderTablePreview } from "@/components/design/examples/table-examples"
 import { renderTextareaPreview } from "@/components/design/examples/textarea-examples";
 import { renderTooltipPreview } from "@/components/design/examples/tooltip-examples";
 import { renderToastPreview } from "@/components/design/examples/toast-examples";
-import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { CopyButton } from "@/components/ui/copy-button";
 import { cn } from "@/lib/utils";
-
-// Copy button composed from the Button primitive (no bespoke code-block wrapper).
-function CopyButton({ value, className }: { value: string; className?: string }) {
-  const [copied, setCopied] = React.useState(false);
-
-  return (
-    <Tooltip>
-      <TooltipTrigger
-        render={
-          <Button
-            variant="ghost"
-            size="icon"
-            type="button"
-            aria-label="Copy code"
-            className={className}
-          />
-        }
-        onClick={() => {
-          void navigator.clipboard?.writeText(value);
-          setCopied(true);
-          window.setTimeout(() => setCopied(false), 1200);
-        }}
-      >
-        {copied ? <CheckIcon /> : <CopyIcon />}
-      </TooltipTrigger>
-      <TooltipContent>{copied ? "Copied" : "Copy"}</TooltipContent>
-    </Tooltip>
-  );
-}
 
 function ComponentPreview({
   name,
