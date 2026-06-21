@@ -2,12 +2,7 @@
 
 import * as React from "react";
 import { KeyIcon, ShieldCheckIcon, Trash2Icon, XIcon } from "lucide-react";
-import {
-  AnimatePresence,
-  MotionConfig,
-  motion,
-  useReducedMotion,
-} from "motion/react";
+import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
@@ -112,8 +107,7 @@ function FamilyDrawerSurface({
         borderRadius: 36,
         height: surfaceHeight,
         transitionDuration: reduceMotion ? "10ms" : "270ms",
-        transitionProperty:
-          "width, height, border-radius, background-color, border-color",
+        transitionProperty: "width, height, border-radius, background-color, border-color",
         transitionTimingFunction: "cubic-bezier(0.25, 1, 0.5, 1)",
         willChange: "width, height, border-radius",
         width: isOpen ? 338 : 190,
@@ -219,13 +213,8 @@ function FamilyDrawerContent({
             title="Are you sure?"
           />
           <div className="mt-6 flex gap-3">
-            <FamilyDrawerButton onClick={() => setView("default")}>
-              Cancel
-            </FamilyDrawerButton>
-            <FamilyDrawerButton
-              onClick={() => setView("default")}
-              tone="destructive"
-            >
+            <FamilyDrawerButton onClick={() => setView("default")}>Cancel</FamilyDrawerButton>
+            <FamilyDrawerButton onClick={() => setView("default")} tone="destructive">
               Continue
             </FamilyDrawerButton>
           </div>
@@ -256,9 +245,7 @@ function FamilyDrawerContent({
           />
         </div>
         <div className="mt-6 flex gap-3">
-          <FamilyDrawerButton onClick={() => setView("default")}>
-            Cancel
-          </FamilyDrawerButton>
+          <FamilyDrawerButton onClick={() => setView("default")}>Cancel</FamilyDrawerButton>
           <FamilyDrawerButton onClick={() => setView("default")} tone="blue">
             <ShieldCheckIcon className="size-4" />
             Reveal
@@ -290,9 +277,7 @@ function FamilyDrawerContent({
           />
         </div>
         <div className="mt-6 flex gap-3">
-          <FamilyDrawerButton onClick={() => setView("default")}>
-            Cancel
-          </FamilyDrawerButton>
+          <FamilyDrawerButton onClick={() => setView("default")}>Cancel</FamilyDrawerButton>
           <FamilyDrawerButton onClick={() => setView("default")} tone="blue">
             <ShieldCheckIcon className="size-4" />
             Reveal
@@ -305,9 +290,7 @@ function FamilyDrawerContent({
   return (
     <>
       <header className="mb-3 flex h-[62px] items-center border-b border-[#eeeeec] pl-1.5 dark:border-white/10">
-        <h4 className="text-[17px] font-semibold text-[#222] dark:text-[#f3f3f1]">
-          Options
-        </h4>
+        <h4 className="text-[17px] font-semibold text-[#222] dark:text-[#f3f3f1]">Options</h4>
       </header>
       <div className="space-y-2.5">
         <FamilyDrawerAction
@@ -358,9 +341,7 @@ function FamilyDrawerHeader({
   return (
     <header className="mt-[18px]">
       {icon}
-      <h4 className="mt-2 text-[20px] font-semibold text-[#222] dark:text-[#f3f3f1]">
-        {title}
-      </h4>
+      <h4 className="mt-2 text-[20px] font-semibold text-[#222] dark:text-[#f3f3f1]">{title}</h4>
       <p className="mt-2.5 text-[15px] leading-[21px] font-medium text-[#8d8d89] dark:text-[#a5a5a1]">
         {description}
       </p>

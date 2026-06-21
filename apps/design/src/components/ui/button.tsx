@@ -55,10 +55,7 @@ function Button({
       data-variant={variant}
       data-size={size}
       data-static={isStatic || undefined}
-      className={cn(
-        buttonVariants({ variant, size, className }),
-        isStatic && "active:scale-100",
-      )}
+      className={cn(buttonVariants({ variant, size, className }), isStatic && "active:scale-100")}
       {...props}
     />
   );

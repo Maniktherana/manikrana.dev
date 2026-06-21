@@ -8,13 +8,7 @@ const textareaVariants = cva(
 );
 
 function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
-  return (
-    <textarea
-      data-slot="textarea"
-      className={cn(textareaVariants(), className)}
-      {...props}
-    />
-  );
+  return <textarea data-slot="textarea" className={cn(textareaVariants(), className)} {...props} />;
 }
 
 export { Textarea, textareaVariants };

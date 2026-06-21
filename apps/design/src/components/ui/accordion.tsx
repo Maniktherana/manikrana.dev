@@ -19,8 +19,10 @@ const accordionItemVariants = cva(
   {
     variants: {
       variant: {
-        default: "border border-transparent bg-card text-card-foreground shadow-[var(--shadow-surface)]",
-        grouped: "border border-transparent bg-card text-card-foreground shadow-none before:shadow-none",
+        default:
+          "border border-transparent bg-card text-card-foreground shadow-[var(--shadow-surface)]",
+        grouped:
+          "border border-transparent bg-card text-card-foreground shadow-none before:shadow-none",
       },
     },
     defaultVariants: {

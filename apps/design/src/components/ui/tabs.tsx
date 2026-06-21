@@ -41,7 +41,8 @@ function TabsList({
           "rounded-lg bg-[var(--tabs-list-bg)] p-0.5 text-secondary-foreground",
         variant === "ghost" &&
           "rounded-lg p-0.5 text-secondary-foreground [&>[data-slot=tabs-trigger]:hover]:text-foreground",
-        variant === "underline" && "data-[orientation=horizontal]:py-1 data-[orientation=vertical]:px-1",
+        variant === "underline" &&
+          "data-[orientation=horizontal]:py-1 data-[orientation=vertical]:px-1",
         className,
       )}
       {...props}
@@ -55,8 +56,7 @@ function TabsList({
             "z-20 bg-foreground data-[orientation=horizontal]:h-0.5 data-[orientation=horizontal]:translate-y-px data-[orientation=vertical]:w-0.5 data-[orientation=vertical]:-translate-x-px",
           variant === "default" &&
             "z-0 rounded-[calc(var(--radius-lg)-1px)] bg-[var(--tabs-indicator-bg)] shadow-[var(--shadow-card)]",
-          variant === "ghost" &&
-            "z-0 rounded-[calc(var(--radius-lg)-1px)] bg-white/10 shadow-none",
+          variant === "ghost" && "z-0 rounded-[calc(var(--radius-lg)-1px)] bg-white/10 shadow-none",
         )}
       />
     </TabsPrimitive.List>

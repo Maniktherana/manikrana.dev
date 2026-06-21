@@ -430,7 +430,8 @@ function formatImportDeclaration(declaration: ImportDeclaration, usedNames: Set<
   const hasRuntimeNamed = named.some((item) => !item.isType);
   const hasTypeNamed = named.some((item) => item.isType);
   const namedParts = named.map((item) => {
-    const alias = item.imported === item.local ? item.imported : `${item.imported} as ${item.local}`;
+    const alias =
+      item.imported === item.local ? item.imported : `${item.imported} as ${item.local}`;
 
     return item.isType && (hasRuntimeNamed || defaultName) ? `type ${alias}` : alias;
   });

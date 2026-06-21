@@ -44,9 +44,7 @@ function SwitchText({
   return (
     <div className={cn("flex min-w-0 flex-1 flex-col items-start", details && "gap-3")}>
       <span className="text-[13px] leading-[1.6] font-medium text-foreground">{title}</span>
-      <p className="m-0 text-[13px] leading-[1.6] text-secondary-foreground">
-        {description}
-      </p>
+      <p className="m-0 text-[13px] leading-[1.6] text-secondary-foreground">{description}</p>
       {details}
     </div>
   );

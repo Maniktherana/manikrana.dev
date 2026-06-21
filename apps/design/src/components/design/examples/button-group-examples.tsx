@@ -296,12 +296,7 @@ function ButtonGroupDropdown() {
       <DropdownMenu>
         <DropdownMenuTrigger
           render={
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              aria-label="Open follow actions"
-            />
+            <Button type="button" variant="outline" size="icon" aria-label="Open follow actions" />
           }
         >
           <ChevronDownIcon />
@@ -390,9 +385,7 @@ function ButtonGroupPopover() {
       </Button>
       <Popover>
         <PopoverTrigger
-          render={
-            <Button type="button" variant="outline" size="icon" aria-label="Open popover" />
-          }
+          render={<Button type="button" variant="outline" size="icon" aria-label="Open popover" />}
         >
           <ChevronDownIcon />
         </PopoverTrigger>

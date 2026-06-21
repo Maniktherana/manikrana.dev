@@ -73,9 +73,7 @@ function MenuCheckbox() {
 function MenuSubmenu() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        render={<Button variant="outline" size="icon" aria-label="Open menu" />}
-      >
+      <DropdownMenuTrigger render={<Button variant="outline" size="icon" aria-label="Open menu" />}>
         <MoreHorizontalIcon />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
