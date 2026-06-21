@@ -213,7 +213,7 @@ function FamilyDrawerContent({
           />
           <div className="mt-6 flex gap-3">
             <FamilyDrawerButton onClick={() => setView("default")}>Cancel</FamilyDrawerButton>
-            <FamilyDrawerButton onClick={() => setView("default")} tone="danger">
+            <FamilyDrawerButton onClick={() => setView("default")} tone="destructive">
               Continue
             </FamilyDrawerButton>
           </div>
@@ -319,7 +319,7 @@ function FamilyDrawerContent({
             </div>
           }
           onClick={() => setView("remove")}
-          tone="danger"
+          tone="destructive"
         >
           Remove Wallet
         </FamilyDrawerAction>
@@ -375,13 +375,13 @@ function FamilyDrawerAction({
   children: React.ReactNode;
   icon: React.ReactNode;
   onClick: () => void;
-  tone?: "default" | "danger";
+  tone?: "default" | "destructive";
 }) {
   return (
     <button
       className={cn(
         "flex h-11 w-full items-center gap-3 rounded-[14px] bg-[#f0f1f2] px-3.5 text-left text-[15px] font-semibold text-[#222] transition-transform hover:bg-[#e9eaeb] focus:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4dafff]/60 active:scale-95 dark:bg-white/[0.08] dark:text-[#f3f3f1] dark:hover:bg-white/[0.12]",
-        tone === "danger" &&
+        tone === "destructive" &&
           "bg-[#fff0f0] text-[#ff3f40] hover:bg-[#ffe5e5] dark:bg-[#ff3f40]/12 dark:text-[#ff6b6c] dark:hover:bg-[#ff3f40]/18",
       )}
       data-vaul-no-drag=""
@@ -403,13 +403,13 @@ function FamilyDrawerButton({
   children: React.ReactNode;
   className?: string;
   onClick?: () => void;
-  tone?: "default" | "danger" | "blue";
+  tone?: "default" | "destructive" | "blue";
 }) {
   return (
     <button
       className={cn(
         "flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#eceeef] px-3.5 text-center text-[16px] font-semibold text-[#222] transition-transform hover:bg-[#e5e7e8] focus:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4dafff]/60 active:scale-95 dark:bg-white/[0.1] dark:text-[#f3f3f1] dark:hover:bg-white/[0.14]",
-        tone === "danger" && "bg-[#ff3f40] text-white",
+        tone === "destructive" && "bg-[#ff3f40] text-white",
         tone === "blue" &&
           "bg-[#278ed3] text-white hover:bg-[#1f7fc1] dark:bg-[#4dafff] dark:text-[#062032] dark:hover:bg-[#69bdff]",
         className,

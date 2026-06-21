@@ -77,22 +77,3 @@ Use the `disabled` prop, and add `data-disabled` to the `Field` for the disabled
 Set `aria-invalid` on the checkbox and `data-invalid` on the `Field` to show validation errors.
 
 <ComponentPreview name="checkbox-invalid" />
-
-## API Reference
-
-### Checkbox
-
-Built on the Base UI `Checkbox.Root` primitive. Accepts all of its props plus `className`.
-
-| Prop              | Type                         | Default |
-| ----------------- | ---------------------------- | ------- |
-| `checked`         | `boolean`                    | -       |
-| `defaultChecked`  | `boolean`                    | `false` |
-| `onCheckedChange` | `(checked: boolean) => void` | -       |
-| `indeterminate`   | `boolean`                    | `false` |
-| `disabled`        | `boolean`                    | `false` |
-| `aria-invalid`    | `boolean`                    | -       |
-| `className`       | `string`                     | -       |
-
-The component exposes `data-slot="checkbox"` on the root, `data-slot="checkbox-box"` on the
-visual, and `data-slot="checkbox-indicator"` on the check/minus icon for styling hooks.

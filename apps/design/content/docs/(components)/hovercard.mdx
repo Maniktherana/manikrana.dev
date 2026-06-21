@@ -39,30 +39,3 @@ Use `align` to pin the popup to the start, center, or end of the trigger.
 Use normal primitives inside `HoverCardContent` when the preview needs richer content.
 
 <ComponentPreview name="hovercard-composition" />
-
-## API Reference
-
-### HoverCard
-
-| Prop           | Type                      | Default |
-| -------------- | ------------------------- | ------- |
-| `open`         | `boolean`                 | -       |
-| `defaultOpen`  | `boolean`                 | -       |
-| `onOpenChange` | `(open: boolean) => void` | -       |
-
-### HoverCardTrigger
-
-| Prop        | Type                                             | Default |
-| ----------- | ------------------------------------------------ | ------- |
-| `render`    | `ReactElement \| (props, state) => ReactElement` | -       |
-| `className` | `string`                                         | -       |
-
-### HoverCardContent
-
-| Prop          | Type                                                                       | Default    |
-| ------------- | -------------------------------------------------------------------------- | ---------- |
-| `side`        | `"top" \| "right" \| "bottom" \| "left" \| "inline-start" \| "inline-end"` | `"bottom"` |
-| `sideOffset`  | `number`                                                                   | `8`        |
-| `align`       | `"start" \| "center" \| "end"`                                             | `"center"` |
-| `alignOffset` | `number`                                                                   | `4`        |
-| `className`   | `string`                                                                   | -          |

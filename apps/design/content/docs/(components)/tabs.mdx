@@ -55,39 +55,3 @@ Use `variant="ghost"` for transparent rails with a moving filled active state.
 Set `orientation="vertical"` on `Tabs` when the list should sit beside the panel.
 
 <ComponentPreview name="tabs-vertical" />
-
-## API Reference
-
-### Tabs
-
-| Prop            | Type                         | Default        |
-| --------------- | ---------------------------- | -------------- |
-| `defaultValue`  | `string`                     | -              |
-| `value`         | `string`                     | -              |
-| `onValueChange` | `(value: string) => void`    | -              |
-| `orientation`   | `"horizontal" \| "vertical"` | `"horizontal"` |
-| `className`     | `string`                     | -              |
-
-### TabsList
-
-| Prop        | Type                       | Default     |
-| ----------- | -------------------------- | ----------- |
-| `variant`   | `"default" \| "ghost" \| "underline"` | `"default"` |
-| `className` | `string`                   | -           |
-
-### TabsTrigger
-
-| Prop        | Type              | Default |
-| ----------- | ----------------- | ------- |
-| `value`     | `string`          | -       |
-| `disabled`  | `boolean`         | `false` |
-| `children`  | `React.ReactNode` | -       |
-| `className` | `string`          | -       |
-
-### TabsContent
-
-| Prop        | Type              | Default |
-| ----------- | ----------------- | ------- |
-| `value`     | `string`          | -       |
-| `children`  | `React.ReactNode` | -       |
-| `className` | `string`          | -       |

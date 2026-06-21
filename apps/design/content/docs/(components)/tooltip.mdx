@@ -39,30 +39,3 @@ Use `side` on `TooltipContent` to place the popup around the trigger.
 Tooltips can compose with `Kbd` when the hint includes a keyboard command.
 
 <ComponentPreview name="tooltip-shortcut" />
-
-## API Reference
-
-### Tooltip
-
-| Prop           | Type                      | Default |
-| -------------- | ------------------------- | ------- |
-| `open`         | `boolean`                 | -       |
-| `defaultOpen`  | `boolean`                 | -       |
-| `onOpenChange` | `(open: boolean) => void` | -       |
-
-### TooltipTrigger
-
-| Prop        | Type                                             | Default |
-| ----------- | ------------------------------------------------ | ------- |
-| `render`    | `ReactElement \| (props, state) => ReactElement` | -       |
-| `className` | `string`                                         | -       |
-
-### TooltipContent
-
-| Prop          | Type                                                                       | Default    |
-| ------------- | -------------------------------------------------------------------------- | ---------- |
-| `side`        | `"top" \| "right" \| "bottom" \| "left" \| "inline-start" \| "inline-end"` | `"top"`    |
-| `sideOffset`  | `number`                                                                   | `8`        |
-| `align`       | `"start" \| "center" \| "end"`                                             | `"center"` |
-| `alignOffset` | `number`                                                                   | `0`        |
-| `className`   | `string`                                                                   | -          |

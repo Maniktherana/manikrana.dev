@@ -103,29 +103,3 @@ Wrap the calendar in a popover button inside `InputGroup` for editable date
 fields.
 
 <ComponentPreview name="calendar-input" />
-
-## API Reference
-
-### Calendar
-
-| Prop              | Type                                                             | Default     |
-| ----------------- | ---------------------------------------------------------------- | ----------- |
-| `mode`            | `"single" \| "multiple" \| "range"`                              | -           |
-| `selected`        | DayPicker selected value for the active mode                     | -           |
-| `onSelect`        | DayPicker select handler for the active mode                     | -           |
-| `captionLayout`   | `"label" \| "dropdown" \| "dropdown-months" \| "dropdown-years"` | `"label"`   |
-| `showOutsideDays` | `boolean`                                                        | `true`      |
-| `buttonVariant`   | `Button["variant"]`                                              | `"ghost"`   |
-| `timeZone`        | `string`                                                         | -           |
-| `locale`          | `Locale`                                                         | -           |
-| `classNames`      | `Partial<ClassNames>`                                            | -           |
-| `components`      | `Partial<CustomComponents>`                                      | -           |
-
-### CalendarDayButton
-
-| Prop        | Type                         | Default |
-| ----------- | ---------------------------- | ------- |
-| `day`       | `DayPicker` day object       | -       |
-| `modifiers` | `DayPicker` modifiers object | -       |
-| `locale`    | `Partial<Locale>`            | -       |
-| `className` | `string`                     | -       |

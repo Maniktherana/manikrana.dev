@@ -53,39 +53,3 @@ by default.
 Compose `AccordionTrigger` with inline badges or other text primitives.
 
 <ComponentPreview name="accordion-status" />
-
-## API Reference
-
-### Accordion
-
-The root wraps Base UI's accordion root and accepts the primitive props.
-
-| Prop            | Type                        | Default |
-| --------------- | --------------------------- | ------- |
-| `defaultValue`  | `string[]`                  | -       |
-| `value`         | `string[]`                  | -       |
-| `onValueChange` | `(value: string[]) => void` | -       |
-| `className`     | `string`                    | -       |
-
-### AccordionItem
-
-| Prop        | Type                   | Default     |
-| ----------- | ---------------------- | ----------- |
-| `value`     | `string`               | -           |
-| `disabled`  | `boolean`              | `false`     |
-| `variant`   | `"default" \| "grouped"` | `"default"` |
-| `className` | `string`               | -           |
-
-### AccordionTrigger
-
-| Prop        | Type              | Default |
-| ----------- | ----------------- | ------- |
-| `children`  | `React.ReactNode` | -       |
-| `className` | `string`          | -       |
-
-### AccordionContent
-
-| Prop        | Type              | Default |
-| ----------- | ----------------- | ------- |
-| `children`  | `React.ReactNode` | -       |
-| `className` | `string`          | -       |
