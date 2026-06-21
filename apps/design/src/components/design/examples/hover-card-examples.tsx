@@ -13,7 +13,7 @@ const hoverCardPreviewTitles: Record<string, string> = {
 function HoverCardDemo() {
   return (
     <HoverCard>
-      <HoverCardTrigger render={<Button variant="secondary" />}>Open preview</HoverCardTrigger>
+      <HoverCardTrigger render={<Button variant="outline" />}>Open preview</HoverCardTrigger>
       <HoverCardContent className="w-[210px]">
         <p className="text-[13px] leading-[1.6] font-medium text-foreground">Product owner</p>
         <p className="text-[13px] leading-[1.6] text-secondary-foreground">
@@ -28,15 +28,15 @@ function HoverCardAlign() {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <HoverCard>
-        <HoverCardTrigger render={<Button variant="secondary" />}>Start</HoverCardTrigger>
+        <HoverCardTrigger render={<Button variant="outline" />}>Start</HoverCardTrigger>
         <HoverCardContent align="start">Aligned to start.</HoverCardContent>
       </HoverCard>
       <HoverCard>
-        <HoverCardTrigger render={<Button variant="secondary" />}>Center</HoverCardTrigger>
+        <HoverCardTrigger render={<Button variant="outline" />}>Center</HoverCardTrigger>
         <HoverCardContent align="center">Aligned to center.</HoverCardContent>
       </HoverCard>
       <HoverCard>
-        <HoverCardTrigger render={<Button variant="secondary" />}>End</HoverCardTrigger>
+        <HoverCardTrigger render={<Button variant="outline" />}>End</HoverCardTrigger>
         <HoverCardContent align="end">Aligned to end.</HoverCardContent>
       </HoverCard>
     </div>
@@ -46,7 +46,7 @@ function HoverCardAlign() {
 function HoverCardComposition() {
   return (
     <HoverCard>
-      <HoverCardTrigger render={<Button variant="secondary" />}>Inventory</HoverCardTrigger>
+      <HoverCardTrigger render={<Button variant="outline" />}>Inventory</HoverCardTrigger>
       <HoverCardContent className="w-64">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between gap-3">

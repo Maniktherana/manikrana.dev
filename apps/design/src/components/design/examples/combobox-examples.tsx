@@ -12,7 +12,6 @@ import {
   ComboboxItem,
   ComboboxLabel,
   ComboboxList,
-  ComboboxSeparator,
   useComboboxAnchor,
 } from "@/components/ui/combobox";
 
@@ -92,7 +91,6 @@ function ComboboxGroupDemo() {
             )}
           </ComboboxList>
         </ComboboxGroup>
-        <ComboboxSeparator />
       </ComboboxContent>
     </Combobox>
   );
@@ -108,7 +106,10 @@ function ComboboxMultiple() {
       items={statuses}
       value={value}
       onValueChange={setValue}
-      isItemEqualToValue={(item, selectedItem) => item.value === selectedItem.value}
+      isItemEqualToValue={(
+        item: (typeof statuses)[number],
+        selectedItem: (typeof statuses)[number],
+      ) => item.value === selectedItem.value}
     >
       <ComboboxChips ref={anchor}>
         {value.map((status) => (

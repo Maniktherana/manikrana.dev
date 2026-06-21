@@ -386,7 +386,7 @@ function DocsSearchTrigger({ onOpen }: { onOpen: () => void }) {
       </button>
       <Button
         type="button"
-        variant="secondary"
+        variant="outline"
         size="icon-sm"
         className="md:hidden"
         aria-label="Search documentation"

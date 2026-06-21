@@ -13,7 +13,7 @@ const tooltipPreviewTitles: Record<string, string> = {
 function TooltipDemo() {
   return (
     <Tooltip>
-      <TooltipTrigger render={<Button variant="secondary" />}>Hover me</TooltipTrigger>
+      <TooltipTrigger render={<Button variant="outline" />}>Hover me</TooltipTrigger>
       <TooltipContent>Compact contextual help</TooltipContent>
     </Tooltip>
   );
@@ -23,15 +23,15 @@ function TooltipSide() {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <Tooltip>
-        <TooltipTrigger render={<Button variant="secondary" />}>Top</TooltipTrigger>
+        <TooltipTrigger render={<Button variant="outline" />}>Top</TooltipTrigger>
         <TooltipContent side="top">Placed above</TooltipContent>
       </Tooltip>
       <Tooltip>
-        <TooltipTrigger render={<Button variant="secondary" />}>Bottom</TooltipTrigger>
+        <TooltipTrigger render={<Button variant="outline" />}>Bottom</TooltipTrigger>
         <TooltipContent side="bottom">Placed below</TooltipContent>
       </Tooltip>
       <Tooltip>
-        <TooltipTrigger render={<Button variant="secondary" />}>Right</TooltipTrigger>
+        <TooltipTrigger render={<Button variant="outline" />}>Right</TooltipTrigger>
         <TooltipContent side="right">Placed to the right</TooltipContent>
       </Tooltip>
     </div>
@@ -41,7 +41,7 @@ function TooltipSide() {
 function TooltipShortcut() {
   return (
     <Tooltip>
-      <TooltipTrigger render={<Button variant="secondary" />}>Command menu</TooltipTrigger>
+      <TooltipTrigger render={<Button variant="outline" />}>Command menu</TooltipTrigger>
       <TooltipContent>
         Open command menu <Kbd>Cmd</Kbd>
         <Kbd>K</Kbd>

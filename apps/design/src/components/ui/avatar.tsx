@@ -9,13 +9,12 @@ const avatarVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-muted",
-        border:
-          "border border-transparent bg-background bg-clip-border shadow-[var(--shadow-card)]",
+        default: "bg-card",
+        border: "border border-transparent bg-card bg-clip-border shadow-[var(--shadow-card)]",
       },
       radius: {
         full: "rounded-full",
-        rounded: "rounded-md",
+        rounded: "rounded-lg",
       },
       size: {
         "3xs": "size-[18px]",
@@ -72,7 +71,7 @@ function AvatarFallback({ className, ...props }: AvatarPrimitive.Fallback.Props)
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
       className={cn(
-        "flex size-full items-center justify-center overflow-hidden rounded-[inherit] bg-muted text-center text-[13px] leading-[1.1] font-medium text-secondary-foreground group-data-[size=3xs]/avatar:text-[11px] group-data-[size=2xs]/avatar:text-[11px] group-data-[size=xs]/avatar:text-xs group-data-[size=lg]/avatar:text-sm group-data-[size=xl]/avatar:text-base [&_svg]:size-[15px]",
+        "flex size-full items-center justify-center overflow-hidden rounded-[inherit] bg-card text-center text-[13px] leading-[1.1] font-normal text-secondary-foreground group-data-[size=3xs]/avatar:text-[11px] group-data-[size=2xs]/avatar:text-[11px] group-data-[size=xs]/avatar:text-xs group-data-[size=lg]/avatar:text-sm group-data-[size=xl]/avatar:text-base [&_svg]:size-[15px]",
         className,
       )}
       {...props}
@@ -114,7 +113,7 @@ function AvatarGroupCount({ className, ...props }: React.ComponentProps<"div">) 
     <div
       data-slot="avatar-group-count"
       className={cn(
-        "relative flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-[13px] leading-[1.1] font-medium text-secondary-foreground ring-2 ring-background shadow-[0_0_0_1px_var(--border)] group-has-data-[size=lg]/avatar-group:size-9 group-has-data-[size=sm]/avatar-group:size-7 [&>svg]:size-[15px]",
+        "relative flex size-8 shrink-0 items-center justify-center rounded-full bg-card text-[13px] leading-[1.1] font-normal text-secondary-foreground ring-2 ring-background shadow-[0_0_0_1px_var(--border)] group-has-data-[size=lg]/avatar-group:size-9 group-has-data-[size=sm]/avatar-group:size-7 [&>svg]:size-[15px]",
         className,
       )}
       {...props}

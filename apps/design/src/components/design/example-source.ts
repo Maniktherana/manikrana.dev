@@ -37,6 +37,7 @@ import separatorSource from "@/components/design/examples/separator-examples.tsx
 import switchSource from "@/components/design/examples/switch-examples.tsx?raw";
 import tabsSource from "@/components/design/examples/tabs-examples.tsx?raw";
 import tableSource from "@/components/design/examples/table-examples.tsx?raw";
+import textareaSource from "@/components/design/examples/textarea-examples.tsx?raw";
 import tooltipSource from "@/components/design/examples/tooltip-examples.tsx?raw";
 import toastSource from "@/components/design/examples/toast-examples.tsx?raw";
 import dynamicIslandBlockSource from "@/components/design/dynamic-island.tsx?raw";
@@ -74,6 +75,7 @@ const rawSources = [
   switchSource,
   tabsSource,
   tableSource,
+  textareaSource,
   tooltipSource,
   toastSource,
 ];
@@ -427,23 +429,36 @@ function formatImportDeclaration(declaration: ImportDeclaration, usedNames: Set<
 
   const hasRuntimeNamed = named.some((item) => !item.isType);
   const hasTypeNamed = named.some((item) => item.isType);
-  const namedSource = named
-    .map((item) => {
-      const alias =
-        item.imported === item.local ? item.imported : `${item.imported} as ${item.local}`;
-      return item.isType && (hasRuntimeNamed || defaultName) ? `type ${alias}` : alias;
-    })
-    .join(", ");
+  const namedParts = named.map((item) => {
+    const alias = item.imported === item.local ? item.imported : `${item.imported} as ${item.local}`;
+
+    return item.isType && (hasRuntimeNamed || defaultName) ? `type ${alias}` : alias;
+  });
+  const namedSource = namedParts.join(", ");
+  const importPrefix = `import ${declaration.isTypeOnly || (!hasRuntimeNamed && hasTypeNamed) ? "type " : ""}`;
+  const singleLineNamedImport = defaultName
+    ? `import ${defaultName}, { ${namedSource} } from "${declaration.module}";`
+    : `${importPrefix}{ ${namedSource} } from "${declaration.module}";`;
+  const shouldWrapNamedImport = namedParts.length > 2 || singleLineNamedImport.length > 100;
+  const multilineNamedSource = `{\n  ${namedParts.join(",\n  ")},\n}`;
 
   if (defaultName && namedSource) {
-    return `import ${defaultName}, { ${namedSource} } from "${declaration.module}";`;
+    if (shouldWrapNamedImport) {
+      return `import ${defaultName}, ${multilineNamedSource} from "${declaration.module}";`;
+    }
+
+    return singleLineNamedImport;
   }
 
   if (defaultName) {
     return `import ${declaration.isTypeOnly ? "type " : ""}${defaultName} from "${declaration.module}";`;
   }
 
-  return `import ${declaration.isTypeOnly || (!hasRuntimeNamed && hasTypeNamed) ? "type " : ""}{ ${namedSource} } from "${declaration.module}";`;
+  if (shouldWrapNamedImport) {
+    return `${importPrefix}${multilineNamedSource} from "${declaration.module}";`;
+  }
+
+  return singleLineNamedImport;
 }
 
 function collectDemoDeclarations(declarations: Map<string, Declaration>, functionName: string) {

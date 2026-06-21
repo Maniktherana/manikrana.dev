@@ -1,0 +1,60 @@
+---
+title: Textarea
+description: A multi-line text input for longer form content.
+component: true
+base: base
+---
+
+<ComponentPreview name="textarea-demo" />
+
+## Installation
+
+```bash
+bunx shadcn@latest add textarea
+```
+
+## Usage
+
+```tsx
+import { Textarea } from "@/components/ui/textarea";
+```
+
+```tsx
+<Textarea placeholder="Write a note..." />
+```
+
+## Examples
+
+### With Label
+
+Pair `Textarea` with `Field`, `FieldLabel`, and `FieldDescription` when the field needs context.
+
+<ComponentPreview name="textarea-with-label" />
+
+### Disabled
+
+Use the `disabled` prop to disable the textarea.
+
+<ComponentPreview name="textarea-disabled" />
+
+### Invalid
+
+Use `aria-invalid` to mark the textarea as invalid.
+
+<ComponentPreview name="textarea-invalid" />
+
+### Resize
+
+Use class names to adjust the default height while keeping the shared field surface.
+
+<ComponentPreview name="textarea-resize" />
+
+## API Reference
+
+The `Textarea` component accepts all native `<textarea>` props.
+
+| Prop           | Type      | Default |
+| -------------- | --------- | ------- |
+| `disabled`     | `boolean` | `false` |
+| `aria-invalid` | `boolean` | -       |
+| `className`    | `string`  | -       |

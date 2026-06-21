@@ -2,132 +2,44 @@ import * as React from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
 
 import { CodeBlock, CodeBlockBody, CodeBlockContent } from "@/components/design/code";
-import { catalogById } from "@/components/design/component-catalog";
 import { getExampleSource } from "@/components/design/example-source";
-import {
-  accordionPreviewTitles,
-  renderAccordionPreview,
-} from "@/components/design/examples/accordion-examples";
-import {
-  alertPreviewTitles,
-  renderAlertPreview,
-} from "@/components/design/examples/alert-examples";
-import {
-  avatarPreviewTitles,
-  renderAvatarPreview,
-} from "@/components/design/examples/avatar-examples";
-import {
-  badgePreviewTitles,
-  renderBadgePreview,
-} from "@/components/design/examples/badge-examples";
-import {
-  breadcrumbPreviewTitles,
-  renderBreadcrumbPreview,
-} from "@/components/design/examples/breadcrumb-examples";
-import {
-  buttonGroupPreviewTitles,
-  renderButtonGroupPreview,
-} from "@/components/design/examples/button-group-examples";
-import {
-  buttonPreviewTitles,
-  renderButtonPreview,
-} from "@/components/design/examples/button-examples";
-import { cardPreviewTitles, renderCardPreview } from "@/components/design/examples/card-examples";
-import {
-  calendarPreviewTitles,
-  renderCalendarPreview,
-} from "@/components/design/examples/calendar-examples";
-import {
-  checkboxPreviewTitles,
-  renderCheckboxPreview,
-} from "@/components/design/examples/checkbox-examples";
-import { codePreviewTitles, renderCodePreview } from "@/components/design/examples/code-examples";
-import {
-  codeBlockPreviewTitles,
-  renderCodeBlockPreview,
-} from "@/components/design/examples/code-block-examples";
-import {
-  commandbarPreviewTitles,
-  renderCommandbarPreview,
-} from "@/components/design/examples/commandbar-examples";
-import {
-  comboboxPreviewTitles,
-  renderComboboxPreview,
-} from "@/components/design/examples/combobox-examples";
-import {
-  dynamicIslandPreviewTitles,
-  renderDynamicIslandPreview,
-} from "@/components/design/examples/dynamic-island-examples";
-import {
-  familyDrawerPreviewTitles,
-  renderFamilyDrawerPreview,
-} from "@/components/design/examples/family-drawer-examples";
-import {
-  hoverCardPreviewTitles,
-  renderHoverCardPreview,
-} from "@/components/design/examples/hover-card-examples";
-import {
-  inputPreviewTitles,
-  renderInputPreview,
-} from "@/components/design/examples/input-examples";
-import {
-  labelPreviewTitles,
-  renderLabelPreview,
-} from "@/components/design/examples/label-examples";
-import { menuPreviewTitles, renderMenuPreview } from "@/components/design/examples/menu-examples";
-import {
-  messageComposerPreviewTitles,
-  renderMessageComposerPreview,
-} from "@/components/design/examples/message-composer-examples";
-import {
-  modalPreviewTitles,
-  renderModalPreview,
-} from "@/components/design/examples/modal-examples";
-import {
-  popoverPreviewTitles,
-  renderPopoverPreview,
-} from "@/components/design/examples/popover-examples";
-import {
-  radioGroupPreviewTitles,
-  renderRadioGroupPreview,
-} from "@/components/design/examples/radio-group-examples";
-import {
-  renderSelectPreview,
-  selectPreviewTitles,
-} from "@/components/design/examples/select-examples";
-import {
-  renderSearchPreview,
-  searchPreviewTitles,
-} from "@/components/design/examples/search-examples";
-import {
-  renderSeparatorPreview,
-  separatorPreviewTitles,
-} from "@/components/design/examples/separator-examples";
-import { kbdPreviewTitles, renderKbdPreview } from "@/components/design/examples/kbd-examples";
-import {
-  renderSwitchPreview,
-  switchPreviewTitles,
-} from "@/components/design/examples/switch-examples";
-import { renderTabsPreview, tabsPreviewTitles } from "@/components/design/examples/tabs-examples";
-import {
-  renderTablePreview,
-  tablePreviewTitles,
-} from "@/components/design/examples/table-examples";
-import {
-  renderTooltipPreview,
-  tooltipPreviewTitles,
-} from "@/components/design/examples/tooltip-examples";
-import {
-  renderToastPreview,
-  toastPreviewTitles,
-} from "@/components/design/examples/toast-examples";
-import { Badge } from "@/components/ui/badge";
+import { renderAccordionPreview } from "@/components/design/examples/accordion-examples";
+import { renderAlertPreview } from "@/components/design/examples/alert-examples";
+import { renderAvatarPreview } from "@/components/design/examples/avatar-examples";
+import { renderBadgePreview } from "@/components/design/examples/badge-examples";
+import { renderBreadcrumbPreview } from "@/components/design/examples/breadcrumb-examples";
+import { renderButtonGroupPreview } from "@/components/design/examples/button-group-examples";
+import { renderButtonPreview } from "@/components/design/examples/button-examples";
+import { renderCardPreview } from "@/components/design/examples/card-examples";
+import { renderCalendarPreview } from "@/components/design/examples/calendar-examples";
+import { renderCheckboxPreview } from "@/components/design/examples/checkbox-examples";
+import { renderCodePreview } from "@/components/design/examples/code-examples";
+import { renderCodeBlockPreview } from "@/components/design/examples/code-block-examples";
+import { renderCommandbarPreview } from "@/components/design/examples/commandbar-examples";
+import { renderComboboxPreview } from "@/components/design/examples/combobox-examples";
+import { renderDynamicIslandPreview } from "@/components/design/examples/dynamic-island-examples";
+import { renderFamilyDrawerPreview } from "@/components/design/examples/family-drawer-examples";
+import { renderHoverCardPreview } from "@/components/design/examples/hover-card-examples";
+import { renderInputPreview } from "@/components/design/examples/input-examples";
+import { renderLabelPreview } from "@/components/design/examples/label-examples";
+import { renderMenuPreview } from "@/components/design/examples/menu-examples";
+import { renderMessageComposerPreview } from "@/components/design/examples/message-composer-examples";
+import { renderModalPreview } from "@/components/design/examples/modal-examples";
+import { renderPopoverPreview } from "@/components/design/examples/popover-examples";
+import { renderRadioGroupPreview } from "@/components/design/examples/radio-group-examples";
+import { renderSelectPreview } from "@/components/design/examples/select-examples";
+import { renderSearchPreview } from "@/components/design/examples/search-examples";
+import { renderSeparatorPreview } from "@/components/design/examples/separator-examples";
+import { renderKbdPreview } from "@/components/design/examples/kbd-examples";
+import { renderSwitchPreview } from "@/components/design/examples/switch-examples";
+import { renderTabsPreview } from "@/components/design/examples/tabs-examples";
+import { renderTablePreview } from "@/components/design/examples/table-examples";
+import { renderTextareaPreview } from "@/components/design/examples/textarea-examples";
+import { renderTooltipPreview } from "@/components/design/examples/tooltip-examples";
+import { renderToastPreview } from "@/components/design/examples/toast-examples";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-
-function getComponent(name: string) {
-  return catalogById[name];
-}
+import { cn } from "@/lib/utils";
 
 // Copy button composed from the Button primitive (no bespoke code-block wrapper).
 function CopyButton({ value, className }: { value: string; className?: string }) {
@@ -165,66 +77,18 @@ function ComponentPreview({
   name: string;
   direction?: "ltr" | "rtl" | "auto";
 }) {
-  const component = getComponent(name);
-  const title =
-    component?.title ??
-    accordionPreviewTitles[name] ??
-    alertPreviewTitles[name] ??
-    avatarPreviewTitles[name] ??
-    badgePreviewTitles[name] ??
-    breadcrumbPreviewTitles[name] ??
-    buttonGroupPreviewTitles[name] ??
-    buttonPreviewTitles[name] ??
-    cardPreviewTitles[name] ??
-    calendarPreviewTitles[name] ??
-    checkboxPreviewTitles[name] ??
-    codePreviewTitles[name] ??
-    comboboxPreviewTitles[name] ??
-    commandbarPreviewTitles[name] ??
-    dynamicIslandPreviewTitles[name] ??
-    familyDrawerPreviewTitles[name] ??
-    hoverCardPreviewTitles[name] ??
-    inputPreviewTitles[name] ??
-    labelPreviewTitles[name] ??
-    menuPreviewTitles[name] ??
-    messageComposerPreviewTitles[name] ??
-    modalPreviewTitles[name] ??
-    popoverPreviewTitles[name] ??
-    radioGroupPreviewTitles[name] ??
-    searchPreviewTitles[name] ??
-    selectPreviewTitles[name] ??
-    separatorPreviewTitles[name] ??
-    switchPreviewTitles[name] ??
-    tabsPreviewTitles[name] ??
-    tablePreviewTitles[name] ??
-    kbdPreviewTitles[name] ??
-    tooltipPreviewTitles[name] ??
-    toastPreviewTitles[name] ??
-    codeBlockPreviewTitles[name] ??
-    name;
   const source = getExampleSource(name);
-  // Only offer expand/collapse when the source actually overflows the collapsed
-  // height (~12 lines); short snippets show in full with no expand control.
-  const collapsible = source !== undefined && source.split("\n").length > 12;
-  const badge = (
-    <Badge
-      variant={component?.custom ? "outline" : "secondary"}
-      className="h-auto min-h-[18px] w-auto max-w-none overflow-visible px-1.5 py-[3px] leading-none"
-    >
-      {component?.custom ? "composition" : "primitive"}
-    </Badge>
-  );
+  // Only offer expand when the source overflows the five-line collapsed view.
+  const collapsible = source !== undefined && source.split("\n").length > 5;
 
-  // shadcn-style: the source sits in a header-less block attached directly under
-  // the preview (shared border, no gap), collapsed with copy + click-to-expand.
+  // Header-less preview with the source attached directly below the component canvas.
   return (
-    <div className="mt-4 mb-9 w-full overflow-hidden rounded-[7px] border border-border">
-      <div className="flex min-h-10 items-center justify-between gap-3 border-b border-border bg-muted px-3 py-2">
-        <span className="min-w-0 truncate">{title}</span>
-        {badge}
-      </div>
+    <div className="mt-4 mb-9 w-full overflow-hidden rounded-xl border border-transparent bg-card bg-clip-border text-card-foreground shadow-[var(--shadow-card)]">
       <div
-        className="flex min-h-[220px] items-center justify-center overflow-auto p-8 max-[900px]:min-h-[180px] max-[900px]:justify-start max-[900px]:p-5 [&>*]:max-w-full"
+        className={cn(
+          "flex min-h-[220px] items-center justify-center overflow-auto bg-page-background p-8 max-[900px]:min-h-[180px] max-[900px]:p-5 [&>*]:max-w-full",
+          name.startsWith("accordion-") && "min-h-[360px] max-[900px]:min-h-[320px]",
+        )}
         dir={direction}
       >
         {renderPreview(name)}
@@ -232,8 +96,11 @@ function ComponentPreview({
       {source ? (
         <CodeBlock variant="bare">
           <CodeBlockBody collapsible={collapsible} flush>
-            <CopyButton value={source} className="absolute top-2.5 right-2.5 z-10" />
-            <CodeBlockContent code={source} language="tsx" showLineNumbers={false} />
+            <CopyButton
+              value={source}
+              className="absolute top-2.5 right-2.5 z-10 in-data-[collapsed]:hidden"
+            />
+            <CodeBlockContent code={source} language="tsx" showLineNumbers />
           </CodeBlockBody>
         </CodeBlock>
       ) : null}
@@ -420,6 +287,12 @@ function renderPreview(name: string) {
 
   if (kbdPreview) {
     return kbdPreview;
+  }
+
+  const textareaPreview = renderTextareaPreview(name);
+
+  if (textareaPreview) {
+    return textareaPreview;
   }
 
   const tooltipPreview = renderTooltipPreview(name);

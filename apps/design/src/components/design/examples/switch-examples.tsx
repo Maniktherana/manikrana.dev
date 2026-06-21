@@ -1,9 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { CalendarIcon, InfoIcon } from "lucide-react";
 
-import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
@@ -34,18 +32,22 @@ function SwitchSize() {
   );
 }
 
-function SwitchText({ hiddenContent }: { hiddenContent?: React.ReactNode }) {
+function SwitchText({
+  description = "Receive a notification when a deployment finishes.",
+  details,
+  title = "Deploy notifications",
+}: {
+  description?: string;
+  details?: React.ReactNode;
+  title?: string;
+}) {
   return (
-    <div className={cn("flex min-w-0 flex-col items-start", hiddenContent && "gap-3")}>
-      <div className="flex items-center gap-1">
-        <span className="text-[13px] leading-[1.6] font-medium text-foreground">Label</span>
-        <span className="text-[13px] leading-[1.6] text-muted-foreground">(Optional)</span>
-        <InfoIcon aria-hidden="true" className="size-[15px] text-muted-foreground" />
-      </div>
+    <div className={cn("flex min-w-0 flex-1 flex-col items-start", details && "gap-3")}>
+      <span className="text-[13px] leading-[1.6] font-medium text-foreground">{title}</span>
       <p className="m-0 text-[13px] leading-[1.6] text-secondary-foreground">
-        The quick brown fox jumps over a lazy dog.
+        {description}
       </p>
-      {hiddenContent}
+      {details}
     </div>
   );
 }
@@ -54,7 +56,10 @@ function SwitchLabel() {
   return (
     <div className="flex items-start gap-3">
       <Switch size="sm" />
-      <SwitchText />
+      <SwitchText
+        description="Send an alert when usage crosses the monthly limit."
+        title="Usage alerts"
+      />
     </div>
   );
 }
@@ -64,7 +69,10 @@ function SwitchCard() {
 
   return (
     <div
-      className="flex w-[330px] cursor-pointer items-start gap-3 rounded-lg bg-[var(--component)] p-3 shadow-[var(--shadow-card)]"
+      className={cn(
+        "flex w-[330px] cursor-pointer items-start gap-3 rounded-xl p-3 text-card-foreground shadow-[var(--shadow-card)] transition-colors",
+        checked ? "bg-muted" : "bg-card",
+      )}
       onClick={(event) => {
         if ((event.target as HTMLElement).closest('[data-slot="switch"]')) return;
 
@@ -72,7 +80,10 @@ function SwitchCard() {
       }}
     >
       <Switch checked={checked} onCheckedChange={setChecked} size="sm" className="mt-0" />
-      <SwitchText />
+      <SwitchText
+        description="Create a preview URL every time a pull request opens."
+        title="Automatic previews"
+      />
     </div>
   );
 }
@@ -82,7 +93,10 @@ function SwitchCardContent() {
 
   return (
     <div
-      className="flex w-[330px] cursor-pointer items-start gap-3 rounded-lg bg-[var(--component)] p-3 shadow-[var(--shadow-card)]"
+      className={cn(
+        "flex w-[330px] cursor-pointer items-start gap-3 rounded-xl p-3 text-card-foreground shadow-[var(--shadow-card)] transition-colors",
+        checked ? "bg-muted" : "bg-card",
+      )}
       onClick={(event) => {
         if ((event.target as HTMLElement).closest('[data-slot="switch"]')) return;
 
@@ -91,18 +105,20 @@ function SwitchCardContent() {
     >
       <Switch checked={checked} onCheckedChange={setChecked} size="sm" className="mt-0" />
       <SwitchText
-        hiddenContent={
-          <div className="flex h-8 w-full items-center overflow-hidden rounded-[6px] bg-background shadow-[var(--shadow-control)]">
-            <div className="flex size-8 shrink-0 items-center justify-center border-r border-border text-muted-foreground">
-              <CalendarIcon aria-hidden="true" className="size-[15px]" />
+        description="Pause non-critical updates outside of work hours."
+        details={
+          <div className="grid w-full gap-1 border-t border-border pt-3 text-[13px] leading-[1.6]">
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-muted-foreground">Channel</span>
+              <span className="font-medium text-foreground">Email + desktop</span>
             </div>
-            <Input
-              aria-label="Date"
-              placeholder="DD/MM/YYYY"
-              className="h-8 min-h-8 rounded-none bg-transparent shadow-none"
-            />
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-muted-foreground">Quiet hours</span>
+              <span className="font-medium text-foreground">10 PM - 8 AM</span>
+            </div>
           </div>
         }
+        title="Quiet delivery"
       />
     </div>
   );

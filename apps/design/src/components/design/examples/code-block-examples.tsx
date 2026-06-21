@@ -99,8 +99,7 @@ function CodeInline() {
         Run <Code>bun install</Code> and then import the <Code>Button</Code> component.
       </p>
       <p>
-        Use the <Code background="muted">npm run dev</Code> script with a{" "}
-        <Code background="muted">--port</Code> flag.
+        Use the <Code>npm run dev</Code> script with a <Code>--port</Code> flag.
       </p>
     </div>
   );

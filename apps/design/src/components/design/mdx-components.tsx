@@ -163,10 +163,10 @@ const mdxComponents = {
     <li className={className} {...props} />
   ),
   table: ({ className, ...props }: React.ComponentProps<"table">) => (
-    <div className="mt-3.5 w-full max-w-full overflow-x-auto overflow-y-hidden rounded-lg border border-border">
+    <div className="mt-3.5 w-full max-w-full overflow-x-auto overflow-y-hidden border-b border-border">
       <table
         className={cn(
-          "w-full min-w-[max(680px,100%)] border-collapse [&_code]:whitespace-nowrap [&_tr+tr]:border-t [&_tr+tr]:border-border",
+          "w-full min-w-[max(680px,100%)] border-collapse [&_code]:whitespace-nowrap [&_thead_tr]:border-b [&_thead_tr]:border-border [&_tr+tr]:border-t [&_tr+tr]:border-border",
           className,
         )}
         {...props}
@@ -192,7 +192,7 @@ const mdxComponents = {
   th: ({ className, ...props }: React.ComponentProps<"th">) => (
     <th
       className={cn(
-        "bg-muted px-3 py-2.5 text-start align-top text-[13px] leading-[1.6] font-medium text-foreground",
+        "px-2 py-2 text-start align-top text-[13px] leading-[1.45] font-medium text-foreground",
         className,
       )}
       {...props}
@@ -201,7 +201,7 @@ const mdxComponents = {
   td: ({ className, ...props }: React.ComponentProps<"td">) => (
     <td
       className={cn(
-        "px-3 py-2.5 text-start align-top text-[13px] leading-[1.6] text-secondary-foreground",
+        "px-2 py-2 text-start align-top text-[13px] leading-[1.45] text-secondary-foreground",
         className,
       )}
       {...props}
@@ -240,7 +240,7 @@ const mdxComponents = {
       <Code
         className={cn(
           shouldWrap &&
-            "inline-block h-auto min-h-[18px] w-auto overflow-visible whitespace-normal break-words py-0.5 text-left leading-[1.45] align-top",
+            "inline-block h-auto min-h-[18px] w-auto overflow-visible whitespace-normal break-words px-1 py-0 text-left leading-[1.25] align-top",
           className,
         )}
         {...props}

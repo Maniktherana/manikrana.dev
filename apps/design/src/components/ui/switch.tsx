@@ -30,7 +30,7 @@ function Switch({
         size === "sm" ? "w-7" : "w-8",
         "focus-visible:[&_[data-slot=switch-track]]:shadow-[0_0_0_1px_var(--ring),var(--shadow-switch-track)]",
         "aria-invalid:[&_[data-slot=switch-track]]:shadow-[0_0_0_1px_color-mix(in_srgb,var(--destructive)_35%,transparent),var(--shadow-switch-track)]",
-        "data-checked:[&_[data-slot=switch-track]]:bg-[var(--button-primary-hover)] data-unchecked:[&_[data-slot=switch-track]]:bg-input",
+        "data-checked:[&_[data-slot=switch-track]]:bg-[var(--switch-checked-bg)] data-unchecked:[&_[data-slot=switch-track]]:bg-input",
         className,
       )}
       {...props}

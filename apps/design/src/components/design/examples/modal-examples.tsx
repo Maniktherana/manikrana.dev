@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 function ModalDemo() {
   return (
     <Dialog>
-      <DialogTrigger render={<Button variant="secondary" />}>Open modal</DialogTrigger>
+      <DialogTrigger render={<Button variant="outline" />}>Open dialog</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Delete something</DialogTitle>
@@ -39,7 +39,7 @@ function ModalDemo() {
 function ModalConfirmative() {
   return (
     <Dialog>
-      <DialogTrigger render={<Button variant="secondary" />}>Publish changes</DialogTrigger>
+      <DialogTrigger render={<Button variant="outline" />}>Publish changes</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Publish changes</DialogTitle>
@@ -61,9 +61,9 @@ const modalPreviews = {
 };
 
 const modalPreviewTitles: Record<string, string> = {
-  modal: "Modal Demo",
-  "modal-demo": "Modal Demo",
-  "modal-confirmative": "Modal Confirmative",
+  modal: "Dialog Demo",
+  "modal-demo": "Dialog Demo",
+  "modal-confirmative": "Dialog Confirmative",
 };
 
 function renderModalPreview(name: string) {

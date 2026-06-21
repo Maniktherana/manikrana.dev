@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const tabsPreviewTitles: Record<string, string> = {
   "tabs-demo": "Tabs",
   "tabs-default": "Tabs Default",
+  "tabs-ghost": "Tabs Ghost",
   "tabs-underline": "Tabs Underline",
   "tabs-vertical": "Tabs Vertical",
 };
@@ -81,6 +82,18 @@ function TabsUnderline() {
   );
 }
 
+function TabsGhost() {
+  return (
+    <Tabs defaultValue="inbox" className="w-full max-w-md">
+      <TabsList variant="ghost">
+        <TabsTrigger value="inbox">Inbox</TabsTrigger>
+        <TabsTrigger value="assigned">Assigned</TabsTrigger>
+        <TabsTrigger value="closed">Closed</TabsTrigger>
+      </TabsList>
+    </Tabs>
+  );
+}
+
 function TabsVertical() {
   return (
     <Tabs defaultValue="general" orientation="vertical" className="w-full max-w-md">
@@ -105,6 +118,7 @@ function TabsVertical() {
 const tabsPreviews: Record<string, React.ComponentType> = {
   "tabs-demo": TabsDemo,
   "tabs-default": TabsDefault,
+  "tabs-ghost": TabsGhost,
   "tabs-underline": TabsUnderline,
   "tabs-vertical": TabsVertical,
 };

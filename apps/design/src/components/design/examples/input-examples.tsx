@@ -11,7 +11,6 @@ const inputPreviewTitles: Record<string, string> = {
   "input-demo": "Input Demo",
   "input-sizes": "Input Sizes",
   "input-radius": "Input Radius",
-  "input-variants": "Input Variants",
   "input-disabled": "Input Disabled",
   "input-invalid": "Input Invalid",
   "input-file": "Input File",
@@ -22,7 +21,7 @@ const inputPreviewTitles: Record<string, string> = {
 
 function InputDemo() {
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full max-w-72">
       <Input type="email" placeholder="Email" />
     </div>
   );
@@ -30,7 +29,7 @@ function InputDemo() {
 
 function InputSizes() {
   return (
-    <div className="flex w-full max-w-xs flex-col gap-4">
+    <div className="flex w-full max-w-72 flex-col gap-4">
       <Input controlSize="default" placeholder="Default" />
       <Input controlSize="sm" placeholder="Small" />
     </div>
@@ -39,26 +38,16 @@ function InputSizes() {
 
 function InputRadius() {
   return (
-    <div className="flex w-full max-w-xs flex-col gap-4">
+    <div className="flex w-full max-w-72 flex-col gap-4">
       <Input radius="squared" placeholder="Squared" />
       <Input radius="rounded" placeholder="Rounded" />
     </div>
   );
 }
 
-function InputVariants() {
-  return (
-    <div className="flex w-full max-w-xs flex-col gap-4">
-      <Input variant="default" placeholder="Default" />
-      <Input variant="component" placeholder="Component" />
-      <Input variant="muted" placeholder="Muted" />
-    </div>
-  );
-}
-
 function InputDisabled() {
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full max-w-72">
       <Input placeholder="Disabled" disabled />
     </div>
   );
@@ -66,7 +55,7 @@ function InputDisabled() {
 
 function InputInvalid() {
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full max-w-72">
       <Input placeholder="Email" aria-invalid defaultValue="not-an-email" />
     </div>
   );
@@ -74,7 +63,7 @@ function InputInvalid() {
 
 function InputFile() {
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full max-w-72">
       <Input type="file" />
     </div>
   );
@@ -82,7 +71,7 @@ function InputFile() {
 
 function InputWithLabel() {
   return (
-    <Field className="w-full max-w-xs">
+    <Field className="w-full max-w-72">
       <FieldLabel htmlFor="input-with-label-email">Email</FieldLabel>
       <Input id="input-with-label-email" type="email" placeholder="you@example.com" />
       <FieldDescription>We will never share your email address.</FieldDescription>
@@ -92,9 +81,9 @@ function InputWithLabel() {
 
 function InputButtonGroup() {
   return (
-    <ButtonGroup variant="base" className="w-full max-w-xs">
+    <ButtonGroup variant="base" className="w-full max-w-72">
       <Input placeholder="Search..." />
-      <Button type="button" variant="secondary" size="icon" aria-label="Search">
+      <Button type="button" variant="outline" size="icon" aria-label="Search">
         <SearchIcon />
       </Button>
     </ButtonGroup>
@@ -103,7 +92,7 @@ function InputButtonGroup() {
 
 function InputGroupDemo() {
   return (
-    <InputGroup className="w-full max-w-xs">
+    <InputGroup className="w-full max-w-72">
       <InputGroupAddon align="inline-start">
         <SearchIcon />
       </InputGroupAddon>
@@ -116,7 +105,6 @@ const inputPreviews: Record<string, ComponentType> = {
   "input-demo": InputDemo,
   "input-sizes": InputSizes,
   "input-radius": InputRadius,
-  "input-variants": InputVariants,
   "input-disabled": InputDisabled,
   "input-invalid": InputInvalid,
   "input-file": InputFile,

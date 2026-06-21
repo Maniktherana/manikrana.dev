@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 
 const accordionPreviewTitles: Record<string, string> = {
   "accordion-demo": "Accordion",
-  "accordion-borderless": "Accordion Borderless",
+  "accordion-grouped": "Accordion Grouped",
   "accordion-multiple": "Accordion Multiple",
   "accordion-status": "Accordion Status",
 };
@@ -34,19 +34,31 @@ function AccordionDemo() {
   );
 }
 
-function AccordionBorderless() {
+function AccordionGrouped() {
   return (
-    <Accordion className="w-full max-w-md" defaultValue={["shipping"]}>
-      <AccordionItem value="shipping" variant="ghost">
+    <Accordion className="w-full max-w-md" defaultValue={["payments"]}>
+      <AccordionItem value="shipping" variant="grouped">
         <AccordionTrigger>Shipping settings</AccordionTrigger>
         <AccordionContent>
           Configure fulfillment windows and carrier defaults for this region.
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value="payments" variant="ghost">
+      <AccordionItem value="payments" variant="grouped">
         <AccordionTrigger>Payment capture</AccordionTrigger>
         <AccordionContent>
           Decide whether orders are captured immediately or after review.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="notifications" variant="grouped">
+        <AccordionTrigger>Notification rules</AccordionTrigger>
+        <AccordionContent>
+          Choose which team members get fulfillment and payment exceptions.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="metadata" variant="grouped">
+        <AccordionTrigger>Metadata</AccordionTrigger>
+        <AccordionContent>
+          Add structured properties for integrations and storefront filters.
         </AccordionContent>
       </AccordionItem>
     </Accordion>
@@ -107,7 +119,7 @@ function AccordionStatus() {
 
 const accordionPreviews: Record<string, React.ComponentType> = {
   "accordion-demo": AccordionDemo,
-  "accordion-borderless": AccordionBorderless,
+  "accordion-grouped": AccordionGrouped,
   "accordion-multiple": AccordionMultiple,
   "accordion-status": AccordionStatus,
 };

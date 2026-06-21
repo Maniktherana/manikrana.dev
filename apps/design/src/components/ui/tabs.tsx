@@ -5,7 +5,7 @@ import type * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-type TabsVariant = "default" | "underline";
+type TabsVariant = "default" | "ghost" | "underline";
 
 function Tabs({
   className,
@@ -37,9 +37,11 @@ function TabsList({
       data-variant={variant}
       className={cn(
         "relative z-0 flex w-fit items-center justify-center gap-x-0.5 text-muted-foreground data-[orientation=vertical]:flex-col",
-        variant === "default"
-          ? "rounded-[6px] bg-muted p-0.5 text-muted-foreground/75"
-          : "data-[orientation=horizontal]:py-1 data-[orientation=vertical]:px-1 [&>[data-slot=tabs-trigger]:hover]:bg-white/10 [&>[data-slot=tabs-trigger][data-active]]:bg-white/10",
+        variant === "default" &&
+          "rounded-lg bg-[var(--tabs-list-bg)] p-0.5 text-secondary-foreground",
+        variant === "ghost" &&
+          "rounded-lg p-0.5 text-secondary-foreground [&>[data-slot=tabs-trigger]:hover]:text-foreground",
+        variant === "underline" && "data-[orientation=horizontal]:py-1 data-[orientation=vertical]:px-1",
         className,
       )}
       {...props}
@@ -49,9 +51,12 @@ function TabsList({
         data-slot="tabs-indicator"
         className={cn(
           "pointer-events-none absolute bottom-0 left-0 h-(--active-tab-height) w-(--active-tab-width) translate-x-(--active-tab-left) -translate-y-(--active-tab-bottom) transition-[width,translate] duration-200 ease-in-out",
-          variant === "underline"
-            ? "z-20 bg-foreground data-[orientation=horizontal]:h-0.5 data-[orientation=horizontal]:translate-y-px data-[orientation=vertical]:w-0.5 data-[orientation=vertical]:-translate-x-px"
-            : "z-0 rounded-[5px] bg-background shadow-[var(--shadow-card)]",
+          variant === "underline" &&
+            "z-20 bg-foreground data-[orientation=horizontal]:h-0.5 data-[orientation=horizontal]:translate-y-px data-[orientation=vertical]:w-0.5 data-[orientation=vertical]:-translate-x-px",
+          variant === "default" &&
+            "z-0 rounded-[calc(var(--radius-lg)-1px)] bg-[var(--tabs-indicator-bg)] shadow-[var(--shadow-card)]",
+          variant === "ghost" &&
+            "z-0 rounded-[calc(var(--radius-lg)-1px)] bg-white/10 shadow-none",
         )}
       />
     </TabsPrimitive.List>
@@ -63,7 +68,7 @@ function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props): React.Re
     <TabsPrimitive.Tab
       data-slot="tabs-trigger"
       className={cn(
-        "relative z-10 flex h-8 shrink-0 grow cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-[5px] border border-transparent px-2.5 text-[13px] leading-[1.1] font-medium text-muted-foreground outline-none transition-[color,background-color,box-shadow] hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 data-[orientation=vertical]:w-full data-[orientation=vertical]:justify-start data-active:text-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[15px]",
+        "relative z-10 flex h-8 shrink-0 grow cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-[calc(var(--radius-lg)-1px)] border border-transparent px-2.5 text-[13px] leading-[1.1] font-normal text-secondary-foreground outline-none transition-[color,box-shadow] hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 data-[orientation=vertical]:w-full data-[orientation=vertical]:justify-start data-active:text-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[15px]",
         className,
       )}
       {...props}

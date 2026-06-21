@@ -73,26 +73,26 @@ function ButtonGroupDemo() {
   return (
     <ButtonGroup variant="toolbar">
       <ButtonGroup variant="base" className="hidden sm:flex">
-        <Button type="button" variant="secondary" size="icon" aria-label="Go back">
+        <Button type="button" variant="outline" size="icon" aria-label="Go back">
           <ArrowLeftIcon />
         </Button>
       </ButtonGroup>
       <ButtonGroup variant="base">
-        <Button type="button" variant="secondary">
+        <Button type="button" variant="outline">
           Archive
         </Button>
-        <Button type="button" variant="secondary">
+        <Button type="button" variant="outline">
           Report
         </Button>
       </ButtonGroup>
       <ButtonGroup variant="base">
-        <Button type="button" variant="secondary">
+        <Button type="button" variant="outline">
           Snooze
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger
             render={
-              <Button type="button" variant="secondary" size="icon" aria-label="More options" />
+              <Button type="button" variant="outline" size="icon" aria-label="More options" />
             }
           >
             <MoreHorizontalIcon />
@@ -149,10 +149,10 @@ function ButtonGroupOrientation() {
       aria-label="Media controls"
       className="h-fit"
     >
-      <Button type="button" variant="secondary" size="icon" aria-label="Increase">
+      <Button type="button" variant="outline" size="icon" aria-label="Increase">
         <PlusIcon />
       </Button>
-      <Button type="button" variant="secondary" size="icon" aria-label="Decrease">
+      <Button type="button" variant="outline" size="icon" aria-label="Decrease">
         <MinusIcon />
       </Button>
     </ButtonGroup>
@@ -163,21 +163,21 @@ function ButtonGroupSize() {
   return (
     <div className="flex flex-col items-start gap-8">
       <ButtonGroup variant="base" size="compact">
-        <Button type="button" variant="secondary">
+        <Button type="button" variant="outline">
           Compact
         </Button>
-        <Button type="button" variant="secondary">
+        <Button type="button" variant="outline">
           Button
         </Button>
-        <Button type="button" variant="secondary" size="icon" aria-label="Add">
+        <Button type="button" variant="outline" size="icon" aria-label="Add">
           <PlusIcon />
         </Button>
       </ButtonGroup>
       <ButtonGroup variant="base">
-        <Button type="button" variant="secondary">
+        <Button type="button" variant="outline">
           Default
         </Button>
-        <Button type="button" variant="secondary" size="icon" aria-label="Add">
+        <Button type="button" variant="outline" size="icon" aria-label="Add">
           <PlusIcon />
         </Button>
       </ButtonGroup>
@@ -189,7 +189,7 @@ function ButtonGroupNested() {
   return (
     <ButtonGroup variant="toolbar">
       <ButtonGroup variant="base">
-        <Button type="button" variant="secondary" size="icon" aria-label="Add">
+        <Button type="button" variant="outline" size="icon" aria-label="Add">
           <PlusIcon />
         </Button>
       </ButtonGroup>
@@ -211,11 +211,11 @@ function ButtonGroupNested() {
 function ButtonGroupSeparatorDemo() {
   return (
     <ButtonGroup variant="base">
-      <Button type="button" variant="secondary" size="sm">
+      <Button type="button" variant="outline" size="sm">
         Copy
       </Button>
       <ButtonGroupSeparator />
-      <Button type="button" variant="secondary" size="sm">
+      <Button type="button" variant="outline" size="sm">
         Paste
       </Button>
     </ButtonGroup>
@@ -226,10 +226,10 @@ function ButtonGroupTextDemo() {
   return (
     <ButtonGroup variant="base" size="compact">
       <ButtonGroupText>Status</ButtonGroupText>
-      <Button type="button" variant="secondary">
+      <Button type="button" variant="outline">
         Published
       </Button>
-      <Button type="button" variant="secondary" size="icon" aria-label="More options">
+      <Button type="button" variant="outline" size="icon" aria-label="More options">
         <MoreHorizontalIcon />
       </Button>
     </ButtonGroup>
@@ -239,11 +239,11 @@ function ButtonGroupTextDemo() {
 function ButtonGroupSplit() {
   return (
     <ButtonGroup variant="base">
-      <Button type="button" variant="secondary">
+      <Button type="button" variant="outline">
         Button
       </Button>
       <ButtonGroupSeparator />
-      <Button type="button" size="icon" variant="secondary" aria-label="Add">
+      <Button type="button" size="icon" variant="outline" aria-label="Add">
         <PlusIcon />
       </Button>
     </ButtonGroup>
@@ -254,7 +254,7 @@ function ButtonGroupInput() {
   return (
     <ButtonGroup variant="base">
       <Input placeholder="Search..." />
-      <Button type="button" variant="secondary" size="icon" aria-label="Search">
+      <Button type="button" variant="outline" size="icon" aria-label="Search">
         <SearchIcon />
       </Button>
     </ButtonGroup>
@@ -265,7 +265,7 @@ function ButtonGroupInputGroup() {
   return (
     <ButtonGroup variant="toolbar" className="[--radius:9999rem]">
       <ButtonGroup variant="base">
-        <Button type="button" variant="secondary" size="icon" aria-label="Add">
+        <Button type="button" variant="outline" size="icon" aria-label="Add">
           <PlusIcon />
         </Button>
       </ButtonGroup>
@@ -290,7 +290,7 @@ function ButtonGroupInputGroup() {
 function ButtonGroupDropdown() {
   return (
     <ButtonGroup variant="base">
-      <Button type="button" variant="secondary">
+      <Button type="button" variant="outline">
         Follow
       </Button>
       <DropdownMenu>
@@ -298,7 +298,7 @@ function ButtonGroupDropdown() {
           render={
             <Button
               type="button"
-              variant="secondary"
+              variant="outline"
               size="icon"
               aria-label="Open follow actions"
             />
@@ -373,7 +373,7 @@ function ButtonGroupSelect() {
         <Input placeholder="10.00" pattern="[0-9]*" />
       </ButtonGroup>
       <ButtonGroup variant="base">
-        <Button type="button" aria-label="Send" size="icon" variant="secondary">
+        <Button type="button" aria-label="Send" size="icon" variant="outline">
           <ArrowRightIcon />
         </Button>
       </ButtonGroup>
@@ -384,14 +384,14 @@ function ButtonGroupSelect() {
 function ButtonGroupPopover() {
   return (
     <ButtonGroup variant="base">
-      <Button type="button" variant="secondary">
+      <Button type="button" variant="outline">
         <BotIcon data-icon="inline-start" />
         Copilot
       </Button>
       <Popover>
         <PopoverTrigger
           render={
-            <Button type="button" variant="secondary" size="icon" aria-label="Open popover" />
+            <Button type="button" variant="outline" size="icon" aria-label="Open popover" />
           }
         >
           <ChevronDownIcon />
@@ -423,18 +423,18 @@ function ButtonGroupRtl() {
     <div dir="rtl">
       <ButtonGroup variant="toolbar">
         <ButtonGroup variant="base">
-          <Button type="button" variant="secondary">
+          <Button type="button" variant="outline">
             Archive
           </Button>
-          <Button type="button" variant="secondary">
+          <Button type="button" variant="outline">
             Report
           </Button>
         </ButtonGroup>
         <ButtonGroup variant="base">
-          <Button type="button" variant="secondary">
+          <Button type="button" variant="outline">
             Snooze
           </Button>
-          <Button type="button" variant="secondary" size="icon" aria-label="More options">
+          <Button type="button" variant="outline" size="icon" aria-label="More options">
             <MoreHorizontalIcon />
           </Button>
         </ButtonGroup>

@@ -23,7 +23,7 @@ function RadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props) {
         "group/radio-group-item peer relative flex size-5 shrink-0 items-center justify-center rounded-full outline-none after:absolute after:-inset-x-2 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50",
         "data-unchecked:hover:[&_[data-slot=radio-visual]]:bg-[var(--control-unchecked-hover-bg)] data-unchecked:hover:[&_[data-slot=radio-visual]]:shadow-[var(--shadow-control-unchecked-hover)] focus-visible:[&_[data-slot=radio-focus-ring]]:ring-2 focus-visible:[&_[data-slot=radio-focus-ring]]:ring-ring/50 focus-visible:[&_[data-slot=radio-focus-ring]]:ring-offset-2 focus-visible:[&_[data-slot=radio-focus-ring]]:ring-offset-background",
         "aria-invalid:[&_[data-slot=radio-visual]]:shadow-[0_0_0_1px_color-mix(in_srgb,var(--destructive)_35%,transparent),var(--shadow-control-unchecked)]",
-        "data-checked:[&_[data-slot=radio-visual]]:bg-[var(--button-primary-hover)] data-checked:[&_[data-slot=radio-visual]]:shadow-[0_1px_2px_0_rgb(0_0_0_/_24%),0_0_0_1px_color-mix(in_srgb,var(--button-primary-hover),var(--foreground)_28%)]",
+        "data-checked:[&_[data-slot=radio-visual]]:bg-[var(--control-checked-bg)] data-checked:[&_[data-slot=radio-visual]]:shadow-[0_1px_2px_0_rgb(0_0_0_/_24%),0_0_0_1px_color-mix(in_srgb,var(--control-checked-bg),var(--foreground)_28%)]",
         className,
       )}
       {...props}
@@ -42,7 +42,7 @@ function RadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props) {
         data-slot="radio-group-indicator"
         className="relative z-10 flex size-[15px] items-center justify-center"
       >
-        <span className="size-1.5 rounded-full bg-[var(--interactive-foreground)] shadow-[0_1px_2px_0_rgba(30,58,138,0.6)]" />
+        <span className="size-1.5 rounded-full bg-[var(--control-checked-foreground)] shadow-[0_1px_2px_0_rgb(0_0_0_/_18%)]" />
       </RadioPrimitive.Indicator>
     </RadioPrimitive.Root>
   );

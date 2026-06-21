@@ -1,6 +1,6 @@
 ---
-title: Modal
-description: A focused prompt dialog for destructive, confirmative, and feedback workflows.
+title: Dialog
+description: A focused dialog for destructive, confirmative, and feedback workflows.
 component: true
 base: base
 ---
@@ -33,7 +33,7 @@ import { Input } from "@/components/ui/input";
 
 ```tsx
 <Dialog>
-  <DialogTrigger render={<Button variant="secondary" />}>Open modal</DialogTrigger>
+  <DialogTrigger render={<Button variant="outline" />}>Open dialog</DialogTrigger>
   <DialogContent>
     <DialogHeader>
       <DialogTitle>Delete something</DialogTitle>

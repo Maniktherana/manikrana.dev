@@ -31,8 +31,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
       toastOptions={{
         classNames: {
           toast:
-            "!w-[360px] !min-h-0 !items-start !gap-2 !rounded-lg !border-0 !bg-[var(--component)] !p-3 !text-foreground !shadow-[var(--shadow-flyout)]",
-          title: "!font-sans !text-[13px] !leading-[1.6] !font-medium !text-foreground",
+            "!w-[360px] !min-h-0 !items-start !gap-2 !rounded-lg !border !border-transparent !bg-card !p-3 !text-card-foreground !shadow-[var(--shadow-toast)]",
+          title: "!font-sans !text-[13px] !leading-[1.6] !font-normal !text-foreground",
           description:
             "!font-sans !text-[13px] !leading-[1.6] !font-normal !text-secondary-foreground",
           actionButton:

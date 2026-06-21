@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils";
 
 const contentWidthClassName = "w-full max-w-[704px]";
 const sidebarItemClassName =
-  "flex min-h-[29px] items-center gap-2 rounded-[6px] px-2 py-[5px] text-[13px] leading-[1.3] text-secondary-foreground no-underline hover:bg-accent hover:text-foreground";
+  "flex min-h-[29px] items-center gap-2 rounded-lg px-2 py-[5px] text-[13px] leading-[1.3] text-secondary-foreground no-underline hover:bg-accent hover:text-foreground";
 const sidebarTitleClassName =
   "flex items-center justify-between px-2 pb-[7px] text-[13px] leading-[1.3] font-medium text-foreground";
 
@@ -177,14 +177,14 @@ function DocsMobileNav({ activeUrl, pageTree }: { activeUrl: string; pageTree: R
         contentWidthClassName,
       )}
     >
-      <summary className="flex min-h-[38px] cursor-pointer list-none items-center justify-between rounded-[7px] border border-border px-2.5 py-2 text-[13px] leading-[1.3] font-medium text-foreground [&::-webkit-details-marker]:hidden [&_svg]:size-[15px]">
+      <summary className="flex min-h-[38px] cursor-pointer list-none items-center justify-between rounded-lg border border-border px-2.5 py-2 text-[13px] leading-[1.3] font-medium text-foreground [&::-webkit-details-marker]:hidden [&_svg]:size-[15px]">
         <span className="flex min-w-0 items-center gap-2">
           <PanelLeftIcon />
           <span>Browse components</span>
         </span>
         <ChevronDownIcon className="transition-transform duration-150 group-open:rotate-180" />
       </summary>
-      <nav className="mt-2 grid max-h-[60svh] gap-px overflow-auto rounded-[7px] border border-border p-2.5">
+      <nav className="mt-2 grid max-h-[60svh] gap-px overflow-auto rounded-lg border border-border p-2.5">
         {pageTree.children.map((node, index) => (
           <DocsSidebarNode
             activeUrl={activeUrl}
@@ -241,7 +241,7 @@ function DocsTableOfContents({ page }: { page: SerializedComponentDocPage }) {
           <nav className="mt-4 flex flex-col gap-1">
             {page.toc.map((item) => (
               <TOCItem
-                className="block rounded-[6px] px-2 py-[5px] text-[13px] leading-[1.4] text-muted-foreground no-underline hover:bg-accent hover:text-foreground data-[active=true]:bg-white/10 data-[active=true]:text-foreground data-[depth=3]:ps-5"
+                className="block rounded-lg px-2 py-[5px] text-[13px] leading-[1.4] text-muted-foreground no-underline hover:bg-accent hover:text-foreground data-[active=true]:bg-white/10 data-[active=true]:text-foreground data-[depth=3]:ps-5"
                 data-depth={item.depth}
                 href={item.url}
                 key={item.url}
@@ -266,7 +266,7 @@ function DocsNeighbours({ page, pageTree }: { page: SerializedComponentDocPage; 
     >
       {neighbours.previous ? (
         <Button
-          variant="secondary"
+          variant="outline"
           size="sm"
           nativeButton={false}
           render={
@@ -283,7 +283,7 @@ function DocsNeighbours({ page, pageTree }: { page: SerializedComponentDocPage; 
       {neighbours.next ? (
         <Button
           className="ml-auto"
-          variant="secondary"
+          variant="outline"
           size="sm"
           nativeButton={false}
           render={
@@ -359,9 +359,9 @@ function DocsShell({
 
   return (
     <AnchorProvider toc={page.toc} single>
-      <main className="min-h-svh overflow-x-hidden bg-background font-sans text-[13px] leading-[1.6] text-foreground">
-        <div className="min-h-svh bg-background text-foreground">
-          <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-4 border-b border-border bg-background/92 px-[max(20px,calc((100vw-1536px)/2+24px))] backdrop-blur-[16px] max-[900px]:px-4 [&_svg]:size-[15px]">
+      <main className="min-h-svh overflow-x-hidden bg-page-background font-sans text-[13px] leading-[1.6] text-foreground">
+        <div className="min-h-svh bg-page-background text-foreground">
+          <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-4 border-b border-border bg-page-background/92 px-[max(20px,calc((100vw-1536px)/2+24px))] backdrop-blur-[16px] max-[900px]:px-4 [&_svg]:size-[15px]">
             <div className="flex min-w-0 items-center gap-2">
               <ComponentIcon />
               <DocsLink

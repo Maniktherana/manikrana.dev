@@ -56,9 +56,9 @@ const fieldVariants = cva("group/field flex w-full gap-2 data-[invalid=true]:tex
     orientation: {
       vertical: "flex-col *:w-full [&>.sr-only]:w-auto",
       horizontal:
-        "flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
+        "flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-0.5",
       responsive:
-        "flex-col *:w-full @md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto @md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:*:data-[slot=field-label]:flex-auto [&>.sr-only]:w-auto @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
+        "flex-col *:w-full @md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto @md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:*:data-[slot=field-label]:flex-auto [&>.sr-only]:w-auto @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-0.5",
     },
   },
   defaultVariants: {
@@ -96,7 +96,7 @@ function FieldLabel({ className, ...props }: React.ComponentProps<typeof Label>)
     <Label
       data-slot="field-label"
       className={cn(
-        "group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:border-transparent has-[>[data-slot=field]]:bg-transparent has-[>[data-slot=field]]:bg-clip-border has-[>[data-slot=field]]:shadow-[var(--shadow-card)] has-[>[data-slot=field]]:transition-colors has-[>[data-slot=field]]:hover:bg-white/10 has-[[data-slot=checkbox][data-checked]]:bg-white/10 has-[[data-slot=checkbox][data-indeterminate]]:bg-white/10 has-[[data-slot=radio-group-item][data-checked]]:bg-white/10 *:data-[slot=field]:p-2.5",
+        "group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:border-transparent has-[>[data-slot=field]]:bg-card has-[>[data-slot=field]]:bg-clip-border has-[>[data-slot=field]]:shadow-[var(--shadow-card)] has-[>[data-slot=field]]:transition-colors has-[[data-slot=checkbox][data-checked]]:bg-muted has-[[data-slot=checkbox][data-indeterminate]]:bg-muted has-[[data-slot=radio-group-item][data-checked]]:bg-muted *:data-[slot=field]:p-2.5",
         "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col",
         className,
       )}

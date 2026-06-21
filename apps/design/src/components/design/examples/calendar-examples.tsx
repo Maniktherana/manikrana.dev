@@ -213,7 +213,7 @@ function CalendarPresets() {
         ].map((preset) => (
           <Button
             key={preset.value}
-            variant="secondary"
+            variant="outline"
             size="sm"
             className="flex-1"
             onClick={() => {
@@ -269,7 +269,7 @@ function CalendarPopover() {
   return (
     <Popover>
       <PopoverTrigger
-        render={<Button variant="secondary" className="w-44 justify-start px-2.5 font-normal" />}
+        render={<Button variant="outline" className="w-44 justify-start px-2.5 font-normal" />}
       >
         <CalendarIcon data-icon="inline-start" />
         {date ? format(date, "PPP") : <span>Pick a date</span>}

@@ -50,7 +50,7 @@ const badgeVariants = cva(
     variants: {
       variant: badgeStateVariants,
       radius: {
-        rounded: "rounded",
+        rounded: "rounded-sm",
         full: "rounded-full px-1.5",
       },
     },
@@ -89,7 +89,7 @@ function Badge({
 }
 
 const statusBadgeVariants = cva(
-  "inline-flex h-[18px] w-fit shrink-0 items-center justify-center overflow-hidden rounded border-[0.5px] border-[#d4d4d8] bg-[#f4f4f5] py-px pr-[5px] text-xs leading-[1.1] font-medium text-[#52525b] whitespace-nowrap dark:border-white/10 dark:bg-[#3f3f46] dark:text-[#d4d4d8] [&>svg]:pointer-events-none [&>svg]:size-[15px]",
+  "inline-flex h-[18px] w-fit shrink-0 items-center justify-center overflow-hidden rounded-sm border-[0.5px] border-[#d4d4d8] bg-[#f4f4f5] py-px pr-[5px] text-xs leading-[1.1] font-medium text-[#52525b] whitespace-nowrap dark:border-white/10 dark:bg-[#3f3f46] dark:text-[#d4d4d8] [&>svg]:pointer-events-none [&>svg]:size-[15px]",
   {
     variants: {
       status: {
@@ -121,7 +121,7 @@ const statusBadgeIndicatorVariants = cva("shrink-0", {
     status: badgeIndicatorVariants,
     indicator: {
       dot: "size-1.5 rounded-full",
-      swatch: "size-2.5 rounded-[2px]",
+      swatch: "size-2.5 rounded-[3px]",
     },
   },
   defaultVariants: {
@@ -155,7 +155,7 @@ function StatusBadge({
 }
 
 const iconBadgeVariants = cva(
-  "inline-flex size-5 shrink-0 items-center justify-center rounded border-[0.5px] p-0 transition-colors [&>svg]:pointer-events-none [&>svg]:size-[15px]",
+  "inline-flex size-5 shrink-0 items-center justify-center rounded-sm border-[0.5px] p-0 transition-colors [&>svg]:pointer-events-none [&>svg]:size-[15px]",
   {
     variants: {
       variant: badgeStateVariants,

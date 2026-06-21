@@ -23,7 +23,7 @@ const radioGroupPreviewTitles: Record<string, string> = {
 
 function RadioGroupDemo() {
   return (
-    <RadioGroup defaultValue="comfortable" className="max-w-sm">
+    <RadioGroup defaultValue="comfortable" className="w-[min(100%,20rem)]">
       <div className="flex items-center gap-3">
         <RadioGroupItem value="default" id="radio-demo-default" />
         <Label htmlFor="radio-demo-default">Default</Label>
@@ -42,7 +42,7 @@ function RadioGroupDemo() {
 
 function RadioGroupDescription() {
   return (
-    <RadioGroup defaultValue="yearly" className="max-w-md">
+    <RadioGroup defaultValue="yearly" className="w-[min(100%,24rem)]">
       <Field orientation="horizontal">
         <RadioGroupItem value="monthly" id="radio-desc-monthly" />
         <FieldContent>
@@ -70,22 +70,22 @@ function RadioGroupDescription() {
 
 function RadioGroupChoiceCard() {
   return (
-    <RadioGroup defaultValue="standard" className="max-w-md">
-      <FieldLabel htmlFor="radio-card-standard">
+    <RadioGroup defaultValue="balanced" className="w-[min(100%,24rem)]">
+      <FieldLabel htmlFor="radio-card-balanced">
         <Field orientation="horizontal">
-          <RadioGroupItem value="standard" id="radio-card-standard" />
+          <RadioGroupItem value="balanced" id="radio-card-balanced" />
           <FieldContent>
-            <FieldLabel htmlFor="radio-card-standard">Standard</FieldLabel>
-            <FieldDescription>Delivery in 3-5 business days.</FieldDescription>
+            <FieldLabel htmlFor="radio-card-balanced">Balanced</FieldLabel>
+            <FieldDescription>Notify for mentions, deploys, and failed jobs.</FieldDescription>
           </FieldContent>
         </Field>
       </FieldLabel>
-      <FieldLabel htmlFor="radio-card-priority">
+      <FieldLabel htmlFor="radio-card-focused">
         <Field orientation="horizontal">
-          <RadioGroupItem value="priority" id="radio-card-priority" />
+          <RadioGroupItem value="focused" id="radio-card-focused" />
           <FieldContent>
-            <FieldLabel htmlFor="radio-card-priority">Priority</FieldLabel>
-            <FieldDescription>Delivery in 1-2 business days.</FieldDescription>
+            <FieldLabel htmlFor="radio-card-focused">Focused</FieldLabel>
+            <FieldDescription>Only notify for direct mentions and failed jobs.</FieldDescription>
           </FieldContent>
         </Field>
       </FieldLabel>
@@ -95,7 +95,7 @@ function RadioGroupChoiceCard() {
 
 function RadioGroupFieldset() {
   return (
-    <FieldSet className="max-w-md">
+    <FieldSet className="w-[min(100%,24rem)]">
       <FieldLegend>Notifications</FieldLegend>
       <FieldDescription>Choose how you want to be notified.</FieldDescription>
       <RadioGroup defaultValue="all">
@@ -118,7 +118,7 @@ function RadioGroupFieldset() {
 
 function RadioGroupDisabled() {
   return (
-    <RadioGroup defaultValue="card" disabled className="max-w-sm">
+    <RadioGroup defaultValue="card" disabled className="w-[min(100%,20rem)]">
       <div className="flex items-center gap-3">
         <RadioGroupItem value="card" id="radio-disabled-card" />
         <Label htmlFor="radio-disabled-card">Credit card</Label>
@@ -133,7 +133,7 @@ function RadioGroupDisabled() {
 
 function RadioGroupInvalid() {
   return (
-    <Field data-invalid className="max-w-md">
+    <Field data-invalid className="w-[min(100%,24rem)]">
       <FieldSet>
         <FieldLegend>Shipping speed</FieldLegend>
         <RadioGroup>

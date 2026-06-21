@@ -4,21 +4,11 @@ import { Code } from "@/components/design/code";
 
 const codePreviewTitles: Record<string, string> = {
   "code-demo": "Code",
-  "code-background": "Code Background",
   "code-inline": "Code Inline",
 };
 
 function CodeDemo() {
   return <Code>order.total</Code>;
-}
-
-function CodeBackground() {
-  return (
-    <div className="flex flex-wrap items-center gap-2">
-      <Code>customer.email</Code>
-      <Code background="muted">metadata.channel</Code>
-    </div>
-  );
 }
 
 function CodeInline() {
@@ -31,7 +21,6 @@ function CodeInline() {
 
 const codePreviews: Record<string, React.ComponentType> = {
   "code-demo": CodeDemo,
-  "code-background": CodeBackground,
   "code-inline": CodeInline,
 };
 

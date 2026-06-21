@@ -4,29 +4,29 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "group/button relative inline-flex min-h-0 shrink-0 items-center justify-center rounded-[6px] border border-transparent bg-clip-padding font-sans text-[13px] leading-[1.1] font-medium tracking-normal whitespace-nowrap transition-[background-color] outline-none select-none focus-visible:ring-1 focus-visible:ring-ring/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:pointer-events-none disabled:border-[var(--button-disabled-border)] disabled:bg-[var(--button-disabled)] disabled:text-[var(--button-disabled-foreground)] disabled:shadow-none disabled:opacity-100 aria-disabled:pointer-events-none aria-disabled:border-[var(--button-disabled-border)] aria-disabled:bg-[var(--button-disabled)] aria-disabled:text-[var(--button-disabled-foreground)] aria-disabled:shadow-none data-[disabled]:pointer-events-none data-[disabled]:border-[var(--button-disabled-border)] data-[disabled]:bg-[var(--button-disabled)] data-[disabled]:text-[var(--button-disabled-foreground)] data-[disabled]:shadow-none aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 in-data-[slot=input-group]:shadow-none [&>:not(svg)]:leading-[inherit] [&_svg]:pointer-events-none [&_svg]:size-[15px] [&_svg]:shrink-0",
+  "group/button relative inline-flex min-h-0 shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding font-sans text-[13px] leading-[1.1] font-medium tracking-normal whitespace-nowrap transition-[background-color,box-shadow,color] outline-none select-none focus-visible:ring-[3px] focus-visible:ring-ring/24 focus-visible:ring-offset-0 disabled:pointer-events-none disabled:border-[var(--button-disabled-border)] disabled:bg-[var(--button-disabled)] disabled:text-[var(--button-disabled-foreground)] disabled:shadow-none disabled:opacity-100 aria-disabled:pointer-events-none aria-disabled:border-[var(--button-disabled-border)] aria-disabled:bg-[var(--button-disabled)] aria-disabled:text-[var(--button-disabled-foreground)] aria-disabled:shadow-none data-[disabled]:pointer-events-none data-[disabled]:border-[var(--button-disabled-border)] data-[disabled]:bg-[var(--button-disabled)] data-[disabled]:text-[var(--button-disabled-foreground)] data-[disabled]:shadow-none aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 in-data-[slot=input-group]:shadow-none [&>:not(svg)]:leading-[inherit] [&_svg]:pointer-events-none [&_svg]:size-[15px] [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-[var(--button-primary)] bg-clip-border text-[var(--button-primary-foreground)] shadow-[var(--shadow-button-primary)] hover:bg-[var(--button-primary-hover)] hover:text-[var(--button-primary-foreground)] active:bg-[var(--button-primary-pressed)]",
+          "bg-[var(--button-primary)] bg-clip-border text-[var(--button-primary-foreground)] shadow-[var(--shadow-button-primary)] hover:bg-[var(--button-primary-pressed)] hover:text-[var(--button-primary-foreground)]",
         secondary:
-          "border-transparent bg-transparent bg-clip-border text-foreground shadow-[var(--shadow-card)] hover:bg-accent active:bg-accent data-[active=true]:bg-accent aria-expanded:bg-accent data-popup-open:bg-accent",
+          "border-transparent bg-[var(--button-secondary)] bg-clip-border text-[var(--button-secondary-foreground)] shadow-[var(--shadow-card)] hover:bg-[var(--button-secondary-hover)] hover:text-[var(--button-secondary-foreground)] active:bg-[var(--button-secondary-hover)] data-[active=true]:bg-[var(--button-secondary-hover)] aria-expanded:bg-[var(--button-secondary-hover)] data-popup-open:bg-[var(--button-secondary-hover)]",
         outline:
-          "border-transparent bg-transparent bg-clip-border text-foreground shadow-[var(--shadow-card)] hover:bg-white/10 hover:text-foreground active:bg-white/10 data-[active=true]:bg-white/10 aria-expanded:bg-white/10 aria-expanded:text-foreground data-popup-open:bg-white/10 data-popup-open:text-foreground",
+          "border-input bg-[var(--button-outline-fill)] bg-clip-border text-foreground shadow-[var(--shadow-control)] before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] before:shadow-[var(--shadow-control-highlight)] before:content-[''] hover:bg-[var(--button-outline-fill-hover)] hover:text-foreground hover:shadow-[var(--shadow-control-hover)] hover:before:shadow-[var(--shadow-control-highlight-hover)] focus-visible:border-ring focus-visible:shadow-none focus-visible:before:shadow-none active:bg-[var(--button-outline-fill-hover)] data-[active=true]:bg-[var(--button-outline-fill-hover)] aria-expanded:bg-[var(--button-outline-fill-hover)] aria-expanded:text-foreground data-popup-open:bg-[var(--button-outline-fill-hover)] data-popup-open:text-foreground",
         ghost:
-          "text-foreground shadow-none hover:bg-white/10 hover:text-foreground active:bg-white/10 data-[active=true]:bg-white/10 aria-expanded:bg-white/10 aria-expanded:text-foreground data-popup-open:bg-white/10 data-popup-open:text-foreground",
+          "text-foreground shadow-none hover:bg-[var(--button-transparent-hover)] hover:text-foreground active:bg-[var(--button-transparent-hover)] data-[active=true]:bg-[var(--button-transparent-hover)] aria-expanded:bg-[var(--button-transparent-hover)] aria-expanded:text-foreground data-popup-open:bg-[var(--button-transparent-hover)] data-popup-open:text-foreground",
         destructive:
-          "border-[var(--button-danger-border)] bg-[var(--button-danger)] bg-clip-border text-[var(--button-danger-foreground)] shadow-[var(--shadow-button-danger)] hover:border-[var(--button-danger-border)] hover:bg-[var(--button-danger-hover)] hover:text-[var(--button-danger-foreground)] active:bg-[var(--button-danger-pressed)]",
+          "border-[var(--button-danger-border)] bg-[var(--button-danger)] bg-clip-border text-[var(--button-danger-foreground)] shadow-[var(--shadow-button-danger)] hover:border-[var(--button-danger-border)] hover:bg-[var(--button-danger-hover)] hover:text-[var(--button-danger-foreground)]",
         link: "h-auto min-h-0 gap-0 self-center border-transparent bg-transparent p-0 leading-[1.6] text-foreground shadow-none no-underline hover:bg-transparent hover:text-foreground hover:underline",
       },
       size: {
         default:
-          "h-[var(--control-height)] min-h-[var(--control-height)] gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+          "h-[30px] min-h-[30px] gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
         xs: "h-6 gap-1 px-2 text-xs has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg]:size-3",
         sm: "h-7 gap-1 px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg]:size-3.5",
         lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        icon: "size-8",
+        icon: "size-[30px]",
         "icon-xs": "size-6 [&_svg]:size-3",
         "icon-sm": "size-7",
         "icon-lg": "size-9",

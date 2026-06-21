@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { ComponentType } from "react";
 
 import { Checkbox } from "@/components/ui/checkbox";
@@ -23,7 +24,7 @@ const checkboxPreviewTitles: Record<string, string> = {
 
 function CheckboxDemo() {
   return (
-    <Field orientation="horizontal" className="max-w-sm">
+    <Field orientation="horizontal" className="w-[min(100%,20rem)]">
       <Checkbox id="checkbox-demo-terms" defaultChecked />
       <FieldLabel htmlFor="checkbox-demo-terms">Accept terms and conditions</FieldLabel>
     </Field>
@@ -32,7 +33,7 @@ function CheckboxDemo() {
 
 function CheckboxDescription() {
   return (
-    <Field orientation="horizontal" className="max-w-md">
+    <Field orientation="horizontal" className="w-[min(100%,24rem)]">
       <Checkbox id="checkbox-desc-newsletter" defaultChecked />
       <FieldContent>
         <FieldLabel htmlFor="checkbox-desc-newsletter">Subscribe to the newsletter</FieldLabel>
@@ -44,7 +45,7 @@ function CheckboxDescription() {
 
 function CheckboxGroup() {
   return (
-    <FieldSet className="max-w-md">
+    <FieldSet className="w-[min(100%,24rem)]">
       <FieldLegend>Email notifications</FieldLegend>
       <FieldDescription>Choose what you want to hear about.</FieldDescription>
       <Field orientation="horizontal">
@@ -65,22 +66,22 @@ function CheckboxGroup() {
 
 function CheckboxChoiceCard() {
   return (
-    <div className="flex w-full max-w-md flex-col gap-3">
-      <FieldLabel htmlFor="checkbox-card-standard">
+    <div className="flex w-[min(100%,24rem)] flex-col gap-3">
+      <FieldLabel htmlFor="checkbox-card-release-notes">
         <Field orientation="horizontal">
-          <Checkbox id="checkbox-card-standard" defaultChecked />
+          <Checkbox id="checkbox-card-release-notes" defaultChecked />
           <FieldContent>
-            <FieldLabel htmlFor="checkbox-card-standard">Standard delivery</FieldLabel>
-            <FieldDescription>Arrives in 3-5 business days. Free of charge.</FieldDescription>
+            <FieldLabel htmlFor="checkbox-card-release-notes">Release notes</FieldLabel>
+            <FieldDescription>Send a concise changelog after every deploy.</FieldDescription>
           </FieldContent>
         </Field>
       </FieldLabel>
-      <FieldLabel htmlFor="checkbox-card-priority">
+      <FieldLabel htmlFor="checkbox-card-usage-warnings">
         <Field orientation="horizontal">
-          <Checkbox id="checkbox-card-priority" />
+          <Checkbox id="checkbox-card-usage-warnings" />
           <FieldContent>
-            <FieldLabel htmlFor="checkbox-card-priority">Priority delivery</FieldLabel>
-            <FieldDescription>Arrives in 1-2 business days. $12.00.</FieldDescription>
+            <FieldLabel htmlFor="checkbox-card-usage-warnings">Usage warnings</FieldLabel>
+            <FieldDescription>Notify admins before a workspace reaches its limit.</FieldDescription>
           </FieldContent>
         </Field>
       </FieldLabel>
@@ -89,11 +90,43 @@ function CheckboxChoiceCard() {
 }
 
 function CheckboxIndeterminate() {
+  const [selected, setSelected] = React.useState([true, false]);
+  const checkedCount = selected.filter(Boolean).length;
+  const allChecked = checkedCount === selected.length;
+  const indeterminate = checkedCount > 0 && !allChecked;
+
   return (
-    <Field orientation="horizontal" className="max-w-sm">
-      <Checkbox id="checkbox-indeterminate-all" indeterminate />
-      <FieldLabel htmlFor="checkbox-indeterminate-all">Select all items</FieldLabel>
-    </Field>
+    <FieldSet className="w-[min(100%,20rem)] gap-3">
+      <Field orientation="horizontal">
+        <Checkbox
+          id="checkbox-indeterminate-all"
+          checked={allChecked}
+          indeterminate={indeterminate}
+          onCheckedChange={(checked) => {
+            setSelected(selected.map(() => Boolean(checked)));
+          }}
+        />
+        <FieldLabel htmlFor="checkbox-indeterminate-all">Select all items</FieldLabel>
+      </Field>
+      <div className="flex flex-col gap-2">
+        {["Release notes", "Security alerts"].map((label, index) => (
+          <Field orientation="horizontal" key={label}>
+            <Checkbox
+              id={`checkbox-indeterminate-${index}`}
+              checked={selected[index]}
+              onCheckedChange={(checked) => {
+                setSelected((current) =>
+                  current.map((value, itemIndex) =>
+                    itemIndex === index ? Boolean(checked) : value,
+                  ),
+                );
+              }}
+            />
+            <FieldLabel htmlFor={`checkbox-indeterminate-${index}`}>{label}</FieldLabel>
+          </Field>
+        ))}
+      </div>
+    </FieldSet>
   );
 }
 
@@ -114,7 +147,7 @@ function CheckboxDisabled() {
 
 function CheckboxInvalid() {
   return (
-    <Field orientation="horizontal" data-invalid className="max-w-md">
+    <Field orientation="horizontal" data-invalid className="w-[min(100%,24rem)]">
       <Checkbox id="checkbox-invalid-terms" aria-invalid />
       <FieldContent>
         <FieldLabel htmlFor="checkbox-invalid-terms">Accept terms and conditions</FieldLabel>

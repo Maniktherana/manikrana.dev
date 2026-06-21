@@ -83,7 +83,7 @@ function ThemeToggle() {
         render={
           <Button
             type="button"
-            variant="secondary"
+            variant="outline"
             size="icon-sm"
             className="text-foreground"
             aria-label={label}

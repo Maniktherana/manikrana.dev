@@ -21,7 +21,7 @@ const popoverPreviewTitles: Record<string, string> = {
 function PopoverDemo() {
   return (
     <Popover>
-      <PopoverTrigger render={<Button variant="secondary" />}>Open popover</PopoverTrigger>
+      <PopoverTrigger render={<Button variant="outline" />}>Open popover</PopoverTrigger>
       <PopoverContent>
         <PopoverTitle>Project status</PopoverTitle>
         <PopoverDescription>This workspace is synced and ready for review.</PopoverDescription>
@@ -34,15 +34,15 @@ function PopoverAlign() {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <Popover>
-        <PopoverTrigger render={<Button variant="secondary" />}>Start</PopoverTrigger>
+        <PopoverTrigger render={<Button variant="outline" />}>Start</PopoverTrigger>
         <PopoverContent align="start">Aligned to start.</PopoverContent>
       </Popover>
       <Popover>
-        <PopoverTrigger render={<Button variant="secondary" />}>Center</PopoverTrigger>
+        <PopoverTrigger render={<Button variant="outline" />}>Center</PopoverTrigger>
         <PopoverContent align="center">Aligned to center.</PopoverContent>
       </Popover>
       <Popover>
-        <PopoverTrigger render={<Button variant="secondary" />}>End</PopoverTrigger>
+        <PopoverTrigger render={<Button variant="outline" />}>End</PopoverTrigger>
         <PopoverContent align="end">Aligned to end.</PopoverContent>
       </Popover>
     </div>
@@ -52,12 +52,12 @@ function PopoverAlign() {
 function PopoverCloseDemo() {
   return (
     <Popover>
-      <PopoverTrigger render={<Button variant="secondary" />}>Open popover</PopoverTrigger>
+      <PopoverTrigger render={<Button variant="outline" />}>Open popover</PopoverTrigger>
       <PopoverContent className="w-64">
         <PopoverTitle>Publish changes</PopoverTitle>
         <PopoverDescription>Review this update before it goes live.</PopoverDescription>
         <div className="mt-3 flex justify-end">
-          <PopoverClose render={<Button type="button" variant="secondary" size="sm" />}>
+          <PopoverClose render={<Button type="button" variant="outline" size="sm" />}>
             Close
           </PopoverClose>
         </div>
@@ -69,13 +69,13 @@ function PopoverCloseDemo() {
 function PopoverComposition() {
   return (
     <Popover>
-      <PopoverTrigger render={<Button variant="secondary" />}>Invite</PopoverTrigger>
+      <PopoverTrigger render={<Button variant="outline" />}>Invite</PopoverTrigger>
       <PopoverContent className="w-72">
         <div className="flex flex-col gap-2">
           <PopoverTitle>Invite teammate</PopoverTitle>
           <PopoverDescription>Send a review invite to someone on your team.</PopoverDescription>
           <div className="flex items-center gap-2 pt-1">
-            <Button type="button" variant="secondary" size="sm" className="flex-1">
+            <Button type="button" variant="outline" size="sm" className="flex-1">
               Copy link
             </Button>
             <Button type="button" size="sm" className="flex-1">

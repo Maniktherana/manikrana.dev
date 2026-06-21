@@ -12,20 +12,18 @@ import githubDark from "shiki/themes/github-dark.mjs";
 import githubLightDefault from "shiki/themes/github-light-default.mjs";
 import type { ShikiTransformer } from "shiki";
 
+import { buttonVariants } from "@/components/ui/button";
 import { CopyButton } from "@/components/ui/copy-button";
 import { cn } from "@/lib/utils";
 
-type CodeProps = React.ComponentProps<"code"> & {
-  background?: "base" | "muted";
-};
+type CodeProps = React.ComponentProps<"code">;
 
-function Code({ background = "base", className, ...props }: CodeProps) {
+function Code({ className, ...props }: CodeProps) {
   return (
     <code
       data-slot="code"
-      data-background={background}
       className={cn(
-        "inline-flex h-[18px] w-fit max-w-full items-center justify-center self-start overflow-hidden rounded border-[0.5px] border-[var(--inline-code-border)] bg-[var(--inline-code-bg)] px-[5.5px] py-px font-mono text-xs leading-[1.1] font-normal text-[var(--inline-code-text)] transition-colors hover:bg-[var(--inline-code-bg-hover)] data-[background=muted]:border-[var(--inline-code-muted-border)] data-[background=muted]:bg-[var(--inline-code-muted-bg)] data-[background=muted]:hover:bg-[var(--inline-code-muted-bg-hover)]",
+        "inline-flex h-[18px] w-fit max-w-full items-center justify-center self-start overflow-hidden rounded-[4px] border border-transparent bg-[var(--kbd-field-bg)] bg-clip-border px-1.5 py-0 font-mono text-[11px] leading-[1.1] font-normal text-[var(--kbd-field-text)] shadow-[0_0_0_1px_var(--kbd-field-border)]",
         className,
       )}
       {...props}
@@ -98,6 +96,7 @@ type CodeBlockContextValue = {
 };
 
 const CodeBlockContext = React.createContext<CodeBlockContextValue | null>(null);
+const COLLAPSED_CODE_BLOCK_HEIGHT = 116;
 
 function useCodeBlockContext() {
   const context = React.useContext(CodeBlockContext);
@@ -137,10 +136,10 @@ function CodeBlock({
         className={cn(
           "group/code-block w-full min-w-0 max-w-full overflow-hidden",
           // outer surface colour (shared by both variants)
-          "bg-[var(--muted)] text-[var(--foreground)] dark:bg-[#212124] dark:text-[rgb(255_255_255/88%)]",
+          "bg-card text-card-foreground",
           // Header blocks get the shared framed-surface edge. Header-less source blocks stay bare.
           variant === "surface" &&
-            "rounded-[12px] has-[>[data-slot=code-block-header]]:border has-[>[data-slot=code-block-header]]:border-transparent has-[>[data-slot=code-block-header]]:bg-clip-border has-[>[data-slot=code-block-header]]:shadow-[var(--shadow-card)]",
+            "rounded-xl has-[>[data-slot=code-block-header]]:border has-[>[data-slot=code-block-header]]:border-transparent has-[>[data-slot=code-block-header]]:bg-clip-border has-[>[data-slot=code-block-header]]:shadow-[var(--shadow-card)]",
           variant === "bare" && "border-t border-[var(--border)]",
           className,
         )}
@@ -157,7 +156,7 @@ function CodeBlockHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="code-block-header"
       className={cn(
-        "flex items-center gap-3 px-2 pt-1",
+        "flex items-center gap-3 px-2 pt-1 font-mono",
         // transparent — the CodeBlock outer surface shows through in both themes
         "bg-transparent",
         className,
@@ -182,35 +181,56 @@ function CodeBlockBody({
   ...props
 }: CodeBlockBodyProps) {
   const { expanded } = useCodeBlockContext();
+  const bodyRef = React.useRef<HTMLDivElement | null>(null);
+  const [height, setHeight] = React.useState<number | undefined>(
+    collapsible ? COLLAPSED_CODE_BLOCK_HEIGHT : undefined,
+  );
   const isCollapsed = collapsible && !expanded;
+
+  React.useEffect(() => {
+    if (!collapsible) {
+      setHeight(undefined);
+      return;
+    }
+
+    const node = bodyRef.current;
+
+    if (!node) return;
+
+    const syncHeight = () => {
+      setHeight(isCollapsed ? COLLAPSED_CODE_BLOCK_HEIGHT : node.scrollHeight);
+    };
+
+    syncHeight();
+
+    if (isCollapsed || typeof ResizeObserver === "undefined") return;
+
+    const resizeObserver = new ResizeObserver(syncHeight);
+    resizeObserver.observe(node);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [collapsible, isCollapsed]);
 
   return (
     <div
+      ref={bodyRef}
       data-slot="code-block-body"
       data-collapsible={collapsible || undefined}
       data-collapsed={isCollapsed || undefined}
       className={cn(
         "relative flex flex-col overflow-hidden",
         // surface — same treatment in both themes (body sits one step off the outer)
-        "bg-[var(--background)] text-[var(--foreground)] dark:bg-[#27272a] dark:text-[rgb(255_255_255/88%)]",
-        flush ? "m-0 rounded-[inherit] border-0" : "m-[6px] rounded-[8px] border-0",
+        "bg-muted text-foreground",
+        flush ? "m-0 rounded-[inherit] border-0" : "m-[6px] rounded-lg border-0",
         className,
       )}
       {...props}
+      style={height === undefined ? props.style : { ...props.style, height }}
     >
       {children}
-      {isCollapsed ? (
-        <div
-          aria-hidden="true"
-          data-slot="code-block-fade"
-          className={cn(
-            "pointer-events-none absolute inset-x-0 bottom-[34px] h-[56px]",
-            "bg-[linear-gradient(180deg,transparent_0%,var(--background)_100%)]",
-            "dark:bg-[linear-gradient(180deg,rgb(39_39_42/0%)_0%,#27272a_100%)]",
-          )}
-        />
-      ) : null}
-      {collapsible ? <CodeBlockExpandTrigger /> : null}
+      {isCollapsed ? <CodeBlockExpandTrigger /> : null}
     </div>
   );
 }
@@ -256,14 +276,13 @@ function CodeBlockContent({
   // and collapse clamp.
   const highlightClassName = cn(
     "[&_pre]:m-0 [&_pre]:max-h-[360px] [&_pre]:min-w-max [&_pre]:overflow-auto [&_pre]:whitespace-pre [&_pre]:p-3 [&_pre]:font-mono [&_pre]:text-xs [&_pre]:leading-[1.6]",
-    "[&_pre]:bg-[var(--background)]! dark:[&_pre]:bg-transparent!",
+    "[&_pre]:bg-[var(--muted)]!",
     // code element as a grid (ignores shiki's whitespace "\n" text nodes so lines
     // do not get double-spaced) + each generated line spans a full row
     "[&_code]:grid [&_code]:min-w-full [&_code]:bg-transparent [&_code]:font-mono [&_code]:whitespace-pre",
     "[&_[data-line]]:block [&_[data-line]]:min-h-[1.6em] [&_[data-line]]:w-full",
     "[&_span]:text-[var(--shiki-light)] dark:[&_span]:text-[var(--shiki-dark)]",
     gutterClassName,
-    "in-data-[collapsed]:[&_pre]:max-h-[220px] in-data-[collapsed]:[&_pre]:overflow-hidden in-data-[collapsed]:[&_pre]:pb-[56px]",
     className,
   );
 
@@ -292,7 +311,6 @@ function CodeBlockContent({
       <pre
         className={cn(
           "m-0 max-h-[360px] overflow-auto whitespace-pre p-3 font-mono text-xs leading-[1.6] font-normal",
-          "in-data-[collapsed]:max-h-[220px] in-data-[collapsed]:overflow-hidden in-data-[collapsed]:pb-[56px]",
         )}
       >
         <code className="block min-w-full">
@@ -320,29 +338,25 @@ function CodeBlockExpandTrigger({
   onClick,
   ...props
 }: React.ComponentProps<"button">) {
-  const { expanded, toggleExpanded } = useCodeBlockContext();
+  const { setExpanded } = useCodeBlockContext();
 
   return (
     <button
-      aria-expanded={expanded}
+      aria-expanded={false}
       data-slot="code-block-expand-trigger"
       type="button"
       className={cn(
-        "flex min-h-[34px] w-full cursor-pointer items-center justify-center border-0 border-t p-2 font-sans text-xs leading-[1.1] font-medium",
-        "outline-none focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--ring)]",
-        // light
-        "border-[var(--border)] bg-[var(--muted)] text-[var(--muted-foreground)] hover:bg-[var(--accent)] hover:text-[var(--foreground)]",
-        // dark
-        "dark:border-t-[rgb(255_255_255/16%)] dark:bg-[rgb(255_255_255/10%)] dark:text-[rgb(255_255_255/56%)] dark:hover:bg-[rgb(255_255_255/13%)] dark:hover:text-[rgb(255_255_255/88%)]",
+        buttonVariants({ variant: "secondary", size: "sm" }),
+        "absolute bottom-3 left-1/2 z-10 h-6 min-h-6 w-auto -translate-x-1/2 rounded-md px-2.5 text-xs",
         className,
       )}
       onClick={(event) => {
         onClick?.(event);
-        toggleExpanded();
+        setExpanded(true);
       }}
       {...props}
     >
-      {children ?? (expanded ? "Collapse code" : "Expand code")}
+      {children ?? "Expand code"}
     </button>
   );
 }
@@ -377,7 +391,11 @@ function CodeBlockSource({
       {...props}
     >
       <CodeBlockBody collapsible={collapsible} flush>
-        <CopyButton value={code} size="icon-sm" className="absolute top-2 right-2 z-10" />
+        <CopyButton
+          value={code}
+          size="icon-sm"
+          className="absolute top-2 right-2 z-10 in-data-[collapsed]:hidden"
+        />
         <CodeBlockContent
           code={code}
           language={language}

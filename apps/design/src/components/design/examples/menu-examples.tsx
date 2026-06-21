@@ -36,7 +36,7 @@ const menuPreviewTitles: Record<string, string> = {
 function MenuDemo() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="secondary" />}>Actions</DropdownMenuTrigger>
+      <DropdownMenuTrigger render={<Button variant="outline" />}>Actions</DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Product</DropdownMenuLabel>
         <DropdownMenuGroup>
@@ -60,7 +60,7 @@ function MenuDemo() {
 function MenuCheckbox() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="secondary" />}>Columns</DropdownMenuTrigger>
+      <DropdownMenuTrigger render={<Button variant="outline" />}>Columns</DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuCheckboxItem checked>Customer</DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem checked>Fulfillment</DropdownMenuCheckboxItem>
@@ -74,7 +74,7 @@ function MenuSubmenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        render={<Button variant="secondary" size="icon" aria-label="Open menu" />}
+        render={<Button variant="outline" size="icon" aria-label="Open menu" />}
       >
         <MoreHorizontalIcon />
       </DropdownMenuTrigger>
