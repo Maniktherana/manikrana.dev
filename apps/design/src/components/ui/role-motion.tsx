@@ -17,13 +17,18 @@ const defaultRoleMotionRoles = [
 
 const ROLE_HOLD_MS = 1600;
 const DEFAULT_DURATION_MS = 440;
+const DEFAULT_EXIT_DURATION_MS = 360;
 const DEFAULT_ENTER_STAGGER_MS = 12;
-const DEFAULT_EXIT_STAGGER_MS = 8;
-const DEFAULT_ENTRANCE_SCALE = 0.18;
-const DEFAULT_EXIT_HEIGHT = 58;
-const DEFAULT_EXIT_SCALE = 0.48;
+const DEFAULT_EXIT_STAGGER_MS = 12;
+const DEFAULT_ENTRANCE_OFFSET = 72;
+const DEFAULT_ENTRANCE_HEIGHT = 8;
+const DEFAULT_ENTRANCE_SCALE = 1.1;
+const DEFAULT_EXIT_HEIGHT = 90;
+const DEFAULT_EXIT_SCALE = 0.4;
 const easeOutStrong: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const easeOutStrongCss = "cubic-bezier(0.16, 1, 0.3, 1)";
+const slotTextEntranceEaseX1 = 0.34;
+const slotTextEntranceEaseX2 = 0.64;
 const fallbackRoles = [""] as const;
 const SPACE_GLYPH = "\u00a0";
 
@@ -40,6 +45,8 @@ type RoleMotionProps = Omit<HTMLMotionProps<"span">, "children"> & {
   blur?: boolean;
   duration?: number;
   enterDuration?: number;
+  entranceHeight?: number;
+  entranceScale?: number;
   enterStagger?: number;
   exitDuration?: number;
   exitHeight?: number;
@@ -50,7 +57,6 @@ type RoleMotionProps = Omit<HTMLMotionProps<"span">, "children"> & {
   preservePrefix?: boolean;
   roles?: readonly string[];
   scale?: boolean;
-  entranceScale?: number;
   textClassName?: string;
 };
 
@@ -61,6 +67,14 @@ type RoleCharacter = {
 
 type RoleCharacterCustom = {
   index: number;
+  order: number;
+};
+
+type RoleCharacterEntry = {
+  character: string;
+  entryKey: string;
+  order: number;
+  settleAt: number;
 };
 
 type RoleCharacterMeasure = {
@@ -68,6 +82,12 @@ type RoleCharacterMeasure = {
   width: number;
   x: number;
   y: number;
+};
+
+type RenderedRoleCharacter = RoleCharacter & {
+  entryKey: string;
+  order: number;
+  stable: boolean;
 };
 
 type RoleRootSize = {
@@ -79,12 +99,13 @@ type RoleMotionConfig = {
   blur: boolean;
   duration: number;
   enterDuration: number;
+  entranceHeight: number;
+  entranceScale: number;
   enterStagger: number;
   exitDuration: number;
   exitHeight: number;
   exitScale: number;
   exitStagger: number;
-  entranceScale: number;
   scale: boolean;
 };
 
@@ -92,6 +113,13 @@ type RoleTransitionState = {
   current: string;
   previous: string;
   version: number;
+};
+
+type RoleCharacterRenderState = {
+  characters: RenderedRoleCharacter[];
+  entries: Map<number, RoleCharacterEntry>;
+  preservedPrefixLength: number;
+  stablePrefixLength: number;
 };
 
 function normalizeRoles(roles: readonly string[]) {
@@ -130,9 +158,77 @@ function displayCharacter(character: string) {
   return character === " " ? SPACE_GLYPH : character;
 }
 
-function characterCustom(character: RoleCharacter): RoleCharacterCustom {
+function characterCustom(character: RoleCharacter, order = character.index): RoleCharacterCustom {
   return {
     index: character.index,
+    order,
+  };
+}
+
+function resolveRoleCharacterRenderState({
+  activeRole,
+  characters,
+  config,
+  preservePrefix,
+  previousEntries,
+  previousText,
+  transitionVersion,
+}: {
+  activeRole: string;
+  characters: RoleCharacter[];
+  config: RoleMotionConfig;
+  preservePrefix: boolean;
+  previousEntries: Map<number, RoleCharacterEntry>;
+  previousText: string;
+  transitionVersion: number;
+}): RoleCharacterRenderState {
+  const now = Date.now();
+  const preservedPrefixLength = preservePrefix ? commonPrefixLength(previousText, activeRole) : 0;
+  const entries = new Map<number, RoleCharacterEntry>();
+  let stablePrefixLength = 0;
+  let canExtendStablePrefix = true;
+
+  characters.forEach((character) => {
+    const previousEntry = previousEntries.get(character.index);
+    const preservesEntry =
+      character.index < preservedPrefixLength && previousEntry?.character === character.character;
+    const order = Math.max(0, character.index - preservedPrefixLength);
+    const entry =
+      preservesEntry && previousEntry
+        ? previousEntry
+        : {
+            character: character.character,
+            entryKey: `${transitionVersion}-${character.index}-${character.character}`,
+            order,
+            settleAt: now + order * config.enterStagger + config.enterDuration,
+          };
+
+    // A common-prefix character is only "stable" after its own entrance has landed.
+    // Until then, keep its entryKey so Motion can finish the full y/scale loop.
+    if (canExtendStablePrefix && preservesEntry && entry.settleAt <= now) {
+      stablePrefixLength += 1;
+    } else {
+      canExtendStablePrefix = false;
+    }
+
+    entries.set(character.index, entry);
+  });
+
+  return {
+    characters: characters.map((character) => {
+      const entry = entries.get(character.index);
+
+      return {
+        ...character,
+        entryKey:
+          entry?.entryKey ?? `${transitionVersion}-${character.index}-${character.character}`,
+        order: entry?.order ?? Math.max(0, character.index - preservedPrefixLength),
+        stable: character.index < stablePrefixLength,
+      };
+    }),
+    entries,
+    preservedPrefixLength,
+    stablePrefixLength,
   };
 }
 
@@ -205,6 +301,92 @@ function clampScale(value: number, fallback: number) {
   return Math.min(1.5, Math.max(0, clampMotionNumber(value, fallback)));
 }
 
+function clampPeakScale(value: number, fallback: number) {
+  return Math.min(2, Math.max(1, clampMotionNumber(value, fallback)));
+}
+
+// Slot Text gets its bounce from an overshooting bezier; solve that curve so
+// entranceHeight maps to the actual above-baseline peak instead of a held keyframe.
+function cubicBezierCoordinate(t: number, point1: number, point2: number) {
+  const invertedT = 1 - t;
+
+  return (
+    3 * invertedT * invertedT * t * point1 +
+    3 * invertedT * t * t * point2 +
+    t * t * t
+  );
+}
+
+function overshootForControlPoint(controlY1: number) {
+  if (controlY1 <= 1) return 0;
+
+  const peakT = controlY1 / (3 * controlY1 - 2);
+  return cubicBezierCoordinate(peakT, controlY1, 1) - 1;
+}
+
+function entranceControlY1(height: number) {
+  const targetOvershoot = Math.max(0, height / DEFAULT_ENTRANCE_OFFSET);
+
+  if (targetOvershoot <= 0) return 1;
+
+  let low = 1;
+  let high = 2;
+
+  while (overshootForControlPoint(high) < targetOvershoot && high < 8) {
+    high *= 2;
+  }
+
+  for (let index = 0; index < 20; index += 1) {
+    const middle = (low + high) / 2;
+
+    if (overshootForControlPoint(middle) < targetOvershoot) {
+      low = middle;
+    } else {
+      high = middle;
+    }
+  }
+
+  return high;
+}
+
+function entrancePeakTime(controlY1: number) {
+  if (controlY1 <= 1) return 0.68;
+
+  const peakT = controlY1 / (3 * controlY1 - 2);
+
+  return cubicBezierCoordinate(peakT, slotTextEntranceEaseX1, slotTextEntranceEaseX2);
+}
+
+function entranceTiming(height: number) {
+  const controlY1 = entranceControlY1(height);
+
+  return {
+    ease:
+      height > 0
+        ? ([slotTextEntranceEaseX1, controlY1, slotTextEntranceEaseX2, 1] as [
+            number,
+            number,
+            number,
+            number,
+          ])
+        : easeOutStrong,
+    peakTime: entrancePeakTime(controlY1),
+  };
+}
+
+function enterYKeyframes() {
+  return {
+    y: [`${DEFAULT_ENTRANCE_OFFSET}%`, "0%"],
+  };
+}
+
+function enterScaleKeyframes(peakScale: number, peakTime: number) {
+  return {
+    scale: [1, peakScale, 1],
+    times: [0, peakTime, 1],
+  };
+}
+
 function characterTransitionWindow(
   text: string,
   duration: number,
@@ -212,27 +394,34 @@ function characterTransitionWindow(
   firstAnimatedIndex = 0,
 ) {
   const characterCount = Array.from(text).length;
+  const animatedCount = Math.max(0, characterCount - firstAnimatedIndex);
 
-  if (characterCount <= firstAnimatedIndex) return 0;
+  if (animatedCount === 0) return 0;
 
-  return duration + Math.max(characterCount - 1, 0) * stagger;
+  return duration + Math.max(animatedCount - 1, 0) * stagger;
+}
+
+function lastCharacterStartDelay(text: string, stagger: number, firstAnimatedIndex = 0) {
+  const animatedCount = Math.max(0, Array.from(text).length - firstAnimatedIndex);
+
+  return Math.max(0, animatedCount - 1) * stagger;
 }
 
 function createReducedMotionCharacterVariants(config: RoleMotionConfig): Variants {
   return {
     initial: { opacity: 0 },
-    animate: ({ index }: RoleCharacterCustom) => ({
+    animate: ({ order }: RoleCharacterCustom) => ({
       opacity: 1,
       transition: {
-        delay: (index * config.enterStagger) / 1000,
+        delay: (order * config.enterStagger) / 1000,
         duration: Math.min(config.enterDuration / 1000, 0.18),
         ease: "linear",
       },
     }),
-    exit: ({ index }: RoleCharacterCustom) => ({
+    exit: ({ order }: RoleCharacterCustom) => ({
       opacity: 0,
       transition: {
-        delay: (index * config.exitStagger) / 1000,
+        delay: (order * config.exitStagger) / 1000,
         duration: Math.min(config.exitDuration / 1000, 0.18),
         ease: "linear",
       },
@@ -243,7 +432,6 @@ function createReducedMotionCharacterVariants(config: RoleMotionConfig): Variant
 function createRoleCharacterVariants(config: RoleMotionConfig): Variants {
   const enterDuration = config.enterDuration / 1000;
   const exitDuration = config.exitDuration / 1000;
-  const enterScale = config.scale ? [config.entranceScale, 1] : 1;
   const exitScale = config.scale ? config.exitScale : 1;
   const initialFilter = config.blur ? "blur(3px)" : "blur(0px)";
   const enterFilter = config.blur ? ["blur(3px)", "blur(0.5px)", "blur(0px)"] : "blur(0px)";
@@ -252,17 +440,23 @@ function createRoleCharacterVariants(config: RoleMotionConfig): Variants {
   return {
     initial: {
       opacity: 0,
-      y: "72%",
-      scale: config.scale ? config.entranceScale : 1,
+      y: `${DEFAULT_ENTRANCE_OFFSET}%`,
+      scale: 1,
       filter: initialFilter,
     },
-    animate: ({ index }: RoleCharacterCustom) => {
-      const delay = (index * config.enterStagger) / 1000;
+    animate: ({ order }: RoleCharacterCustom) => {
+      const delay = (order * config.enterStagger) / 1000;
+      const enterY = enterYKeyframes();
+      const enterTiming = entranceTiming(config.entranceHeight);
+      const enterScale = enterScaleKeyframes(
+        config.scale ? config.entranceScale : 1,
+        enterTiming.peakTime,
+      );
 
       return {
         opacity: 1,
-        y: ["72%", "-8%", "0%"],
-        scale: enterScale,
+        y: enterY.y,
+        scale: enterScale.scale,
         filter: enterFilter,
         transition: {
           opacity: {
@@ -278,20 +472,19 @@ function createRoleCharacterVariants(config: RoleMotionConfig): Variants {
           y: {
             delay,
             duration: enterDuration,
-            ease: easeOutStrong,
-            times: [0, 0.76, 1],
+            ease: enterTiming.ease,
           },
           scale: {
             delay,
             duration: enterDuration,
             ease: easeOutStrong,
-            times: [0, 1],
+            times: enterScale.times,
           },
         },
       };
     },
-    exit: ({ index }: RoleCharacterCustom) => {
-      const delay = (index * config.exitStagger) / 1000;
+    exit: ({ order }: RoleCharacterCustom) => {
+      const delay = (order * config.exitStagger) / 1000;
 
       return {
         opacity: 0,
@@ -328,22 +521,18 @@ function createRoleCharacterVariants(config: RoleMotionConfig): Variants {
 function RoleMotionCharacterSlot({
   character,
   setSlotRef,
-  stable,
-  transitionKey,
   variants,
 }: {
-  character: RoleCharacter;
+  character: RenderedRoleCharacter;
   setSlotRef: (index: number, element: HTMLSpanElement | null) => void;
-  stable: boolean;
-  transitionKey: string;
   variants: Variants;
 }) {
   return (
     <span
-      className={cn("inline-block", !stable && "relative align-baseline")}
+      className={cn("inline-block", !character.stable && "relative align-baseline")}
       ref={(element) => setSlotRef(character.index, element)}
     >
-      {stable ? (
+      {character.stable ? (
         displayCharacter(character.character)
       ) : (
         <>
@@ -351,8 +540,8 @@ function RoleMotionCharacterSlot({
             {displayCharacter(character.character)}
           </span>
           <motion.span
-            key={`in-${transitionKey}-${character.index}-${character.character}`}
-            custom={characterCustom(character)}
+            key={`in-${character.entryKey}`}
+            custom={characterCustom(character, character.order)}
             data-role-motion-character={character.character}
             data-role-motion-index={character.index}
             className="absolute top-0 left-0 inline-block"
@@ -372,14 +561,10 @@ function RoleMotionCharacterSlot({
 function RoleMotionCharacters({
   characters,
   setSlotRef,
-  stablePrefixLength,
-  transitionKey,
   variants,
 }: {
-  characters: RoleCharacter[];
+  characters: RenderedRoleCharacter[];
   setSlotRef: (index: number, element: HTMLSpanElement | null) => void;
-  stablePrefixLength: number;
-  transitionKey: string;
   variants: Variants;
 }) {
   return (
@@ -389,8 +574,6 @@ function RoleMotionCharacters({
           key={character.index}
           character={character}
           setSlotRef={setSlotRef}
-          stable={character.index < stablePrefixLength}
-          transitionKey={transitionKey}
           variants={variants}
         />
       ))}
@@ -401,23 +584,23 @@ function RoleMotionCharacters({
 function RoleMotionExitingCharacters({
   previousMeasures,
   previousText,
-  stablePrefixLength,
+  preservedPrefixLength,
   transitionKey,
   variants,
 }: {
   previousMeasures: Map<number, RoleCharacterMeasure>;
   previousText: string;
-  stablePrefixLength: number;
+  preservedPrefixLength: number;
   transitionKey: string;
   variants: Variants;
 }) {
   const previousCharacters = splitCharacters(previousText).filter(
-    (character) => character.index >= stablePrefixLength,
+    (character) => character.index >= preservedPrefixLength,
   );
 
   return (
     <>
-      {previousCharacters.map((character) => {
+      {previousCharacters.map((character, order) => {
         const previousMeasure = previousMeasures.get(character.index);
 
         if (!previousMeasure) return null;
@@ -425,7 +608,7 @@ function RoleMotionExitingCharacters({
         return (
           <motion.span
             key={`out-${transitionKey}-${character.index}-${character.character}`}
-            custom={characterCustom(character)}
+            custom={characterCustom(character, order)}
             aria-hidden="true"
             className="pointer-events-none absolute inline-block"
             initial={{ opacity: 1, y: "0%", scale: 1, filter: "blur(0px)" }}
@@ -453,8 +636,10 @@ function RoleMotion({
   className,
   duration = DEFAULT_DURATION_MS,
   enterDuration,
+  entranceHeight = DEFAULT_ENTRANCE_HEIGHT,
+  entranceScale = DEFAULT_ENTRANCE_SCALE,
   enterStagger = DEFAULT_ENTER_STAGGER_MS,
-  exitDuration,
+  exitDuration = DEFAULT_EXIT_DURATION_MS,
   exitHeight = DEFAULT_EXIT_HEIGHT,
   exitScale = DEFAULT_EXIT_SCALE,
   exitStagger = DEFAULT_EXIT_STAGGER_MS,
@@ -463,7 +648,6 @@ function RoleMotion({
   preservePrefix = true,
   roles = defaultRoleMotionRoles,
   scale = true,
-  entranceScale = DEFAULT_ENTRANCE_SCALE,
   textClassName,
   ...props
 }: RoleMotionProps) {
@@ -480,9 +664,20 @@ function RoleMotion({
   const previousSlotMeasures = React.useRef(new Map<number, RoleCharacterMeasure>());
   const prefixAnimations = React.useRef(new Map<number, Animation>());
   const previousText = transitionState.previous;
-  const stablePrefixLength = preservePrefix ? commonPrefixLength(previousText, activeRole) : 0;
   const transitionKey = `${transitionState.version}-${safeIndex}-${activeRole}`;
   const characters = React.useMemo(() => splitCharacters(activeRole), [activeRole]);
+  const characterEntries = React.useRef(new Map<number, RoleCharacterEntry>());
+  const characterRenderState = React.useRef<
+    RoleCharacterRenderState & {
+      signature: string;
+    }
+  >({
+    characters: [],
+    entries: new Map(),
+    preservedPrefixLength: 0,
+    signature: "",
+    stablePrefixLength: 0,
+  });
   const rootElement = React.useRef<HTMLSpanElement>(null);
   const sizingElement = React.useRef<HTMLSpanElement>(null);
   const transitionExitMeasureSnapshot = React.useRef({
@@ -510,27 +705,26 @@ function RoleMotion({
       blur,
       duration: resolvedDuration,
       enterDuration: clampMotionNumber(enterDuration ?? resolvedDuration, resolvedDuration),
+      entranceHeight: clampMotionNumber(entranceHeight, DEFAULT_ENTRANCE_HEIGHT),
+      entranceScale: clampPeakScale(entranceScale, DEFAULT_ENTRANCE_SCALE),
       enterStagger: clampMotionNumber(enterStagger, DEFAULT_ENTER_STAGGER_MS),
-      exitDuration: clampMotionNumber(
-        exitDuration ?? resolvedDuration * 0.82,
-        resolvedDuration * 0.82,
-      ),
+      exitDuration: clampMotionNumber(exitDuration, DEFAULT_EXIT_DURATION_MS),
       exitHeight: clampMotionNumber(exitHeight, DEFAULT_EXIT_HEIGHT),
       exitScale: clampScale(exitScale, DEFAULT_EXIT_SCALE),
       exitStagger: clampMotionNumber(exitStagger, DEFAULT_EXIT_STAGGER_MS),
-      entranceScale: clampScale(entranceScale, DEFAULT_ENTRANCE_SCALE),
       scale,
     };
   }, [
     blur,
     duration,
     enterDuration,
+    entranceHeight,
+    entranceScale,
     enterStagger,
     exitDuration,
     exitHeight,
     exitScale,
     exitStagger,
-    entranceScale,
     scale,
   ]);
   const variants = React.useMemo(
@@ -540,6 +734,29 @@ function RoleMotion({
         : createRoleCharacterVariants(config),
     [config, reduceMotion],
   );
+  const renderStateSignature = `${transitionState.version}-${preservePrefix ? "preserve" : "all"}`;
+
+  if (characterRenderState.current.signature !== renderStateSignature) {
+    const nextRenderState = resolveRoleCharacterRenderState({
+      activeRole,
+      characters,
+      config,
+      preservePrefix,
+      previousEntries: characterEntries.current,
+      previousText,
+      transitionVersion: transitionState.version,
+    });
+
+    characterEntries.current = nextRenderState.entries;
+    characterRenderState.current = {
+      ...nextRenderState,
+      signature: renderStateSignature,
+    };
+  }
+
+  const renderedCharacters = characterRenderState.current.characters;
+  const preservedPrefixLength = characterRenderState.current.preservedPrefixLength;
+  const stablePrefixLength = characterRenderState.current.stablePrefixLength;
   const longestRoleLength = React.useMemo(
     () => safeRoles.reduce((longest, next) => Math.max(longest, Array.from(next).length), 0),
     [safeRoles],
@@ -550,16 +767,17 @@ function RoleMotion({
       activeRole,
       config.enterDuration,
       config.enterStagger,
-      stablePrefixLength,
+      preservedPrefixLength,
     ),
     characterTransitionWindow(
       previousText,
       config.exitDuration,
       config.exitStagger,
-      stablePrefixLength,
+      preservedPrefixLength,
     ),
   );
   const previousRootSize = React.useRef<RoleRootSize | null>(null);
+  const rootSizeDelayTimer = React.useRef<number | null>(null);
   const rootSizeAnimationFrame = React.useRef<number | null>(null);
   const rootSizeCleanupTimer = React.useRef<number | null>(null);
 
@@ -572,6 +790,11 @@ function RoleMotion({
     const previousSize = previousRootSize.current;
     const visualSize = measureElementSize(root);
     const hadPinnedWidth = root.style.width !== "";
+
+    if (rootSizeDelayTimer.current !== null) {
+      window.clearTimeout(rootSizeDelayTimer.current);
+      rootSizeDelayTimer.current = null;
+    }
 
     if (rootSizeAnimationFrame.current !== null) {
       window.cancelAnimationFrame(rootSizeAnimationFrame.current);
@@ -614,20 +837,46 @@ function RoleMotion({
 
     void root.offsetWidth;
 
+    const isShrinking = fromSize.width > nextSize.width;
+    const resizeDelay = isShrinking
+      ? lastCharacterStartDelay(previousText, config.exitStagger, preservedPrefixLength)
+      : 0;
+    const resizeDuration = isShrinking ? config.exitDuration : rootTransitionDuration;
+
     root.style.transitionProperty = "width";
-    root.style.transitionDuration = `${rootTransitionDuration}ms`;
+    root.style.transitionDuration = `${resizeDuration}ms`;
     root.style.transitionTimingFunction = easeOutStrongCss;
 
-    rootSizeAnimationFrame.current = window.requestAnimationFrame(() => {
-      rootSizeAnimationFrame.current = null;
-      root.style.width = `${nextSize.width}px`;
-    });
+    const startResize = () => {
+      rootSizeAnimationFrame.current = window.requestAnimationFrame(() => {
+        rootSizeAnimationFrame.current = null;
+        root.style.width = `${nextSize.width}px`;
+      });
+    };
+
+    if (resizeDelay > 0) {
+      rootSizeDelayTimer.current = window.setTimeout(() => {
+        rootSizeDelayTimer.current = null;
+        startResize();
+      }, resizeDelay);
+    } else {
+      startResize();
+    }
 
     rootSizeCleanupTimer.current = window.setTimeout(() => {
       rootSizeCleanupTimer.current = null;
       clearRootSizeStyles(root);
-    }, rootTransitionDuration + 80);
-  }, [activeRole, previousText, reduceMotion, rootTransitionDuration, transitionState.version]);
+    }, resizeDelay + resizeDuration + 80);
+  }, [
+    activeRole,
+    config.exitDuration,
+    config.exitStagger,
+    preservedPrefixLength,
+    previousText,
+    reduceMotion,
+    rootTransitionDuration,
+    transitionState.version,
+  ]);
 
   React.useLayoutEffect(() => {
     const root = rootElement.current;
@@ -694,6 +943,10 @@ function RoleMotion({
         window.cancelAnimationFrame(rootSizeAnimationFrame.current);
       }
 
+      if (rootSizeDelayTimer.current !== null) {
+        window.clearTimeout(rootSizeDelayTimer.current);
+      }
+
       if (rootSizeCleanupTimer.current !== null) {
         window.clearTimeout(rootSizeCleanupTimer.current);
       }
@@ -738,7 +991,7 @@ function RoleMotion({
       data-slot="role-motion"
       ref={rootElement}
       className={cn(
-        "relative isolate inline-grid w-fit overflow-visible py-1 leading-tight",
+        "relative isolate inline-grid w-fit overflow-visible leading-tight",
         className,
       )}
       {...props}
@@ -753,7 +1006,7 @@ function RoleMotion({
       <RoleMotionExitingCharacters
         previousMeasures={transitionExitMeasureSnapshot.current.measures}
         previousText={previousText}
-        stablePrefixLength={stablePrefixLength}
+        preservedPrefixLength={preservedPrefixLength}
         transitionKey={transitionKey}
         variants={variants}
       />
@@ -766,10 +1019,8 @@ function RoleMotion({
         )}
       >
         <RoleMotionCharacters
-          characters={characters}
+          characters={renderedCharacters}
           setSlotRef={setSlotRef}
-          stablePrefixLength={stablePrefixLength}
-          transitionKey={transitionKey}
           variants={variants}
         />
       </span>
