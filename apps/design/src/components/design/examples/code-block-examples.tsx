@@ -26,27 +26,27 @@ export function SaveButton() {
 }`;
 
 const longCode = `import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
+import { Group } from "@/components/ui/group";
 
 export function ToolbarActions() {
   return (
-    <ButtonGroup>
+    <Group>
       <Button variant="outline">Preview</Button>
       <Button variant="outline">Code</Button>
       <Button variant="outline">Share</Button>
       <Button variant="outline">Export</Button>
       <Button variant="outline">Settings</Button>
       <Button variant="outline">More</Button>
-    </ButtonGroup>
+    </Group>
   );
 }
 
 export function ToolbarFooter() {
   return (
-    <ButtonGroup>
+    <Group>
       <Button variant="ghost">Cancel</Button>
       <Button>Confirm</Button>
-    </ButtonGroup>
+    </Group>
   );
 }`;
 

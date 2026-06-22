@@ -31,7 +31,7 @@ function Home() {
           <h1 className="bg-gradient-to-b from-black to-black/[0.6] bg-clip-text text-center text-4xl font-bold text-transparent dark:from-neutral-50 dark:to-neutral-400 md:text-left md:text-6xl">
             Hi, I&apos;m Manik
           </h1>
-          <RoleMotion className="text-center font-mono text-2xl font-bold text-neutral-500 md:text-left md:text-3xl" />
+          <RoleMotion className="text-center text-2xl font-bold text-neutral-500 md:text-left md:text-3xl" />
           <Button
             asChild
             className="hero-join-button-dark group relative mx-auto mt-5 block w-[150px] overflow-hidden rounded-lg p-[1px] font-bold transition-all duration-300 dark:block dark:hover:shadow-[0_0_2rem_-0.5rem_#fff8] md:mr-0 md:hidden md:dark:hidden lg:mr-auto"

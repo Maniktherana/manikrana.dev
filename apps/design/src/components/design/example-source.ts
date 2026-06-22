@@ -9,6 +9,7 @@
 /* eslint-disable import/default */
 import accordionSource from "@/components/design/examples/accordion-examples.tsx?raw";
 import alertSource from "@/components/design/examples/alert-examples.tsx?raw";
+import animationSource from "@/components/design/examples/animation-examples.tsx?raw";
 import avatarSource from "@/components/design/examples/avatar-examples.tsx?raw";
 import badgeSource from "@/components/design/examples/badge-examples.tsx?raw";
 import breadcrumbSource from "@/components/design/examples/breadcrumb-examples.tsx?raw";
@@ -47,6 +48,7 @@ import messageComposerBlockSource from "@/components/design/message-composer.tsx
 const rawSources = [
   accordionSource,
   alertSource,
+  animationSource,
   avatarSource,
   badgeSource,
   breadcrumbSource,
@@ -81,6 +83,408 @@ const rawSources = [
 ];
 
 const blockSources: Record<string, string> = {
+  "animation-torph": `import { useEffect, useState } from "react";
+import { useDialKit } from "dialkit";
+import { TextMorph } from "torph/react";
+
+const initialWords = "Design tokens\\nMotion samples\\nComponent states";
+const action = ["Processing Transaction", "Transaction Safe"];
+const copy = ["Copy", "Copied"];
+const pricing = ["Buy for $19.99 / Month", "Buy for $200 / Year"];
+const amount = ["$20", "$45.99"];
+
+export function TorphDemo() {
+  const p = useDialKit("Torph", {
+    duration: [400, 160, 1200, 20],
+    scale: true,
+  });
+  const [words, setWords] = useState(initialWords);
+  const [index, setIndex] = useState(0);
+  const [scenario, setScenario] = useState(0);
+  const phrases = words.split("\\n").map((word) => word.trim()).filter(Boolean);
+  const phrase = phrases[index % Math.max(phrases.length, 1)] ?? "";
+  const scenarioIndex = scenario % 2;
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setScenario((value) => value + 1), 2000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return (
+    <>
+      <div className="grid grid-cols-2 gap-3">
+        <TextMorph duration={Math.round(p.duration)} scale={p.scale}>
+          {phrase}
+        </TextMorph>
+        <button>
+          <TextMorph duration={Math.round(p.duration)} scale={p.scale}>
+            {action[scenarioIndex]}
+          </TextMorph>
+        </button>
+        <code>
+          <TextMorph duration={Math.round(p.duration)} scale={p.scale}>
+            {copy[scenarioIndex]}
+          </TextMorph>
+        </code>
+        <button>
+          <TextMorph duration={Math.round(p.duration)} scale={p.scale}>
+            {pricing[scenarioIndex]}
+          </TextMorph>
+        </button>
+        <TextMorph duration={Math.round(p.duration)} scale={p.scale}>
+          {amount[scenarioIndex]}
+        </TextMorph>
+      </div>
+      <textarea value={words} onChange={(event) => setWords(event.target.value)} />
+      <button onClick={() => setIndex((index + 1) % Math.max(phrases.length, 1))}>
+        Next
+      </button>
+    </>
+  );
+}`,
+  "animation-border-beam": `import { BorderBeam } from "border-beam";
+import { useDialKit } from "dialkit";
+
+export function BorderBeamDemo() {
+  const p = useDialKit("Border Beam", {
+    active: true,
+    size: { type: "select", options: ["sm", "md", "line"], default: "md" },
+    variant: { type: "select", options: ["colorful", "ocean", "sunset", "mono"] },
+    strength: [1, 0.25, 2, 0.05],
+  });
+
+  return (
+    <BorderBeam
+      active={p.active}
+      size={p.size}
+      colorVariant={p.variant}
+      strength={p.strength}
+      theme="auto"
+    >
+      <div className="rounded-2xl border px-6 py-8">BorderBeam</div>
+    </BorderBeam>
+  );
+}`,
+  "animation-gradient-shimmer": `import { GradientShimmer } from "gradient-shimmer";
+import { useDialKit } from "dialkit";
+
+export function GradientShimmerDemo() {
+  const p = useDialKit("Gradient Shimmer", {
+    gradient: { type: "select", options: ["sunrise", "mint", "twilight", "bay"] },
+    easing: { type: "select", options: ["smooth", "gentle", "snappy"] },
+    duration: [1.45, 0.5, 4, 0.05],
+    pauseBetween: [1000, 0, 3000, 50],
+  });
+
+  return (
+    <GradientShimmer
+      gradient={p.gradient}
+      easing={p.easing}
+      duration={p.duration}
+      pauseBetween={Math.round(p.pauseBetween)}
+    >
+      memory-research
+    </GradientShimmer>
+  );
+}`,
+  "animation-gradient-shimmer-primitive": `import {
+  GradientShimmer,
+  buildGradientShimmerGradient,
+  type GradientShimmerStop,
+} from "@/components/ui/gradient-shimmer";
+
+const palettes = {
+  sunrise: [
+    { color: "#B6D3EF", position: 0 },
+    { color: "#CAD1D7", position: 0.153 },
+    { color: "#D7CFC8", position: 0.252 },
+    { color: "#E1CDB9", position: 0.341 },
+    { color: "#EAC6A5", position: 0.424 },
+    { color: "#EDB185", position: 0.505 },
+    { color: "#EF9B62", position: 0.586 },
+    { color: "#F18F60", position: 0.669 },
+    { color: "#F48D7A", position: 0.758 },
+    { color: "#F78A94", position: 0.857 },
+    { color: "#F888A0", position: 1 },
+  ],
+  bubble: [
+    { color: "#F5EBD9", position: 0 },
+    { color: "#F2D4DB", position: 0.31 },
+    { color: "#EBBDDE", position: 0.5 },
+    { color: "#CCBAE3", position: 0.65 },
+    { color: "#8CBFF0", position: 0.82 },
+    { color: "#78B0FF", position: 1 },
+  ],
+  mint: [
+    { color: "#DECEE8", position: 0 },
+    { color: "#CBBAEE", position: 0.21 },
+    { color: "#7DC0FB", position: 0.46 },
+    { color: "#00C7A6", position: 1 },
+  ],
+  twilight: [
+    { color: "#E3CCE6", position: 0 },
+    { color: "#4E8CD5", position: 0.35 },
+    { color: "#6068C2", position: 0.64 },
+    { color: "#38364E", position: 1 },
+  ],
+  bay: [
+    { color: "#DBE3D0", position: 0 },
+    { color: "#8DB8A7", position: 0.23 },
+    { color: "#2D8E9A", position: 0.42 },
+    { color: "#076492", position: 0.59 },
+    { color: "#154288", position: 0.79 },
+    { color: "#262C81", position: 1 },
+  ],
+} satisfies Record<string, GradientShimmerStop[]>;
+
+export function GradientShimmerPrimitiveDemo() {
+  const mintHighlight = palettes.mint.at(-1)?.color ?? "currentColor";
+
+  return (
+    <div className="flex flex-col items-center justify-center gap-2 text-center text-base leading-[1.35] font-normal [&_[data-slot=gradient-shimmer]]:py-1">
+      <GradientShimmer gradient={buildGradientShimmerGradient(palettes.sunrise)}>
+        Creating the perfect dish...
+      </GradientShimmer>
+      <GradientShimmer gradient={buildGradientShimmerGradient(palettes.bubble)}>
+        Plating the next course...
+      </GradientShimmer>
+      <GradientShimmer highlightColor={mintHighlight}>Seasoning the details...</GradientShimmer>
+      <GradientShimmer gradient={buildGradientShimmerGradient(palettes.twilight)}>
+        Whisking the sauce...
+      </GradientShimmer>
+      <GradientShimmer gradient={buildGradientShimmerGradient(palettes.bay)}>
+        Resting before service...
+      </GradientShimmer>
+    </div>
+  );
+}`,
+  "animation-gradient-border": `import type { CSSProperties } from "react";
+import { useDialKit } from "dialkit";
+import "gradient-border-plugin";
+
+export function GradientBorderPluginDemo() {
+  const p = useDialKit("Gradient Border Plugin", {
+    width: { type: "select", options: ["gradient-border", "gradient-border-2"] },
+    direction: { type: "select", options: ["gradient-border-to-r", "gradient-border-to-br"] },
+    animated: true,
+    duration: [4, 1, 10, 0.25],
+  });
+
+  return (
+    <div
+      className={[
+        p.width,
+        p.direction,
+        p.animated && "animate-gradient-border",
+        "rounded-2xl px-6 py-8",
+      ].filter(Boolean).join(" ")}
+      style={{
+        "--gradient-border-from": "#6366f1",
+        "--gradient-border-via": "#a855f7",
+        "--gradient-border-to": "#ec4899",
+        "--gradient-border-duration": p.duration + "s",
+      } as CSSProperties}
+    >
+      gradient-border-plugin
+    </div>
+  );
+}`,
+  "animation-pasito": `import { useState } from "react";
+import { useDialKit } from "dialkit";
+import { Stepper, useAutoPlay } from "pasito/react";
+import "pasito/styles.css";
+
+export function PasitoDemo() {
+  const p = useDialKit("Pasito", {
+    count: [5, 3, 10, 1],
+    maxVisible: [5, 3, 10, 1],
+    vertical: false,
+    transitionDuration: [500, 120, 1200, 20],
+    stepDuration: [2200, 600, 5000, 100],
+    loop: true,
+  });
+  const [active, setActive] = useState(0);
+  const autoplay = useAutoPlay({
+    active,
+    count: Math.round(p.count),
+    loop: p.loop,
+    onStepChange: setActive,
+    stepDuration: Math.round(p.stepDuration),
+  });
+
+  return (
+    <Stepper
+      active={active}
+      count={Math.round(p.count)}
+      filling={autoplay.filling}
+      fillDuration={autoplay.fillDuration}
+      maxVisible={Math.round(p.maxVisible)}
+      onStepClick={setActive}
+      orientation={p.vertical ? "vertical" : "horizontal"}
+      transitionDuration={Math.round(p.transitionDuration)}
+    />
+  );
+}`,
+  "animation-slot-text": `import { useState } from "react";
+import { useDialKit } from "dialkit";
+import { chromatic } from "slot-text";
+import { SlotText } from "slot-text/react";
+import "slot-text/style.css";
+
+const initialWords = "Copy\\nCopied\\nQueued\\nPublished";
+
+export function SlotTextDemo() {
+  const p = useDialKit("Slot Text", {
+    direction: { type: "select", options: ["up", "down"] },
+    duration: [300, 120, 900, 20],
+    stagger: [45, 0, 140, 5],
+    color: { type: "select", options: ["none", "chromatic"] },
+  });
+  const [words, setWords] = useState(initialWords);
+  const [index, setIndex] = useState(0);
+  const phrases = words.split("\\n").map((word) => word.trim()).filter(Boolean);
+  const phrase = phrases[index % Math.max(phrases.length, 1)] ?? "";
+
+  return (
+    <>
+      <SlotText
+        text={phrase}
+        options={{
+          direction: p.direction,
+          duration: Math.round(p.duration),
+          stagger: Math.round(p.stagger),
+          color: p.color === "chromatic" ? chromatic() : undefined,
+        }}
+      />
+      <textarea value={words} onChange={(event) => setWords(event.target.value)} />
+      <button onClick={() => setIndex((index + 1) % Math.max(phrases.length, 1))}>
+        Next
+      </button>
+    </>
+  );
+}`,
+  "animation-site-text": `import { useEffect, useState } from "react";
+import { useDialKit } from "dialkit";
+import { RoleMotion, defaultRoleMotionRoles } from "@/components/ui/role-motion";
+
+const action = ["Processing Transaction", "Transaction Safe"];
+const copy = ["Copy", "Copied"];
+const pricing = ["Buy for $19.99 / Month", "Buy for $200 / Year"];
+const amount = ["$20", "$45.99"];
+
+export function SiteTextAnimationDemo() {
+  const p = useDialKit("Site RoleMotion", {
+    preservePrefix: true,
+    scale: true,
+  });
+  const [words, setWords] = useState(defaultRoleMotionRoles.join("\\n"));
+  const [index, setIndex] = useState(0);
+  const [scenario, setScenario] = useState(0);
+  const phrases = words.split("\\n").map((word) => word.trim()).filter(Boolean);
+  const phrase = phrases[index % Math.max(phrases.length, 1)] ?? "";
+  const scenarioIndex = scenario % 2;
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setScenario((value) => value + 1), 2000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const roleText = (text: string, className = "") => (
+    <RoleMotion
+      align="center"
+      className={className}
+      roles={[text]}
+      index={0}
+      preservePrefix={p.preservePrefix}
+      scale={p.scale}
+    />
+  );
+
+  return (
+    <>
+      <div className="grid grid-cols-2 gap-3">
+        {roleText(phrase, "text-3xl font-bold")}
+        <button>{roleText(action[scenarioIndex])}</button>
+        <code>{roleText(copy[scenarioIndex])}</code>
+        <button>{roleText(pricing[scenarioIndex])}</button>
+        {roleText(amount[scenarioIndex], "text-3xl font-semibold")}
+      </div>
+      <textarea value={words} onChange={(event) => setWords(event.target.value)} />
+      <button onClick={() => setIndex((index + 1) % Math.max(phrases.length, 1))}>
+        Next
+      </button>
+    </>
+  );
+}`,
+  "animation-role-text": `import { useEffect, useState } from "react";
+import { useDialKit } from "dialkit";
+import { RoleText, defaultRoleTextRoles } from "@/components/ui/role-text";
+
+const action = ["Processing Transaction", "Transaction Safe"];
+const copy = ["Copy", "Copied"];
+const pricing = ["Buy for $19.99 / Month", "Buy for $200 / Year"];
+const amount = ["$20", "$45.99"];
+
+export function RoleTextDemo() {
+  const p = useDialKit("RoleText", {
+    blur: true,
+    scale: true,
+    preservePrefix: true,
+    duration: [440, 120, 1200, 20],
+    exitDuration: [360, 120, 1200, 20],
+    stagger: [12, 0, 80, 2],
+    entranceHeight: [8, 0, 120, 2],
+    entranceScale: [1.1, 1, 2, 0.05],
+    exitHeight: [90, 0, 200, 5],
+    exitScale: [0.4, 0, 1.5, 0.05],
+  });
+  const [words, setWords] = useState(defaultRoleTextRoles.join("\\n"));
+  const [index, setIndex] = useState(0);
+  const [scenario, setScenario] = useState(0);
+  const phrases = words.split("\\n").map((word) => word.trim()).filter(Boolean);
+  const phrase = phrases[index % Math.max(phrases.length, 1)] ?? "";
+  const scenarioIndex = scenario % 2;
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setScenario((value) => value + 1), 2000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const roleText = (text: string, className = "") => (
+    <RoleText
+      align="center"
+      blur={p.blur}
+      className={className}
+      duration={Math.round(p.duration)}
+      entranceHeight={p.entranceHeight}
+      entranceScale={p.entranceScale}
+      exitDuration={Math.round(p.exitDuration)}
+      exitHeight={p.exitHeight}
+      exitScale={p.exitScale}
+      index={0}
+      preservePrefix={p.preservePrefix}
+      roles={[text]}
+      scale={p.scale}
+      stagger={Math.round(p.stagger)}
+    />
+  );
+
+  return (
+    <>
+      <div className="grid grid-cols-2 gap-3">
+        {roleText(phrase, "text-3xl font-bold")}
+        <button>{roleText(action[scenarioIndex])}</button>
+        <code>{roleText(copy[scenarioIndex])}</code>
+        <button>{roleText(pricing[scenarioIndex])}</button>
+        {roleText(amount[scenarioIndex], "text-3xl font-semibold")}
+      </div>
+      <textarea value={words} onChange={(event) => setWords(event.target.value)} />
+      <button onClick={() => setIndex((index + 1) % Math.max(phrases.length, 1))}>
+        Next
+      </button>
+    </>
+  );
+}`,
   "dynamic-island": dynamicIslandBlockSource.trim(),
   "family-drawer": familyDrawerBlockSource.trim(),
   "message-composer": messageComposerBlockSource.trim(),

@@ -1,6 +1,10 @@
 @import "tailwindcss";
+@import "gradient-border-plugin";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "dialkit/styles.css";
+@import "pasito/styles.css";
+@import "slot-text/style.css";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/inter";
 @import "@fontsource/roboto-mono/400.css";
@@ -77,44 +81,56 @@
   --radius: 8px;
   --control-height: 32px;
   --shadow-card:
-    0 0 0 1px var(--outline), 0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
+    0 0 0 1px var(--outline), 0 1px 2px -1px rgb(0 0 0 / 8%),
+    0 2px 4px 0 rgb(0 0 0 / 4%);
   --shadow-surface: var(--shadow-card);
   --shadow-surface-highlight: 0 1px 0 0 rgb(0 0 0 / 4%);
   --shadow-control: 0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
-  --shadow-control-hover: 0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
+  --shadow-control-hover:
+    0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
   --shadow-control-highlight: 0 1px 0 0 rgb(0 0 0 / 4%);
   --shadow-control-highlight-hover: 0 1px 0 0 rgb(0 0 0 / 5%);
   --shadow-button-primary:
-    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b, inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b,
+    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-control-focus:
-    0 0 0 1px var(--ring), 0 0 0 3px color-mix(in srgb, var(--ring) 24%, transparent),
+    0 0 0 1px var(--ring),
+    0 0 0 3px color-mix(in srgb, var(--ring) 24%, transparent),
     0 1px 2px -1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 4%);
   --shadow-control-unchecked:
     0 1px 2px 0 rgb(0 0 0 / 10%), 0 0 0 1px var(--control-unchecked-border);
   --shadow-control-unchecked-hover:
-    0 1px 2px 0 rgb(0 0 0 / 12%), 0 0 0 1px var(--control-unchecked-hover-border);
+    0 1px 2px 0 rgb(0 0 0 / 12%),
+    0 0 0 1px var(--control-unchecked-hover-border);
   --shadow-switch-track:
     0 2px 4px 0 rgb(0 0 0 / 4%), inset 0 1px 1px 0 rgb(0 0 0 / 4%),
     inset 0 2px 4px 0 rgb(0 0 0 / 4%), inset 0 0 0 0.75px rgb(0 0 0 / 6%),
     inset 0 0 8px 0 rgb(0 0 0 / 2%);
   --shadow-switch-thumb:
-    0 0 0 0.5px rgb(0 0 0 / 2%), 0 5px 4px 0 rgb(0 0 0 / 2%), 0 3px 3px 0 rgb(0 0 0 / 4%),
-    0 1px 2px 0 rgb(0 0 0 / 12%), 0 0 1px 0 rgb(0 0 0 / 8%), inset 0 0 2px 1px #ffffff,
+    0 0 0 0.5px rgb(0 0 0 / 2%), 0 5px 4px 0 rgb(0 0 0 / 2%),
+    0 3px 3px 0 rgb(0 0 0 / 4%), 0 1px 2px 0 rgb(0 0 0 / 12%),
+    0 0 1px 0 rgb(0 0 0 / 8%), inset 0 0 2px 1px #ffffff,
     inset 0 1px 0 0 #ffffff;
   --shadow-flyout:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 8%), 0 8px 16px 0 rgb(0 0 0 / 8%);
+    0 0 0 1px rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 8%),
+    0 8px 16px 0 rgb(0 0 0 / 8%);
   --shadow-toast: 0 0 0 1px rgb(0 0 0 / 8%), 0 6px 16px -8px rgb(0 0 0 / 20%);
-  --shadow-toast-stacked: 0 0 0 1px rgb(0 0 0 / 6%), 0 4px 10px -8px rgb(0 0 0 / 16%);
+  --shadow-toast-stacked:
+    0 0 0 1px rgb(0 0 0 / 6%), 0 4px 10px -8px rgb(0 0 0 / 16%);
   --shadow-modal:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 8px 16px 0 rgb(0 0 0 / 8%), 0 16px 32px 0 rgb(0 0 0 / 8%);
+    0 0 0 1px rgb(0 0 0 / 8%), 0 8px 16px 0 rgb(0 0 0 / 8%),
+    0 16px 32px 0 rgb(0 0 0 / 8%);
   --shadow-commandbar:
-    0 4px 8px 0 rgb(0 0 0 / 12%), 0 0 0 1px #18181b, inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+    0 4px 8px 0 rgb(0 0 0 / 12%), 0 0 0 1px #18181b,
+    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-destructive-action:
     0 1px 2px 0 rgb(190 18 60 / 32%), inset 0 0.75px 0 0 rgb(255 255 255 / 16%);
   --shadow-tooltip:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 8%);
+    0 0 0 1px rgb(0 0 0 / 8%), 0 2px 4px 0 rgb(0 0 0 / 8%),
+    0 4px 8px 0 rgb(0 0 0 / 8%);
   --shadow-popover:
-    0 0 0 1px rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 10%), 0 12px 24px 0 rgb(0 0 0 / 8%);
+    0 0 0 1px rgb(0 0 0 / 8%), 0 4px 8px 0 rgb(0 0 0 / 10%),
+    0 12px 24px 0 rgb(0 0 0 / 8%);
   --sidebar: #ffffff;
   --sidebar-foreground: #18181b;
   --sidebar-primary: #18181b;
@@ -129,29 +145,29 @@
   --black: #000000;
   --shell: #000000;
   --page-background: #0c0c0c;
-  --surface: #171719;
-  --surface-raised: #212124;
-  --surface-control: #212124;
-  --surface-control-hover: #27272a;
+  --surface: #171717;
+  --surface-raised: #212121;
+  --surface-control: #212121;
+  --surface-control-hover: #292929;
   --field: rgb(255 255 255 / 5.35%);
   --field-hover: rgb(255 255 255 / 8%);
   --outline: rgb(255 255 255 / 8%);
   --outline-subtle: rgb(255 255 255 / 5%);
   --outline-strong: rgb(255 255 255 / 20%);
   --background: var(--surface);
-  --foreground: #f4f4f5;
+  --foreground: #f5f5f5;
   --card: var(--surface);
-  --card-foreground: #f4f4f5;
+  --card-foreground: #f5f5f5;
   --popover: var(--card);
-  --popover-foreground: #f4f4f5;
-  --primary: #f4f4f5;
-  --primary-foreground: #18181b;
+  --popover-foreground: #f5f5f5;
+  --primary: #f5f5f5;
+  --primary-foreground: #1a1a1a;
   --secondary: var(--surface-raised);
   --secondary-foreground: #a1a1aa;
   --muted: var(--surface-raised);
   --muted-foreground: #71717a;
   --accent: rgb(255 255 255 / 8%);
-  --accent-foreground: #f4f4f5;
+  --accent-foreground: #f5f5f5;
   --destructive: #f87171;
   --destructive-action: #be123c;
   --destructive-action-hover: #9f1239;
@@ -162,7 +178,7 @@
   --interactive-foreground: #ffffff;
   --button-primary: var(--foreground);
   --button-primary-pressed: #d4d4d8;
-  --button-primary-foreground: #18181b;
+  --button-primary-foreground: #1a1a1a;
   --button-secondary: var(--surface-control);
   --button-secondary-hover: var(--surface-control-hover);
   --button-secondary-foreground: #f4f4f5;
@@ -191,51 +207,61 @@
   --chart-4: #52525b;
   --chart-5: #3f3f46;
   --shadow-card:
-    0 0 0 1px rgb(255 255 255 / 7%), 0 -1px 0 0 rgb(255 255 255 / 6%), 0 0 0 1px #27272a,
-    0 1px 2px 0 rgb(0 0 0 / 42%), 0 3px 6px -1px rgb(0 0 0 / 44%);
+    0 0 0 1px rgb(255 255 255 / 7%), 0 -1px 0 0 rgb(255 255 255 / 6%),
+    0 0 0 1px #27272a, 0 1px 2px 0 rgb(0 0 0 / 42%),
+    0 3px 6px -1px rgb(0 0 0 / 44%);
   --shadow-surface:
     0 0 0 1px rgb(255 255 255 / 8%), 0 1px 0 0 rgb(255 255 255 / 3%),
     0 2px 5px -2px rgb(0 0 0 / 42%);
   --shadow-surface-highlight: 0 -1px 0 0 rgb(255 255 255 / 7%);
   --shadow-control:
-    0 1px 0 0 rgb(255 255 255 / 3%), 0 1px 1px 0 rgb(0 0 0 / 22%), 0 2px 3px -2px rgb(0 0 0 / 36%);
+    0 1px 0 0 rgb(255 255 255 / 3%), 0 1px 1px 0 rgb(0 0 0 / 22%),
+    0 2px 3px -2px rgb(0 0 0 / 36%);
   --shadow-control-hover:
-    0 1px 0 0 rgb(255 255 255 / 4%), 0 1px 1px 0 rgb(0 0 0 / 24%), 0 2px 3px -2px rgb(0 0 0 / 38%);
+    0 1px 0 0 rgb(255 255 255 / 4%), 0 1px 1px 0 rgb(0 0 0 / 24%),
+    0 2px 3px -2px rgb(0 0 0 / 38%);
   --shadow-control-highlight: 0 -1px 0 0 rgb(255 255 255 / 7%);
   --shadow-control-highlight-hover: 0 -1px 0 0 rgb(255 255 255 / 9%);
   --shadow-control-focus:
-    0 0 0 1px var(--ring), 0 0 0 3px color-mix(in srgb, var(--ring) 20%, transparent),
-    0 -1px 0 0 rgb(255 255 255 / 8%), 0 1px 0 0 rgb(255 255 255 / 4%), 0 1px 1px 0 rgb(0 0 0 / 24%),
-    0 2px 3px -2px rgb(0 0 0 / 38%);
+    0 0 0 1px var(--ring),
+    0 0 0 3px color-mix(in srgb, var(--ring) 20%, transparent),
+    0 -1px 0 0 rgb(255 255 255 / 8%), 0 1px 0 0 rgb(255 255 255 / 4%),
+    0 1px 1px 0 rgb(0 0 0 / 24%), 0 2px 3px -2px rgb(0 0 0 / 38%);
   --shadow-button-primary:
-    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b, inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
+    0 1px 2px 0 rgb(0 0 0 / 40%), 0 0 0 1px #18181b,
+    inset 0 0.75px 0 0 rgb(255 255 255 / 20%);
   --shadow-control-unchecked:
     0 1px 2px 0 rgb(0 0 0 / 32%), 0 0 0 1px var(--control-unchecked-border);
   --shadow-control-unchecked-hover:
-    0 1px 2px 0 rgb(0 0 0 / 36%), 0 0 0 1px var(--control-unchecked-hover-border);
+    0 1px 2px 0 rgb(0 0 0 / 36%),
+    0 0 0 1px var(--control-unchecked-hover-border);
   --shadow-switch-track:
     0 2px 4px 0 rgb(0 0 0 / 24%), inset 0 1px 1px 0 rgb(255 255 255 / 4%),
     inset 0 0 0 0.75px rgb(255 255 255 / 8%), inset 0 0 8px 0 rgb(0 0 0 / 24%);
   --shadow-switch-thumb:
-    0 0 0 0.5px rgb(255 255 255 / 10%), 0 5px 4px 0 rgb(0 0 0 / 18%), 0 3px 3px 0 rgb(0 0 0 / 20%),
-    0 1px 2px 0 rgb(0 0 0 / 32%), 0 0 1px 0 rgb(0 0 0 / 32%),
-    inset 0 0 2px 1px rgb(255 255 255 / 16%), inset 0 1px 0 0 rgb(255 255 255 / 20%);
+    0 0 0 0.5px rgb(255 255 255 / 10%), 0 5px 4px 0 rgb(0 0 0 / 18%),
+    0 3px 3px 0 rgb(0 0 0 / 20%), 0 1px 2px 0 rgb(0 0 0 / 32%),
+    0 0 1px 0 rgb(0 0 0 / 32%), inset 0 0 2px 1px rgb(255 255 255 / 16%),
+    inset 0 1px 0 0 rgb(255 255 255 / 20%);
   --shadow-flyout:
     0 -1px 0 0 rgb(255 255 255 / 4%), 0 0 0 1px rgb(255 255 255 / 10%),
     0 4px 8px 0 rgb(0 0 0 / 32%), 0 8px 16px 0 rgb(0 0 0 / 32%);
-  --shadow-toast: 0 0 0 1px rgb(255 255 255 / 8%), 0 8px 18px -10px rgb(0 0 0 / 48%);
-  --shadow-toast-stacked: 0 0 0 1px rgb(255 255 255 / 5%), 0 4px 10px -8px rgb(0 0 0 / 36%);
+  --shadow-toast:
+    0 0 0 1px rgb(255 255 255 / 8%), 0 8px 18px -10px rgb(0 0 0 / 48%);
+  --shadow-toast-stacked:
+    0 0 0 1px rgb(255 255 255 / 5%), 0 4px 10px -8px rgb(0 0 0 / 36%);
   --shadow-modal:
-    0 -1px 0 0 rgb(255 255 255 / 8%), 0 1px 0 0 rgb(255 255 255 / 3%), 0 4px 8px 0 rgb(0 0 0 / 22%),
-    0 14px 32px -10px rgb(0 0 0 / 28%);
+    0 -1px 0 0 rgb(255 255 255 / 8%), 0 1px 0 0 rgb(255 255 255 / 3%),
+    0 4px 8px 0 rgb(0 0 0 / 22%), 0 14px 32px -10px rgb(0 0 0 / 28%);
   --shadow-commandbar:
     0 4px 8px 0 rgb(0 0 0 / 36%), 0 0 0 1px rgb(255 255 255 / 8%),
     inset 0 0.75px 0 0 rgb(255 255 255 / 12%);
   --shadow-destructive-action:
     0 1px 2px 0 rgb(0 0 0 / 32%), inset 0 0.75px 0 0 rgb(255 255 255 / 14%);
   --shadow-tooltip:
-    0 -1px 0 0 rgb(255 255 255 / 6%), 0 0 0 1px rgb(255 255 255 / 6%), 0 0 0 1px #27272a,
-    0 4px 8px 0 rgb(0 0 0 / 32%), 0 2px 4px 0 rgb(0 0 0 / 28%);
+    0 -1px 0 0 rgb(255 255 255 / 6%), 0 0 0 1px rgb(255 255 255 / 6%),
+    0 0 0 1px #27272a, 0 4px 8px 0 rgb(0 0 0 / 32%),
+    0 2px 4px 0 rgb(0 0 0 / 28%);
   --shadow-popover:
     0 -1px 0 0 rgb(255 255 255 / 4%), 0 0 0 1px rgb(255 255 255 / 10%),
     0 4px 8px 0 rgb(0 0 0 / 18%), 0 12px 24px 0 rgb(0 0 0 / 18%);
@@ -400,23 +426,28 @@
     animation: docs-search-actions-in 140ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  [data-slot="accordion"] > [data-slot="accordion-item"] + [data-slot="accordion-item"] {
+  [data-slot="accordion"]
+    > [data-slot="accordion-item"]
+    + [data-slot="accordion-item"] {
     margin-top: 0.5rem;
   }
 
-  [data-slot="accordion"] > [data-slot="accordion-item"][data-variant="grouped"] {
+  [data-slot="accordion"]
+    > [data-slot="accordion-item"][data-variant="grouped"] {
     border-radius: 0;
     transition-duration: 270ms;
     transition-property: margin, border-radius, background-color, box-shadow;
     transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
   }
 
-  [data-slot="accordion"] > [data-slot="accordion-item"][data-variant="grouped"]:first-child {
+  [data-slot="accordion"]
+    > [data-slot="accordion-item"][data-variant="grouped"]:first-child {
     border-top-left-radius: var(--radius-2xl);
     border-top-right-radius: var(--radius-2xl);
   }
 
-  [data-slot="accordion"] > [data-slot="accordion-item"][data-variant="grouped"]:last-child {
+  [data-slot="accordion"]
+    > [data-slot="accordion-item"][data-variant="grouped"]:last-child {
     border-bottom-right-radius: var(--radius-2xl);
     border-bottom-left-radius: var(--radius-2xl);
   }
@@ -490,7 +521,9 @@
     );
   }
 
-  [data-slot="code-block-body"][data-collapsed] > [data-slot="code-block-content"] pre {
+  [data-slot="code-block-body"][data-collapsed]
+    > [data-slot="code-block-content"]
+    pre {
     max-height: 148px !important;
     overflow: hidden !important;
     pointer-events: none;
@@ -524,5 +557,24 @@
 
   [data-sonner-toast][data-front="false"] {
     box-shadow: var(--shadow-toast-stacked) !important;
+  }
+
+  .animation-pasito-stepper {
+    --pill-dot-size: 10px;
+    --pill-active-width: 32px;
+    --pill-gap: 8px;
+    --pill-bg: rgb(24 24 27 / 24%);
+    --pill-active-bg: rgb(24 24 27 / 92%);
+    --pill-fill-bg: rgb(255 255 255 / 48%);
+    --pill-container-bg: rgb(24 24 27 / 6%);
+    --pill-container-border: rgb(24 24 27 / 12%);
+  }
+
+  .dark .animation-pasito-stepper {
+    --pill-bg: rgb(255 255 255 / 28%);
+    --pill-active-bg: rgb(255 255 255 / 94%);
+    --pill-fill-bg: rgb(24 24 27 / 38%);
+    --pill-container-bg: rgb(255 255 255 / 12%);
+    --pill-container-border: rgb(255 255 255 / 22%);
   }
 }

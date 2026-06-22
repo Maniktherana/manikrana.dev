@@ -2,6 +2,8 @@
   "title": "Components",
   "defaultOpen": true,
   "pages": [
+    "---Animations---",
+    "animations",
     "---Components---",
     "accordion",
     "alert",

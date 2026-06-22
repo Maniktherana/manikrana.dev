@@ -2,7 +2,7 @@ import { type ComponentType } from "react";
 import { SearchIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
+import { Group } from "@/components/ui/group";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
@@ -21,7 +21,7 @@ const inputPreviewTitles: Record<string, string> = {
 
 function InputDemo() {
   return (
-    <div className="w-full max-w-72">
+    <div className="w-full max-w-80">
       <Input type="email" placeholder="Email" />
     </div>
   );
@@ -29,7 +29,7 @@ function InputDemo() {
 
 function InputSizes() {
   return (
-    <div className="flex w-full max-w-72 flex-col gap-4">
+    <div className="flex w-full max-w-80 flex-col gap-4">
       <Input controlSize="default" placeholder="Default" />
       <Input controlSize="sm" placeholder="Small" />
     </div>
@@ -38,7 +38,7 @@ function InputSizes() {
 
 function InputRadius() {
   return (
-    <div className="flex w-full max-w-72 flex-col gap-4">
+    <div className="flex w-full max-w-80 flex-col gap-4">
       <Input radius="squared" placeholder="Squared" />
       <Input radius="rounded" placeholder="Rounded" />
     </div>
@@ -47,7 +47,7 @@ function InputRadius() {
 
 function InputDisabled() {
   return (
-    <div className="w-full max-w-72">
+    <div className="w-full max-w-80">
       <Input placeholder="Disabled" disabled />
     </div>
   );
@@ -55,7 +55,7 @@ function InputDisabled() {
 
 function InputInvalid() {
   return (
-    <div className="w-full max-w-72">
+    <div className="w-full max-w-80">
       <Input placeholder="Email" aria-invalid defaultValue="not-an-email" />
     </div>
   );
@@ -63,7 +63,7 @@ function InputInvalid() {
 
 function InputFile() {
   return (
-    <div className="w-full max-w-72">
+    <div className="w-full max-w-80">
       <Input type="file" />
     </div>
   );
@@ -71,7 +71,7 @@ function InputFile() {
 
 function InputWithLabel() {
   return (
-    <Field className="w-full max-w-72">
+    <Field className="w-full max-w-80">
       <FieldLabel htmlFor="input-with-label-email">Email</FieldLabel>
       <Input id="input-with-label-email" type="email" placeholder="you@example.com" />
       <FieldDescription>We will never share your email address.</FieldDescription>
@@ -81,18 +81,18 @@ function InputWithLabel() {
 
 function InputButtonGroup() {
   return (
-    <ButtonGroup variant="base" className="w-full max-w-72">
+    <Group variant="base" className="w-full max-w-80">
       <Input placeholder="Search..." />
       <Button type="button" variant="outline" size="icon" aria-label="Search">
         <SearchIcon />
       </Button>
-    </ButtonGroup>
+    </Group>
   );
 }
 
 function InputGroupDemo() {
   return (
-    <InputGroup className="w-full max-w-72">
+    <InputGroup className="w-full max-w-80">
       <InputGroupAddon align="inline-start">
         <SearchIcon />
       </InputGroupAddon>

@@ -4,14 +4,24 @@ import * as React from "react";
 import { ArrowRightIcon, CheckCircle2Icon, LoaderCircleIcon } from "lucide-react";
 import { BorderBeam, type BorderBeamColorVariant, type BorderBeamSize } from "border-beam";
 import { useDialKit } from "dialkit";
-import { GradientShimmer, type EasingPreset, type GradientPresetName } from "gradient-shimmer";
+import {
+  GradientShimmer as AnimatedGradientShimmer,
+  type EasingPreset,
+  type GradientPresetName,
+} from "gradient-shimmer";
 import { Stepper, useAutoPlay } from "pasito/react";
 import { chromatic, type SlotOptions } from "slot-text";
 import { SlotText } from "slot-text/react";
 import { TextMorph } from "torph/react";
 
 import { Button } from "@/components/ui/button";
+import {
+  GradientShimmer as GradientShimmerPrimitive,
+  buildGradientShimmerGradient,
+  type GradientShimmerStop,
+} from "@/components/ui/gradient-shimmer";
 import { RoleMotion, defaultRoleMotionRoles } from "@/components/ui/role-motion";
+import { RoleText } from "@/components/ui/role-text";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
@@ -43,10 +53,12 @@ const animationPreviewTitles: Record<string, string> = {
   "animation-torph": "Torph",
   "animation-border-beam": "Border Beam",
   "animation-gradient-shimmer": "Gradient Shimmer",
+  "animation-gradient-shimmer-primitive": "Gradient Shimmer Primitive",
   "animation-gradient-border": "Gradient Border Plugin",
   "animation-pasito": "Pasito",
   "animation-slot-text": "Slot Text",
   "animation-site-text": "Site Text Animation",
+  "animation-role-text": "Role Text",
 };
 
 const torphPhrases = ["Design tokens", "Motion samples", "Component states", "Source previews"];
@@ -54,6 +66,49 @@ const slotTextPhrases = ["Copy", "Copied", "Queued", "Published"];
 const actionScenarioLabels = ["Processing Transaction", "Transaction Safe"] as const;
 const copyScenarioLabels = ["Copy", "Copied"] as const;
 const pricingScenarioLabels = ["Buy for $19.99 / Month", "Buy for $200 / Year"] as const;
+const gradientShimmerPrimitivePalettes = {
+  sunrise: [
+    { color: "#B6D3EF", position: 0 },
+    { color: "#CAD1D7", position: 0.153 },
+    { color: "#D7CFC8", position: 0.252 },
+    { color: "#E1CDB9", position: 0.341 },
+    { color: "#EAC6A5", position: 0.424 },
+    { color: "#EDB185", position: 0.505 },
+    { color: "#EF9B62", position: 0.586 },
+    { color: "#F18F60", position: 0.669 },
+    { color: "#F48D7A", position: 0.758 },
+    { color: "#F78A94", position: 0.857 },
+    { color: "#F888A0", position: 1 },
+  ],
+  bubble: [
+    { color: "#F5EBD9", position: 0 },
+    { color: "#F2D4DB", position: 0.31 },
+    { color: "#EBBDDE", position: 0.5 },
+    { color: "#CCBAE3", position: 0.65 },
+    { color: "#8CBFF0", position: 0.82 },
+    { color: "#78B0FF", position: 1 },
+  ],
+  mint: [
+    { color: "#DECEE8", position: 0 },
+    { color: "#CBBAEE", position: 0.21 },
+    { color: "#7DC0FB", position: 0.46 },
+    { color: "#00C7A6", position: 1 },
+  ],
+  twilight: [
+    { color: "#E3CCE6", position: 0 },
+    { color: "#4E8CD5", position: 0.35 },
+    { color: "#6068C2", position: 0.64 },
+    { color: "#38364E", position: 1 },
+  ],
+  bay: [
+    { color: "#DBE3D0", position: 0 },
+    { color: "#8DB8A7", position: 0.23 },
+    { color: "#2D8E9A", position: 0.42 },
+    { color: "#076492", position: 0.59 },
+    { color: "#154288", position: 0.79 },
+    { color: "#262C81", position: 1 },
+  ],
+} satisfies Record<string, GradientShimmerStop[]>;
 const numberScenarioSteps = [
   { value: "$", delay: 0 },
   { value: "$2", delay: 150 },
@@ -425,7 +480,7 @@ function GradientShimmerDemo() {
 
   return (
     <PreviewFrame>
-      <GradientShimmer
+      <AnimatedGradientShimmer
         as="p"
         className="m-0 max-w-full overflow-hidden text-center text-[clamp(2rem,6vw,4rem)] leading-none font-semibold tracking-normal text-foreground"
         duration={dial.duration}
@@ -434,7 +489,34 @@ function GradientShimmerDemo() {
         pauseBetween={Math.round(dial.pauseBetween)}
       >
         memory-research
-      </GradientShimmer>
+      </AnimatedGradientShimmer>
+    </PreviewFrame>
+  );
+}
+
+function GradientShimmerPrimitiveDemo() {
+  const palettes = gradientShimmerPrimitivePalettes;
+  const mintHighlight = palettes.mint.at(-1)?.color ?? "currentColor";
+
+  return (
+    <PreviewFrame className="h-auto min-h-[260px] overflow-visible py-8">
+      <div className="flex max-w-full flex-col items-center justify-center gap-2 text-center text-base leading-[1.35] font-normal tracking-normal [&_[data-slot=gradient-shimmer]]:py-1">
+        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.sunrise)}>
+          Creating the perfect dish...
+        </GradientShimmerPrimitive>
+        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.bubble)}>
+          Plating the next course...
+        </GradientShimmerPrimitive>
+        <GradientShimmerPrimitive highlightColor={mintHighlight}>
+          Seasoning the details...
+        </GradientShimmerPrimitive>
+        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.twilight)}>
+          Whisking the sauce...
+        </GradientShimmerPrimitive>
+        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.bay)}>
+          Resting before service...
+        </GradientShimmerPrimitive>
+      </div>
     </PreviewFrame>
   );
 }
@@ -662,10 +744,7 @@ function SiteTextAnimationDemo() {
         scale={dial.scale}
       />
     ),
-    [
-      dial.preservePrefix,
-      dial.scale,
-    ],
+    [dial.preservePrefix, dial.scale],
   );
 
   return (
@@ -701,14 +780,110 @@ function SiteTextAnimationDemo() {
   );
 }
 
+function RoleTextDemo() {
+  const dial = useDialKit(
+    "RoleText",
+    {
+      blur: true,
+      scale: true,
+      preservePrefix: true,
+      duration: [440, 120, 1200, 20],
+      exitDuration: [360, 120, 1200, 20],
+      stagger: [12, 0, 80, 2],
+      entranceHeight: [8, 0, 120, 2],
+      entranceScale: [1.1, 1, 2, 0.05],
+      exitHeight: [90, 0, 200, 5],
+      exitScale: [0.4, 0, 1.5, 0.05],
+    },
+    { id: "animation-role-text" },
+  );
+  const [index, setIndex] = React.useState(0);
+  const [words, setWords] = React.useState(defaultRoleMotionRoles.join("\n"));
+  const phrases = React.useMemo(
+    () =>
+      words
+        .split("\n")
+        .map((word) => word.trim())
+        .filter(Boolean),
+    [words],
+  );
+  const phrase = phrases[index % Math.max(phrases.length, 1)] ?? "";
+  const renderText = React.useCallback<MorphTextRenderer>(
+    (text, className) => (
+      <RoleText
+        align="center"
+        blur={dial.blur}
+        className={cn("text-center font-sans text-base font-semibold text-foreground", className)}
+        duration={Math.round(dial.duration)}
+        entranceHeight={dial.entranceHeight}
+        entranceScale={dial.entranceScale}
+        exitDuration={Math.round(dial.exitDuration)}
+        exitHeight={dial.exitHeight}
+        exitScale={dial.exitScale}
+        index={0}
+        preservePrefix={dial.preservePrefix}
+        roles={[text]}
+        scale={dial.scale}
+        stagger={Math.round(dial.stagger)}
+      />
+    ),
+    [
+      dial.blur,
+      dial.duration,
+      dial.entranceHeight,
+      dial.entranceScale,
+      dial.exitDuration,
+      dial.exitHeight,
+      dial.exitScale,
+      dial.preservePrefix,
+      dial.scale,
+      dial.stagger,
+    ],
+  );
+
+  return (
+    <PreviewFrame
+      className="h-[560px]"
+      controls={
+        <div className="grid w-full max-w-md gap-3">
+          <Textarea
+            aria-label="RoleText words"
+            className="h-24 resize-none font-mono text-xs"
+            value={words}
+            onChange={(event) => {
+              setWords(event.target.value);
+              setIndex(0);
+            }}
+          />
+          <div className="flex justify-center">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setIndex((current) => (current + 1) % Math.max(phrases.length, 1))}
+            >
+              Next
+              <ArrowRightIcon data-icon="inline-end" />
+            </Button>
+          </div>
+        </div>
+      }
+    >
+      <MorphScenarioGrid primaryText={phrase} renderText={renderText} />
+    </PreviewFrame>
+  );
+}
+
 const animationPreviews: Record<string, React.ComponentType> = {
   "animation-torph": TorphDemo,
   "animation-border-beam": BorderBeamDemo,
   "animation-gradient-shimmer": GradientShimmerDemo,
+  "animation-gradient-shimmer-primitive": GradientShimmerPrimitiveDemo,
   "animation-gradient-border": GradientBorderPluginDemo,
   "animation-pasito": PasitoDemo,
   "animation-slot-text": SlotTextDemo,
   "animation-site-text": SiteTextAnimationDemo,
+  "animation-role-text": RoleTextDemo,
 };
 
 function renderAnimationPreview(name: string) {

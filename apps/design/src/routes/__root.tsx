@@ -1,6 +1,7 @@
 import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
+import { DialRoot } from "dialkit";
 import { TanstackProvider } from "fumadocs-core/framework/tanstack";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -70,6 +71,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <TanstackProvider>
           <TooltipProvider>
             {children}
+            <DialRoot defaultOpen={false} position="top-right" productionEnabled theme="system" />
             <Toaster />
           </TooltipProvider>
         </TanstackProvider>

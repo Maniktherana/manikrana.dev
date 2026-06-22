@@ -21,7 +21,7 @@ function SearchDemo() {
   return (
     <InputGroup
       variant="component"
-      className="w-[280px] gap-2 px-2 *:data-[slot=input-group-addon]:px-0 *:data-[slot=input-group-control]:px-0"
+      className="w-full max-w-80 gap-2 px-2 *:data-[slot=input-group-addon]:px-0 *:data-[slot=input-group-control]:px-0"
     >
       <InputGroupAddon>
         <SearchIcon />
@@ -39,7 +39,7 @@ function SearchSmall() {
     <InputGroup
       size="sm"
       variant="component"
-      className="w-[240px] gap-2 px-2 *:data-[slot=input-group-addon]:px-0 *:data-[slot=input-group-control]:px-0"
+      className="w-full max-w-80 gap-2 px-2 *:data-[slot=input-group-addon]:px-0 *:data-[slot=input-group-control]:px-0"
     >
       <InputGroupAddon>
         <SearchIcon />
@@ -54,7 +54,7 @@ function SearchRounded() {
     <InputGroup
       radius="rounded"
       variant="component"
-      className="w-[280px] gap-2 px-2 *:data-[slot=input-group-addon]:px-0 *:data-[slot=input-group-control]:px-0"
+      className="w-full max-w-80 gap-2 px-2 *:data-[slot=input-group-addon]:px-0 *:data-[slot=input-group-control]:px-0"
     >
       <InputGroupAddon>
         <SearchIcon />
@@ -71,7 +71,7 @@ function SearchRounded() {
 
 function SearchState() {
   return (
-    <div className="grid w-full max-w-sm gap-3">
+    <div className="grid w-full max-w-80 gap-3">
       <InputGroup
         variant="muted"
         className="gap-2 px-2 *:data-[slot=input-group-addon]:px-0 *:data-[slot=input-group-control]:px-0"

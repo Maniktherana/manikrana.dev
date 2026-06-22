@@ -1,4 +1,4 @@
-export type ComponentCategory = "Components" | "Blocks";
+export type ComponentCategory = "Animations" | "Components" | "Blocks";
 
 export type ComponentRecord = {
   id: string;
@@ -12,6 +12,29 @@ export type ComponentRecord = {
 };
 
 export const componentCatalog = [
+  {
+    id: "animations",
+    title: "Animations",
+    category: "Animations",
+    primitive:
+      "Torph, BorderBeam, GradientShimmer, GradientShimmerPrimitive, Gradient Border Plugin, Pasito, Slot Text, RoleMotion, RoleText",
+    files: [
+      "src/components/design/examples/animation-examples.tsx",
+      "src/components/ui/gradient-shimmer.tsx",
+      "src/components/ui/role-text.tsx",
+      "node_modules/torph",
+      "node_modules/border-beam",
+      "node_modules/gradient-shimmer",
+      "node_modules/gradient-border-plugin",
+      "node_modules/pasito",
+      "node_modules/slot-text",
+      "node_modules/dialkit",
+      "../site/src/components/role-motion.tsx",
+    ],
+    figmaSource: "Animation package previews",
+    description: "Npm animation package previews wired to DialKit controls and copyable source.",
+    custom: true,
+  },
   {
     id: "accordion",
     title: "Accordion",
@@ -121,7 +144,7 @@ export const componentCatalog = [
     id: "button-group",
     title: "Button Group",
     category: "Components",
-    primitive: "ButtonGroup, ButtonGroupText, ButtonGroupSeparator",
+    primitive: "Group, GroupText, GroupSeparator",
     files: ["src/components/ui/button-group.tsx", "src/components/ui/button.tsx"],
     figmaSource: "Compact grouped control density",
     description: "Grouped actions with shared borders and separator support.",

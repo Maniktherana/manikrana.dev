@@ -17,44 +17,44 @@ bunx shadcn@latest add button-group
 
 ```tsx
 import { Button } from "@/components/ui/button";
-import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@/components/ui/button-group";
+import { Group, GroupSeparator, GroupText } from "@/components/ui/group";
 ```
 
 ```tsx
-<ButtonGroup variant="base">
+<Group variant="base">
   <Button>Button 1</Button>
   <Button>Button 2</Button>
-</ButtonGroup>
+</Group>
 ```
 
 ## Composition
 
-Use the following composition to build a `ButtonGroup`.
+Use the following composition to build a `Group`.
 
 ```text
-ButtonGroup
+Group
 ├── Button or Input
-├── ButtonGroupSeparator
-├── ButtonGroupText
-└── ButtonGroup
+├── GroupSeparator
+├── GroupText
+└── Group
 ```
 
 ## Accessibility
 
-- The `ButtonGroup` component has `role="group"`.
+- The `Group` component has `role="group"`.
 - Use `Tab` to navigate between controls in the group.
 - Use `aria-label` or `aria-labelledby` to label the button group.
 
 ```tsx
-<ButtonGroup aria-label="Button group">
+<Group aria-label="Button group">
   <Button>Button 1</Button>
   <Button>Button 2</Button>
-</ButtonGroup>
+</Group>
 ```
 
-## ButtonGroup vs ToggleGroup
+## Group vs ToggleGroup
 
-- Use `ButtonGroup` when controls perform actions.
+- Use `Group` when controls perform actions.
 - Use `ToggleGroup` when controls toggle or select state.
 
 ## Examples
@@ -67,19 +67,19 @@ Set the `orientation` prop to change the button group layout.
 
 ### Size
 
-Use the `size` prop on `ButtonGroup` to switch between the default and compact densities.
+Use the `size` prop on `Group` to switch between the default and compact densities.
 
 <ComponentPreview name="button-group-size" />
 
 ### Nested
 
-Use `variant="toolbar"` on the outer `ButtonGroup` to create spaced button groups.
+Use `variant="toolbar"` on the outer `Group` to create spaced button groups.
 
 <ComponentPreview name="button-group-nested" />
 
 ### Separator
 
-Use `ButtonGroupSeparator` to visually divide controls inside a group.
+Use `GroupSeparator` to visually divide controls inside a group.
 
 Buttons with variant `secondary` do not need a separator since they already have a border.
 For other variants, a separator improves visual hierarchy.
@@ -88,7 +88,7 @@ For other variants, a separator improves visual hierarchy.
 
 ### Text
 
-Use `ButtonGroupText` for non-interactive labels inside the group.
+Use `GroupText` for non-interactive labels inside the group.
 
 <ComponentPreview name="button-group-text" />
 

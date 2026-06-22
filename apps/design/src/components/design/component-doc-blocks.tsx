@@ -2,6 +2,7 @@ import { CodeBlock, CodeBlockBody, CodeBlockContent } from "@/components/design/
 import { getExampleSource } from "@/components/design/example-source";
 import { renderAccordionPreview } from "@/components/design/examples/accordion-examples";
 import { renderAlertPreview } from "@/components/design/examples/alert-examples";
+import { renderAnimationPreview } from "@/components/design/examples/animation-examples";
 import { renderAvatarPreview } from "@/components/design/examples/avatar-examples";
 import { renderBadgePreview } from "@/components/design/examples/badge-examples";
 import { renderBreadcrumbPreview } from "@/components/design/examples/breadcrumb-examples";
@@ -55,6 +56,8 @@ function ComponentPreview({
         className={cn(
           "flex min-h-[220px] items-center justify-center overflow-auto bg-page-background p-8 max-[900px]:min-h-[180px] max-[900px]:p-5 [&>*]:max-w-full",
           name.startsWith("accordion-") && "min-h-[360px] max-[900px]:min-h-[320px]",
+          name.startsWith("animation-") &&
+            "min-h-[336px] overflow-hidden p-5 max-[900px]:min-h-[320px]",
         )}
         dir={direction}
       >
@@ -76,6 +79,12 @@ function ComponentPreview({
 }
 
 function renderPreview(name: string) {
+  const animationPreview = renderAnimationPreview(name);
+
+  if (animationPreview) {
+    return animationPreview;
+  }
+
   const accordionPreview = renderAccordionPreview(name);
 
   if (accordionPreview) {
