@@ -32,10 +32,10 @@ const buttonPreviewTitles: Record<string, string> = {
 function ButtonDemo() {
   return (
     <div className="flex flex-wrap items-center gap-2 md:flex-row">
-      <Button type="button" variant="secondary">
+      <Button type="button" variant="outline">
         Button
       </Button>
-      <Button type="button" variant="secondary" size="icon" aria-label="Submit">
+      <Button type="button" variant="outline" size="icon" aria-label="Submit">
         <ArrowUpIcon />
       </Button>
     </div>
@@ -46,34 +46,34 @@ function ButtonSize() {
   return (
     <div className="flex flex-col items-start gap-8 sm:flex-row">
       <div className="flex items-start gap-2">
-        <Button type="button" size="xs" variant="secondary">
+        <Button type="button" size="xs" variant="outline">
           Extra Small
         </Button>
-        <Button type="button" size="icon-xs" aria-label="Submit" variant="secondary">
+        <Button type="button" size="icon-xs" aria-label="Submit" variant="outline">
           <ArrowUpRightIcon />
         </Button>
       </div>
       <div className="flex items-start gap-2">
-        <Button type="button" size="sm" variant="secondary">
+        <Button type="button" size="sm" variant="outline">
           Small
         </Button>
-        <Button type="button" size="icon-sm" aria-label="Submit" variant="secondary">
+        <Button type="button" size="icon-sm" aria-label="Submit" variant="outline">
           <ArrowUpRightIcon />
         </Button>
       </div>
       <div className="flex items-start gap-2">
-        <Button type="button" variant="secondary">
+        <Button type="button" variant="outline">
           Default
         </Button>
-        <Button type="button" size="icon" aria-label="Submit" variant="secondary">
+        <Button type="button" size="icon" aria-label="Submit" variant="outline">
           <ArrowUpRightIcon />
         </Button>
       </div>
       <div className="flex items-start gap-2">
-        <Button type="button" variant="secondary" size="lg">
+        <Button type="button" variant="outline" size="lg">
           Large
         </Button>
-        <Button type="button" size="icon-lg" aria-label="Submit" variant="secondary">
+        <Button type="button" size="icon-lg" aria-label="Submit" variant="outline">
           <ArrowUpRightIcon />
         </Button>
       </div>
@@ -127,7 +127,7 @@ function ButtonLink() {
 
 function ButtonIcon() {
   return (
-    <Button type="button" variant="secondary" size="icon" aria-label="Submit">
+    <Button type="button" variant="outline" size="icon" aria-label="Submit">
       <ArrowUpRightIcon />
     </Button>
   );
@@ -136,11 +136,11 @@ function ButtonIcon() {
 function ButtonWithIcon() {
   return (
     <div className="flex flex-wrap gap-2">
-      <Button type="button" variant="secondary">
+      <Button type="button" variant="outline">
         <GitBranchIcon data-icon="inline-start" />
         New Branch
       </Button>
-      <Button type="button" variant="secondary">
+      <Button type="button" variant="outline">
         Fork
         <GitForkIcon data-icon="inline-end" />
       </Button>
@@ -156,7 +156,7 @@ function ButtonRounded() {
       </Button>
       <Button
         type="button"
-        variant="secondary"
+        variant="outline"
         size="icon"
         className="rounded-full"
         aria-label="Submit"
@@ -170,11 +170,11 @@ function ButtonRounded() {
 function ButtonSpinner() {
   return (
     <div className="flex flex-wrap gap-2">
-      <Button type="button" variant="secondary" disabled>
+      <Button type="button" variant="outline" disabled>
         <Spinner data-icon="inline-start" />
         Generating
       </Button>
-      <Button type="button" variant="secondary" disabled>
+      <Button type="button" variant="outline" disabled>
         Downloading
         <Spinner data-icon="inline-end" />
       </Button>
@@ -184,7 +184,7 @@ function ButtonSpinner() {
 
 function ButtonRender() {
   return (
-    <a href="#" className={buttonVariants({ variant: "secondary", size: "sm" })}>
+    <a href="#" className={buttonVariants({ variant: "outline", size: "sm" })}>
       Login
     </a>
   );
@@ -193,20 +193,20 @@ function ButtonRender() {
 function ButtonRtl() {
   return (
     <div className="flex flex-wrap items-center gap-2 md:flex-row" dir="rtl">
-      <Button type="button" variant="secondary">
+      <Button type="button" variant="outline">
         Button
       </Button>
       <Button type="button" variant="destructive">
         Delete
       </Button>
-      <Button type="button" variant="secondary">
+      <Button type="button" variant="outline">
         Submit
         <ArrowRightIcon className="rtl:rotate-180" data-icon="inline-end" />
       </Button>
-      <Button type="button" variant="secondary" size="icon" aria-label="Add">
+      <Button type="button" variant="outline" size="icon" aria-label="Add">
         <PlusIcon />
       </Button>
-      <Button type="button" variant="secondary" disabled>
+      <Button type="button" variant="outline" disabled>
         <Spinner data-icon="inline-start" />
         Loading
       </Button>

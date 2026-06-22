@@ -55,8 +55,8 @@ function TabsList({
           variant === "underline" &&
             "z-20 bg-foreground data-[orientation=horizontal]:h-0.5 data-[orientation=horizontal]:translate-y-px data-[orientation=vertical]:w-0.5 data-[orientation=vertical]:-translate-x-px",
           variant === "default" &&
-            "z-0 rounded-[calc(var(--radius-lg)-1px)] bg-[var(--tabs-indicator-bg)] shadow-[var(--shadow-card)]",
-          variant === "ghost" && "z-0 rounded-[calc(var(--radius-lg)-1px)] bg-white/10 shadow-none",
+            "z-0 rounded-lg-inner bg-[var(--tabs-indicator-bg)] shadow-[var(--shadow-card)]",
+          variant === "ghost" && "z-0 rounded-lg-inner bg-white/10 shadow-none",
         )}
       />
     </TabsPrimitive.List>
@@ -68,7 +68,7 @@ function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props): React.Re
     <TabsPrimitive.Tab
       data-slot="tabs-trigger"
       className={cn(
-        "relative z-10 flex h-8 shrink-0 grow cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-[calc(var(--radius-lg)-1px)] border border-transparent px-2.5 text-[13px] leading-[1.1] font-normal text-secondary-foreground outline-none transition-[color,box-shadow] hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 data-[orientation=vertical]:w-full data-[orientation=vertical]:justify-start data-active:text-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[15px]",
+        "relative z-10 flex h-8 shrink-0 grow cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-lg-inner border border-transparent px-2.5 text-[13px] leading-[1.1] font-normal text-secondary-foreground outline-none transition-[color,box-shadow] hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 data-[orientation=vertical]:w-full data-[orientation=vertical]:justify-start data-active:text-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[15px]",
         className,
       )}
       {...props}

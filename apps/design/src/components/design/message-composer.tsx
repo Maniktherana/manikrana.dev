@@ -342,7 +342,7 @@ function MessageComposer({
       >
         <InputGroup
           className={cn(
-            "h-auto! flex-col items-stretch overflow-visible! bg-secondary",
+            "h-auto! flex-col items-stretch overflow-visible! bg-secondary before:rounded-[inherit]!",
             isComposerExpanded ? "rounded-3xl!" : "rounded-full!",
             attachments.length > 0 ? "p-1 pt-0.5" : "p-1",
           )}

@@ -21,7 +21,7 @@ const inputPreviewTitles: Record<string, string> = {
 
 function InputDemo() {
   return (
-    <div className="w-full max-w-80">
+    <div className="w-full max-w-64">
       <Input type="email" placeholder="Email" />
     </div>
   );
@@ -29,7 +29,7 @@ function InputDemo() {
 
 function InputSizes() {
   return (
-    <div className="flex w-full max-w-80 flex-col gap-4">
+    <div className="flex w-full max-w-64 flex-col gap-4">
       <Input controlSize="default" placeholder="Default" />
       <Input controlSize="sm" placeholder="Small" />
     </div>
@@ -38,7 +38,7 @@ function InputSizes() {
 
 function InputRadius() {
   return (
-    <div className="flex w-full max-w-80 flex-col gap-4">
+    <div className="flex w-full max-w-64 flex-col gap-4">
       <Input radius="squared" placeholder="Squared" />
       <Input radius="rounded" placeholder="Rounded" />
     </div>
@@ -47,7 +47,7 @@ function InputRadius() {
 
 function InputDisabled() {
   return (
-    <div className="w-full max-w-80">
+    <div className="w-full max-w-64">
       <Input placeholder="Disabled" disabled />
     </div>
   );
@@ -55,7 +55,7 @@ function InputDisabled() {
 
 function InputInvalid() {
   return (
-    <div className="w-full max-w-80">
+    <div className="w-full max-w-64">
       <Input placeholder="Email" aria-invalid defaultValue="not-an-email" />
     </div>
   );
@@ -63,7 +63,7 @@ function InputInvalid() {
 
 function InputFile() {
   return (
-    <div className="w-full max-w-80">
+    <div className="w-full max-w-64">
       <Input type="file" />
     </div>
   );
@@ -71,7 +71,7 @@ function InputFile() {
 
 function InputWithLabel() {
   return (
-    <Field className="w-full max-w-80">
+    <Field className="w-full max-w-64">
       <FieldLabel htmlFor="input-with-label-email">Email</FieldLabel>
       <Input id="input-with-label-email" type="email" placeholder="you@example.com" />
       <FieldDescription>We will never share your email address.</FieldDescription>
@@ -81,7 +81,7 @@ function InputWithLabel() {
 
 function InputButtonGroup() {
   return (
-    <Group variant="base" className="w-full max-w-80">
+    <Group variant="base" className="w-full max-w-64">
       <Input placeholder="Search..." />
       <Button type="button" variant="outline" size="icon" aria-label="Search">
         <SearchIcon />
@@ -92,7 +92,7 @@ function InputButtonGroup() {
 
 function InputGroupDemo() {
   return (
-    <InputGroup className="w-full max-w-80">
+    <InputGroup className="w-full max-w-64">
       <InputGroupAddon align="inline-start">
         <SearchIcon />
       </InputGroupAddon>

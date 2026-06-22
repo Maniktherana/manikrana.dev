@@ -1,11 +1,11 @@
 "use client";
 
 import * as React from "react";
+import { motion } from "motion/react";
 import { CheckIcon, CopyIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
 
 type CopyButtonProps = React.ComponentProps<typeof Button> & {
   value: string;
@@ -43,24 +43,35 @@ function CopyButton({
   );
 }
 
-function CopyButtonIcon({ copied }: { copied: boolean }) {
-  const iconClassName =
-    "absolute inset-0 size-[15px] transition-[opacity,filter,scale] duration-150 ease-[cubic-bezier(0.2,0,0,1)]";
+const COPY_ICON_TRANSITION = { type: "spring", duration: 0.3, bounce: 0 } as const;
 
+function CopyButtonIcon({ copied }: { copied: boolean }) {
   return (
     <span aria-hidden="true" data-slot="copy-button-icon" className="relative block size-[15px]">
-      <CopyIcon
-        className={cn(
-          iconClassName,
-          copied ? "scale-[0.25] opacity-0 blur-[4px]" : "scale-100 opacity-100 blur-0",
-        )}
-      />
-      <CheckIcon
-        className={cn(
-          iconClassName,
-          copied ? "scale-100 opacity-100 blur-0" : "scale-[0.25] opacity-0 blur-[4px]",
-        )}
-      />
+      <motion.span
+        className="absolute inset-0 flex"
+        initial={false}
+        animate={{
+          scale: copied ? 0.25 : 1,
+          opacity: copied ? 0 : 1,
+          filter: copied ? "blur(4px)" : "blur(0px)",
+        }}
+        transition={COPY_ICON_TRANSITION}
+      >
+        <CopyIcon className="size-[15px]" />
+      </motion.span>
+      <motion.span
+        className="absolute inset-0 flex"
+        initial={false}
+        animate={{
+          scale: copied ? 1 : 0.25,
+          opacity: copied ? 1 : 0,
+          filter: copied ? "blur(0px)" : "blur(4px)",
+        }}
+        transition={COPY_ICON_TRANSITION}
+      >
+        <CheckIcon className="size-[15px]" />
+      </motion.span>
     </span>
   );
 }

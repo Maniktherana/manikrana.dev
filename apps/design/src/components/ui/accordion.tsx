@@ -54,7 +54,7 @@ function AccordionTrigger({ className, children, ...props }: AccordionPrimitive.
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "group/accordion-trigger relative flex flex-1 transform-gpu items-center justify-between gap-3 rounded-[calc(var(--radius-xl)-1px)] border border-transparent px-3.5 py-2.5 text-left text-[13px] leading-[1.6] font-medium text-foreground transition-[color] outline-none [backface-visibility:hidden] hover:no-underline focus-visible:border-transparent focus-visible:shadow-none focus-visible:ring-0 aria-disabled:pointer-events-none aria-disabled:opacity-50 in-data-[variant=grouped]:rounded-[calc(var(--radius-2xl)-1px)] **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
+          "group/accordion-trigger relative flex flex-1 transform-gpu items-center justify-between gap-3 rounded-xl-inner border border-transparent px-3.5 py-2.5 text-left text-[13px] leading-[1.6] font-medium text-foreground transition-[color] outline-none [backface-visibility:hidden] hover:no-underline focus-visible:border-transparent focus-visible:shadow-none focus-visible:ring-0 aria-disabled:pointer-events-none aria-disabled:opacity-50 in-data-[variant=grouped]:rounded-2xl-inner **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
           className,
         )}
         {...props}

@@ -25,7 +25,7 @@ function Code({ className, ...props }: CodeProps) {
     <code
       data-slot="code"
       className={cn(
-        "inline-flex h-[18px] w-fit max-w-full translate-y-[-0.04em] items-center justify-center self-start overflow-hidden rounded-[4px] border border-transparent bg-[var(--kbd-field-bg)] bg-clip-border px-[5px] align-middle font-mono text-[11px] leading-none font-normal tabular-nums text-[var(--kbd-field-text)] shadow-[0_0_0_1px_var(--kbd-field-border)]",
+        "inline-flex h-[18px] w-fit max-w-full translate-y-[-0.04em] items-center justify-center self-start overflow-hidden rounded-[4px] border border-transparent bg-card bg-clip-border px-[5px] align-middle font-mono text-[11px] leading-none font-normal tabular-nums text-secondary-foreground shadow-[var(--shadow-card)]",
         className,
       )}
       {...props}

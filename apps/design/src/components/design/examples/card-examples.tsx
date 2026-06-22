@@ -31,7 +31,7 @@ function CardDemo() {
         </p>
       </CardContent>
       <CardFooter>
-        <Button variant="outline">Cancel</Button>
+        <Button variant="ghost">Cancel</Button>
         <Button>Publish</Button>
       </CardFooter>
     </Card>

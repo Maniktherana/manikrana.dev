@@ -37,8 +37,6 @@
   --rose-600: oklch(0.586 0.222 17.58);
   --rose-700: oklch(0.514 0.198 16.93);
   --rose-800: oklch(0.455 0.171 13.7);
-  --blue-500: oklch(0.623 0.188 259.81);
-  --blue-600: oklch(0.546 0.215 262.88);
 
   /* Semantic tokens */
   --shell: var(--white);
@@ -69,14 +67,13 @@
   --destructive: var(--red-600);
   --destructive-action: var(--rose-600);
   --destructive-action-hover: var(--rose-700);
-  --destructive-action-border: var(--rose-800);
   --destructive-action-foreground: var(--white);
   --component: var(--surface-raised);
   --button-primary: var(--gray-800);
   --button-primary-pressed: var(--gray-600);
   --button-primary-foreground: var(--white);
-  --button-secondary: var(--surface-control);
-  --button-secondary-hover: var(--surface-control-hover);
+  --button-secondary: var(--gray-200);
+  --button-secondary-hover: var(--gray-300);
   --button-secondary-foreground: var(--gray-900);
   --button-outline-fill: var(--field);
   --button-outline-fill-hover: oklch(1 0 0 / 10.7%);
@@ -88,9 +85,6 @@
   --switch-checked-bg: var(--button-primary);
   --control-checked-bg: var(--switch-checked-bg);
   --control-checked-foreground: var(--white);
-  --kbd-field-bg: var(--gray-50);
-  --kbd-field-border: var(--gray-300);
-  --kbd-field-text: var(--gray-600);
   --tabs-list-bg: var(--muted);
   --tabs-indicator-bg: var(--card);
   --border: var(--outline);
@@ -185,6 +179,8 @@
   --button-primary: var(--foreground);
   --button-primary-pressed: var(--gray-300);
   --button-primary-foreground: var(--gray-900);
+  --button-secondary: var(--gray-700);
+  --button-secondary-hover: var(--gray-600);
   --button-secondary-foreground: var(--gray-100);
   --button-outline-fill-hover: var(--field-hover);
   --button-transparent-hover: oklch(1 0 0 / 8%);
@@ -195,9 +191,6 @@
   --switch-checked-bg: var(--gray-500);
   --control-checked-bg: var(--white);
   --control-checked-foreground: var(--gray-900);
-  --kbd-field-bg: var(--gray-800);
-  --kbd-field-border: oklch(1 0 0 / 16%);
-  --kbd-field-text: oklch(1 0 0 / 56%);
   --tabs-list-bg: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 10%);
   --ring: oklch(1 0 0 / 48%);
@@ -317,6 +310,11 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  /* Inner radii for 1px-border concentric highlights (rounded-*-inner) */
+  --radius-md-inner: calc(var(--radius-md) - 1px);
+  --radius-lg-inner: calc(var(--radius-lg) - 1px);
+  --radius-xl-inner: calc(var(--radius-xl) - 1px);
+  --radius-2xl-inner: calc(var(--radius-2xl) - 1px);
 }
 
 @layer base {

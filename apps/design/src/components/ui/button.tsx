@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "group/button relative inline-flex min-h-0 shrink-0 origin-center items-center justify-center rounded-lg border border-transparent bg-clip-padding font-sans text-[13px] leading-[1.1] font-medium tracking-normal whitespace-nowrap transition-[background-color,box-shadow,color,scale] duration-100 ease-out outline-none select-none active:scale-[0.96] motion-reduce:active:scale-100 focus-visible:ring-[3px] focus-visible:ring-ring/24 focus-visible:ring-offset-0 disabled:pointer-events-none disabled:shadow-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:shadow-none aria-disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:shadow-none data-[disabled]:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 in-data-[slot=input-group]:shadow-none [&>:not(svg)]:leading-[inherit] [&_svg]:pointer-events-none [&_svg]:size-[15px] [&_svg]:shrink-0",
+  "group/button relative inline-flex min-h-0 shrink-0 origin-center items-center justify-center rounded-lg border border-transparent bg-clip-padding font-sans text-[13px] leading-[1.1] font-medium tracking-normal whitespace-nowrap transition-[background-color,box-shadow,color,scale] duration-100 ease-out outline-none select-none active:scale-[0.98] motion-reduce:active:scale-100 focus-visible:ring-[3px] focus-visible:ring-ring/24 focus-visible:ring-offset-0 disabled:pointer-events-none disabled:shadow-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:shadow-none aria-disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:shadow-none data-[disabled]:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 in-data-[slot=input-group]:shadow-none [&>:not(svg)]:leading-[inherit] [&_svg]:pointer-events-none [&_svg]:size-[15px] [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -13,7 +13,7 @@ const buttonVariants = cva(
         secondary:
           "border-transparent bg-[var(--button-secondary)] bg-clip-border text-[var(--button-secondary-foreground)] shadow-[var(--shadow-card)] hover:bg-[var(--button-secondary-hover)] hover:text-[var(--button-secondary-foreground)] active:bg-[var(--button-secondary-hover)] data-[active=true]:bg-[var(--button-secondary-hover)] aria-expanded:bg-[var(--button-secondary-hover)] data-popup-open:bg-[var(--button-secondary-hover)]",
         outline:
-          "border-input bg-[var(--button-outline-fill)] bg-clip-border text-foreground shadow-[var(--shadow-control)] before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] before:shadow-[var(--shadow-highlight)] before:content-[''] hover:bg-[var(--button-outline-fill-hover)] hover:text-foreground hover:shadow-[var(--shadow-control-hover)] hover:before:shadow-[var(--shadow-highlight)] focus-visible:border-ring focus-visible:shadow-none focus-visible:before:shadow-none active:bg-[var(--button-outline-fill-hover)] data-[active=true]:bg-[var(--button-outline-fill-hover)] aria-expanded:bg-[var(--button-outline-fill-hover)] aria-expanded:text-foreground data-popup-open:bg-[var(--button-outline-fill-hover)] data-popup-open:text-foreground",
+          "border-input bg-[var(--button-outline-fill)] bg-clip-border text-foreground shadow-[var(--shadow-control)] before:pointer-events-none before:absolute before:inset-0 before:rounded-lg-inner before:shadow-[var(--shadow-highlight)] before:content-[''] hover:bg-[var(--button-outline-fill-hover)] hover:text-foreground hover:shadow-[var(--shadow-control-hover)] hover:before:shadow-[var(--shadow-highlight)] focus-visible:border-ring focus-visible:shadow-none focus-visible:before:shadow-none active:bg-[var(--button-outline-fill-hover)] data-[active=true]:bg-[var(--button-outline-fill-hover)] aria-expanded:bg-[var(--button-outline-fill-hover)] aria-expanded:text-foreground data-popup-open:bg-[var(--button-outline-fill-hover)] data-popup-open:text-foreground",
         ghost:
           "text-foreground shadow-none hover:bg-[var(--button-transparent-hover)] hover:text-foreground active:bg-[var(--button-transparent-hover)] data-[active=true]:bg-[var(--button-transparent-hover)] aria-expanded:bg-[var(--button-transparent-hover)] aria-expanded:text-foreground data-popup-open:bg-[var(--button-transparent-hover)] data-popup-open:text-foreground",
         destructive:
@@ -55,7 +55,10 @@ function Button({
       data-variant={variant}
       data-size={size}
       data-static={isStatic || undefined}
-      className={cn(buttonVariants({ variant, size, className }), isStatic && "active:scale-100")}
+      className={cn(
+        buttonVariants({ variant, size, className }),
+        isStatic && "active:scale-100",
+      )}
       {...props}
     />
   );
