@@ -1,11 +1,12 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
-const roles = [
+const defaultRoleMotionRoles = [
   "Web Developer",
   "OSS Contributor",
   "Gym rat",
@@ -20,7 +21,12 @@ const ENTER_DELAY_SECONDS = 0;
 const ENTER_STAGGER_SECONDS = 0.012;
 const EXIT_STAGGER_SECONDS = 0.008;
 const easeOutStrong: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const longestRoleLength = Math.max(...roles.map((role) => role.length));
+type RoleMotionProps = {
+  className?: string;
+  index?: number;
+  roles?: string[];
+  style?: CSSProperties;
+};
 
 function splitCharacters(text: string) {
   return Array.from(text).map((character, index) => ({
@@ -29,10 +35,17 @@ function splitCharacters(text: string) {
   }));
 }
 
-export default function RoleMotion({ className }: { className: string }) {
-  const [index, setIndex] = useState(0);
+export default function RoleMotion({
+  className,
+  index: controlledIndex,
+  roles = defaultRoleMotionRoles,
+  style,
+}: RoleMotionProps) {
+  const [internalIndex, setInternalIndex] = useState(0);
   const reduceMotion = useReducedMotion();
-  const role = roles[index];
+  const safeRoles = roles.length > 0 ? roles : defaultRoleMotionRoles;
+  const activeIndex = controlledIndex ?? internalIndex;
+  const role = safeRoles[activeIndex % safeRoles.length] ?? "";
   const characters = useMemo(() => splitCharacters(role), [role]);
 
   const textLayerMotion = useMemo(() => {
@@ -133,14 +146,17 @@ export default function RoleMotion({ className }: { className: string }) {
   }, [reduceMotion]);
 
   useEffect(() => {
+    if (controlledIndex !== undefined) return;
+
+    const longestRoleLength = Math.max(...safeRoles.map((nextRole) => nextRole.length));
     const transitionWindowMs =
       (0.24 + ENTER_DELAY_SECONDS + longestRoleLength * ENTER_STAGGER_SECONDS) * 1000;
     const interval = window.setInterval(() => {
-      setIndex((current) => (current + 1) % roles.length);
+      setInternalIndex((current) => (current + 1) % safeRoles.length);
     }, Math.max(ROLE_HOLD_MS, transitionWindowMs + 700));
 
     return () => window.clearInterval(interval);
-  }, []);
+  }, [controlledIndex, safeRoles]);
 
   return (
     <motion.p
@@ -150,6 +166,7 @@ export default function RoleMotion({ className }: { className: string }) {
         "relative -my-1 mx-auto inline-grid w-fit overflow-visible py-1 leading-tight md:mx-0",
         className,
       )}
+      style={style}
     >
       <span aria-hidden className="col-start-1 row-start-1 whitespace-nowrap opacity-0">
         {role}
@@ -178,3 +195,5 @@ export default function RoleMotion({ className }: { className: string }) {
     </motion.p>
   );
 }
+
+export { defaultRoleMotionRoles };
