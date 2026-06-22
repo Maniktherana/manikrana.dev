@@ -848,8 +848,12 @@ function RoleText({
   const rootSizeCleanupTimer = React.useRef<number | null>(null);
 
   // Fire the per-character entrance. Keyframes are config-only (order-independent),
-  // so each character reuses the same baked set and varies only its delay. We
-  // guard on entryKey so preserved prefix characters never replay mid-flight.
+  // so each character reuses the same baked set and varies only its delay. The
+  // guard keys on entryKey *and* the live animation state: a preserved prefix
+  // character whose entrance is still running is left alone (no replay), but if
+  // its animation was cancelled — e.g. a dev StrictMode/HMR remount tore it down
+  // between mount passes — we refire so it can't get stuck at its opacity:0
+  // initial frame. This mirrors torph driving from the live DOM, not a flag.
   React.useLayoutEffect(() => {
     renderedCharacters.forEach((character) => {
       if (character.stable) {
@@ -860,9 +864,13 @@ function RoleText({
       const element = enterElements.current.get(character.index);
 
       if (!element) return;
-      if (enterFiredKeys.current.get(character.index) === character.entryKey) return;
 
-      enterAnimations.current.get(character.index)?.cancel();
+      const existing = enterAnimations.current.get(character.index);
+      const sameEntry = enterFiredKeys.current.get(character.index) === character.entryKey;
+
+      if (sameEntry && existing && existing.playState !== "idle") return;
+
+      existing?.cancel();
 
       const animation = element.animate(enterKeyframes.keyframes, {
         delay: character.order * config.enterStagger,
@@ -877,9 +885,18 @@ function RoleText({
   }, [config.enterStagger, enterKeyframes, renderedCharacters]);
 
   // Fire the per-character exit for the outgoing role. Exit spans remount each
-  // transition, so we fire once per version against the freshly measured slots.
+  // transition, so we fire once per version — but as with the entrance, refire
+  // if the tracked animations were torn down (remount) so they don't freeze.
   React.useLayoutEffect(() => {
-    if (exitFiredVersion.current === transitionState.version) return;
+    const tracked = Array.from(exitAnimations.current);
+    const live = tracked.length > 0 && tracked.every((animation) => animation.playState !== "idle");
+
+    if (
+      exitFiredVersion.current === transitionState.version &&
+      (live || exitElements.current.size === 0)
+    ) {
+      return;
+    }
 
     exitFiredVersion.current = transitionState.version;
     exitAnimations.current.forEach((animation) => animation.cancel());
@@ -1057,10 +1074,11 @@ function RoleText({
     () => () => {
       prefixAnimations.current.forEach((animation) => animation.cancel());
       prefixAnimations.current.clear();
-      enterAnimations.current.forEach((animation) => animation.cancel());
-      enterAnimations.current.clear();
-      exitAnimations.current.forEach((animation) => animation.cancel());
-      exitAnimations.current.clear();
+      // Enter/exit animations are intentionally NOT cancelled here. A dev
+      // StrictMode/HMR remount runs this cleanup between two mount passes while
+      // keeping the same DOM; cancelling would strand characters at opacity:0
+      // because the refire guard sees the entry already handled. On a real
+      // unmount the nodes are detached and GC collects their animations.
 
       if (rootSizeAnimationFrame.current !== null) {
         window.cancelAnimationFrame(rootSizeAnimationFrame.current);
