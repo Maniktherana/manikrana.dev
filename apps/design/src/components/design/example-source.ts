@@ -8,7 +8,6 @@
 
 /* eslint-disable import/default */
 import accordionSource from "@/components/design/examples/accordion-examples.tsx?raw";
-import alertSource from "@/components/design/examples/alert-examples.tsx?raw";
 import animationSource from "@/components/design/examples/animation-examples.tsx?raw";
 import avatarSource from "@/components/design/examples/avatar-examples.tsx?raw";
 import badgeSource from "@/components/design/examples/badge-examples.tsx?raw";
@@ -47,7 +46,6 @@ import messageComposerBlockSource from "@/components/design/message-composer.tsx
 
 const rawSources = [
   accordionSource,
-  alertSource,
   animationSource,
   avatarSource,
   badgeSource,

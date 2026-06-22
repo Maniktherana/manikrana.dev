@@ -1,5 +1,7 @@
 "use client";
 
+import "./animation-examples.css";
+
 import * as React from "react";
 import { ArrowRightIcon, CheckCircle2Icon, LoaderCircleIcon } from "lucide-react";
 import { BorderBeam, type BorderBeamColorVariant, type BorderBeamSize } from "border-beam";

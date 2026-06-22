@@ -275,7 +275,7 @@ function CalendarPopover() {
         {date ? format(date, "PPP") : <span>Pick a date</span>}
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto overflow-hidden bg-popover p-0 text-popover-foreground shadow-[var(--shadow-flyout)]"
+        className="w-auto overflow-hidden bg-popover p-0 text-popover-foreground shadow-[var(--shadow-overlay-md)]"
         align="start"
       >
         <Calendar mode="single" selected={date} onSelect={setDate} defaultMonth={date} />
@@ -331,7 +331,7 @@ function CalendarInput() {
               <span className="sr-only">Select date</span>
             </PopoverTrigger>
             <PopoverContent
-              className="w-auto overflow-hidden bg-popover p-0 text-popover-foreground shadow-[var(--shadow-flyout)]"
+              className="w-auto overflow-hidden bg-popover p-0 text-popover-foreground shadow-[var(--shadow-overlay-md)]"
               align="end"
               alignOffset={-8}
               sideOffset={10}

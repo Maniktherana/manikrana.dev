@@ -47,7 +47,7 @@ function Switch({
         aria-hidden="true"
         data-slot="switch-thumb"
         className={cn(
-          "pointer-events-none relative z-10 block rounded-full bg-[var(--interactive-foreground)] shadow-[var(--shadow-switch-thumb)] transition-transform duration-100 ease-out ring-0 dark:data-unchecked:bg-foreground",
+          "pointer-events-none relative z-10 block rounded-full bg-white shadow-[var(--shadow-switch-thumb)] transition-transform duration-100 ease-out ring-0 dark:data-unchecked:bg-foreground",
           size === "sm"
             ? "size-3 data-checked:translate-x-[13px] data-unchecked:translate-x-[3px]"
             : "size-3.5 data-checked:translate-x-[14px] data-unchecked:translate-x-[3px]",

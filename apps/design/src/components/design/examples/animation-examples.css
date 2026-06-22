@@ -1,0 +1,18 @@
+.animation-pasito-stepper {
+  --pill-dot-size: 10px;
+  --pill-active-width: 32px;
+  --pill-gap: 8px;
+  --pill-bg: oklch(0.21 0 0 / 24%);
+  --pill-active-bg: oklch(0.21 0 0 / 92%);
+  --pill-fill-bg: oklch(1 0 0 / 48%);
+  --pill-container-bg: oklch(0.21 0 0 / 6%);
+  --pill-container-border: oklch(0.21 0 0 / 12%);
+}
+
+.dark .animation-pasito-stepper {
+  --pill-bg: oklch(1 0 0 / 28%);
+  --pill-active-bg: oklch(1 0 0 / 94%);
+  --pill-fill-bg: oklch(0.21 0 0 / 38%);
+  --pill-container-bg: oklch(1 0 0 / 12%);
+  --pill-container-border: oklch(1 0 0 / 22%);
+}

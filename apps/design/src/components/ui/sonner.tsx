@@ -1,5 +1,7 @@
 import type { CSSProperties } from "react";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
+
+import "./sonner.css";
 import {
   CircleCheckIcon,
   InfoIcon,
@@ -31,7 +33,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       toastOptions={{
         classNames: {
           toast:
-            "!w-[360px] !min-h-0 !items-start !gap-2 !rounded-lg !border !border-transparent !bg-card !p-3 !text-card-foreground !shadow-[var(--shadow-toast)]",
+            "!w-[360px] !min-h-0 !items-start !gap-2 !rounded-lg !border !border-transparent !bg-card !p-3 !text-card-foreground !shadow-[var(--shadow-overlay-md)]",
           title: "!font-sans !text-[13px] !leading-[1.6] !font-normal !text-foreground",
           description:
             "!font-sans !text-[13px] !leading-[1.6] !font-normal !text-secondary-foreground",

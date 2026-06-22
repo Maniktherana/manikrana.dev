@@ -4,6 +4,8 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon } from "lucide-react";
 
+import "./accordion.css";
+
 function Accordion({ className, ...props }: AccordionPrimitive.Root.Props) {
   return (
     <AccordionPrimitive.Root
@@ -15,7 +17,7 @@ function Accordion({ className, ...props }: AccordionPrimitive.Root.Props) {
 }
 
 const accordionItemVariants = cva(
-  "relative transform-gpu overflow-hidden rounded-xl bg-clip-border transition-[background-color,box-shadow] duration-150 ease-out [backface-visibility:hidden] before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:shadow-[var(--shadow-surface-highlight)] before:content-['']",
+  "relative transform-gpu overflow-hidden rounded-xl bg-clip-border transition-[background-color,box-shadow] duration-150 ease-out [backface-visibility:hidden] before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:shadow-[var(--shadow-highlight)] before:content-['']",
   {
     variants: {
       variant: {

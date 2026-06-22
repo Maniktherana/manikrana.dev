@@ -1,3 +1,5 @@
+import "./docs-search.css";
+
 import { useNavigate } from "@tanstack/react-router";
 import type { Root, Node } from "fumadocs-core/page-tree";
 import type { SortedResult } from "fumadocs-core/search";

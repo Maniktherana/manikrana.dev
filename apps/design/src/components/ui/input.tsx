@@ -10,7 +10,7 @@ const inputVariants = cva(
     // surface + elevation
     "bg-[var(--field)] shadow-[var(--shadow-control)]",
     // overlay sheen
-    "before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] before:shadow-[var(--shadow-control-highlight)] before:content-['']",
+    "before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] before:shadow-[var(--shadow-highlight)] before:content-['']",
     // focus ring (keyboard / text-entry focus only)
     "has-[:focus-visible]:border-ring has-[:focus-visible]:shadow-none has-[:focus-visible]:before:shadow-none",
     // disabled

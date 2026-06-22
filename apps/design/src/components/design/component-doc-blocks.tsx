@@ -1,7 +1,6 @@
 import { CodeBlock, CodeBlockBody, CodeBlockContent } from "@/components/design/code";
 import { getExampleSource } from "@/components/design/example-source";
 import { renderAccordionPreview } from "@/components/design/examples/accordion-examples";
-import { renderAlertPreview } from "@/components/design/examples/alert-examples";
 import { renderAnimationPreview } from "@/components/design/examples/animation-examples";
 import { renderAvatarPreview } from "@/components/design/examples/avatar-examples";
 import { renderBadgePreview } from "@/components/design/examples/badge-examples";
@@ -89,12 +88,6 @@ function renderPreview(name: string) {
 
   if (accordionPreview) {
     return accordionPreview;
-  }
-
-  const alertPreview = renderAlertPreview(name);
-
-  if (alertPreview) {
-    return alertPreview;
   }
 
   const avatarPreview = renderAvatarPreview(name);

@@ -91,16 +91,6 @@ export const componentCatalog = [
     custom: true,
   },
   {
-    id: "alert",
-    title: "Alert",
-    category: "Components",
-    primitive: "Alert, AlertTitle, AlertDescription, AlertAction",
-    files: ["src/components/ui/alert.tsx"],
-    figmaSource: "Card-rest elevation and compact text tokens",
-    description: "Status messaging with compact type and a subtle action slot.",
-    custom: false,
-  },
-  {
     id: "avatar",
     title: "Avatar",
     category: "Components",
