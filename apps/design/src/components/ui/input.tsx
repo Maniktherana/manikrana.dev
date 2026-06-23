@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 const inputVariants = cva(
   cn(
-    "relative inline-flex h-8 min-h-[var(--control-height)] w-full min-w-0 rounded-lg border border-input bg-clip-border font-sans text-[13px] leading-[1.1] font-normal outline-none transition-colors",
+    "relative inline-flex h-8 min-h-[var(--control-height)] w-full min-w-0 rounded-lg border border-input bg-clip-border font-sans text-sm leading-none font-normal outline-none transition-colors",
     // surface + elevation
     "bg-[var(--field)] shadow-[var(--shadow-control)]",
     // overlay sheen

@@ -1,7 +1,6 @@
 import * as React from "react";
 import { createHighlighterCoreSync } from "shiki/core";
 
-import "./code.css";
 import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 import bash from "shiki/langs/bash.mjs";
 import dotenv from "shiki/langs/dotenv.mjs";
@@ -10,8 +9,8 @@ import jsx from "shiki/langs/jsx.mjs";
 import shellscript from "shiki/langs/shellscript.mjs";
 import tsx from "shiki/langs/tsx.mjs";
 import typescript from "shiki/langs/typescript.mjs";
-import githubDark from "shiki/themes/github-dark.mjs";
 import githubLightDefault from "shiki/themes/github-light-default.mjs";
+import vesper from "shiki/themes/vesper.mjs";
 import type { ShikiTransformer } from "shiki";
 
 import { buttonVariants } from "@/components/ui/button";
@@ -51,7 +50,7 @@ function normalizeLanguage(language: string) {
 const highlighter = createHighlighterCoreSync({
   engine: createJavaScriptRegexEngine(),
   langs: [bash, dotenv, javascript, jsx, shellscript, tsx, typescript].flat(),
-  themes: [githubDark, githubLightDefault],
+  themes: [vesper, githubLightDefault],
 });
 
 const loadedLanguages = new Set(highlighter.getLoadedLanguages());
@@ -78,10 +77,14 @@ function lineNumberTransformer(showLineNumbers: boolean): ShikiTransformer {
   };
 }
 
-function highlightCode(code: string, language: string, showLineNumbers: boolean) {
+function highlightCode(
+  code: string,
+  language: string,
+  showLineNumbers: boolean,
+) {
   return highlighter.codeToHtml(code, {
     lang: language,
-    themes: { dark: "github-dark", light: "github-light-default" },
+    themes: { dark: "vesper", light: "github-light-default" },
     defaultColor: false,
     transformers: [lineNumberTransformer(showLineNumbers)],
   });
@@ -97,7 +100,9 @@ type CodeBlockContextValue = {
   toggleExpanded: () => void;
 };
 
-const CodeBlockContext = React.createContext<CodeBlockContextValue | null>(null);
+const CodeBlockContext = React.createContext<CodeBlockContextValue | null>(
+  null,
+);
 const COLLAPSED_CODE_BLOCK_HEIGHT = 116;
 
 function useCodeBlockContext() {
@@ -124,7 +129,10 @@ function CodeBlock({
   ...props
 }: CodeBlockProps) {
   const [expanded, setExpanded] = React.useState(defaultExpanded);
-  const toggleExpanded = React.useCallback(() => setExpanded((current) => !current), []);
+  const toggleExpanded = React.useCallback(
+    () => setExpanded((current) => !current),
+    [],
+  );
   const value = React.useMemo<CodeBlockContextValue>(
     () => ({ expanded, setExpanded, toggleExpanded }),
     [expanded, toggleExpanded],
@@ -221,11 +229,14 @@ function CodeBlockBody({
       data-slot="code-block-body"
       data-collapsible={collapsible || undefined}
       data-collapsed={isCollapsed || undefined}
+      data-expanded={(collapsible && !isCollapsed) || undefined}
       className={cn(
-        "relative flex flex-col overflow-hidden",
+        "relative flex flex-col overflow-hidden data-[collapsible]:transition-[height] data-[collapsible]:duration-[270ms] data-[collapsible]:ease-[cubic-bezier(0.25,1,0.5,1)] data-[collapsed]:after:pointer-events-none data-[collapsed]:after:absolute data-[collapsed]:after:inset-x-0 data-[collapsed]:after:bottom-0 data-[collapsed]:after:z-[5] data-[collapsed]:after:h-[72px] data-[collapsed]:after:bg-[linear-gradient(to_bottom,transparent_0%,color-mix(in_srgb,var(--muted)_42%,transparent)_36%,color-mix(in_srgb,var(--muted)_74%,transparent)_68%,var(--muted)_100%)] data-[collapsed]:after:content-[''] motion-reduce:data-[collapsible]:duration-[1ms]",
         // surface — same treatment in both themes (body sits one step off the outer)
         "bg-muted text-foreground",
-        flush ? "m-0 rounded-[inherit] border-0" : "m-[6px] rounded-lg border-0",
+        flush
+          ? "m-0 rounded-[inherit] border-0"
+          : "m-[6px] rounded-lg border-0",
         className,
       )}
       {...props}
@@ -277,7 +288,8 @@ function CodeBlockContent({
   // shiki <pre> on background (light) / transparent (dark), span theming, gutter,
   // and collapse clamp.
   const highlightClassName = cn(
-    "[&_pre]:m-0 [&_pre]:max-h-[360px] [&_pre]:min-w-max [&_pre]:overflow-auto [&_pre]:whitespace-pre [&_pre]:p-3 [&_pre]:font-mono [&_pre]:text-xs [&_pre]:leading-[1.6]",
+    "w-full max-w-full min-w-0 shrink-0 overflow-x-auto in-data-[collapsed]:overflow-x-hidden",
+    "[&_pre]:m-0 [&_pre]:max-h-[360px] [&_pre]:w-max [&_pre]:min-w-full [&_pre]:overflow-x-visible [&_pre]:overflow-y-auto [&_pre]:whitespace-pre [&_pre]:p-3 [&_pre]:font-mono [&_pre]:text-xs [&_pre]:leading-[1.6] in-data-[collapsed]:[&_pre]:max-h-[148px]! in-data-[collapsed]:[&_pre]:overflow-hidden! in-data-[collapsed]:[&_pre]:pointer-events-none in-data-[expanded]:[&_pre]:max-h-none!",
     "[&_pre]:bg-[var(--muted)]!",
     // code element as a grid (ignores shiki's whitespace "\n" text nodes so lines
     // do not get double-spaced) + each generated line spans a full row
@@ -290,7 +302,11 @@ function CodeBlockContent({
 
   if (highlighted) {
     return (
-      <div data-slot="code-block-content" className={highlightClassName} {...props}>
+      <div
+        data-slot="code-block-content"
+        className={highlightClassName}
+        {...props}
+      >
         {highlighted}
       </div>
     );
@@ -309,10 +325,18 @@ function CodeBlockContent({
 
   // Plain fallback for languages we did not load.
   return (
-    <div data-slot="code-block-content" className={cn(gutterClassName, className)} {...props}>
+    <div
+      data-slot="code-block-content"
+      className={cn(
+        "w-full max-w-full min-w-0 shrink-0 overflow-x-auto in-data-[collapsed]:overflow-x-hidden",
+        gutterClassName,
+        className,
+      )}
+      {...props}
+    >
       <pre
         className={cn(
-          "m-0 max-h-[360px] overflow-auto whitespace-pre p-3 font-mono text-xs leading-[1.6] font-normal",
+          "m-0 max-h-[360px] w-max min-w-full overflow-x-visible overflow-y-auto whitespace-pre p-3 font-mono text-xs leading-[1.6] font-normal in-data-[collapsed]:max-h-[148px]! in-data-[collapsed]:overflow-hidden! in-data-[collapsed]:pointer-events-none in-data-[expanded]:max-h-none!",
         )}
       >
         <code className="block min-w-full">

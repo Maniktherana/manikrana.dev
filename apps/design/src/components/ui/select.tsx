@@ -42,7 +42,7 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "group/select-trigger flex h-8 min-h-8 w-[280px] items-center justify-between gap-0 overflow-hidden rounded-lg border border-input bg-[var(--field)] p-0 font-sans text-[13px] leading-[1.1] font-normal tracking-normal whitespace-nowrap shadow-[var(--shadow-control)] transition-colors outline-none select-none focus-visible:border-ring focus-visible:shadow-[var(--shadow-control-focus)] disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:shadow-[var(--shadow-control)] data-placeholder:text-muted-foreground data-[size=sm]:h-6 data-[size=sm]:min-h-6 data-[size=sm]:text-xs [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[15px] data-[size=sm]:[&_svg:not([class*='size-'])]:size-3.5",
+        "group/select-trigger flex h-8 min-h-8 w-[280px] items-center justify-between gap-0 overflow-hidden rounded-lg border border-input bg-[var(--field)] p-0 font-sans text-sm leading-none font-normal tracking-normal whitespace-nowrap shadow-[var(--shadow-control)] transition-colors outline-none select-none focus-visible:border-ring focus-visible:shadow-[var(--shadow-control-focus)] disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:shadow-[var(--shadow-control)] data-placeholder:text-muted-foreground data-[size=sm]:h-6 data-[size=sm]:min-h-6 data-[size=sm]:text-xs [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[size=sm]:[&_svg:not([class*='size-'])]:size-3.5",
         className,
       )}
       {...props}
@@ -51,7 +51,7 @@ function SelectTrigger({
       <SelectPrimitive.Icon
         render={
           <span className="grid h-full w-8 place-items-center text-muted-foreground group-data-[size=sm]/select-trigger:w-6">
-            <ChevronDownIcon className="pointer-events-none size-[15px]" />
+            <ChevronDownIcon className="pointer-events-none size-4" />
           </span>
         }
       />
@@ -106,7 +106,7 @@ function SelectLabel({ className, ...props }: SelectPrimitive.GroupLabel.Props) 
     <SelectPrimitive.GroupLabel
       data-slot="select-label"
       className={cn(
-        "flex h-6 items-center px-2 text-xs leading-[1.1] text-muted-foreground",
+        "flex h-6 items-center px-2 text-xs leading-none text-muted-foreground",
         className,
       )}
       {...props}
@@ -119,7 +119,7 @@ function SelectItem({ className, children, ...props }: SelectPrimitive.Item.Prop
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "relative flex h-6 w-full cursor-default items-center gap-2 rounded-sm py-0 pr-6 pl-[30px] text-[13px] leading-[1.1] font-normal outline-hidden select-none focus:bg-accent focus:text-foreground not-data-[variant=destructive]:focus:**:text-foreground data-disabled:pointer-events-none data-disabled:opacity-50 data-selected:font-medium [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[15px] *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        "relative flex h-6 w-full cursor-default items-center gap-2 rounded-sm py-0 pr-6 pl-8 text-sm leading-none font-normal outline-hidden select-none focus:bg-accent focus:text-foreground not-data-[variant=destructive]:focus:**:text-foreground data-disabled:pointer-events-none data-disabled:opacity-50 data-selected:font-medium [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
         className,
       )}
       {...props}
@@ -129,7 +129,7 @@ function SelectItem({ className, children, ...props }: SelectPrimitive.Item.Prop
       </SelectPrimitive.ItemText>
       <SelectPrimitive.ItemIndicator
         render={
-          <span className="pointer-events-none absolute left-2 flex size-[15px] items-center justify-center" />
+          <span className="pointer-events-none absolute left-2 flex size-4 items-center justify-center" />
         }
       >
         <CheckIcon className="pointer-events-none" />

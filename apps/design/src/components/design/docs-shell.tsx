@@ -81,7 +81,7 @@ function DocsSidebar({ activeUrl, pageTree }: { activeUrl: string; pageTree: Roo
     <aside className="fixed start-0 top-14 bottom-0 z-10 w-72 min-w-0 border-e border-border max-[1180px]:static max-[1180px]:w-auto max-[900px]:hidden">
       <div className="sticky top-14 max-h-[calc(100svh-56px)] overflow-auto px-[18px] pt-[22px] pb-7">
         <DocsLink
-          className={cn(sidebarItemClassName, "font-medium text-foreground [&_svg]:size-[15px]")}
+          className={cn(sidebarItemClassName, "font-medium text-foreground [&_svg]:size-4")}
           href={sidebarHome}
         >
           <ComponentIcon />
@@ -177,7 +177,7 @@ function DocsMobileNav({ activeUrl, pageTree }: { activeUrl: string; pageTree: R
         contentWidthClassName,
       )}
     >
-      <summary className="flex min-h-[38px] cursor-pointer list-none items-center justify-between rounded-lg border border-border px-2.5 py-2 text-[13px] leading-[1.3] font-medium text-foreground [&::-webkit-details-marker]:hidden [&_svg]:size-[15px]">
+      <summary className="flex min-h-[38px] cursor-pointer list-none items-center justify-between rounded-lg border border-border px-2.5 py-2 text-[13px] leading-[1.3] font-medium text-foreground [&::-webkit-details-marker]:hidden [&_svg]:size-4">
         <span className="flex min-w-0 items-center gap-2">
           <PanelLeftIcon />
           <span>Browse components</span>
@@ -356,29 +356,45 @@ function DocsShell({
   pageTree: SerializedDocsPageTree;
 }) {
   const rootTree = React.useMemo(() => deserializePageTree(pageTree), [pageTree]);
+  const isFullBleed = page.url.endsWith("/ai-chat");
+
+  const header = (
+    <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center justify-between gap-4 border-b border-border bg-page-background/92 px-[max(20px,calc((100vw-1536px)/2+24px))] backdrop-blur-[16px] max-[900px]:px-4 [&_svg]:size-4">
+      <div className="flex min-w-0 items-center gap-2">
+        <ComponentIcon />
+        <DocsLink
+          className="text-[13px] leading-[1.1] font-medium tracking-normal text-foreground"
+          href="/docs"
+        >
+          Components
+        </DocsLink>
+        <span className="hidden text-muted-foreground sm:inline">/</span>
+        <span className="hidden truncate text-muted-foreground sm:inline">{page.title}</span>
+      </div>
+      <div className="flex items-center gap-2 text-muted-foreground">
+        <DocsSearch activeUrl={page.url} pageTree={rootTree} />
+        <span className="hidden sm:inline">Component system for shadcn Base</span>
+        <ThemeToggle />
+      </div>
+    </header>
+  );
+
+  if (isFullBleed) {
+    return (
+      <AnchorProvider toc={page.toc} single>
+        <main className="flex h-svh flex-col overflow-hidden bg-page-background font-sans text-foreground">
+          {header}
+          <div className="min-h-0 flex-1 p-3 max-[900px]:p-0">{children}</div>
+        </main>
+      </AnchorProvider>
+    );
+  }
 
   return (
     <AnchorProvider toc={page.toc} single>
       <main className="min-h-svh overflow-x-hidden bg-page-background font-sans text-[13px] leading-[1.6] text-foreground">
         <div className="min-h-svh bg-page-background text-foreground">
-          <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-4 border-b border-border bg-page-background/92 px-[max(20px,calc((100vw-1536px)/2+24px))] backdrop-blur-[16px] max-[900px]:px-4 [&_svg]:size-[15px]">
-            <div className="flex min-w-0 items-center gap-2">
-              <ComponentIcon />
-              <DocsLink
-                className="text-[13px] leading-[1.1] font-medium tracking-normal text-foreground"
-                href="/docs"
-              >
-                Components
-              </DocsLink>
-              <span className="hidden text-muted-foreground sm:inline">/</span>
-              <span className="hidden truncate text-muted-foreground sm:inline">{page.title}</span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <DocsSearch activeUrl={page.url} pageTree={rootTree} />
-              <span className="hidden sm:inline">Component system for shadcn Base</span>
-              <ThemeToggle />
-            </div>
-          </header>
+          {header}
 
           <div className="mx-auto block min-h-[calc(100svh-56px)] max-[1180px]:grid max-[1180px]:max-w-[1536px] max-[1180px]:grid-cols-[288px_minmax(0,1fr)] max-[900px]:block">
             <DocsSidebar activeUrl={page.url} pageTree={rootTree} />

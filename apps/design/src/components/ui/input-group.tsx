@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 const inputGroupVariants = cva(
-  "group/input-group relative flex h-8 w-full min-w-0 items-center overflow-hidden rounded-lg border border-input bg-[var(--field)] bg-clip-border font-sans text-[13px] leading-[1.1] font-normal shadow-[var(--shadow-control)] transition-colors outline-none before:pointer-events-none before:absolute before:inset-0 before:rounded-lg-inner before:shadow-[var(--shadow-highlight)] before:content-[''] in-data-[slot=combobox-content]:focus-within:border-inherit has-disabled:opacity-60 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:shadow-none has-[[data-slot=input-group-control]:focus-visible]:before:shadow-none has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:shadow-[var(--shadow-control)] has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>textarea]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5",
+  "group/input-group relative flex h-8 w-full min-w-0 items-center overflow-hidden rounded-lg border border-input bg-[var(--field)] bg-clip-border font-sans text-sm leading-none font-normal shadow-[var(--shadow-control)] transition-colors outline-none before:pointer-events-none before:absolute before:inset-0 before:rounded-lg-inner before:shadow-[var(--shadow-highlight)] before:content-[''] in-data-[slot=combobox-content]:focus-within:border-inherit has-disabled:opacity-60 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:shadow-none has-[[data-slot=input-group-control]:focus-visible]:before:shadow-none has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:shadow-[var(--shadow-control)] has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>textarea]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5",
   {
     variants: {
       radius: {
@@ -54,7 +54,7 @@ function InputGroup({
 }
 
 const inputGroupAddonVariants = cva(
-  "flex h-full cursor-text items-center justify-center gap-2 py-0 text-sm font-medium text-muted-foreground select-none group-data-[disabled=true]/input-group:opacity-60 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-[15px]",
+  "flex h-full cursor-text items-center justify-center gap-2 py-0 text-sm font-medium text-muted-foreground select-none group-data-[disabled=true]/input-group:opacity-60 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4",
   {
     variants: {
       align: {

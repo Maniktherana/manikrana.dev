@@ -1,6 +1,7 @@
 import { CodeBlock, CodeBlockBody, CodeBlockContent } from "@/components/design/code";
 import { getExampleSource } from "@/components/design/example-source";
 import { renderAccordionPreview } from "@/components/design/examples/accordion-examples";
+import { renderAiChatPreview } from "@/components/design/examples/ai-chat-examples";
 import { renderAnimationPreview } from "@/components/design/examples/animation-examples";
 import { renderAvatarPreview } from "@/components/design/examples/avatar-examples";
 import { renderBadgePreview } from "@/components/design/examples/badge-examples";
@@ -48,6 +49,16 @@ function ComponentPreview({
   // Only offer expand when the source overflows the five-line collapsed view.
   const collapsible = source !== undefined && source.split("\n").length > 5;
 
+  // Full-bleed blocks (e.g. the AI chat shell) fill the whole page instead of
+  // sitting in the constrained doc column with a source dump below.
+  if (name === "ai-chat") {
+    return (
+      <div className="h-full w-full overflow-hidden rounded-xl border border-border max-[900px]:rounded-none max-[900px]:border-0">
+        {renderPreview(name)}
+      </div>
+    );
+  }
+
   // Header-less preview with the source attached directly below the component canvas.
   return (
     <div className="mt-4 mb-9 w-full overflow-hidden rounded-xl border border-transparent bg-card bg-clip-border text-card-foreground shadow-[var(--shadow-card)]">
@@ -57,6 +68,7 @@ function ComponentPreview({
           name.startsWith("accordion-") && "min-h-[360px] max-[900px]:min-h-[320px]",
           name.startsWith("animation-") &&
             "min-h-[336px] overflow-hidden p-5 max-[900px]:min-h-[320px]",
+          name === "ai-chat" && "items-stretch overflow-hidden p-3 max-[900px]:p-2",
         )}
         dir={direction}
       >
@@ -88,6 +100,12 @@ function renderPreview(name: string) {
 
   if (accordionPreview) {
     return accordionPreview;
+  }
+
+  const aiChatPreview = renderAiChatPreview(name);
+
+  if (aiChatPreview) {
+    return aiChatPreview;
   }
 
   const avatarPreview = renderAvatarPreview(name);

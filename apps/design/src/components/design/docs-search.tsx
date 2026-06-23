@@ -247,7 +247,7 @@ function DocsSearchTrigger({ onOpen }: { onOpen: () => void }) {
         onClick={onOpen}
         className="hidden h-8 min-w-[248px] items-center gap-2 rounded-[7px] border border-border bg-muted/50 px-2.5 text-left text-[13px] leading-[1.1] text-muted-foreground shadow-[var(--shadow-control)] transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:outline-none md:flex"
       >
-        <SearchIcon className="size-[15px] shrink-0" aria-hidden="true" />
+        <SearchIcon className="size-4 shrink-0" aria-hidden="true" />
         <span className="min-w-0 flex-1 truncate">Search documentation...</span>
         <KbdGroup className="shrink-0">
           <Kbd className="h-[18px] min-w-[18px] px-1">⌘</Kbd>

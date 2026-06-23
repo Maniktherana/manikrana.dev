@@ -54,7 +54,7 @@ function AccordionTrigger({ className, children, ...props }: AccordionPrimitive.
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "group/accordion-trigger relative flex flex-1 transform-gpu items-center justify-between gap-3 rounded-xl-inner border border-transparent px-3.5 py-2.5 text-left text-[13px] leading-[1.6] font-medium text-foreground transition-[color] outline-none [backface-visibility:hidden] hover:no-underline focus-visible:border-transparent focus-visible:shadow-none focus-visible:ring-0 aria-disabled:pointer-events-none aria-disabled:opacity-50 in-data-[variant=grouped]:rounded-2xl-inner **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
+          "group/accordion-trigger relative flex flex-1 transform-gpu items-center justify-between gap-3 rounded-xl-inner border border-transparent px-3.5 py-2.5 text-left text-sm leading-relaxed font-medium text-foreground transition-[color] outline-none [backface-visibility:hidden] hover:no-underline focus-visible:border-transparent focus-visible:shadow-none focus-visible:ring-0 aria-disabled:pointer-events-none aria-disabled:opacity-50 in-data-[variant=grouped]:rounded-2xl-inner **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
           className,
         )}
         {...props}
@@ -78,7 +78,7 @@ function AccordionContent({ className, children, ...props }: AccordionPrimitive.
     >
       <div
         className={cn(
-          "px-3.5 pt-0 pb-3.5 text-[13px] leading-[1.6] text-secondary-foreground [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4",
+          "px-3.5 pt-0 pb-3.5 text-sm leading-relaxed text-secondary-foreground [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4",
           className,
         )}
       >

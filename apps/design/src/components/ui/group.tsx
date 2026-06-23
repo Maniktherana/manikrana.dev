@@ -63,7 +63,7 @@ function GroupText({ className, render, ...props }: useRender.ComponentProps<"di
     props: mergeProps<"div">(
       {
         className: cn(
-          "flex h-7 min-h-7 items-center gap-2 rounded-none border-0 bg-[var(--component)] px-2 text-[13px] leading-[1.1] font-medium text-secondary-foreground [&_svg]:pointer-events-none [&_svg]:size-[15px]",
+          "flex h-7 min-h-7 items-center gap-2 rounded-none border-0 bg-[var(--component)] px-2 text-sm leading-none font-medium text-secondary-foreground [&_svg]:pointer-events-none [&_svg]:size-4",
           className,
         ),
       },

@@ -3,8 +3,16 @@
 import "./animation-examples.css";
 
 import * as React from "react";
-import { ArrowRightIcon, CheckCircle2Icon, LoaderCircleIcon } from "lucide-react";
-import { BorderBeam, type BorderBeamColorVariant, type BorderBeamSize } from "border-beam";
+import {
+  ArrowRightIcon,
+  CheckCircle2Icon,
+  LoaderCircleIcon,
+} from "lucide-react";
+import {
+  BorderBeam,
+  type BorderBeamColorVariant,
+  type BorderBeamSize,
+} from "border-beam";
 import { useDialKit } from "dialkit";
 import {
   GradientShimmer as AnimatedGradientShimmer,
@@ -22,7 +30,12 @@ import {
   buildGradientShimmerGradient,
   type GradientShimmerStop,
 } from "@/components/ui/gradient-shimmer";
-import { RoleMotion, defaultRoleMotionRoles } from "@/components/ui/role-motion";
+import { Marquee } from "@/components/ui/marquee";
+import { ProgressiveBlur } from "@/components/ui/progressive-blur";
+import {
+  RoleMotion,
+  defaultRoleMotionRoles,
+} from "@/components/ui/role-motion";
 import { RoleText } from "@/components/ui/role-text";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
@@ -46,7 +59,14 @@ type GradientBorderDirection =
   | "gradient-border-to-bl"
   | "gradient-border-to-l"
   | "gradient-border-to-tl";
-type GradientBorderColor = "amber" | "blue" | "cyan" | "emerald" | "indigo" | "pink" | "purple";
+type GradientBorderColor =
+  | "amber"
+  | "blue"
+  | "cyan"
+  | "emerald"
+  | "indigo"
+  | "pink"
+  | "purple";
 type GradientBorderViaColor = GradientBorderColor | "none";
 type SlotTextColor = "none" | "blue" | "chromatic" | "pink";
 type SlotTextDirection = "up" | "down";
@@ -56,6 +76,8 @@ const animationPreviewTitles: Record<string, string> = {
   "animation-border-beam": "Border Beam",
   "animation-gradient-shimmer": "Gradient Shimmer",
   "animation-gradient-shimmer-primitive": "Gradient Shimmer Primitive",
+  "animation-progressive-blur-slider": "Progressive Blur Slider",
+  "animation-progressive-blur-image": "Progressive Blur Image",
   "animation-gradient-border": "Gradient Border Plugin",
   "animation-pasito": "Pasito",
   "animation-slot-text": "Slot Text",
@@ -63,11 +85,33 @@ const animationPreviewTitles: Record<string, string> = {
   "animation-role-text": "Role Text",
 };
 
-const torphPhrases = ["Design tokens", "Motion samples", "Component states", "Source previews"];
+const torphPhrases = [
+  "Design tokens",
+  "Motion samples",
+  "Component states",
+  "Source previews",
+];
 const slotTextPhrases = ["Copy", "Copied", "Queued", "Published"];
-const actionScenarioLabels = ["Processing Transaction", "Transaction Safe"] as const;
+const progressiveBlurSliderItems = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+];
+const actionScenarioLabels = [
+  "Processing Transaction",
+  "Transaction Safe",
+] as const;
 const copyScenarioLabels = ["Copy", "Copied"] as const;
-const pricingScenarioLabels = ["Buy for $19.99 / Month", "Buy for $200 / Year"] as const;
+const pricingScenarioLabels = [
+  "Buy for $19.99 / Month",
+  "Buy for $200 / Year",
+] as const;
 const gradientShimmerPrimitivePalettes = {
   sunrise: [
     { color: "#B6D3EF", position: 0 },
@@ -215,7 +259,10 @@ const slotTextColors: Array<SelectOption<SlotTextColor>> = [
   { label: "Pink", value: "pink" },
 ];
 
-const slotTextColorValues: Record<Exclude<SlotTextColor, "none" | "chromatic">, string> = {
+const slotTextColorValues: Record<
+  Exclude<SlotTextColor, "none" | "chromatic">,
+  string
+> = {
   blue: "#2563eb",
   pink: "#db2777",
 };
@@ -225,7 +272,9 @@ function optionValue<T extends string>(
   value: string,
   fallback: T,
 ) {
-  return options.some((option) => option.value === value) ? (value as T) : fallback;
+  return options.some((option) => option.value === value)
+    ? (value as T)
+    : fallback;
 }
 
 function alphaColor(color: string, alpha: number) {
@@ -280,9 +329,11 @@ function MorphScenarioGrid({
   const copyIndex = useCyclingIndex(copyScenarioLabels.length);
   const pricingIndex = useCyclingIndex(pricingScenarioLabels.length);
   const numberValue = useTimedScenarioValue(numberScenarioSteps);
-  const actionLabel = actionScenarioLabels[actionIndex] ?? actionScenarioLabels[0];
+  const actionLabel =
+    actionScenarioLabels[actionIndex] ?? actionScenarioLabels[0];
   const copyLabel = copyScenarioLabels[copyIndex] ?? copyScenarioLabels[0];
-  const pricingLabel = pricingScenarioLabels[pricingIndex] ?? pricingScenarioLabels[0];
+  const pricingLabel =
+    pricingScenarioLabels[pricingIndex] ?? pricingScenarioLabels[0];
   const ActionIcon = actionIndex === 0 ? LoaderCircleIcon : CheckCircle2Icon;
 
   return (
@@ -299,10 +350,15 @@ function MorphScenarioGrid({
           className="flex max-w-[92%] items-center justify-center gap-2 overflow-visible rounded-full bg-[#2a2a2a] py-3 pr-6 pl-[1.125rem] font-sans text-base font-medium text-white"
         >
           <span className="relative grid size-6 shrink-0 place-items-center">
-            <ActionIcon className={cn("size-5", actionIndex === 0 && "animate-spin")} />
+            <ActionIcon
+              className={cn("size-5", actionIndex === 0 && "animate-spin")}
+            />
           </span>
           <span className="min-w-0 overflow-visible">
-            {renderText(actionLabel, "font-sans text-base font-medium text-white")}
+            {renderText(
+              actionLabel,
+              "font-sans text-base font-medium text-white",
+            )}
           </span>
         </button>
       </div>
@@ -324,12 +380,18 @@ function MorphScenarioGrid({
           type="button"
           className="max-w-[92%] overflow-visible rounded-xl bg-[#2a2a2a] px-4 py-2 font-sans text-base font-medium text-white"
         >
-          {renderText(pricingLabel, "font-sans text-base font-medium text-white")}
+          {renderText(
+            pricingLabel,
+            "font-sans text-base font-medium text-white",
+          )}
         </button>
       </div>
       <div className="relative z-[1] flex aspect-[1.6/1] w-full select-none items-center justify-center overflow-hidden rounded-lg bg-[#131313]">
         <div className="absolute inset-x-6 top-4 bottom-0 flex items-center justify-center overflow-hidden rounded-t-[2rem] px-2 pb-4 font-sans text-[2.5rem] font-semibold text-white shadow-[0_0_0_1px_#2a2a2a]">
-          {renderText(numberValue, "font-sans text-[2.5rem] font-semibold tabular-nums text-white")}
+          {renderText(
+            numberValue,
+            "font-sans text-[2.5rem] font-semibold tabular-nums text-white",
+          )}
           <span
             aria-hidden="true"
             className="ml-1 h-[0.95em] w-0.5 translate-y-px rounded-full bg-white/20"
@@ -420,7 +482,11 @@ function TorphDemo() {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => setIndex((current) => (current + 1) % Math.max(phrases.length, 1))}
+              onClick={() =>
+                setIndex(
+                  (current) => (current + 1) % Math.max(phrases.length, 1),
+                )
+              }
             >
               Next
               <ArrowRightIcon data-icon="inline-end" />
@@ -440,7 +506,11 @@ function BorderBeamDemo() {
     {
       active: true,
       size: { type: "select", options: borderBeamSizes, default: "md" },
-      variant: { type: "select", options: borderBeamVariants, default: "colorful" },
+      variant: {
+        type: "select",
+        options: borderBeamVariants,
+        default: "colorful",
+      },
       strength: [1, 0.25, 2, 0.05],
     },
     { id: "animation-border-beam" },
@@ -470,7 +540,11 @@ function GradientShimmerDemo() {
   const dial = useDialKit(
     "Gradient Shimmer",
     {
-      gradient: { type: "select", options: shimmerGradients, default: "sunrise" },
+      gradient: {
+        type: "select",
+        options: shimmerGradients,
+        default: "sunrise",
+      },
       easing: { type: "select", options: shimmerEasings, default: "smooth" },
       duration: [1.45, 0.5, 4, 0.05],
       pauseBetween: [1000, 0, 3000, 50],
@@ -503,21 +577,84 @@ function GradientShimmerPrimitiveDemo() {
   return (
     <PreviewFrame className="h-auto min-h-[260px] overflow-visible py-8">
       <div className="flex max-w-full flex-col items-center justify-center gap-2 text-center text-base leading-[1.35] font-normal tracking-normal [&_[data-slot=gradient-shimmer]]:py-1">
-        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.sunrise)}>
+        <GradientShimmerPrimitive
+          gradient={buildGradientShimmerGradient(palettes.sunrise)}
+        >
           Creating the perfect dish...
         </GradientShimmerPrimitive>
-        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.bubble)}>
+        <GradientShimmerPrimitive
+          gradient={buildGradientShimmerGradient(palettes.bubble)}
+        >
           Plating the next course...
         </GradientShimmerPrimitive>
         <GradientShimmerPrimitive highlightColor={mintHighlight}>
           Seasoning the details...
         </GradientShimmerPrimitive>
-        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.twilight)}>
+        <GradientShimmerPrimitive
+          gradient={buildGradientShimmerGradient(palettes.twilight)}
+        >
           Whisking the sauce...
         </GradientShimmerPrimitive>
-        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.bay)}>
+        <GradientShimmerPrimitive
+          gradient={buildGradientShimmerGradient(palettes.bay)}
+        >
           Resting before service...
         </GradientShimmerPrimitive>
+      </div>
+    </PreviewFrame>
+  );
+}
+
+function ProgressiveBlurSliderDemo() {
+  return (
+    <PreviewFrame className="h-[300px] p-0">
+      <div className="relative h-full w-full overflow-hidden rounded-lg border border-border bg-page-background">
+        <Marquee className="h-full" duration={16} gap={0}>
+          {progressiveBlurSliderItems.map((item) => (
+            <div
+              className="w-32 shrink-0 text-center text-4xl leading-none font-[450] text-foreground tabular-nums"
+              key={item}
+            >
+              {item}
+            </div>
+          ))}
+        </Marquee>
+        <ProgressiveBlur
+          className="absolute top-0 left-0 h-full w-[160px]"
+          direction="left"
+          blurIntensity={1}
+        />
+        <ProgressiveBlur
+          className="absolute top-0 right-0 h-full w-[160px]"
+          direction="right"
+          blurIntensity={1}
+        />
+      </div>
+    </PreviewFrame>
+  );
+}
+
+function ProgressiveBlurImageDemo() {
+  return (
+    <PreviewFrame className="h-[360px]">
+      <div className="relative aspect-square w-[min(300px,100%)] overflow-hidden rounded-lg bg-muted">
+        <img
+          alt="Manik Rana"
+          className="absolute inset-0 h-full w-full object-cover"
+          decoding="async"
+          src="/manik.png"
+        />
+        <ProgressiveBlur
+          className="absolute inset-x-0 bottom-0 h-1/2 w-full"
+          blurIntensity={6}
+        />
+        <div className="absolute bottom-0 left-0 px-5 py-4">
+          <p className="text-base font-medium text-white">Manik Rana</p>
+          <span className="mb-2 block text-base text-zinc-300">
+            manikrana.dev
+          </span>
+          <p className="text-base text-white">Progressive blur overlay</p>
+        </div>
       </div>
     </PreviewFrame>
   );
@@ -527,14 +664,26 @@ function GradientBorderPluginDemo() {
   const dial = useDialKit(
     "Gradient Border Plugin",
     {
-      width: { type: "select", options: gradientBorderWidths, default: "gradient-border-2" },
+      width: {
+        type: "select",
+        options: gradientBorderWidths,
+        default: "gradient-border-2",
+      },
       direction: {
         type: "select",
         options: gradientBorderDirections,
         default: "gradient-border-to-r",
       },
-      from: { type: "select", options: gradientBorderColors, default: "indigo" },
-      via: { type: "select", options: gradientBorderViaColors, default: "purple" },
+      from: {
+        type: "select",
+        options: gradientBorderColors,
+        default: "indigo",
+      },
+      via: {
+        type: "select",
+        options: gradientBorderViaColors,
+        default: "purple",
+      },
       to: { type: "select", options: gradientBorderColors, default: "pink" },
       fromAlpha: [100, 0, 100, 5],
       viaAlpha: [100, 0, 100, 5],
@@ -545,22 +694,37 @@ function GradientBorderPluginDemo() {
     },
     { id: "animation-gradient-border" },
   );
-  const width = optionValue(gradientBorderWidths, dial.width, "gradient-border-2");
-  const direction = optionValue(gradientBorderDirections, dial.direction, "gradient-border-to-r");
+  const width = optionValue(
+    gradientBorderWidths,
+    dial.width,
+    "gradient-border-2",
+  );
+  const direction = optionValue(
+    gradientBorderDirections,
+    dial.direction,
+    "gradient-border-to-r",
+  );
   const from = optionValue(gradientBorderColors, dial.from, "indigo");
   const via = optionValue(gradientBorderViaColors, dial.via, "purple");
   const to = optionValue(gradientBorderColors, dial.to, "pink");
   const gradientStyle = {
     "--gradient-border-duration": `${dial.duration}s`,
-    "--gradient-border-from": alphaColor(gradientBorderColorValues[from], dial.fromAlpha),
-    "--gradient-border-to": alphaColor(gradientBorderColorValues[to], dial.toAlpha),
+    "--gradient-border-from": alphaColor(
+      gradientBorderColorValues[from],
+      dial.fromAlpha,
+    ),
+    "--gradient-border-to": alphaColor(
+      gradientBorderColorValues[to],
+      dial.toAlpha,
+    ),
     "--gradient-border-via":
       via === "none"
         ? "var(--gradient-border-from)"
         : alphaColor(gradientBorderColorValues[via], dial.viaAlpha),
     ...(dial.conicOverride
       ? {
-          "--gradient-border": "conic-gradient(from 90deg, #6366f1, #ec4899, #22d3ee, #6366f1)",
+          "--gradient-border":
+            "conic-gradient(from 90deg, #6366f1, #ec4899, #22d3ee, #6366f1)",
         }
       : null),
   } as React.CSSProperties;
@@ -615,7 +779,12 @@ function PasitoDemo() {
     <PreviewFrame
       className="h-[180px]"
       controls={
-        <Button type="button" variant="outline" size="sm" onClick={autoplay.toggle}>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={autoplay.toggle}
+        >
           {autoplay.playing ? "Pause" : "Play"}
         </Button>
       }
@@ -697,7 +866,11 @@ function SlotTextDemo() {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => setIndex((current) => (current + 1) % Math.max(phrases.length, 1))}
+              onClick={() =>
+                setIndex(
+                  (current) => (current + 1) % Math.max(phrases.length, 1),
+                )
+              }
             >
               Next
               <ArrowRightIcon data-icon="inline-end" />
@@ -739,7 +912,10 @@ function SiteTextAnimationDemo() {
     (text, className) => (
       <RoleMotion
         align="center"
-        className={cn("text-center font-sans text-base font-semibold text-foreground", className)}
+        className={cn(
+          "text-center font-sans text-base font-semibold text-foreground",
+          className,
+        )}
         index={0}
         preservePrefix={dial.preservePrefix}
         roles={[text]}
@@ -768,7 +944,11 @@ function SiteTextAnimationDemo() {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => setIndex((current) => (current + 1) % Math.max(phrases.length, 1))}
+              onClick={() =>
+                setIndex(
+                  (current) => (current + 1) % Math.max(phrases.length, 1),
+                )
+              }
             >
               Next
               <ArrowRightIcon data-icon="inline-end" />
@@ -815,7 +995,10 @@ function RoleTextDemo() {
       <RoleText
         align="center"
         blur={dial.blur}
-        className={cn("text-center font-sans text-base font-semibold text-foreground", className)}
+        className={cn(
+          "text-center font-sans text-base font-semibold text-foreground",
+          className,
+        )}
         duration={Math.round(dial.duration)}
         entranceHeight={dial.entranceHeight}
         entranceScale={dial.entranceScale}
@@ -862,7 +1045,11 @@ function RoleTextDemo() {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => setIndex((current) => (current + 1) % Math.max(phrases.length, 1))}
+              onClick={() =>
+                setIndex(
+                  (current) => (current + 1) % Math.max(phrases.length, 1),
+                )
+              }
             >
               Next
               <ArrowRightIcon data-icon="inline-end" />
@@ -881,6 +1068,8 @@ const animationPreviews: Record<string, React.ComponentType> = {
   "animation-border-beam": BorderBeamDemo,
   "animation-gradient-shimmer": GradientShimmerDemo,
   "animation-gradient-shimmer-primitive": GradientShimmerPrimitiveDemo,
+  "animation-progressive-blur-slider": ProgressiveBlurSliderDemo,
+  "animation-progressive-blur-image": ProgressiveBlurImageDemo,
   "animation-gradient-border": GradientBorderPluginDemo,
   "animation-pasito": PasitoDemo,
   "animation-slot-text": SlotTextDemo,

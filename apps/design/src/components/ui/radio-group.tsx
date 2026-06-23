@@ -40,7 +40,7 @@ function RadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props) {
       />
       <RadioPrimitive.Indicator
         data-slot="radio-group-indicator"
-        className="relative z-10 flex size-[15px] items-center justify-center"
+        className="relative z-10 flex size-3.5 items-center justify-center"
       >
         <span className="size-1.5 rounded-full bg-[var(--control-checked-foreground)] shadow-[0_1px_2px_0_rgb(0_0_0_/_18%)]" />
       </RadioPrimitive.Indicator>

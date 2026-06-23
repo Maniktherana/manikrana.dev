@@ -41,6 +41,7 @@ import textareaSource from "@/components/design/examples/textarea-examples.tsx?r
 import tooltipSource from "@/components/design/examples/tooltip-examples.tsx?raw";
 import toastSource from "@/components/design/examples/toast-examples.tsx?raw";
 import dynamicIslandBlockSource from "@/components/design/dynamic-island.tsx?raw";
+import aiChatBlockSource from "@/components/design/ai-chat.tsx?raw";
 import familyDrawerBlockSource from "@/components/design/family-drawer.tsx?raw";
 import messageComposerBlockSource from "@/components/design/message-composer.tsx?raw";
 
@@ -253,6 +254,61 @@ export function GradientShimmerPrimitiveDemo() {
       <GradientShimmer gradient={buildGradientShimmerGradient(palettes.bay)}>
         Resting before service...
       </GradientShimmer>
+    </div>
+  );
+}`,
+  "animation-progressive-blur-slider": `import { Marquee } from "@/components/ui/marquee";
+import { ProgressiveBlur } from "@/components/ui/progressive-blur";
+
+const items = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+export function ProgressiveBlurSlider() {
+  return (
+    <div className="relative h-[350px] w-full overflow-hidden">
+      <Marquee className="h-full" duration={16} gap={0}>
+        {items.map((item) => (
+          <div
+            className="w-32 shrink-0 text-center text-4xl font-[450] text-black dark:text-white"
+            key={item}
+          >
+            {item}
+          </div>
+        ))}
+      </Marquee>
+      <ProgressiveBlur
+        className="absolute top-0 left-0 h-full w-[200px]"
+        direction="left"
+        blurIntensity={1}
+      />
+      <ProgressiveBlur
+        className="absolute top-0 right-0 h-full w-[200px]"
+        direction="right"
+        blurIntensity={1}
+      />
+    </div>
+  );
+}`,
+  "animation-progressive-blur-image": `import { ProgressiveBlur } from "@/components/ui/progressive-blur";
+
+export function ProgressiveBlurBasic() {
+  return (
+    <div className="relative my-4 aspect-square w-[300px] overflow-hidden rounded-[4px]">
+      <img
+        src="/manik.png"
+        alt="Manik Rana"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <ProgressiveBlur
+        className="absolute bottom-0 left-0 h-[50%] w-full"
+        blurIntensity={6}
+      />
+      <div className="absolute bottom-0 left-0">
+        <div className="flex flex-col items-start gap-0 px-5 py-4">
+          <p className="text-base font-medium text-white">Manik Rana</p>
+          <span className="mb-2 text-base text-zinc-300">manikrana.dev</span>
+          <p className="text-base text-white">Progressive blur overlay</p>
+        </div>
+      </div>
     </div>
   );
 }`,
@@ -483,6 +539,7 @@ export function RoleTextDemo() {
     </>
   );
 }`,
+  "ai-chat": aiChatBlockSource.trim(),
   "dynamic-island": dynamicIslandBlockSource.trim(),
   "family-drawer": familyDrawerBlockSource.trim(),
   "message-composer": messageComposerBlockSource.trim(),
@@ -572,7 +629,12 @@ function scanStateAt(source: string, index: number) {
 function isTopLevelCodePosition(source: string, index: number) {
   const state = scanStateAt(source, index);
 
-  return state.depth === 0 && !state.quote && !state.lineComment && !state.blockComment;
+  return (
+    state.depth === 0 &&
+    !state.quote &&
+    !state.lineComment &&
+    !state.blockComment
+  );
 }
 
 function findMatchingBrace(source: string, braceStart: number) {
@@ -698,7 +760,12 @@ function findStatementEnd(source: string, start: number) {
     else if (char === "]") bracketDepth -= 1;
     else if (char === "(") parenDepth += 1;
     else if (char === ")") parenDepth -= 1;
-    else if (char === ";" && braceDepth === 0 && bracketDepth === 0 && parenDepth === 0) {
+    else if (
+      char === ";" &&
+      braceDepth === 0 &&
+      bracketDepth === 0 &&
+      parenDepth === 0
+    ) {
       return index + 1;
     }
   }
@@ -706,7 +773,10 @@ function findStatementEnd(source: string, start: number) {
   return -1;
 }
 
-function extractFunctionSource(source: string, name: string): Declaration | undefined {
+function extractFunctionSource(
+  source: string,
+  name: string,
+): Declaration | undefined {
   const signature = new RegExp(`function\\s+${name}\\s*\\(`).exec(source);
 
   if (!signature) return undefined;
@@ -737,7 +807,9 @@ function extractTopLevelDeclarations(source: string) {
     if (declaration) declarations.set(name, declaration);
   }
 
-  for (const match of source.matchAll(/\b(?:const|let|var)\s+([A-Za-z]\w*)\b/g)) {
+  for (const match of source.matchAll(
+    /\b(?:const|let|var)\s+([A-Za-z]\w*)\b/g,
+  )) {
     const [, name] = match;
     const start = match.index ?? 0;
 
@@ -774,7 +846,9 @@ function parseNamedImports(source: string, isTypeOnly: boolean) {
 function extractImportDeclarations(source: string) {
   const declarations: ImportDeclaration[] = [];
 
-  for (const match of source.matchAll(/import\s+([\s\S]*?)\s+from\s+["']([^"']+)["'];/g)) {
+  for (const match of source.matchAll(
+    /import\s+([\s\S]*?)\s+from\s+["']([^"']+)["'];/g,
+  )) {
     const statementStart = match.index ?? 0;
 
     if (!isTopLevelCodePosition(source, statementStart)) continue;
@@ -800,19 +874,30 @@ function extractImportDeclarations(source: string) {
 
       if (namedMatch) {
         named = parseNamedImports(namedMatch[1], isTypeOnly);
-        defaultName = clause.slice(0, namedMatch.index).replace(/,$/, "").trim() || undefined;
+        defaultName =
+          clause.slice(0, namedMatch.index).replace(/,$/, "").trim() ||
+          undefined;
       } else {
         defaultName = clause;
       }
     }
 
-    declarations.push({ defaultName, isTypeOnly, module, named, namespaceName });
+    declarations.push({
+      defaultName,
+      isTypeOnly,
+      module,
+      named,
+      namespaceName,
+    });
   }
 
   return declarations;
 }
 
-function formatImportDeclaration(declaration: ImportDeclaration, usedNames: Set<string>) {
+function formatImportDeclaration(
+  declaration: ImportDeclaration,
+  usedNames: Set<string>,
+) {
   const named = declaration.named.filter((item) => usedNames.has(item.local));
   const defaultName =
     declaration.defaultName && usedNames.has(declaration.defaultName)
@@ -833,16 +918,21 @@ function formatImportDeclaration(declaration: ImportDeclaration, usedNames: Set<
   const hasTypeNamed = named.some((item) => item.isType);
   const namedParts = named.map((item) => {
     const alias =
-      item.imported === item.local ? item.imported : `${item.imported} as ${item.local}`;
+      item.imported === item.local
+        ? item.imported
+        : `${item.imported} as ${item.local}`;
 
-    return item.isType && (hasRuntimeNamed || defaultName) ? `type ${alias}` : alias;
+    return item.isType && (hasRuntimeNamed || defaultName)
+      ? `type ${alias}`
+      : alias;
   });
   const namedSource = namedParts.join(", ");
   const importPrefix = `import ${declaration.isTypeOnly || (!hasRuntimeNamed && hasTypeNamed) ? "type " : ""}`;
   const singleLineNamedImport = defaultName
     ? `import ${defaultName}, { ${namedSource} } from "${declaration.module}";`
     : `${importPrefix}{ ${namedSource} } from "${declaration.module}";`;
-  const shouldWrapNamedImport = namedParts.length > 2 || singleLineNamedImport.length > 100;
+  const shouldWrapNamedImport =
+    namedParts.length > 2 || singleLineNamedImport.length > 100;
   const multilineNamedSource = `{\n  ${namedParts.join(",\n  ")},\n}`;
 
   if (defaultName && namedSource) {
@@ -864,7 +954,10 @@ function formatImportDeclaration(declaration: ImportDeclaration, usedNames: Set<
   return singleLineNamedImport;
 }
 
-function collectDemoDeclarations(declarations: Map<string, Declaration>, functionName: string) {
+function collectDemoDeclarations(
+  declarations: Map<string, Declaration>,
+  functionName: string,
+) {
   const target = declarations.get(functionName);
 
   if (!target) return [];
@@ -886,7 +979,9 @@ function collectDemoDeclarations(declarations: Map<string, Declaration>, functio
 
   return [...collected]
     .map((name) => declarations.get(name))
-    .filter((declaration): declaration is Declaration => declaration !== undefined)
+    .filter(
+      (declaration): declaration is Declaration => declaration !== undefined,
+    )
     .sort((a, b) => a.start - b.start);
 }
 
@@ -988,14 +1083,17 @@ function stripWrappingParens(source: string) {
 }
 
 function extractSimpleReturnExpression(functionSource: string) {
-  const signature = /^function\s+[A-Za-z]\w*\s*\(([\s\S]*?)\)\s*\{/.exec(functionSource);
+  const signature = /^function\s+[A-Za-z]\w*\s*\(([\s\S]*?)\)\s*\{/.exec(
+    functionSource,
+  );
 
   if (!signature || signature[1].trim()) return undefined;
 
   const braceStart = functionSource.indexOf("{");
   const braceEnd = functionSource.lastIndexOf("}");
 
-  if (braceStart === -1 || braceEnd === -1 || braceEnd <= braceStart) return undefined;
+  if (braceStart === -1 || braceEnd === -1 || braceEnd <= braceStart)
+    return undefined;
 
   const body = functionSource.slice(braceStart + 1, braceEnd).trim();
 
@@ -1036,7 +1134,9 @@ function collectReferencedDeclarations(
 
   return [...collected]
     .map((name) => declarations.get(name))
-    .filter((declaration): declaration is Declaration => declaration !== undefined)
+    .filter(
+      (declaration): declaration is Declaration => declaration !== undefined,
+    )
     .sort((a, b) => a.start - b.start);
 }
 
@@ -1048,10 +1148,17 @@ function buildDemoSource(source: string, functionName: string) {
 
   const simpleReturnExpression = extractSimpleReturnExpression(target.source);
   const demoDeclarations = simpleReturnExpression
-    ? collectReferencedDeclarations(declarations, simpleReturnExpression, new Set([functionName]))
+    ? collectReferencedDeclarations(
+        declarations,
+        simpleReturnExpression,
+        new Set([functionName]),
+      )
     : collectDemoDeclarations(declarations, functionName);
   const declarationSource = simpleReturnExpression
-    ? [...demoDeclarations.map((declaration) => declaration.source), simpleReturnExpression]
+    ? [
+        ...demoDeclarations.map((declaration) => declaration.source),
+        simpleReturnExpression,
+      ]
         .filter(Boolean)
         .join("\n\n")
     : demoDeclarations.map((declaration) => declaration.source).join("\n\n");

@@ -50,7 +50,7 @@ function MenubarTrigger({ className, ...props }: React.ComponentProps<typeof Dro
     <DropdownMenuTrigger
       data-slot="menubar-trigger"
       className={cn(
-        "flex h-7 items-center gap-2 rounded-none px-2 text-[13px] leading-[1.1] font-normal text-secondary-foreground outline-hidden select-none hover:bg-accent hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground data-popup-open:bg-accent data-popup-open:text-foreground [&_svg:not([class*='size-'])]:size-[15px]",
+        "flex h-7 items-center gap-2 rounded-none px-2 text-sm leading-none font-normal text-secondary-foreground outline-hidden select-none hover:bg-accent hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground data-popup-open:bg-accent data-popup-open:text-foreground [&_svg:not([class*='size-'])]:size-4",
         className,
       )}
       {...props}
@@ -92,7 +92,7 @@ function MenubarItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        "group/menubar-item h-6 gap-1.5 rounded-md-inner px-1.5 text-xs leading-[1.1] font-normal text-secondary-foreground focus:bg-accent focus:text-foreground not-data-[variant=destructive]:focus:**:text-foreground data-inset:pl-[26px] data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-3.5 data-[variant=destructive]:*:[svg]:text-destructive!",
+        "group/menubar-item h-6 gap-1.5 rounded-md-inner px-1.5 text-xs leading-none font-normal text-secondary-foreground focus:bg-accent focus:text-foreground not-data-[variant=destructive]:focus:**:text-foreground data-inset:pl-[26px] data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-3.5 data-[variant=destructive]:*:[svg]:text-destructive!",
         className,
       )}
       {...props}
@@ -114,7 +114,7 @@ function MenubarCheckboxItem({
       data-slot="menubar-checkbox-item"
       data-inset={inset}
       className={cn(
-        "relative flex h-6 cursor-default items-center gap-1.5 rounded-md-inner py-0 pr-6 pl-[26px] text-xs leading-[1.1] font-normal text-secondary-foreground outline-hidden select-none focus:bg-accent focus:text-foreground focus:**:text-foreground data-inset:pl-[26px] data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
+        "relative flex h-6 cursor-default items-center gap-1.5 rounded-md-inner py-0 pr-6 pl-[26px] text-xs leading-none font-normal text-secondary-foreground outline-hidden select-none focus:bg-accent focus:text-foreground focus:**:text-foreground data-inset:pl-[26px] data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
         className,
       )}
       checked={checked}
@@ -147,7 +147,7 @@ function MenubarRadioItem({
       data-slot="menubar-radio-item"
       data-inset={inset}
       className={cn(
-        "relative flex h-6 cursor-default items-center gap-1.5 rounded-md-inner py-0 pr-6 pl-[26px] text-xs leading-[1.1] font-normal text-secondary-foreground outline-hidden select-none focus:bg-accent focus:text-foreground focus:**:text-foreground data-inset:pl-[26px] data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
+        "relative flex h-6 cursor-default items-center gap-1.5 rounded-md-inner py-0 pr-6 pl-[26px] text-xs leading-none font-normal text-secondary-foreground outline-hidden select-none focus:bg-accent focus:text-foreground focus:**:text-foreground data-inset:pl-[26px] data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
         className,
       )}
       {...props}
@@ -174,7 +174,7 @@ function MenubarLabel({
       data-slot="menubar-label"
       data-inset={inset}
       className={cn(
-        "flex h-6 items-center px-1.5 text-[11px] leading-[1.1] font-normal text-muted-foreground data-inset:pl-[26px]",
+        "flex h-6 items-center px-1.5 text-xs leading-none font-normal text-muted-foreground data-inset:pl-[26px]",
         className,
       )}
       {...props}
@@ -206,7 +206,7 @@ function MenubarShortcut({
     <DropdownMenuShortcut
       data-slot="menubar-shortcut"
       className={cn(
-        "ml-auto text-xs leading-[1.1] font-normal tracking-widest text-muted-foreground group-focus/menubar-item:text-foreground",
+        "ml-auto text-xs leading-none font-normal tracking-widest text-muted-foreground group-focus/menubar-item:text-foreground",
         className,
       )}
       {...props}
@@ -230,7 +230,7 @@ function MenubarSubTrigger({
       data-slot="menubar-sub-trigger"
       data-inset={inset}
       className={cn(
-        "h-6 gap-1.5 rounded-md-inner px-1.5 text-xs leading-[1.1] font-normal text-secondary-foreground focus:bg-accent focus:text-foreground data-inset:pl-[26px] data-open:bg-accent data-open:text-foreground [&_svg:not([class*='size-'])]:size-3.5",
+        "h-6 gap-1.5 rounded-md-inner px-1.5 text-xs leading-none font-normal text-secondary-foreground focus:bg-accent focus:text-foreground data-inset:pl-[26px] data-open:bg-accent data-open:text-foreground [&_svg:not([class*='size-'])]:size-3.5",
         className,
       )}
       {...props}

@@ -34,15 +34,15 @@ const Toaster = ({ ...props }: ToasterProps) => {
         classNames: {
           toast:
             "!w-[360px] !min-h-0 !items-start !gap-2 !rounded-lg !border !border-transparent !bg-card !p-3 !text-card-foreground !shadow-[var(--shadow-overlay-md)]",
-          title: "!font-sans !text-[13px] !leading-[1.6] !font-normal !text-foreground",
+          title: "!font-sans !text-sm !leading-relaxed !font-normal !text-foreground",
           description:
-            "!font-sans !text-[13px] !leading-[1.6] !font-normal !text-secondary-foreground",
+            "!font-sans !text-sm !leading-relaxed !font-normal !text-secondary-foreground",
           actionButton:
-            "!m-0 !mr-3 !h-auto !rounded !border-0 !bg-transparent !p-0 !font-sans !text-[13px] !leading-[1.6] !font-medium !text-foreground hover:!underline",
+            "!m-0 !mr-3 !h-auto !rounded !border-0 !bg-transparent !p-0 !font-sans !text-sm !leading-relaxed !font-medium !text-foreground hover:!underline",
           cancelButton:
-            "!m-0 !mr-3 !h-auto !rounded !border-0 !bg-transparent !p-0 !font-sans !text-[13px] !leading-[1.6] !font-medium !text-foreground hover:!underline",
+            "!m-0 !mr-3 !h-auto !rounded !border-0 !bg-transparent !p-0 !font-sans !text-sm !leading-relaxed !font-medium !text-foreground hover:!underline",
           closeButton: "!top-2 !right-2 !size-5 !border-0 !bg-transparent !text-muted-foreground",
-          icon: "!m-0 flex !size-5 items-center justify-center !text-muted-foreground [&_svg]:!size-[15px]",
+          icon: "!m-0 flex !size-5 items-center justify-center !text-muted-foreground [&_svg]:!size-4",
         },
       }}
       {...props}

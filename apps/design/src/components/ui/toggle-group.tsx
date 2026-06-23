@@ -43,7 +43,7 @@ function ToggleGroup({
         "group/toggle-group flex w-fit flex-row items-center gap-[--spacing(var(--gap))] rounded-lg data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-vertical:flex-col data-vertical:items-stretch",
         variant !== "segmented" && "border border-border bg-accent p-0.5",
         variant === "segmented" &&
-          "h-[30px] min-w-80 gap-px rounded-[7px] bg-muted p-px data-vertical:h-fit data-vertical:w-80 data-vertical:flex-col",
+          "h-8 min-w-80 gap-px rounded-[7px] bg-muted p-px data-vertical:h-fit data-vertical:w-80 data-vertical:flex-col",
         className,
       )}
       {...props}

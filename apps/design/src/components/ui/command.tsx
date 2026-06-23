@@ -81,7 +81,7 @@ function CommandInput({
         <CommandPrimitive.Input
           data-slot="command-input"
           className={cn(
-            "h-[52px] w-full px-4 text-sm leading-[1.1] outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+            "h-[52px] w-full px-4 text-sm leading-none outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
             className,
           )}
           {...props}
@@ -173,7 +173,7 @@ function CommandItem({
     <CommandPrimitive.Item
       data-slot="command-item"
       className={cn(
-        "group/command-item relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1 text-[13px] outline-hidden select-none in-data-[slot=dialog-content]:rounded-lg! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-selected:bg-muted data-selected:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-selected:*:[svg]:text-foreground",
+        "group/command-item relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1 text-sm outline-hidden select-none in-data-[slot=dialog-content]:rounded-lg! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-selected:bg-muted data-selected:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-selected:*:[svg]:text-foreground",
         className,
       )}
       {...props}
@@ -215,7 +215,7 @@ function CommandBar({
       )}
       {...props}
     >
-      <span className="whitespace-nowrap px-2 py-2 pr-2 pl-3 text-[13px] leading-[1.1] font-medium text-[rgb(255_255_255_/_56%)]">
+      <span className="whitespace-nowrap px-2 py-2 pr-2 pl-3 text-sm leading-none font-medium text-[rgb(255_255_255_/_56%)]">
         {selectedLabel}
       </span>
       <span aria-hidden="true" className="h-3 w-px bg-[rgb(255_255_255_/_16%)]" />
@@ -240,7 +240,7 @@ function CommandBarAction({
       data-slot="commandbar-action"
       data-edge={edge ? "true" : undefined}
       className={cn(
-        "inline-flex min-h-9 items-center gap-1.5 border-0 bg-[#212124] px-2 py-2.5 font-sans text-[13px] leading-[1.1] font-medium whitespace-nowrap text-[rgb(255_255_255_/_88%)] outline-none hover:bg-[#27272a] focus-visible:bg-[#27272a] data-[edge=true]:rounded-r-full data-[edge=true]:pr-3 [&_svg]:size-[15px] [&_svg]:shrink-0",
+        "inline-flex min-h-9 items-center gap-1.5 border-0 bg-[#212124] px-2 py-2.5 font-sans text-sm leading-none font-medium whitespace-nowrap text-[rgb(255_255_255_/_88%)] outline-none hover:bg-[#27272a] focus-visible:bg-[#27272a] data-[edge=true]:rounded-r-full data-[edge=true]:pr-3 [&_svg]:size-4 [&_svg]:shrink-0",
         className,
       )}
       {...props}

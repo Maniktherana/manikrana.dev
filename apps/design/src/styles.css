@@ -330,6 +330,6 @@
     -moz-osx-font-smoothing: grayscale;
     font-optical-sizing: auto;
     font-synthesis-weight: none;
-    text-rendering: optimizeLegibility;
+    text-rendering: optimizeSpeed;
   }
 }

@@ -23,7 +23,7 @@ function BreadcrumbList({
       data-slot="breadcrumb-list"
       data-theme={theme}
       className={cn(
-        "group/breadcrumb-list flex flex-wrap items-center gap-1.5 text-xs leading-[1.1] font-medium wrap-break-word text-muted-foreground data-[theme=subtle]:text-secondary-foreground",
+        "group/breadcrumb-list flex flex-wrap items-center gap-1.5 text-xs leading-none font-medium wrap-break-word text-muted-foreground data-[theme=subtle]:text-secondary-foreground",
         className,
       )}
       {...props}
@@ -83,7 +83,7 @@ function BreadcrumbSeparator({ children, className, ...props }: React.ComponentP
       role="presentation"
       aria-hidden="true"
       className={cn(
-        "flex items-center text-muted-foreground group-data-[theme=subtle]/breadcrumb-list:text-secondary-foreground [&>svg]:size-[15px]",
+        "flex items-center text-muted-foreground group-data-[theme=subtle]/breadcrumb-list:text-secondary-foreground [&>svg]:size-3.5",
         className,
       )}
       {...props}
@@ -100,7 +100,7 @@ function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"span"
       role="presentation"
       aria-hidden="true"
       className={cn(
-        "flex h-[13px] items-center justify-center text-muted-foreground group-data-[theme=subtle]/breadcrumb-list:text-secondary-foreground [&>svg]:size-[15px]",
+        "flex h-3.5 items-center justify-center text-muted-foreground group-data-[theme=subtle]/breadcrumb-list:text-secondary-foreground [&>svg]:size-3.5",
         className,
       )}
       {...props}

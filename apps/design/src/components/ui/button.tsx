@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "group/button relative inline-flex min-h-0 shrink-0 origin-center items-center justify-center rounded-lg border border-transparent bg-clip-padding font-sans text-[13px] leading-[1.1] font-medium tracking-normal whitespace-nowrap transition-[background-color,box-shadow,color,scale] duration-100 ease-out outline-none select-none active:scale-[0.98] motion-reduce:active:scale-100 focus-visible:ring-[3px] focus-visible:ring-ring/24 focus-visible:ring-offset-0 disabled:pointer-events-none disabled:shadow-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:shadow-none aria-disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:shadow-none data-[disabled]:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 in-data-[slot=input-group]:shadow-none [&>:not(svg)]:leading-[inherit] [&_svg]:pointer-events-none [&_svg]:size-[15px] [&_svg]:shrink-0",
+  "group/button relative inline-flex min-h-0 shrink-0 origin-center items-center justify-center rounded-lg border border-transparent bg-clip-padding font-sans text-sm leading-none font-medium tracking-normal whitespace-nowrap transition-[background-color,box-shadow,color,scale] duration-100 ease-out outline-none select-none transform-gpu [backface-visibility:hidden] active:scale-[0.96] motion-reduce:active:scale-100 focus-visible:ring-[3px] focus-visible:ring-ring/24 focus-visible:ring-offset-0 disabled:pointer-events-none disabled:shadow-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:shadow-none aria-disabled:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:shadow-none data-[disabled]:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 in-data-[slot=input-group]:shadow-none [&>:not(svg)]:leading-[inherit] [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -18,15 +18,15 @@ const buttonVariants = cva(
           "text-foreground shadow-none hover:bg-[var(--button-transparent-hover)] hover:text-foreground active:bg-[var(--button-transparent-hover)] data-[active=true]:bg-[var(--button-transparent-hover)] aria-expanded:bg-[var(--button-transparent-hover)] aria-expanded:text-foreground data-popup-open:bg-[var(--button-transparent-hover)] data-popup-open:text-foreground",
         destructive:
           "border-transparent bg-[var(--destructive-action)] bg-clip-border text-[var(--destructive-action-foreground)] shadow-[var(--shadow-destructive-action)] hover:bg-[var(--destructive-action-hover)] hover:text-[var(--destructive-action-foreground)]",
-        link: "h-auto min-h-0 gap-0 self-center border-transparent bg-transparent p-0 leading-[1.6] text-foreground shadow-none no-underline hover:bg-transparent hover:text-foreground hover:underline active:scale-100",
+        link: "h-auto min-h-0 gap-0 self-center border-transparent bg-transparent p-0 leading-relaxed text-foreground shadow-none no-underline hover:bg-transparent hover:text-foreground hover:underline active:scale-100",
       },
       size: {
         default:
-          "h-[30px] min-h-[30px] gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+          "h-8 min-h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
         xs: "h-6 gap-1 px-2 text-xs has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg]:size-3",
-        sm: "h-7 gap-1 px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg]:size-3.5",
+        sm: "h-7 gap-1 px-2.5 text-sm has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg]:size-3.5",
         lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        icon: "size-[30px]",
+        icon: "size-8",
         "icon-xs": "size-6 [&_svg]:size-3",
         "icon-sm": "size-7",
         "icon-lg": "size-9",

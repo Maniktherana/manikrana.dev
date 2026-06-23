@@ -45,7 +45,7 @@ const badgeIndicatorVariants = {
 };
 
 const badgeVariants = cva(
-  "group/badge inline-flex h-[18px] w-fit shrink-0 items-center justify-center gap-0 overflow-hidden border-[0.5px] px-1 py-0.5 text-center text-xs leading-[1.1] font-medium tracking-normal whitespace-nowrap transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40 has-data-[icon=inline-end]:pr-1 has-data-[icon=inline-start]:pl-0.5 [&>svg]:pointer-events-none [&>svg]:size-[15px]",
+  "group/badge inline-flex h-[18px] w-fit shrink-0 items-center justify-center gap-0 overflow-hidden border-[0.5px] px-1 py-0.5 text-center text-xs leading-none font-medium tracking-normal whitespace-nowrap transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40 has-data-[icon=inline-end]:pr-1 has-data-[icon=inline-start]:pl-0.5 [&>svg]:pointer-events-none [&>svg]:size-4",
   {
     variants: {
       variant: badgeStateVariants,
@@ -89,7 +89,7 @@ function Badge({
 }
 
 const statusBadgeVariants = cva(
-  "inline-flex h-[18px] w-fit shrink-0 items-center justify-center overflow-hidden rounded-sm border-[0.5px] border-[#d4d4d8] bg-[#f4f4f5] py-px pr-[5px] text-xs leading-[1.1] font-medium text-[#52525b] whitespace-nowrap dark:border-white/10 dark:bg-[#3f3f46] dark:text-[#d4d4d8] [&>svg]:pointer-events-none [&>svg]:size-[15px]",
+  "inline-flex h-[18px] w-fit shrink-0 items-center justify-center overflow-hidden rounded-sm border-[0.5px] border-[#d4d4d8] bg-[#f4f4f5] py-px pr-[5px] text-xs leading-none font-medium text-[#52525b] whitespace-nowrap dark:border-white/10 dark:bg-[#3f3f46] dark:text-[#d4d4d8] [&>svg]:pointer-events-none [&>svg]:size-4",
   {
     variants: {
       status: {
@@ -155,7 +155,7 @@ function StatusBadge({
 }
 
 const iconBadgeVariants = cva(
-  "inline-flex size-5 shrink-0 items-center justify-center rounded-sm border-[0.5px] p-0 transition-colors [&>svg]:pointer-events-none [&>svg]:size-[15px]",
+  "inline-flex size-5 shrink-0 items-center justify-center rounded-sm border-[0.5px] p-0 transition-colors [&>svg]:pointer-events-none [&>svg]:size-4",
   {
     variants: {
       variant: badgeStateVariants,
@@ -186,7 +186,7 @@ function UserBadge({ className, ...props }: React.ComponentProps<"span">) {
     <span
       data-slot="user-badge"
       className={cn(
-        "inline-flex h-7 w-fit shrink-0 items-center justify-center gap-2 rounded-full bg-[#fafafa] py-1 pr-2.5 pl-1 text-xs leading-[1.1] font-medium text-[#52525b] whitespace-nowrap shadow-[0_0_0_1px_rgb(0_0_0_/_8%),0_1px_2px_rgb(0_0_0_/_12%)] transition-colors hover:bg-[#f4f4f5] [&>[data-slot=avatar]]:size-5",
+        "inline-flex h-7 w-fit shrink-0 items-center justify-center gap-2 rounded-full bg-[#fafafa] py-1 pr-2.5 pl-1 text-xs leading-none font-medium text-[#52525b] whitespace-nowrap shadow-[0_0_0_1px_rgb(0_0_0_/_8%),0_1px_2px_rgb(0_0_0_/_12%)] transition-colors hover:bg-[#f4f4f5] [&>[data-slot=avatar]]:size-5",
         "dark:bg-[#27272a] dark:text-[#a1a1aa] dark:hover:bg-white/10",
         className,
       )}

@@ -11,7 +11,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
       <table
         data-slot="table"
         className={cn(
-          "w-full min-w-[800px] caption-bottom border-separate border-spacing-0 bg-card text-[13px]",
+          "w-full min-w-[800px] caption-bottom border-separate border-spacing-0 bg-card text-sm",
           className,
         )}
         {...props}
@@ -65,7 +65,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "h-9 border-b px-2 text-left align-middle font-mono text-xs leading-[1.1] font-normal whitespace-nowrap text-secondary-foreground uppercase first:pl-3 last:pr-3 [&:has([role=checkbox])]:w-8 [&:has([role=checkbox])]:pr-0",
+        "h-9 border-b px-2 text-left align-middle font-mono text-xs leading-none font-normal whitespace-nowrap text-secondary-foreground uppercase first:pl-3 last:pr-3 [&:has([role=checkbox])]:w-8 [&:has([role=checkbox])]:pr-0",
         className,
       )}
       {...props}
@@ -78,7 +78,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="table-cell"
       className={cn(
-        "h-9 border-b px-2 align-middle text-[13px] leading-[1.1] font-normal whitespace-nowrap text-foreground first:pl-3 last:pr-3 [&:has([role=checkbox])]:w-8 [&:has([role=checkbox])]:pr-0 [&_[data-slot=badge]]:align-middle",
+        "h-9 border-b px-2 align-middle text-sm leading-none font-normal whitespace-nowrap text-foreground first:pl-3 last:pr-3 [&:has([role=checkbox])]:w-8 [&:has([role=checkbox])]:pr-0 [&_[data-slot=badge]]:align-middle",
         className,
       )}
       {...props}

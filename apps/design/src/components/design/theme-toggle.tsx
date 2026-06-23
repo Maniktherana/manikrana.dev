@@ -99,9 +99,9 @@ function ThemeToggle() {
           />
         }
       >
-        <span aria-hidden="true" className="relative size-[15px]">
-          <MoonIcon className="absolute inset-0 size-[15px] dark:hidden" />
-          <SunIcon className="absolute inset-0 hidden size-[15px] dark:block" />
+        <span aria-hidden="true" className="relative size-4">
+          <MoonIcon className="absolute inset-0 size-4 dark:hidden" />
+          <SunIcon className="absolute inset-0 hidden size-4 dark:block" />
         </span>
       </TooltipTrigger>
       <TooltipContent>{tooltipLabel}</TooltipContent>

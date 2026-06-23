@@ -47,7 +47,7 @@ const COPY_ICON_TRANSITION = { type: "spring", duration: 0.3, bounce: 0 } as con
 
 function CopyButtonIcon({ copied }: { copied: boolean }) {
   return (
-    <span aria-hidden="true" data-slot="copy-button-icon" className="relative block size-[15px]">
+    <span aria-hidden="true" data-slot="copy-button-icon" className="relative block size-4">
       <motion.span
         className="absolute inset-0 flex"
         initial={false}
@@ -58,7 +58,7 @@ function CopyButtonIcon({ copied }: { copied: boolean }) {
         }}
         transition={COPY_ICON_TRANSITION}
       >
-        <CopyIcon className="size-[15px]" />
+        <CopyIcon className="size-4" />
       </motion.span>
       <motion.span
         className="absolute inset-0 flex"
@@ -70,7 +70,7 @@ function CopyButtonIcon({ copied }: { copied: boolean }) {
         }}
         transition={COPY_ICON_TRANSITION}
       >
-        <CheckIcon className="size-[15px]" />
+        <CheckIcon className="size-4" />
       </motion.span>
     </span>
   );
