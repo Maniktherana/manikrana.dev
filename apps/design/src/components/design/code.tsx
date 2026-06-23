@@ -9,7 +9,7 @@ import jsx from "shiki/langs/jsx.mjs";
 import shellscript from "shiki/langs/shellscript.mjs";
 import tsx from "shiki/langs/tsx.mjs";
 import typescript from "shiki/langs/typescript.mjs";
-import githubLightDefault from "shiki/themes/github-light-default.mjs";
+import catppuccinLatte from "shiki/themes/catppuccin-latte.mjs";
 import vesper from "shiki/themes/vesper.mjs";
 import type { ShikiTransformer } from "shiki";
 
@@ -50,7 +50,7 @@ function normalizeLanguage(language: string) {
 const highlighter = createHighlighterCoreSync({
   engine: createJavaScriptRegexEngine(),
   langs: [bash, dotenv, javascript, jsx, shellscript, tsx, typescript].flat(),
-  themes: [vesper, githubLightDefault],
+  themes: [vesper, catppuccinLatte],
 });
 
 const loadedLanguages = new Set(highlighter.getLoadedLanguages());
@@ -84,7 +84,7 @@ function highlightCode(
 ) {
   return highlighter.codeToHtml(code, {
     lang: language,
-    themes: { dark: "vesper", light: "github-light-default" },
+    themes: { dark: "vesper", light: "catppuccin-latte" },
     defaultColor: false,
     transformers: [lineNumberTransformer(showLineNumbers)],
   });

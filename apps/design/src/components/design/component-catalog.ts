@@ -1,15 +1,82 @@
 export type ComponentCategory = "Animations" | "Components" | "Blocks";
 
+export type RegistryCss = {
+  [rule: string]: string | RegistryCss;
+};
+
 export type ComponentRecord = {
   id: string;
   title: string;
   category: ComponentCategory;
   primitive: string;
   files: string[];
+  registryCss?: RegistryCss;
   figmaSource: string;
   description: string;
   custom: boolean;
 };
+
+const marqueeRegistryCss = {
+  "@keyframes marquee-horizontal": {
+    from: {
+      transform: "translate3d(0, 0, 0)",
+    },
+    to: {
+      transform: "translate3d(-50%, 0, 0)",
+    },
+  },
+  "@keyframes marquee-vertical": {
+    from: {
+      transform: "translate3d(0, 0, 0)",
+    },
+    to: {
+      transform: "translate3d(0, -50%, 0)",
+    },
+  },
+} satisfies RegistryCss;
+
+const accordionRegistryCss = {
+  "@keyframes accordion-down": {
+    from: {
+      height: "0",
+    },
+    to: {
+      height: "var(--accordion-panel-height)",
+    },
+  },
+  "@keyframes accordion-up": {
+    from: {
+      height: "var(--accordion-panel-height)",
+    },
+    to: {
+      height: "0",
+    },
+  },
+  "@keyframes accordion-content-in": {
+    from: {
+      opacity: "0",
+      transform: "translateY(-4px)",
+      filter: "blur(4px)",
+    },
+    to: {
+      opacity: "1",
+      transform: "translateY(0)",
+      filter: "blur(0)",
+    },
+  },
+  "@keyframes accordion-content-out": {
+    from: {
+      opacity: "1",
+      transform: "translateY(0)",
+      filter: "blur(0)",
+    },
+    to: {
+      opacity: "0",
+      transform: "translateY(-4px)",
+      filter: "blur(4px)",
+    },
+  },
+} satisfies RegistryCss;
 
 export const componentCatalog = [
   {
@@ -22,7 +89,6 @@ export const componentCatalog = [
       "src/components/design/examples/animation-examples.tsx",
       "src/components/ui/gradient-shimmer.tsx",
       "src/components/ui/marquee.tsx",
-      "src/components/ui/marquee.css",
       "src/components/ui/progressive-blur.tsx",
       "src/components/ui/role-text.tsx",
       "node_modules/torph",
@@ -34,6 +100,7 @@ export const componentCatalog = [
       "node_modules/dialkit",
       "../site/src/components/role-motion.tsx",
     ],
+    registryCss: marqueeRegistryCss,
     figmaSource: "Animation package previews",
     description:
       "Npm animation package previews wired to DialKit controls and copyable source.",
@@ -45,6 +112,7 @@ export const componentCatalog = [
     category: "Components",
     primitive: "Accordion, AccordionItem, AccordionTrigger, AccordionContent",
     files: ["src/components/ui/accordion.tsx"],
+    registryCss: accordionRegistryCss,
     figmaSource: "Accordion / Standard Accordion / Progress Accordion",
     description: "Base UI accordion restyled as a compact card row.",
     custom: false,

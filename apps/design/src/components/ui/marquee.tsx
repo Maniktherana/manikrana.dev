@@ -3,25 +3,26 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
-import "./marquee.css";
-
-const marqueeVariants = cva("relative flex overflow-hidden", {
-  variants: {
-    direction: {
-      horizontal: "w-full",
-      vertical: "h-full flex-col",
+const marqueeVariants = cva(
+  "group/marquee relative flex overflow-hidden [--marquee-duration:20s] [--marquee-gap:1rem]",
+  {
+    variants: {
+      direction: {
+        horizontal: "w-full",
+        vertical: "h-full flex-col",
+      },
+      speed: {
+        slow: "[--marquee-duration:32s]",
+        normal: "",
+        fast: "[--marquee-duration:12s]",
+      },
     },
-    speed: {
-      slow: "",
-      normal: "",
-      fast: "",
+    defaultVariants: {
+      direction: "horizontal",
+      speed: "normal",
     },
   },
-  defaultVariants: {
-    direction: "horizontal",
-    speed: "normal",
-  },
-});
+);
 
 type MarqueeProps = Omit<React.HTMLAttributes<HTMLDivElement>, "children"> &
   VariantProps<typeof marqueeVariants> & {
@@ -76,10 +77,19 @@ function Marquee({
       style={marqueeStyle}
       {...props}
     >
-      <div data-slot="marquee-track">
-        <div data-slot="marquee-content">{children}</div>
+      <div
+        className="flex w-max min-w-full will-change-transform [animation:marquee-horizontal_var(--marquee-duration)_linear_infinite] motion-reduce:animate-none group-data-[pause-on-hover=true]/marquee:group-hover/marquee:[animation-play-state:paused] group-data-[reverse=true]/marquee:[animation-direction:reverse] group-data-[direction=vertical]/marquee:h-max group-data-[direction=vertical]/marquee:min-h-full group-data-[direction=vertical]/marquee:w-auto group-data-[direction=vertical]/marquee:min-w-0 group-data-[direction=vertical]/marquee:flex-col group-data-[direction=vertical]/marquee:[animation-name:marquee-vertical]"
+        data-slot="marquee-track"
+      >
+        <div
+          className="flex w-max min-w-full flex-none items-center gap-[var(--marquee-gap)] pe-[var(--marquee-gap)] group-data-[direction=vertical]/marquee:h-max group-data-[direction=vertical]/marquee:min-h-full group-data-[direction=vertical]/marquee:w-auto group-data-[direction=vertical]/marquee:min-w-0 group-data-[direction=vertical]/marquee:flex-col group-data-[direction=vertical]/marquee:pe-0 group-data-[direction=vertical]/marquee:pb-[var(--marquee-gap)]"
+          data-slot="marquee-content"
+        >
+          {children}
+        </div>
         <div
           aria-hidden="true"
+          className="flex w-max min-w-full flex-none items-center gap-[var(--marquee-gap)] pe-[var(--marquee-gap)] motion-reduce:hidden group-data-[direction=vertical]/marquee:h-max group-data-[direction=vertical]/marquee:min-h-full group-data-[direction=vertical]/marquee:w-auto group-data-[direction=vertical]/marquee:min-w-0 group-data-[direction=vertical]/marquee:flex-col group-data-[direction=vertical]/marquee:pe-0 group-data-[direction=vertical]/marquee:pb-[var(--marquee-gap)]"
           data-marquee-copy="true"
           data-slot="marquee-content"
         >

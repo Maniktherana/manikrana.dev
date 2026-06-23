@@ -1,7 +1,0 @@
-[data-sonner-toast] {
-  box-shadow: var(--shadow-overlay-md) !important;
-}
-
-[data-sonner-toast][data-front="false"] {
-  box-shadow: var(--shadow-overlay-stacked) !important;
-}
