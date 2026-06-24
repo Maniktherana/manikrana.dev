@@ -149,7 +149,7 @@ function CodeBlock({
           "bg-card text-card-foreground",
           // Header blocks get the shared framed-surface edge. Header-less source blocks stay bare.
           variant === "surface" &&
-            "rounded-xl has-[>[data-slot=code-block-header]]:border has-[>[data-slot=code-block-header]]:border-transparent has-[>[data-slot=code-block-header]]:bg-clip-border has-[>[data-slot=code-block-header]]:shadow-[var(--shadow-card)]",
+            "rounded-xl [--code-block-body-inset:--spacing(1.5)] has-[>[data-slot=code-block-header]]:rounded-[calc(var(--radius-lg)+var(--code-block-body-inset))] has-[>[data-slot=code-block-header]]:border has-[>[data-slot=code-block-header]]:border-transparent has-[>[data-slot=code-block-header]]:bg-clip-border has-[>[data-slot=code-block-header]]:shadow-[var(--shadow-card)]",
           variant === "bare" && "border-t border-[var(--border)]",
           className,
         )}
@@ -236,7 +236,7 @@ function CodeBlockBody({
         "bg-muted text-foreground",
         flush
           ? "m-0 rounded-[inherit] border-0"
-          : "m-[6px] rounded-lg border-0",
+          : "m-(--code-block-body-inset) rounded-lg border-0",
         className,
       )}
       {...props}

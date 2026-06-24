@@ -1,0 +1,72 @@
+---
+title: Stepper
+description: Count-based progress steps with Pasito-style pill motion and design-system tokens.
+component: true
+base: base
+---
+
+<ComponentPreview name="stepper-demo" />
+
+## Installation
+
+```bash
+bunx shadcn@latest add stepper
+```
+
+## Usage
+
+```tsx
+import { Stepper } from "@/components/ui/stepper";
+```
+
+```tsx
+<Stepper count={5} defaultValue={1} />
+```
+
+Use `value` and `onValueChange` when another view owns the current step.
+
+```tsx
+const [step, setStep] = useState(0);
+
+<Stepper count={5} value={step} onValueChange={setStep} />;
+```
+
+## Examples
+
+### Composed
+
+Use the exported pieces when you need to style the track, steps, indicator, or fill directly.
+
+```tsx
+import {
+  Stepper,
+  StepperFill,
+  StepperIndicator,
+  StepperStep,
+  StepperTrack,
+} from "@/components/ui/stepper";
+```
+
+<ComponentPreview name="stepper-composed" />
+
+### Vertical
+
+Switch orientation when the steps belong beside stacked content.
+
+<ComponentPreview name="stepper-vertical" />
+
+### Max Visible
+
+Use `maxVisible` to keep long sequences compact. The track slides so only that many steps are visible around the active step.
+
+<ComponentPreview name="stepper-max-visible" />
+
+### Autoplay
+
+Use `useAutoPlay` to drive the active value and pass its fill state to `Stepper`.
+
+```tsx
+import { useAutoPlay } from "@/components/ui/hooks/use-stepper-auto-play";
+```
+
+<ComponentPreview name="stepper-autoplay" />

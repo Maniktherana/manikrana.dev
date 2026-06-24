@@ -7,12 +7,10 @@ import {
   ArrowRightIcon,
   CheckCircle2Icon,
   LoaderCircleIcon,
+  MicIcon,
+  MicOffIcon,
 } from "lucide-react";
-import {
-  BorderBeam,
-  type BorderBeamColorVariant,
-  type BorderBeamSize,
-} from "border-beam";
+import { BorderBeam, type BorderBeamColorVariant, type BorderBeamSize } from "border-beam";
 import { useDialKit } from "dialkit";
 import {
   GradientShimmer as AnimatedGradientShimmer,
@@ -25,6 +23,7 @@ import { SlotText } from "slot-text/react";
 import { TextMorph } from "torph/react";
 
 import { Button } from "@/components/ui/button";
+import { Sweep, type GlimmDirection, type GlimmPaletteName } from "@/components/ui/glimm";
 import {
   GradientShimmer as GradientShimmerPrimitive,
   buildGradientShimmerGradient,
@@ -32,11 +31,18 @@ import {
 } from "@/components/ui/gradient-shimmer";
 import { Marquee } from "@/components/ui/marquee";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
-import {
-  RoleMotion,
-  defaultRoleMotionRoles,
-} from "@/components/ui/role-motion";
+import { RoleMotion, defaultRoleMotionRoles } from "@/components/ui/role-motion";
 import { RoleText } from "@/components/ui/role-text";
+import {
+  WebGLAudioBorder,
+  type WebGLAudioBorderSide,
+} from "@/components/ui/webgl-audio-border";
+import {
+  WebGLBorderBeam,
+  type WebGLBorderBeamDirection,
+  type WebGLBorderBeamEasing,
+  type WebGLBorderBeamSide,
+} from "@/components/ui/webgl-border-beam";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
@@ -59,21 +65,17 @@ type GradientBorderDirection =
   | "gradient-border-to-bl"
   | "gradient-border-to-l"
   | "gradient-border-to-tl";
-type GradientBorderColor =
-  | "amber"
-  | "blue"
-  | "cyan"
-  | "emerald"
-  | "indigo"
-  | "pink"
-  | "purple";
+type GradientBorderColor = "amber" | "blue" | "cyan" | "emerald" | "indigo" | "pink" | "purple";
 type GradientBorderViaColor = GradientBorderColor | "none";
 type SlotTextColor = "none" | "blue" | "chromatic" | "pink";
 type SlotTextDirection = "up" | "down";
 
 const animationPreviewTitles: Record<string, string> = {
   "animation-torph": "Torph",
+  "animation-sweep": "Sweep",
   "animation-border-beam": "Border Beam",
+  "animation-webgl-border-beam": "WebGL Border Beam",
+  "animation-webgl-audio-border": "WebGL Audio Border",
   "animation-gradient-shimmer": "Gradient Shimmer",
   "animation-gradient-shimmer-primitive": "Gradient Shimmer Primitive",
   "animation-progressive-blur-slider": "Progressive Blur Slider",
@@ -85,33 +87,12 @@ const animationPreviewTitles: Record<string, string> = {
   "animation-role-text": "Role Text",
 };
 
-const torphPhrases = [
-  "Design tokens",
-  "Motion samples",
-  "Component states",
-  "Source previews",
-];
+const torphPhrases = ["Design tokens", "Motion samples", "Component states", "Source previews"];
 const slotTextPhrases = ["Copy", "Copied", "Queued", "Published"];
-const progressiveBlurSliderItems = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-];
-const actionScenarioLabels = [
-  "Processing Transaction",
-  "Transaction Safe",
-] as const;
+const progressiveBlurSliderItems = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const actionScenarioLabels = ["Processing Transaction", "Transaction Safe"] as const;
 const copyScenarioLabels = ["Copy", "Copied"] as const;
-const pricingScenarioLabels = [
-  "Buy for $19.99 / Month",
-  "Buy for $200 / Year",
-] as const;
+const pricingScenarioLabels = ["Buy for $19.99 / Month", "Buy for $200 / Year"] as const;
 const gradientShimmerPrimitivePalettes = {
   sunrise: [
     { color: "#B6D3EF", position: 0 },
@@ -191,6 +172,59 @@ const borderBeamVariants: Array<SelectOption<BorderBeamColorVariant>> = [
   { label: "Mono", value: "mono" },
 ];
 
+const glimmPaletteOptions: Array<SelectOption<GlimmPaletteName>> = [
+  { label: "Prism", value: "prism" },
+  { label: "Berry", value: "berry" },
+  { label: "Lagoon", value: "lagoon" },
+  { label: "Citrus", value: "citrus" },
+  { label: "Azure", value: "azure" },
+  { label: "Ember", value: "ember" },
+  { label: "Neutral", value: "neutral" },
+];
+
+const glimmDirectionOptions: Array<SelectOption<GlimmDirection>> = [
+  { label: "Left to right", value: "ltr" },
+  { label: "Right to left", value: "rtl" },
+  { label: "Top to bottom", value: "ttb" },
+  { label: "Bottom to top", value: "btt" },
+];
+
+const webglBorderBeamDirections: Array<SelectOption<WebGLBorderBeamDirection>> = [
+  { label: "Clockwise", value: "clockwise" },
+  { label: "Counter", value: "counterclockwise" },
+];
+
+const webglBorderBeamSides: Array<SelectOption<WebGLBorderBeamSide>> = [
+  { label: "Bottom", value: "bottom" },
+  { label: "Top", value: "top" },
+  { label: "Right", value: "right" },
+  { label: "Left", value: "left" },
+];
+
+const webglAudioBorderSides: Array<SelectOption<WebGLAudioBorderSide>> = [
+  { label: "Bottom", value: "bottom" },
+  { label: "Top", value: "top" },
+  { label: "Right", value: "right" },
+  { label: "Left", value: "left" },
+  { label: "Around", value: "around" },
+];
+
+const webglBorderBeamEasings: Array<SelectOption<WebGLBorderBeamEasing>> = [
+  { label: "linear", value: "linear" },
+  {
+    label: "cubic-bezier(.45,0,.55,1)",
+    value: "cubic-bezier(0.45,0,0.55,1)",
+  },
+  {
+    label: "cubic-bezier(.76,0,.24,1)",
+    value: "cubic-bezier(0.76,0,0.24,1)",
+  },
+  {
+    label: "cubic-bezier(.3,0,.2,1)",
+    value: "cubic-bezier(0.3,0,0.2,1)",
+  },
+];
+
 const shimmerGradients: Array<SelectOption<GradientPresetName>> = [
   { label: "Sunrise", value: "sunrise" },
   { label: "Mint", value: "mint" },
@@ -259,10 +293,7 @@ const slotTextColors: Array<SelectOption<SlotTextColor>> = [
   { label: "Pink", value: "pink" },
 ];
 
-const slotTextColorValues: Record<
-  Exclude<SlotTextColor, "none" | "chromatic">,
-  string
-> = {
+const slotTextColorValues: Record<Exclude<SlotTextColor, "none" | "chromatic">, string> = {
   blue: "#2563eb",
   pink: "#db2777",
 };
@@ -272,9 +303,7 @@ function optionValue<T extends string>(
   value: string,
   fallback: T,
 ) {
-  return options.some((option) => option.value === value)
-    ? (value as T)
-    : fallback;
+  return options.some((option) => option.value === value) ? (value as T) : fallback;
 }
 
 function alphaColor(color: string, alpha: number) {
@@ -329,11 +358,9 @@ function MorphScenarioGrid({
   const copyIndex = useCyclingIndex(copyScenarioLabels.length);
   const pricingIndex = useCyclingIndex(pricingScenarioLabels.length);
   const numberValue = useTimedScenarioValue(numberScenarioSteps);
-  const actionLabel =
-    actionScenarioLabels[actionIndex] ?? actionScenarioLabels[0];
+  const actionLabel = actionScenarioLabels[actionIndex] ?? actionScenarioLabels[0];
   const copyLabel = copyScenarioLabels[copyIndex] ?? copyScenarioLabels[0];
-  const pricingLabel =
-    pricingScenarioLabels[pricingIndex] ?? pricingScenarioLabels[0];
+  const pricingLabel = pricingScenarioLabels[pricingIndex] ?? pricingScenarioLabels[0];
   const ActionIcon = actionIndex === 0 ? LoaderCircleIcon : CheckCircle2Icon;
 
   return (
@@ -350,15 +377,10 @@ function MorphScenarioGrid({
           className="flex max-w-[92%] items-center justify-center gap-2 overflow-visible rounded-full bg-[#2a2a2a] py-3 pr-6 pl-[1.125rem] font-sans text-base font-medium text-white"
         >
           <span className="relative grid size-6 shrink-0 place-items-center">
-            <ActionIcon
-              className={cn("size-5", actionIndex === 0 && "animate-spin")}
-            />
+            <ActionIcon className={cn("size-5", actionIndex === 0 && "animate-spin")} />
           </span>
           <span className="min-w-0 overflow-visible">
-            {renderText(
-              actionLabel,
-              "font-sans text-base font-medium text-white",
-            )}
+            {renderText(actionLabel, "font-sans text-base font-medium text-white")}
           </span>
         </button>
       </div>
@@ -380,18 +402,12 @@ function MorphScenarioGrid({
           type="button"
           className="max-w-[92%] overflow-visible rounded-xl bg-[#2a2a2a] px-4 py-2 font-sans text-base font-medium text-white"
         >
-          {renderText(
-            pricingLabel,
-            "font-sans text-base font-medium text-white",
-          )}
+          {renderText(pricingLabel, "font-sans text-base font-medium text-white")}
         </button>
       </div>
       <div className="relative z-[1] flex aspect-[1.6/1] w-full select-none items-center justify-center overflow-hidden rounded-lg bg-[#131313]">
         <div className="absolute inset-x-6 top-4 bottom-0 flex items-center justify-center overflow-hidden rounded-t-[2rem] px-2 pb-4 font-sans text-[2.5rem] font-semibold text-white shadow-[0_0_0_1px_#2a2a2a]">
-          {renderText(
-            numberValue,
-            "font-sans text-[2.5rem] font-semibold tabular-nums text-white",
-          )}
+          {renderText(numberValue, "font-sans text-[2.5rem] font-semibold tabular-nums text-white")}
           <span
             aria-hidden="true"
             className="ml-1 h-[0.95em] w-0.5 translate-y-px rounded-full bg-white/20"
@@ -482,11 +498,7 @@ function TorphDemo() {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() =>
-                setIndex(
-                  (current) => (current + 1) % Math.max(phrases.length, 1),
-                )
-              }
+              onClick={() => setIndex((current) => (current + 1) % Math.max(phrases.length, 1))}
             >
               Next
               <ArrowRightIcon data-icon="inline-end" />
@@ -536,6 +548,227 @@ function BorderBeamDemo() {
   );
 }
 
+function SweepDemo() {
+  const dial = useDialKit(
+    "Sweep",
+    {
+      active: true,
+      palette: {
+        type: "select",
+        options: glimmPaletteOptions,
+        default: "prism",
+      },
+      direction: {
+        type: "select",
+        options: glimmDirectionOptions,
+        default: "ltr",
+      },
+      sweepMs: [1100, 500, 2400, 50],
+      pauseMs: [900, 0, 2400, 50],
+      outroMs: [0, 0, 1600, 50],
+      peakAlpha: [1, 0.1, 1, 0.05],
+      bandTight: [14, 6, 28, 1],
+      waveAmount: [1, 0, 2, 0.05],
+      waveSpeed: [1, 0, 3, 0.05],
+      swellAmount: [0.55, 0, 1, 0.05],
+      brightness: [0.95, 0.35, 1.35, 0.05],
+    },
+    { id: "animation-sweep" },
+  );
+  const palette = optionValue(glimmPaletteOptions, dial.palette, "prism");
+  const direction = optionValue(glimmDirectionOptions, dial.direction, "ltr");
+
+  return (
+    <PreviewFrame className="h-[360px] p-0">
+      <div className="h-full w-full overflow-hidden">
+        <Sweep
+          active={dial.active}
+          bandTight={dial.bandTight}
+          brightness={dial.brightness}
+          direction={direction}
+          outroMs={Math.round(dial.outroMs)}
+          palette={palette}
+          pauseMs={Math.round(dial.pauseMs)}
+          peakAlpha={dial.peakAlpha}
+          swellAmount={dial.swellAmount}
+          sweepMs={Math.round(dial.sweepMs)}
+          waveAmount={dial.waveAmount}
+          waveSpeed={dial.waveSpeed}
+        />
+      </div>
+    </PreviewFrame>
+  );
+}
+
+function WebGLBorderBeamDemo() {
+  const dial = useDialKit(
+    "WebGL Border Beam",
+    {
+      active: true,
+      palette: {
+        type: "select",
+        options: glimmPaletteOptions,
+        default: "prism",
+      },
+      direction: {
+        type: "select",
+        options: webglBorderBeamDirections,
+        default: "clockwise",
+      },
+      around: false,
+      side: {
+        type: "select",
+        options: webglBorderBeamSides,
+        default: "bottom",
+      },
+      easing: {
+        type: "select",
+        options: webglBorderBeamEasings,
+        default: "linear",
+      },
+      duration: [3.1, 0.6, 5, 0.05],
+      pauseMs: [900, 0, 2400, 50],
+      borderWidth: [1, 0.1, 4, 0.1],
+      borderBrightness: [1, 0, 2, 0.05],
+      innerGlowBrightness: [1, 0, 2, 0.05],
+    },
+    { id: "animation-webgl-border-beam" },
+  );
+  const palette = optionValue(glimmPaletteOptions, dial.palette, "prism");
+  const direction = optionValue(webglBorderBeamDirections, dial.direction, "clockwise");
+  const side = optionValue(webglBorderBeamSides, dial.side, "bottom");
+  const easing = optionValue(webglBorderBeamEasings, dial.easing, "linear");
+
+  return (
+    <PreviewFrame>
+      <WebGLBorderBeam
+        active={dial.active}
+        around={dial.around}
+        borderBrightness={dial.borderBrightness}
+        borderWidth={dial.borderWidth}
+        className="w-full max-w-[320px]"
+        direction={direction}
+        duration={dial.duration}
+        easing={easing}
+        innerGlowBrightness={dial.innerGlowBrightness}
+        palette={palette}
+        pauseMs={Math.round(dial.pauseMs)}
+        side={side}
+      >
+        <div className="grid h-28 w-full place-items-center rounded-2xl border border-border bg-page-background px-6 text-center text-[13px] leading-none font-medium text-foreground">
+          WebGLBorderBeam
+        </div>
+      </WebGLBorderBeam>
+    </PreviewFrame>
+  );
+}
+
+function WebGLAudioBorderDemo() {
+  const [micActive, setMicActive] = React.useState(false);
+  const [processingActive, setProcessingActive] = React.useState(false);
+  const dial = useDialKit(
+    "WebGL Audio Border",
+    {
+      palette: {
+        type: "select",
+        options: glimmPaletteOptions,
+        default: "prism",
+      },
+      side: {
+        type: "select",
+        options: webglAudioBorderSides,
+        default: "bottom",
+      },
+      sensitivity: [0.9, 0.2, 4, 0.05],
+      responseCurve: {
+        type: "easing",
+        duration: 0.3,
+        ease: [0.55, 0.04, 0.16, 0.85],
+      },
+      noiseFloor: [0.08, 0, 0.55, 0.005],
+      idleLevel: [0.015, 0, 0.35, 0.005],
+      borderWidth: [1, 0.1, 4, 0.1],
+      borderBrightness: [1, 0, 2, 0.05],
+      innerGlowBrightness: [1, 0, 2, 0.05],
+      innerGlowHeight: [1, 0.2, 3, 0.05],
+    },
+    { id: "animation-webgl-audio-border" },
+  );
+  const palette = optionValue(glimmPaletteOptions, dial.palette, "prism");
+  const side = optionValue(webglAudioBorderSides, dial.side, "bottom");
+
+  return (
+    <PreviewFrame
+      className="h-[500px] py-6"
+      controls={
+        <>
+          <Button
+            type="button"
+            variant={micActive ? "default" : "outline"}
+            size="sm"
+            aria-pressed={micActive}
+            onClick={() => {
+              setMicActive((active) => {
+                const nextActive = !active;
+
+                if (nextActive) setProcessingActive(false);
+                return nextActive;
+              });
+            }}
+          >
+            {micActive ? (
+              <MicOffIcon data-icon="inline-start" />
+            ) : (
+              <MicIcon data-icon="inline-start" />
+            )}
+            {micActive ? "Disable mic" : "Enable mic"}
+          </Button>
+          <Button
+            type="button"
+            variant={processingActive ? "default" : "outline"}
+            size="sm"
+            aria-pressed={processingActive}
+            onClick={() => {
+              setProcessingActive((active) => {
+                const nextActive = !active;
+
+                if (nextActive) setMicActive(false);
+                return nextActive;
+              });
+            }}
+          >
+            <LoaderCircleIcon
+              data-icon="inline-start"
+              className={processingActive ? "animate-spin" : undefined}
+            />
+            {processingActive ? "Stop processing" : "Processing"}
+          </Button>
+        </>
+      }
+    >
+      <WebGLAudioBorder
+        active={micActive}
+        borderBrightness={dial.borderBrightness}
+        borderWidth={dial.borderWidth}
+        className="w-full max-w-[300px]"
+        idleLevel={dial.idleLevel}
+        innerGlowBrightness={dial.innerGlowBrightness}
+        innerGlowHeight={dial.innerGlowHeight}
+        noiseFloor={dial.noiseFloor}
+        palette={palette}
+        processing={processingActive}
+        responseCurve={dial.responseCurve}
+        sensitivity={dial.sensitivity}
+        side={side}
+      >
+        <div className="grid aspect-[3/4] w-full place-items-center rounded-[2rem] border border-white/[0.04] bg-page-background px-6 text-center text-[13px] leading-none font-medium text-foreground shadow-none">
+          WebGLAudioBorder
+        </div>
+      </WebGLAudioBorder>
+    </PreviewFrame>
+  );
+}
+
 function GradientShimmerDemo() {
   const dial = useDialKit(
     "Gradient Shimmer",
@@ -577,27 +810,19 @@ function GradientShimmerPrimitiveDemo() {
   return (
     <PreviewFrame className="h-auto min-h-[260px] overflow-visible py-8">
       <div className="flex max-w-full flex-col items-center justify-center gap-2 text-center text-base leading-[1.35] font-normal tracking-normal [&_[data-slot=gradient-shimmer]]:py-1">
-        <GradientShimmerPrimitive
-          gradient={buildGradientShimmerGradient(palettes.sunrise)}
-        >
+        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.sunrise)}>
           Creating the perfect dish...
         </GradientShimmerPrimitive>
-        <GradientShimmerPrimitive
-          gradient={buildGradientShimmerGradient(palettes.bubble)}
-        >
+        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.bubble)}>
           Plating the next course...
         </GradientShimmerPrimitive>
         <GradientShimmerPrimitive highlightColor={mintHighlight}>
           Seasoning the details...
         </GradientShimmerPrimitive>
-        <GradientShimmerPrimitive
-          gradient={buildGradientShimmerGradient(palettes.twilight)}
-        >
+        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.twilight)}>
           Whisking the sauce...
         </GradientShimmerPrimitive>
-        <GradientShimmerPrimitive
-          gradient={buildGradientShimmerGradient(palettes.bay)}
-        >
+        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.bay)}>
           Resting before service...
         </GradientShimmerPrimitive>
       </div>
@@ -644,15 +869,10 @@ function ProgressiveBlurImageDemo() {
           decoding="async"
           src="/manik.png"
         />
-        <ProgressiveBlur
-          className="absolute inset-x-0 bottom-0 h-1/2 w-full"
-          blurIntensity={6}
-        />
+        <ProgressiveBlur className="absolute inset-x-0 bottom-0 h-1/2 w-full" blurIntensity={6} />
         <div className="absolute bottom-0 left-0 px-5 py-4">
           <p className="text-base font-medium text-white">Manik Rana</p>
-          <span className="mb-2 block text-base text-zinc-300">
-            manikrana.dev
-          </span>
+          <span className="mb-2 block text-base text-zinc-300">manikrana.dev</span>
           <p className="text-base text-white">Progressive blur overlay</p>
         </div>
       </div>
@@ -694,37 +914,22 @@ function GradientBorderPluginDemo() {
     },
     { id: "animation-gradient-border" },
   );
-  const width = optionValue(
-    gradientBorderWidths,
-    dial.width,
-    "gradient-border-2",
-  );
-  const direction = optionValue(
-    gradientBorderDirections,
-    dial.direction,
-    "gradient-border-to-r",
-  );
+  const width = optionValue(gradientBorderWidths, dial.width, "gradient-border-2");
+  const direction = optionValue(gradientBorderDirections, dial.direction, "gradient-border-to-r");
   const from = optionValue(gradientBorderColors, dial.from, "indigo");
   const via = optionValue(gradientBorderViaColors, dial.via, "purple");
   const to = optionValue(gradientBorderColors, dial.to, "pink");
   const gradientStyle = {
     "--gradient-border-duration": `${dial.duration}s`,
-    "--gradient-border-from": alphaColor(
-      gradientBorderColorValues[from],
-      dial.fromAlpha,
-    ),
-    "--gradient-border-to": alphaColor(
-      gradientBorderColorValues[to],
-      dial.toAlpha,
-    ),
+    "--gradient-border-from": alphaColor(gradientBorderColorValues[from], dial.fromAlpha),
+    "--gradient-border-to": alphaColor(gradientBorderColorValues[to], dial.toAlpha),
     "--gradient-border-via":
       via === "none"
         ? "var(--gradient-border-from)"
         : alphaColor(gradientBorderColorValues[via], dial.viaAlpha),
     ...(dial.conicOverride
       ? {
-          "--gradient-border":
-            "conic-gradient(from 90deg, #6366f1, #ec4899, #22d3ee, #6366f1)",
+          "--gradient-border": "conic-gradient(from 90deg, #6366f1, #ec4899, #22d3ee, #6366f1)",
         }
       : null),
   } as React.CSSProperties;
@@ -779,12 +984,7 @@ function PasitoDemo() {
     <PreviewFrame
       className="h-[180px]"
       controls={
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={autoplay.toggle}
-        >
+        <Button type="button" variant="outline" size="sm" onClick={autoplay.toggle}>
           {autoplay.playing ? "Pause" : "Play"}
         </Button>
       }
@@ -866,11 +1066,7 @@ function SlotTextDemo() {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() =>
-                setIndex(
-                  (current) => (current + 1) % Math.max(phrases.length, 1),
-                )
-              }
+              onClick={() => setIndex((current) => (current + 1) % Math.max(phrases.length, 1))}
             >
               Next
               <ArrowRightIcon data-icon="inline-end" />
@@ -912,10 +1108,7 @@ function SiteTextAnimationDemo() {
     (text, className) => (
       <RoleMotion
         align="center"
-        className={cn(
-          "text-center font-sans text-base font-semibold text-foreground",
-          className,
-        )}
+        className={cn("text-center font-sans text-base font-semibold text-foreground", className)}
         index={0}
         preservePrefix={dial.preservePrefix}
         roles={[text]}
@@ -944,11 +1137,7 @@ function SiteTextAnimationDemo() {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() =>
-                setIndex(
-                  (current) => (current + 1) % Math.max(phrases.length, 1),
-                )
-              }
+              onClick={() => setIndex((current) => (current + 1) % Math.max(phrases.length, 1))}
             >
               Next
               <ArrowRightIcon data-icon="inline-end" />
@@ -995,10 +1184,7 @@ function RoleTextDemo() {
       <RoleText
         align="center"
         blur={dial.blur}
-        className={cn(
-          "text-center font-sans text-base font-semibold text-foreground",
-          className,
-        )}
+        className={cn("text-center font-sans text-base font-semibold text-foreground", className)}
         duration={Math.round(dial.duration)}
         entranceHeight={dial.entranceHeight}
         entranceScale={dial.entranceScale}
@@ -1045,11 +1231,7 @@ function RoleTextDemo() {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() =>
-                setIndex(
-                  (current) => (current + 1) % Math.max(phrases.length, 1),
-                )
-              }
+              onClick={() => setIndex((current) => (current + 1) % Math.max(phrases.length, 1))}
             >
               Next
               <ArrowRightIcon data-icon="inline-end" />
@@ -1065,7 +1247,10 @@ function RoleTextDemo() {
 
 const animationPreviews: Record<string, React.ComponentType> = {
   "animation-torph": TorphDemo,
+  "animation-sweep": SweepDemo,
   "animation-border-beam": BorderBeamDemo,
+  "animation-webgl-border-beam": WebGLBorderBeamDemo,
+  "animation-webgl-audio-border": WebGLAudioBorderDemo,
   "animation-gradient-shimmer": GradientShimmerDemo,
   "animation-gradient-shimmer-primitive": GradientShimmerPrimitiveDemo,
   "animation-progressive-blur-slider": ProgressiveBlurSliderDemo,

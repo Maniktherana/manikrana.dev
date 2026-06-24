@@ -1,0 +1,48 @@
+---
+title: Sheet
+description: A slide-in Base UI sheet for contextual editing and responsive drawers.
+component: true
+base: base
+---
+
+<ComponentPreview name="sheet-demo" />
+
+## Installation
+
+```bash
+bunx shadcn@latest add sheet
+```
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+```
+
+```tsx
+<Sheet>
+  <SheetTrigger render={<Button variant="outline" />}>Open sheet</SheetTrigger>
+  <SheetContent>
+    <SheetHeader>
+      <SheetTitle>Project settings</SheetTitle>
+      <SheetDescription>Manage workspace access and notification defaults.</SheetDescription>
+    </SheetHeader>
+  </SheetContent>
+</Sheet>
+```
+
+## Examples
+
+### Footer
+
+Use `SheetFooter` with `SheetClose` for action rows that close the panel.
+
+<ComponentPreview name="sheet-footer" />

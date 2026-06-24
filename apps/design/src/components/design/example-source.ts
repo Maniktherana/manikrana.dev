@@ -34,6 +34,9 @@ import radioGroupSource from "@/components/design/examples/radio-group-examples.
 import selectSource from "@/components/design/examples/select-examples.tsx?raw";
 import searchSource from "@/components/design/examples/search-examples.tsx?raw";
 import separatorSource from "@/components/design/examples/separator-examples.tsx?raw";
+import sheetSource from "@/components/design/examples/sheet-examples.tsx?raw";
+import sliderSource from "@/components/design/examples/slider-examples.tsx?raw";
+import stepperSource from "@/components/design/examples/stepper-examples.tsx?raw";
 import switchSource from "@/components/design/examples/switch-examples.tsx?raw";
 import tabsSource from "@/components/design/examples/tabs-examples.tsx?raw";
 import tableSource from "@/components/design/examples/table-examples.tsx?raw";
@@ -73,6 +76,9 @@ const rawSources = [
   selectSource,
   searchSource,
   separatorSource,
+  sheetSource,
+  sliderSource,
+  stepperSource,
   switchSource,
   tabsSource,
   tableSource,
@@ -141,6 +147,52 @@ export function TorphDemo() {
     </>
   );
 }`,
+  "animation-sweep": `import { useDialKit } from "dialkit";
+
+import {
+  Sweep,
+  type GlimmDirection,
+  type GlimmPaletteName,
+} from "@/components/ui/glimm";
+
+const palettes = ["prism", "berry", "lagoon", "citrus", "azure", "ember", "neutral"];
+const directions = ["ltr", "rtl", "ttb", "btt"];
+
+export function SweepDemo() {
+  const p = useDialKit("Sweep", {
+    active: true,
+    palette: { type: "select", options: palettes, default: "prism" },
+    direction: { type: "select", options: directions, default: "ltr" },
+    sweepMs: [1100, 500, 2400, 50],
+    pauseMs: [900, 0, 2400, 50],
+    outroMs: [0, 0, 1600, 50],
+    peakAlpha: [1, 0.1, 1, 0.05],
+    bandTight: [14, 6, 28, 1],
+    waveAmount: [1, 0, 2, 0.05],
+    waveSpeed: [1, 0, 3, 0.05],
+    swellAmount: [0.55, 0, 1, 0.05],
+    brightness: [0.95, 0.35, 1.35, 0.05],
+  });
+
+  return (
+    <div className="h-80 w-full overflow-hidden">
+      <Sweep
+        active={p.active}
+        palette={p.palette as GlimmPaletteName}
+        direction={p.direction as GlimmDirection}
+        sweepMs={Math.round(p.sweepMs)}
+        pauseMs={Math.round(p.pauseMs)}
+        outroMs={Math.round(p.outroMs)}
+        peakAlpha={p.peakAlpha}
+        bandTight={p.bandTight}
+        waveAmount={p.waveAmount}
+        waveSpeed={p.waveSpeed}
+        swellAmount={p.swellAmount}
+        brightness={p.brightness}
+      />
+    </div>
+  );
+}`,
   "animation-border-beam": `import { BorderBeam } from "border-beam";
 import { useDialKit } from "dialkit";
 
@@ -162,6 +214,129 @@ export function BorderBeamDemo() {
     >
       <div className="rounded-2xl border px-6 py-8">BorderBeam</div>
     </BorderBeam>
+  );
+}`,
+  "animation-webgl-border-beam": `import { useDialKit } from "dialkit";
+import { WebGLBorderBeam } from "@/components/ui/webgl-border-beam";
+
+export function WebGLBorderBeamDemo() {
+  const p = useDialKit("WebGL Border Beam", {
+    active: true,
+    palette: { type: "select", options: ["prism", "berry", "lagoon", "citrus", "azure", "ember", "neutral"] },
+    direction: { type: "select", options: ["clockwise", "counterclockwise"] },
+    around: false,
+    side: { type: "select", options: ["bottom", "top", "right", "left"] },
+    easing: {
+      type: "select",
+      options: [
+        "linear",
+        "cubic-bezier(0.45,0,0.55,1)",
+        "cubic-bezier(0.76,0,0.24,1)",
+        "cubic-bezier(0.3,0,0.2,1)",
+      ],
+    },
+    duration: [3.1, 0.6, 5, 0.05],
+    pauseMs: [900, 0, 2400, 50],
+    borderWidth: [1, 0.1, 4, 0.1],
+    borderBrightness: [1, 0, 2, 0.05],
+    innerGlowBrightness: [1, 0, 2, 0.05],
+  });
+
+  return (
+    <WebGLBorderBeam
+      active={p.active}
+      around={p.around}
+      borderBrightness={p.borderBrightness}
+      borderWidth={p.borderWidth}
+      duration={p.duration}
+      direction={p.direction}
+      easing={p.easing}
+      innerGlowBrightness={p.innerGlowBrightness}
+      palette={p.palette}
+      pauseMs={Math.round(p.pauseMs)}
+      side={p.side}
+    >
+      <div className="rounded-2xl border px-6 py-8">WebGLBorderBeam</div>
+    </WebGLBorderBeam>
+  );
+}`,
+  "animation-webgl-audio-border": `import { useState } from "react";
+import { LoaderCircleIcon, MicIcon, MicOffIcon } from "lucide-react";
+import { useDialKit } from "dialkit";
+
+import { Button } from "@/components/ui/button";
+import { WebGLAudioBorder } from "@/components/ui/webgl-audio-border";
+
+export function WebGLAudioBorderDemo() {
+  const [micActive, setMicActive] = useState(false);
+  const [processingActive, setProcessingActive] = useState(false);
+  const p = useDialKit("WebGL Audio Border", {
+    palette: { type: "select", options: ["prism", "berry", "lagoon", "citrus", "azure", "ember", "neutral"] },
+    side: { type: "select", options: ["bottom", "top", "right", "left", "around"] },
+    sensitivity: [0.9, 0.2, 4, 0.05],
+    responseCurve: { type: "easing", duration: 0.3, ease: [0.55, 0.04, 0.16, 0.85] },
+    noiseFloor: [0.08, 0, 0.55, 0.005],
+    idleLevel: [0.015, 0, 0.35, 0.005],
+    borderWidth: [1, 0.1, 4, 0.1],
+    borderBrightness: [1, 0, 2, 0.05],
+    innerGlowBrightness: [1, 0, 2, 0.05],
+    innerGlowHeight: [1, 0.2, 3, 0.05],
+  });
+
+  return (
+    <>
+      <WebGLAudioBorder
+        active={micActive}
+        borderBrightness={p.borderBrightness}
+        borderWidth={p.borderWidth}
+        className="w-full max-w-[300px]"
+        idleLevel={p.idleLevel}
+        innerGlowBrightness={p.innerGlowBrightness}
+        innerGlowHeight={p.innerGlowHeight}
+        noiseFloor={p.noiseFloor}
+        palette={p.palette}
+        processing={processingActive}
+        responseCurve={p.responseCurve}
+        sensitivity={p.sensitivity}
+        side={p.side}
+      >
+        <div className="grid aspect-[3/4] w-full place-items-center rounded-[2rem] border border-white/[0.04] px-6 text-center">
+          WebGLAudioBorder
+        </div>
+      </WebGLAudioBorder>
+      <Button
+        type="button"
+        variant={micActive ? "default" : "outline"}
+        size="sm"
+        aria-pressed={micActive}
+        onClick={() => {
+          setMicActive((active) => {
+            const nextActive = !active;
+            if (nextActive) setProcessingActive(false);
+            return nextActive;
+          });
+        }}
+      >
+        {micActive ? <MicOffIcon data-icon="inline-start" /> : <MicIcon data-icon="inline-start" />}
+        {micActive ? "Disable mic" : "Enable mic"}
+      </Button>
+      <Button
+        type="button"
+        variant={processingActive ? "default" : "outline"}
+        size="sm"
+        aria-pressed={processingActive}
+        onClick={() => {
+          setProcessingActive((active) => {
+            const nextActive = !active;
+            if (nextActive) setMicActive(false);
+            return nextActive;
+          });
+        }}
+      >
+        <LoaderCircleIcon data-icon="inline-start" className={processingActive ? "animate-spin" : undefined} />
+        {processingActive ? "Stop processing" : "Processing"}
+      </Button>
+    </>
   );
 }`,
   "animation-gradient-shimmer": `import { GradientShimmer } from "gradient-shimmer";
@@ -629,12 +804,7 @@ function scanStateAt(source: string, index: number) {
 function isTopLevelCodePosition(source: string, index: number) {
   const state = scanStateAt(source, index);
 
-  return (
-    state.depth === 0 &&
-    !state.quote &&
-    !state.lineComment &&
-    !state.blockComment
-  );
+  return state.depth === 0 && !state.quote && !state.lineComment && !state.blockComment;
 }
 
 function findMatchingBrace(source: string, braceStart: number) {
@@ -760,12 +930,7 @@ function findStatementEnd(source: string, start: number) {
     else if (char === "]") bracketDepth -= 1;
     else if (char === "(") parenDepth += 1;
     else if (char === ")") parenDepth -= 1;
-    else if (
-      char === ";" &&
-      braceDepth === 0 &&
-      bracketDepth === 0 &&
-      parenDepth === 0
-    ) {
+    else if (char === ";" && braceDepth === 0 && bracketDepth === 0 && parenDepth === 0) {
       return index + 1;
     }
   }
@@ -773,10 +938,7 @@ function findStatementEnd(source: string, start: number) {
   return -1;
 }
 
-function extractFunctionSource(
-  source: string,
-  name: string,
-): Declaration | undefined {
+function extractFunctionSource(source: string, name: string): Declaration | undefined {
   const signature = new RegExp(`function\\s+${name}\\s*\\(`).exec(source);
 
   if (!signature) return undefined;
@@ -807,9 +969,7 @@ function extractTopLevelDeclarations(source: string) {
     if (declaration) declarations.set(name, declaration);
   }
 
-  for (const match of source.matchAll(
-    /\b(?:const|let|var)\s+([A-Za-z]\w*)\b/g,
-  )) {
+  for (const match of source.matchAll(/\b(?:const|let|var)\s+([A-Za-z]\w*)\b/g)) {
     const [, name] = match;
     const start = match.index ?? 0;
 
@@ -846,9 +1006,7 @@ function parseNamedImports(source: string, isTypeOnly: boolean) {
 function extractImportDeclarations(source: string) {
   const declarations: ImportDeclaration[] = [];
 
-  for (const match of source.matchAll(
-    /import\s+([\s\S]*?)\s+from\s+["']([^"']+)["'];/g,
-  )) {
+  for (const match of source.matchAll(/import\s+([\s\S]*?)\s+from\s+["']([^"']+)["'];/g)) {
     const statementStart = match.index ?? 0;
 
     if (!isTopLevelCodePosition(source, statementStart)) continue;
@@ -874,9 +1032,7 @@ function extractImportDeclarations(source: string) {
 
       if (namedMatch) {
         named = parseNamedImports(namedMatch[1], isTypeOnly);
-        defaultName =
-          clause.slice(0, namedMatch.index).replace(/,$/, "").trim() ||
-          undefined;
+        defaultName = clause.slice(0, namedMatch.index).replace(/,$/, "").trim() || undefined;
       } else {
         defaultName = clause;
       }
@@ -894,10 +1050,7 @@ function extractImportDeclarations(source: string) {
   return declarations;
 }
 
-function formatImportDeclaration(
-  declaration: ImportDeclaration,
-  usedNames: Set<string>,
-) {
+function formatImportDeclaration(declaration: ImportDeclaration, usedNames: Set<string>) {
   const named = declaration.named.filter((item) => usedNames.has(item.local));
   const defaultName =
     declaration.defaultName && usedNames.has(declaration.defaultName)
@@ -918,21 +1071,16 @@ function formatImportDeclaration(
   const hasTypeNamed = named.some((item) => item.isType);
   const namedParts = named.map((item) => {
     const alias =
-      item.imported === item.local
-        ? item.imported
-        : `${item.imported} as ${item.local}`;
+      item.imported === item.local ? item.imported : `${item.imported} as ${item.local}`;
 
-    return item.isType && (hasRuntimeNamed || defaultName)
-      ? `type ${alias}`
-      : alias;
+    return item.isType && (hasRuntimeNamed || defaultName) ? `type ${alias}` : alias;
   });
   const namedSource = namedParts.join(", ");
   const importPrefix = `import ${declaration.isTypeOnly || (!hasRuntimeNamed && hasTypeNamed) ? "type " : ""}`;
   const singleLineNamedImport = defaultName
     ? `import ${defaultName}, { ${namedSource} } from "${declaration.module}";`
     : `${importPrefix}{ ${namedSource} } from "${declaration.module}";`;
-  const shouldWrapNamedImport =
-    namedParts.length > 2 || singleLineNamedImport.length > 100;
+  const shouldWrapNamedImport = namedParts.length > 2 || singleLineNamedImport.length > 100;
   const multilineNamedSource = `{\n  ${namedParts.join(",\n  ")},\n}`;
 
   if (defaultName && namedSource) {
@@ -954,10 +1102,7 @@ function formatImportDeclaration(
   return singleLineNamedImport;
 }
 
-function collectDemoDeclarations(
-  declarations: Map<string, Declaration>,
-  functionName: string,
-) {
+function collectDemoDeclarations(declarations: Map<string, Declaration>, functionName: string) {
   const target = declarations.get(functionName);
 
   if (!target) return [];
@@ -979,9 +1124,7 @@ function collectDemoDeclarations(
 
   return [...collected]
     .map((name) => declarations.get(name))
-    .filter(
-      (declaration): declaration is Declaration => declaration !== undefined,
-    )
+    .filter((declaration): declaration is Declaration => declaration !== undefined)
     .sort((a, b) => a.start - b.start);
 }
 
@@ -1083,17 +1226,14 @@ function stripWrappingParens(source: string) {
 }
 
 function extractSimpleReturnExpression(functionSource: string) {
-  const signature = /^function\s+[A-Za-z]\w*\s*\(([\s\S]*?)\)\s*\{/.exec(
-    functionSource,
-  );
+  const signature = /^function\s+[A-Za-z]\w*\s*\(([\s\S]*?)\)\s*\{/.exec(functionSource);
 
   if (!signature || signature[1].trim()) return undefined;
 
   const braceStart = functionSource.indexOf("{");
   const braceEnd = functionSource.lastIndexOf("}");
 
-  if (braceStart === -1 || braceEnd === -1 || braceEnd <= braceStart)
-    return undefined;
+  if (braceStart === -1 || braceEnd === -1 || braceEnd <= braceStart) return undefined;
 
   const body = functionSource.slice(braceStart + 1, braceEnd).trim();
 
@@ -1134,9 +1274,7 @@ function collectReferencedDeclarations(
 
   return [...collected]
     .map((name) => declarations.get(name))
-    .filter(
-      (declaration): declaration is Declaration => declaration !== undefined,
-    )
+    .filter((declaration): declaration is Declaration => declaration !== undefined)
     .sort((a, b) => a.start - b.start);
 }
 
@@ -1148,17 +1286,10 @@ function buildDemoSource(source: string, functionName: string) {
 
   const simpleReturnExpression = extractSimpleReturnExpression(target.source);
   const demoDeclarations = simpleReturnExpression
-    ? collectReferencedDeclarations(
-        declarations,
-        simpleReturnExpression,
-        new Set([functionName]),
-      )
+    ? collectReferencedDeclarations(declarations, simpleReturnExpression, new Set([functionName]))
     : collectDemoDeclarations(declarations, functionName);
   const declarationSource = simpleReturnExpression
-    ? [
-        ...demoDeclarations.map((declaration) => declaration.source),
-        simpleReturnExpression,
-      ]
+    ? [...demoDeclarations.map((declaration) => declaration.source), simpleReturnExpression]
         .filter(Boolean)
         .join("\n\n")
     : demoDeclarations.map((declaration) => declaration.source).join("\n\n");

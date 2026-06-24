@@ -88,6 +88,7 @@ function SidePanel({
   const available = useContainerWidth(sentinelRef);
   const docked = available >= BREAKPOINTS[dockAt] + width;
   const context = React.useMemo(() => ({ onClose: () => onOpenChange(false) }), [onOpenChange]);
+  const panelChildren = React.Children.toArray(children);
 
   const content =
     activeIndex === undefined ? (
@@ -99,7 +100,7 @@ function SidePanel({
         transition={transition ?? DEFAULT_TRANSITION}
         className="h-full"
       >
-        {children}
+        {panelChildren}
       </TransitionPanel>
     );
 

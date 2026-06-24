@@ -20,10 +20,12 @@ const cardPreviewTitles: Record<string, string> = {
 
 function CardDemo() {
   return (
-    <Card className="w-[400px]">
+    <Card className="rounded-xl w-[400px]">
       <CardHeader>
         <CardTitle>Publish changes</CardTitle>
-        <CardDescription>Review this update before it goes live.</CardDescription>
+        <CardDescription>
+          Review this update before it goes live.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <p className="text-[13px] leading-[1.6] text-secondary-foreground">

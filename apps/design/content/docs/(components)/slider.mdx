@@ -1,0 +1,55 @@
+---
+title: Slider
+description: A compact value control with DialKit-style drag physics, text-aware thumb muting, and shadcn-style value props.
+component: true
+base: base
+---
+
+<ComponentPreview name="slider" />
+
+## Installation
+
+```bash
+bunx shadcn@latest add slider
+```
+
+## Usage
+
+```tsx
+import { Slider } from "@/components/ui/slider";
+```
+
+```tsx
+const [value, setValue] = React.useState([42]);
+
+<Slider label="Opacity" value={value} onValueChange={setValue} min={0} max={100} step={1} />;
+```
+
+The public value shape follows shadcn's slider convention: use a one-item number array for
+`value`, `defaultValue`, `onValueChange`, and `onValueCommit`.
+
+## Examples
+
+### Discrete
+
+Coarse ranges show step marks and click to the nearest step.
+
+<ComponentPreview name="slider-discrete" />
+
+### Text Dodge
+
+The thumb fades and compresses when it passes under the label or value text.
+
+<ComponentPreview name="slider-dodge" />
+
+### Editable Value
+
+Hover the value briefly, then click it to type an exact number.
+
+<ComponentPreview name="slider-edit" />
+
+### Disabled
+
+Disabled sliders keep their value visible while removing pointer and keyboard interaction.
+
+<ComponentPreview name="slider-disabled" />

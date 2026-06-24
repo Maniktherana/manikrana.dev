@@ -34,22 +34,9 @@ function applyTheme(theme: ResolvedTheme) {
   document.documentElement.style.colorScheme = theme;
 }
 
-function getInitialThemePreference(): ThemePreference {
-  if (typeof window === "undefined") return "system";
-
-  return getStoredTheme();
-}
-
-function getInitialResolvedTheme(): ResolvedTheme {
-  if (typeof document === "undefined") return "light";
-
-  return document.documentElement.classList.contains("dark") ? "dark" : "light";
-}
-
 function ThemeToggle() {
-  const [themePreference, setThemePreference] =
-    useState<ThemePreference>(getInitialThemePreference);
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(getInitialResolvedTheme);
+  const [themePreference, setThemePreference] = useState<ThemePreference>("system");
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>("light");
 
   useEffect(() => {
     const systemQuery = window.matchMedia("(prefers-color-scheme: dark)");

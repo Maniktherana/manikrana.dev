@@ -84,9 +84,12 @@ export const componentCatalog = [
     title: "Animations",
     category: "Animations",
     primitive:
-      "Torph, BorderBeam, GradientShimmer, GradientShimmerPrimitive, Marquee, ProgressiveBlur, Gradient Border Plugin, Pasito, Slot Text, RoleMotion, RoleText",
+      "Torph, Sweep, BorderBeam, WebGLBorderBeam, WebGLAudioBorder, GradientShimmer, GradientShimmerPrimitive, Marquee, ProgressiveBlur, Gradient Border Plugin, Pasito, Slot Text, RoleMotion, RoleText",
     files: [
       "src/components/design/examples/animation-examples.tsx",
+      "src/components/ui/glimm.tsx",
+      "src/components/ui/webgl-border-beam.tsx",
+      "src/components/ui/webgl-audio-border.tsx",
       "src/components/ui/gradient-shimmer.tsx",
       "src/components/ui/marquee.tsx",
       "src/components/ui/progressive-blur.tsx",
@@ -102,8 +105,7 @@ export const componentCatalog = [
     ],
     registryCss: marqueeRegistryCss,
     figmaSource: "Animation package previews",
-    description:
-      "Npm animation package previews wired to DialKit controls and copyable source.",
+    description: "Npm animation package previews wired to DialKit controls and copyable source.",
     custom: true,
   },
   {
@@ -138,13 +140,20 @@ export const componentCatalog = [
     title: "Message Composer",
     category: "Blocks",
     primitive: "MessageComposer",
-    files: [
-      "src/components/ui/button.tsx",
-      "src/components/design/message-composer.tsx",
-    ],
+    files: ["src/components/ui/button.tsx", "src/components/design/message-composer.tsx"],
     figmaSource: "Puch app message composer",
+    description: "A composed chat input bar with multiline and attachment states.",
+    custom: true,
+  },
+  {
+    id: "slider",
+    title: "Slider",
+    category: "Blocks",
+    primitive: "Slider",
+    files: ["src/components/ui/slider.tsx"],
+    figmaSource: "DialKit slider behavior restyled with design system tokens",
     description:
-      "A composed chat input bar with multiline and attachment states.",
+      "A compact value control with DialKit-style drag physics, text-aware thumb muting, inline editing, and shadcn-style value props.",
     custom: true,
   },
   {
@@ -159,8 +168,7 @@ export const componentCatalog = [
       "src/components/ui/dialog.tsx",
     ],
     figmaSource: "Raycast-style command palette reference",
-    description:
-      "Site-wide docs search palette with keyboard actions for selected results.",
+    description: "Site-wide docs search palette with keyboard actions for selected results.",
     custom: true,
   },
   {
@@ -190,8 +198,7 @@ export const componentCatalog = [
     primitive: "Avatar, AvatarImage, AvatarFallback, AvatarBadge, AvatarGroup",
     files: ["src/components/ui/avatar.tsx"],
     figmaSource: "Icon and item density",
-    description:
-      "Profile identity primitives for user rows and compact item surfaces.",
+    description: "Profile identity primitives for user rows and compact item surfaces.",
     custom: false,
   },
   {
@@ -208,12 +215,10 @@ export const componentCatalog = [
     id: "breadcrumbs",
     title: "Breadcrumbs",
     category: "Components",
-    primitive:
-      "Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage",
+    primitive: "Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage",
     files: ["src/components/ui/breadcrumb.tsx"],
     figmaSource: "File info / Path",
-    description:
-      "The docs path row from the Figma file, mapped to shadcn breadcrumb primitives.",
+    description: "The docs path row from the Figma file, mapped to shadcn breadcrumb primitives.",
     custom: false,
   },
   {
@@ -223,8 +228,7 @@ export const componentCatalog = [
     primitive: "Button",
     files: ["src/components/ui/button.tsx"],
     figmaSource: "Button base token references in Figma file headers",
-    description:
-      "Primary action, secondary action, ghost action, and icon-only sizes.",
+    description: "Primary action, secondary action, ghost action, and icon-only sizes.",
     custom: false,
   },
   {
@@ -232,10 +236,7 @@ export const componentCatalog = [
     title: "Button Group",
     category: "Components",
     primitive: "Group, GroupText, GroupSeparator",
-    files: [
-      "src/components/ui/button-group.tsx",
-      "src/components/ui/button.tsx",
-    ],
+    files: ["src/components/ui/button-group.tsx", "src/components/ui/button.tsx"],
     figmaSource: "Compact grouped control density",
     description: "Grouped actions with shared borders and separator support.",
     custom: false,
@@ -244,8 +245,7 @@ export const componentCatalog = [
     id: "card",
     title: "Card",
     category: "Components",
-    primitive:
-      "Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter",
+    primitive: "Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter",
     files: ["src/components/ui/card.tsx"],
     figmaSource: "Dialog/card-rest elevation",
     description: "Static modal-like surface for grouped content and actions.",
@@ -300,8 +300,7 @@ export const componentCatalog = [
     primitive: "CodeBlock, Code",
     files: ["src/components/design/code.tsx", "src/components/ui/button.tsx"],
     figmaSource: "Code label token plus card-rest elevation",
-    description:
-      "Prompt Kit style code block with a compact header and copy action.",
+    description: "Prompt Kit style code block with a compact header and copy action.",
     custom: true,
   },
   {
@@ -379,13 +378,9 @@ export const componentCatalog = [
     title: "Menu",
     category: "Components",
     primitive: "DropdownMenu and Menubar",
-    files: [
-      "src/components/ui/dropdown-menu.tsx",
-      "src/components/ui/menubar.tsx",
-    ],
+    files: ["src/components/ui/dropdown-menu.tsx", "src/components/ui/menubar.tsx"],
     figmaSource: "Popover and compact item rows",
-    description:
-      "Action menus and top-level menubars backed by Base UI menu primitives.",
+    description: "Action menus and top-level menubars backed by Base UI menu primitives.",
     custom: false,
   },
   {
@@ -395,8 +390,7 @@ export const componentCatalog = [
     primitive: "Dialog, DialogContent, DialogTitle",
     files: ["src/components/ui/dialog.tsx"],
     figmaSource: "Card-rest elevation and compact fields",
-    description:
-      "Focused dialog surface for destructive, confirmative, and feedback workflows.",
+    description: "Focused dialog surface for destructive, confirmative, and feedback workflows.",
     custom: false,
   },
   {
@@ -430,6 +424,18 @@ export const componentCatalog = [
     custom: false,
   },
   {
+    id: "sheet",
+    title: "Sheet",
+    category: "Components",
+    primitive:
+      "Sheet, SheetTrigger, SheetContent, SheetHeader, SheetFooter, SheetTitle, SheetDescription",
+    files: ["src/components/ui/sheet.tsx"],
+    figmaSource: "Base UI sheet motion",
+    description:
+      "Slide-in Base UI panel for contextual editing, filters, and responsive drawers.",
+    custom: false,
+  },
+  {
     id: "input-group",
     title: "Input Group",
     category: "Components",
@@ -438,6 +444,20 @@ export const componentCatalog = [
     figmaSource: "Compact input and icon sizing",
     description:
       "Composable grouped inputs with addons, inline actions, sizes, radius, and state handling.",
+    custom: false,
+  },
+  {
+    id: "stepper",
+    title: "Stepper",
+    category: "Components",
+    primitive: "Stepper, StepperTrack, StepperStep, StepperIndicator, StepperFill",
+    files: [
+      "src/components/ui/stepper.tsx",
+      "src/components/ui/hooks/use-stepper-auto-play.ts",
+    ],
+    figmaSource: "Pasito pill stepper restyled with design system tokens",
+    description:
+      "Count-based progress steps with value control, windowing, vertical layout, and autoplay fill.",
     custom: false,
   },
   {

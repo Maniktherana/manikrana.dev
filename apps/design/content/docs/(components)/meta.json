@@ -27,7 +27,9 @@
     "popover",
     "radio",
     "select",
+    "sheet",
     "separator",
+    "stepper",
     "switch",
     "table",
     "tabs",
@@ -36,6 +38,7 @@
     "---Blocks---",
     "ai-chat",
     "command-palette",
+    "slider",
     "message-composer",
     "dynamic-island",
     "family-drawer"

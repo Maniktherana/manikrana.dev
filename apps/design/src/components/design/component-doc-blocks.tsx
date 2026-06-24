@@ -28,7 +28,10 @@ import { renderRadioGroupPreview } from "@/components/design/examples/radio-grou
 import { renderSelectPreview } from "@/components/design/examples/select-examples";
 import { renderSearchPreview } from "@/components/design/examples/search-examples";
 import { renderSeparatorPreview } from "@/components/design/examples/separator-examples";
+import { renderSheetPreview } from "@/components/design/examples/sheet-examples";
 import { renderKbdPreview } from "@/components/design/examples/kbd-examples";
+import { renderSliderPreview } from "@/components/design/examples/slider-examples";
+import { renderStepperPreview } from "@/components/design/examples/stepper-examples";
 import { renderSwitchPreview } from "@/components/design/examples/switch-examples";
 import { renderTabsPreview } from "@/components/design/examples/tabs-examples";
 import { renderTablePreview } from "@/components/design/examples/table-examples";
@@ -68,6 +71,8 @@ function ComponentPreview({
           name.startsWith("accordion-") && "min-h-[360px] max-[900px]:min-h-[320px]",
           name.startsWith("animation-") &&
             "min-h-[336px] overflow-hidden p-5 max-[900px]:min-h-[320px]",
+          name === "animation-sweep" &&
+            "min-h-[360px] p-0 max-[900px]:min-h-[320px] max-[900px]:p-0",
           name === "ai-chat" && "items-stretch overflow-hidden p-3 max-[900px]:p-2",
         )}
         dir={direction}
@@ -250,6 +255,24 @@ function renderPreview(name: string) {
 
   if (separatorPreview) {
     return separatorPreview;
+  }
+
+  const sheetPreview = renderSheetPreview(name);
+
+  if (sheetPreview) {
+    return sheetPreview;
+  }
+
+  const sliderPreview = renderSliderPreview(name);
+
+  if (sliderPreview) {
+    return sliderPreview;
+  }
+
+  const stepperPreview = renderStepperPreview(name);
+
+  if (stepperPreview) {
+    return stepperPreview;
   }
 
   const switchPreview = renderSwitchPreview(name);
