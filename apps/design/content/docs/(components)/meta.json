@@ -1,5 +1,6 @@
 {
   "title": "Components",
+  "root": true,
   "defaultOpen": true,
   "pages": [
     "---Animations---",

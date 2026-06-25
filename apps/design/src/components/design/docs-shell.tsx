@@ -3,13 +3,7 @@ import { getBreadcrumbItems } from "fumadocs-core/breadcrumb";
 import { findNeighbour, type Folder, type Node, type Root } from "fumadocs-core/page-tree";
 import { deserializePageTree } from "fumadocs-core/source/client";
 import { AnchorProvider, ScrollProvider, TOCItem } from "fumadocs-core/toc";
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  ChevronDownIcon,
-  ComponentIcon,
-  PanelLeftIcon,
-} from "lucide-react";
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import * as React from "react";
 
 import { DocsSearch } from "@/components/design/docs-search";
@@ -21,9 +15,12 @@ import { cn } from "@/lib/utils";
 
 const contentWidthClassName = "w-full max-w-[704px]";
 const sidebarItemClassName =
-  "flex min-h-[29px] items-center gap-2 rounded-lg px-2 py-[5px] text-[13px] leading-[1.3] text-secondary-foreground no-underline hover:bg-accent hover:text-foreground";
+  "group/sidebar-link flex min-h-[29px] min-w-0 items-center text-[13px] leading-[1.3] text-secondary-foreground no-underline transition-colors hover:text-foreground";
+const sidebarItemLabelClassName =
+  "inline-flex max-w-full items-center truncate rounded-md px-2 py-[5px] transition-colors group-hover/sidebar-link:bg-white/10";
+const sidebarSectionClassName = "mt-6 first:mt-0";
 const sidebarTitleClassName =
-  "flex items-center justify-between px-2 pb-[7px] text-[13px] leading-[1.3] font-medium text-foreground";
+  "mb-1.5 px-2 font-mono text-[12px] leading-[1.25] font-normal text-muted-foreground";
 
 type DocsLinkProps = Omit<React.ComponentProps<"a">, "href"> & {
   href: string;
@@ -59,35 +56,49 @@ function nodeLabel(name: React.ReactNode): string {
   return "Page";
 }
 
-function getFirstPageUrl(nodes: Node[]): string {
+function collectPageNodes(nodes: Node[]): Array<Extract<Node, { type: "page" }>> {
+  const pages: Array<Extract<Node, { type: "page" }>> = [];
+
   for (const node of nodes) {
-    if (node.type === "page") return node.url;
+    if (node.type === "page") {
+      pages.push(node);
+      continue;
+    }
 
     if (node.type === "folder") {
-      if (node.index) return node.index.url;
-
-      const url = getFirstPageUrl(node.children);
-      if (url) return url;
+      if (node.index) pages.push(node.index);
+      pages.push(...collectPageNodes(node.children));
     }
   }
 
-  return "/docs/button";
+  return pages;
+}
+
+function DocsSidebarLink({
+  active,
+  children,
+  href,
+}: {
+  active?: boolean;
+  children: React.ReactNode;
+  href: string;
+}) {
+  return (
+    <DocsLink
+      aria-current={active ? "page" : undefined}
+      className={cn(sidebarItemClassName, active && "text-foreground")}
+      href={href}
+    >
+      <span className={cn(sidebarItemLabelClassName, active && "bg-white/10")}>{children}</span>
+    </DocsLink>
+  );
 }
 
 function DocsSidebar({ activeUrl, pageTree }: { activeUrl: string; pageTree: Root }) {
-  const sidebarHome = getFirstPageUrl(pageTree.children);
-
   return (
-    <aside className="fixed start-0 top-14 bottom-0 z-10 w-72 min-w-0 border-e border-border max-[1180px]:static max-[1180px]:w-auto max-[900px]:hidden">
-      <div className="sticky top-14 max-h-[calc(100svh-56px)] overflow-auto px-[18px] pt-[22px] pb-7">
-        <DocsLink
-          className={cn(sidebarItemClassName, "font-medium text-foreground [&_svg]:size-4")}
-          href={sidebarHome}
-        >
-          <ComponentIcon />
-          Components
-        </DocsLink>
-        <nav className="mt-[18px]">
+    <aside className="sticky top-14 flex h-[calc(100svh-56px)] min-w-0 items-start self-start max-[900px]:hidden">
+      <div className="no-scrollbar mt-3 h-[calc(90%_-_12px)] w-full overflow-auto overscroll-none px-5 py-6 [mask-image:linear-gradient(to_bottom,transparent,black_20px,black_calc(100%_-_32px),transparent)]">
+        <nav className="flex flex-col">
           {pageTree.children.map((node, index) => (
             <DocsSidebarNode
               activeUrl={activeUrl}
@@ -104,8 +115,8 @@ function DocsSidebar({ activeUrl, pageTree }: { activeUrl: string; pageTree: Roo
 function DocsSidebarNode({ activeUrl, node }: { activeUrl: string; node: Node }) {
   if (node.type === "separator") {
     return (
-      <div className="mx-2 mt-4 mb-1.5 font-mono text-[11px] leading-[1.2] text-muted-foreground uppercase">
-        {node.name}
+      <div className={sidebarSectionClassName}>
+        <div className={sidebarTitleClassName}>{node.name}</div>
       </div>
     );
   }
@@ -115,46 +126,30 @@ function DocsSidebarNode({ activeUrl, node }: { activeUrl: string; node: Node })
   }
 
   return (
-    <DocsLink
-      aria-current={node.url === activeUrl ? "page" : undefined}
-      className={cn(sidebarItemClassName, node.url === activeUrl && "bg-white/10 text-foreground")}
-      href={node.url}
-    >
+    <DocsSidebarLink active={node.url === activeUrl} href={node.url}>
       {node.name}
-    </DocsLink>
+    </DocsSidebarLink>
   );
 }
 
 function DocsSidebarFolder({ activeUrl, node }: { activeUrl: string; node: Folder }) {
   if (node.root) {
     return (
-      <div className="mt-4">
-        <div className={sidebarTitleClassName}>{node.name}</div>
-        <div className="flex flex-col gap-px">
-          {node.index ? <DocsSidebarNode activeUrl={activeUrl} node={node.index} /> : null}
-          {node.children.map((child, index) => (
-            <DocsSidebarNode
-              activeUrl={activeUrl}
-              key={child.$id ?? `${child.type}-${index}`}
-              node={child}
-            />
-          ))}
-        </div>
-      </div>
+      <>
+        {node.children.map((child, index) => (
+          <DocsSidebarNode
+            activeUrl={activeUrl}
+            key={child.$id ?? `${child.type}-${index}`}
+            node={child}
+          />
+        ))}
+      </>
     );
   }
 
   return (
-    <details className="group mt-4" open={node.defaultOpen ?? true}>
-      <summary
-        className={cn(
-          sidebarTitleClassName,
-          "cursor-pointer list-none [&::-webkit-details-marker]:hidden",
-        )}
-      >
-        <span>{node.name}</span>
-        <ChevronDownIcon className="size-3.5 text-muted-foreground transition-transform duration-150 group-open:rotate-180" />
-      </summary>
+    <div className={sidebarSectionClassName}>
+      <div className={sidebarTitleClassName}>{node.name}</div>
       <div className="flex flex-col gap-px">
         {node.index ? <DocsSidebarNode activeUrl={activeUrl} node={node.index} /> : null}
         {node.children.map((child, index) => (
@@ -165,35 +160,37 @@ function DocsSidebarFolder({ activeUrl, node }: { activeUrl: string; node: Folde
           />
         ))}
       </div>
-    </details>
+    </div>
   );
 }
 
 function DocsMobileNav({ activeUrl, pageTree }: { activeUrl: string; pageTree: Root }) {
+  const pages = React.useMemo(() => collectPageNodes(pageTree.children), [pageTree]);
+
   return (
-    <details
+    <nav
+      aria-label="Docs sections"
       className={cn(
-        "group hidden w-full max-[900px]:mb-[22px] max-[900px]:block",
+        "hidden overflow-x-auto pb-2 [mask-image:linear-gradient(90deg,transparent,black_16px,black_calc(100%_-_28px),transparent)] max-[900px]:mb-[22px] max-[900px]:block",
         contentWidthClassName,
       )}
     >
-      <summary className="flex min-h-[38px] cursor-pointer list-none items-center justify-between rounded-lg border border-border px-2.5 py-2 text-[13px] leading-[1.3] font-medium text-foreground [&::-webkit-details-marker]:hidden [&_svg]:size-4">
-        <span className="flex min-w-0 items-center gap-2">
-          <PanelLeftIcon />
-          <span>Browse components</span>
-        </span>
-        <ChevronDownIcon className="transition-transform duration-150 group-open:rotate-180" />
-      </summary>
-      <nav className="mt-2 grid max-h-[60svh] gap-px overflow-auto rounded-lg border border-border p-2.5">
-        {pageTree.children.map((node, index) => (
-          <DocsSidebarNode
-            activeUrl={activeUrl}
-            key={node.$id ?? `${node.type}-${index}`}
-            node={node}
-          />
+      <div className="flex min-w-max gap-1">
+        {pages.map((node) => (
+          <DocsLink
+            aria-current={node.url === activeUrl ? "page" : undefined}
+            className={cn(
+              "rounded-md px-2 py-[5px] text-[13px] leading-[1.3] text-secondary-foreground no-underline transition-colors hover:bg-white/10 hover:text-foreground",
+              node.url === activeUrl && "bg-white/10 text-foreground",
+            )}
+            href={node.url}
+            key={node.url}
+          >
+            {node.name}
+          </DocsLink>
         ))}
-      </nav>
-    </details>
+      </div>
+    </nav>
   );
 }
 
@@ -229,24 +226,24 @@ function DocsTableOfContents({ page }: { page: SerializedComponentDocPage }) {
   if (page.toc.length === 0) return null;
 
   return (
-    <aside className="fixed end-0 top-14 bottom-0 z-10 w-64 min-w-0 border-s border-border max-[1180px]:hidden">
+    <aside className="sticky top-14 flex h-[calc(100svh-56px)] min-w-0 items-start self-start max-[1180px]:hidden">
       <div
-        className="sticky top-14 max-h-[calc(100svh-56px)] overflow-auto px-[22px] py-[42px]"
+        className="no-scrollbar h-[90%] w-full overflow-auto overscroll-none px-[22px] py-6 [mask-image:linear-gradient(to_bottom,transparent,black_24px,black_calc(100%_-_32px),transparent)]"
         ref={containerRef}
       >
-        <p className="font-mono text-xs leading-[1.1] font-normal tracking-normal text-secondary-foreground uppercase">
-          On This Page
-        </p>
+        <p className={sidebarTitleClassName}>On This Page</p>
         <ScrollProvider containerRef={containerRef}>
-          <nav className="mt-4 flex flex-col gap-1">
+          <nav className="flex flex-col gap-px">
             {page.toc.map((item) => (
               <TOCItem
-                className="block rounded-lg px-2 py-[5px] text-[13px] leading-[1.4] text-muted-foreground no-underline hover:bg-accent hover:text-foreground data-[active=true]:bg-white/10 data-[active=true]:text-foreground data-[depth=3]:ps-5"
+                className="group/toc block text-[13px] leading-[1.4] text-muted-foreground no-underline transition-colors hover:text-foreground data-[active=true]:text-foreground data-[depth=3]:ps-4"
                 data-depth={item.depth}
                 href={item.url}
                 key={item.url}
               >
-                {item.title}
+                <span className="inline-flex max-w-full truncate px-2 py-[5px] transition-colors">
+                  {item.title}
+                </span>
               </TOCItem>
             ))}
           </nav>
@@ -359,22 +356,30 @@ function DocsShell({
   const isFullBleed = page.url.endsWith("/ai-chat");
 
   const header = (
-    <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center justify-between gap-4 border-b border-border bg-page-background/92 px-[max(20px,calc((100vw-1536px)/2+24px))] backdrop-blur-[16px] max-[900px]:px-4 [&_svg]:size-4">
-      <div className="flex min-w-0 items-center gap-2">
-        <ComponentIcon />
-        <DocsLink
-          className="text-[13px] leading-[1.1] font-medium tracking-normal text-foreground"
-          href="/docs"
-        >
-          Components
-        </DocsLink>
-        <span className="hidden text-muted-foreground sm:inline">/</span>
-        <span className="hidden truncate text-muted-foreground sm:inline">{page.title}</span>
-      </div>
-      <div className="flex items-center gap-2 text-muted-foreground">
-        <DocsSearch activeUrl={page.url} pageTree={rootTree} />
-        <span className="hidden sm:inline">Component system for shadcn Base</span>
-        <ThemeToggle />
+    <header className="fixed inset-x-0 top-0 z-50 h-14 bg-page-background/62 backdrop-blur-2xl supports-[backdrop-filter]:bg-page-background/50">
+      <div className="mx-auto flex h-full max-w-[1536px] items-center justify-between gap-4 px-6 max-[900px]:px-4 [&_svg]:size-4">
+        <div className="flex min-w-0 items-center gap-2">
+          <img
+            src="/logo.svg"
+            alt=""
+            width={20}
+            height={20}
+            className="size-5 shrink-0"
+            decoding="async"
+          />
+          <DocsLink
+            className="text-[13px] leading-[1.1] font-medium tracking-normal text-foreground"
+            href="/docs"
+          >
+            Components
+          </DocsLink>
+          <span className="hidden truncate text-muted-foreground sm:inline">{page.title}</span>
+        </div>
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <DocsSearch activeUrl={page.url} pageTree={rootTree} />
+          <span className="hidden sm:inline">Component system for shadcn Base</span>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
@@ -382,9 +387,11 @@ function DocsShell({
   if (isFullBleed) {
     return (
       <AnchorProvider toc={page.toc} single>
-        <main className="flex h-svh flex-col overflow-hidden bg-page-background font-sans text-foreground">
+        <main className="flex h-svh flex-col overflow-hidden overscroll-none bg-page-background font-sans text-foreground">
           {header}
-          <div className="min-h-0 flex-1 p-3 max-[900px]:p-0">{children}</div>
+          <div className="min-h-0 flex-1 p-3 pt-[calc(56px+0.75rem)] max-[900px]:p-0 max-[900px]:pt-14">
+            {children}
+          </div>
         </main>
       </AnchorProvider>
     );
@@ -392,11 +399,11 @@ function DocsShell({
 
   return (
     <AnchorProvider toc={page.toc} single>
-      <main className="min-h-svh overflow-x-hidden bg-page-background font-sans text-[13px] leading-[1.6] text-foreground">
+      <main className="min-h-svh overflow-x-clip overscroll-none bg-page-background font-sans text-[13px] leading-[1.6] text-foreground">
         <div className="min-h-svh bg-page-background text-foreground">
           {header}
 
-          <div className="mx-auto block min-h-[calc(100svh-56px)] max-[1180px]:grid max-[1180px]:max-w-[1536px] max-[1180px]:grid-cols-[288px_minmax(0,1fr)] max-[900px]:block">
+          <div className="mx-auto grid min-h-svh max-w-[1536px] grid-cols-[288px_minmax(0,1fr)_256px] pt-14 max-[1180px]:grid-cols-[268px_minmax(0,1fr)] max-[900px]:block">
             <DocsSidebar activeUrl={page.url} pageTree={rootTree} />
             <article className="flex min-w-0 flex-col items-center px-12 pt-[38px] pb-14 max-[900px]:px-[18px] max-[900px]:pt-7 max-[900px]:pb-10">
               <DocsMobileNav activeUrl={page.url} pageTree={rootTree} />
