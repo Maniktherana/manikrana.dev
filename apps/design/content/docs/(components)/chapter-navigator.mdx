@@ -1,0 +1,20 @@
+---
+title: Chapter Navigator
+description: Compact chat chapter rail with viewport lighting and instant hover previews.
+component: true
+base: custom
+---
+
+<ComponentPreview name="chapter-navigator-demo" />
+
+## Usage
+
+```tsx
+import { ChapterNavigator } from "@/components/ui/chapter-navigator";
+```
+
+```tsx
+<ChapterNavigator items={chapters} scrollRef={scrollRef} />
+```
+
+The scroll container should contain rows with matching `data-chat-row-key` values. Visible rows light their chapter marker until the user hovers the rail; during hover, only the exact hovered chapter is highlighted while nearby chapters keep the wave sizing.

@@ -9,10 +9,7 @@ const GRADIENT_ANGLES = {
   left: 270,
 } as const;
 
-type ProgressiveBlurProps = Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  "children"
-> & {
+type ProgressiveBlurProps = Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & {
   blurIntensity?: number;
   blurLayers?: number;
   direction?: keyof typeof GRADIENT_ANGLES;
@@ -37,10 +34,7 @@ function ProgressiveBlur({
   return (
     <div
       aria-hidden="true"
-      className={cn(
-        "pointer-events-none relative overflow-hidden rounded-[inherit]",
-        className,
-      )}
+      className={cn("pointer-events-none relative overflow-hidden rounded-[inherit]", className)}
       data-slot="progressive-blur"
       {...props}
     >

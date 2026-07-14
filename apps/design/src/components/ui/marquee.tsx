@@ -57,9 +57,7 @@ function Marquee({
   const marqueeSpeed = speed ?? "normal";
   const marqueeStyle = {
     "--marquee-gap": toCssLength(gap),
-    ...(duration !== undefined
-      ? { "--marquee-duration": toCssDuration(duration) }
-      : null),
+    ...(duration !== undefined ? { "--marquee-duration": toCssDuration(duration) } : null),
     ...style,
   } as React.CSSProperties;
 

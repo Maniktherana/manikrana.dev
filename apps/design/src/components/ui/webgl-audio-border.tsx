@@ -2,14 +2,10 @@
 
 import * as React from "react";
 
-import {
-  glimmPalettes,
-  type GlimmPalette,
-  type GlimmPaletteName,
-} from "@/components/ui/glimm";
+import { glimmPalettes, type GlimmPalette, type GlimmPaletteName } from "@/components/ui/glimm";
 import { cn } from "@/lib/utils";
 
-type WebGLAudioBorderSide = "top" | "right" | "bottom" | "left" | "around";
+type WebGLAudioBorderSide = "top" | "right" | "bottom" | "left";
 
 type WebGLAudioResponseCurvePoint = {
   level: number;
@@ -85,6 +81,13 @@ type AudioBorderGeometryInput = {
 };
 
 const AUDIO_BIN_COUNT = 32;
+const MIC_PEAK_DECAY_PER_FRAME = 0.995;
+const MIC_MIN_PEAK = 0.25;
+const MIC_MIN_ACTIVE_MAGNITUDE = 0.05;
+const PEAK_FLATTEN = 0.22;
+const ATTACK_BASE = 0.1;
+const ATTACK_RANGE = 0.08;
+const RELEASE = 0.1;
 const defaultAudioResponseCurve = {
   type: "easing",
   duration: 0.3,
@@ -163,56 +166,6 @@ float roundedRectSdf(vec2 p, vec2 halfSize, float radius) {
   return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - radius;
 }
 
-float roundedBorderProgress(vec2 p, vec2 halfSize, float radius) {
-  float w = max(1.0, halfSize.x);
-  float h = max(1.0, halfSize.y);
-  float r = clamp(radius, 0.0, max(0.0, min(w, h) - 1.0));
-  float straightW = max(1.0, 2.0 * (w - r));
-  float straightH = max(1.0, 2.0 * (h - r));
-  float arc = PI * 0.5 * max(r, 1.0);
-  float perimeter = 2.0 * straightW + 2.0 * straightH + 4.0 * arc;
-  float x = p.x;
-  float y = p.y;
-  float coord = 0.0;
-
-  if (y >= h - r && x >= -w + r && x <= w - r) {
-    coord = x + w - r;
-  } else if (x > w - r && y > h - r) {
-    vec2 c = vec2(w - r, h - r);
-    float angle = atan(y - c.y, x - c.x);
-    coord = straightW + (PI * 0.5 - angle) * r;
-  } else if (x >= w - r && y <= h - r && y >= -h + r) {
-    coord = straightW + arc + (h - r - y);
-  } else if (x > w - r && y < -h + r) {
-    vec2 c = vec2(w - r, -h + r);
-    float angle = atan(y - c.y, x - c.x);
-    coord = straightW + arc + straightH + (0.0 - angle) * r;
-  } else if (y <= -h + r && x <= w - r && x >= -w + r) {
-    coord = straightW + arc + straightH + arc + (w - r - x);
-  } else if (x < -w + r && y < -h + r) {
-    vec2 c = vec2(-w + r, -h + r);
-    float angle = atan(y - c.y, x - c.x);
-    if (angle > 0.0) {
-      angle -= 2.0 * PI;
-    }
-    coord = straightW + arc + straightH + arc + straightW + (-PI * 0.5 - angle) * r;
-  } else if (x <= -w + r && y >= -h + r && y <= h - r) {
-    coord = straightW + arc + straightH + arc + straightW + arc + (y + h - r);
-  } else {
-    vec2 c = vec2(-w + r, h - r);
-    float angle = atan(y - c.y, x - c.x);
-    coord = straightW + arc + straightH + arc + straightW + arc + straightH + (PI - angle) * r;
-  }
-
-  return fract(coord / perimeter);
-}
-
-float loopDistance(float a, float b) {
-  float delta = abs(a - b);
-
-  return min(delta, 1.0 - delta);
-}
-
 float mirroredAudioCoord(float t) {
   return abs(clamp(t, 0.0, 1.0) - 0.5) * 2.0;
 }
@@ -236,11 +189,9 @@ void main() {
   float innerSpread = 0.72 + innerGlowLevel * 1.18;
   float processingBorderScale = mix(1.0, 1.72, processing);
   float innerGlowScaleX = innerSpread;
-  float innerGlowScaleY = innerSpread * mix(1.0, 0.30, processing);
+  float innerGlowScaleY = innerSpread * mix(0.72, 0.30, processing);
 
   float inside = 1.0 - smoothstep(0.0, 1.0, sd);
-  float distanceInside = max(-sd, 0.0);
-  float stroke = inside * (1.0 - smoothstep(borderWidth, borderWidth + 1.0, distanceInside));
   vec2 beamUv = cssUv;
   vec2 beamSize = uBoxSize;
 
@@ -254,7 +205,7 @@ void main() {
     beamSize = vec2(uBoxSize.y, uBoxSize.x);
   }
 
-  float positionCoord = side > 3.5 ? roundedBorderProgress(p, halfSize, radius) : clamp(beamUv.x, 0.0, 1.0);
+  float positionCoord = clamp(beamUv.x, 0.0, 1.0);
   float audioCoord = mix(mirroredAudioCoord(positionCoord), positionCoord, processing);
   float colorCoord = positionCoord;
   float level = max(audioLevelAt(audioCoord), clamp(uIdleLevel, 0.0, 0.28));
@@ -262,88 +213,60 @@ void main() {
   vec3 lineColor = audioPalette(colorCoord * 0.68 + uHueShift * 0.35);
   vec3 bloomColor = lineColor;
 
-  float strokeEdge = 1.0;
-  float sourceRim = stroke;
+  float sourceRim = 0.0;
   float edgeGlow = 0.0;
   float bloomField = 0.0;
   float washField = 0.0;
   vec3 bloomMix = vec3(0.0);
   vec3 washMix = vec3(0.0);
 
-  if (side < 3.5) {
-    float sideDistance = (1.0 - beamUv.y) * beamSize.y;
-    strokeEdge = exp(-pow(sideDistance / max(borderWidth + (2.0 + energy * 8.0) * processingBorderScale * uDpr, 1.0), 1.36));
-    sourceRim = inside * exp(-pow(sideDistance / max(borderWidth + (4.0 + pow(energy, 0.85) * 18.0) * processingBorderScale * uDpr, 1.0), 1.18));
+  float sideDistance = (1.0 - beamUv.y) * beamSize.y;
+  sourceRim = inside * exp(-pow(sideDistance / max(borderWidth + (4.0 + pow(energy, 0.85) * 18.0) * processingBorderScale * uDpr, 1.0), 1.18));
 
-    for (int i = 0; i < 3; i++) {
-      float center = 0.2 + float(i) * 0.3;
-      float lobeCoord = mix(mirroredAudioCoord(center), center, processing);
-      float lobeLevel = max(audioLevelAt(lobeCoord), clamp(uIdleLevel, 0.0, 0.28));
-      float lobeEnergy = pow(smoothstep(0.0, 1.0, lobeLevel), 0.70);
-      float dx = (beamUv.x - center) * beamSize.x;
-      float dy = sideDistance;
-      float centerBias = 1.0 - abs(center - 0.5) * 1.15;
-      float radiusX = max(beamSize.x * (0.30 + centerBias * 0.12), (128.0 + lobeEnergy * 190.0) * innerGlowScaleX * uDpr);
-      float radiusY = (62.0 + lobeEnergy * 126.0) * innerGlowScaleY * uDpr;
-      float field = exp(-((dx * dx) / (radiusX * radiusX) + (dy * dy) / (radiusY * radiusY)) * 0.50) * lobeEnergy;
-      float washRadiusX = max(beamSize.x * (0.44 + centerBias * 0.16), radiusX * 1.78);
-      float washRadiusY = radiusY * 1.26;
-      float washReach = washRadiusY * 1.08;
-      float bottomGate = 1.0 - smoothstep(washReach * 0.62, washReach, sideDistance);
-      float wash = exp(-((dx * dx) / (washRadiusX * washRadiusX) + (dy * dy) / (washRadiusY * washRadiusY)) * 0.34) * lobeEnergy * bottomGate;
-      vec3 lobeColor = audioPalette(center * 0.68 + 0.16 + uHueShift * 0.35);
+  for (int i = 0; i < 3; i++) {
+    float center = 0.2 + float(i) * 0.3;
+    float lobeCoord = mix(mirroredAudioCoord(center), center, processing);
+    float lobeLevel = max(audioLevelAt(lobeCoord), clamp(uIdleLevel, 0.0, 0.28));
+    float lobeEnergy = pow(smoothstep(0.0, 1.0, lobeLevel), 0.70);
+    float lobeShapeEnergy = mix(lobeEnergy, 0.58, processing);
+    float dx = (beamUv.x - center) * beamSize.x;
+    float dy = sideDistance;
+    float centerBias = 1.0 - abs(center - 0.5) * 1.15;
+    float radiusX = max(beamSize.x * (0.30 + centerBias * 0.12), (128.0 + lobeShapeEnergy * 190.0) * innerGlowScaleX * uDpr);
+    float radiusY = (62.0 + lobeShapeEnergy * 126.0) * innerGlowScaleY * uDpr;
+    float field = exp(-((dx * dx) / (radiusX * radiusX) + (dy * dy) / (radiusY * radiusY)) * 0.50) * lobeEnergy;
+    float washRadiusX = max(beamSize.x * (0.44 + centerBias * 0.16), radiusX * 1.78);
+    float washRadiusY = radiusY * 1.26;
+    float washReach = washRadiusY * 1.08;
+    float bottomGate = 1.0 - smoothstep(washReach * 0.62, washReach, sideDistance);
+    float wash = exp(-((dx * dx) / (washRadiusX * washRadiusX) + (dy * dy) / (washRadiusY * washRadiusY)) * 0.34) * lobeEnergy * bottomGate;
+    vec3 lobeColor = audioPalette(center * 0.68 + 0.16 + uHueShift * 0.35);
 
-      bloomField += field;
-      washField += wash;
-      bloomMix += lobeColor * field;
-      washMix += lobeColor * wash;
-    }
-  } else {
-    float perimeterApprox = max(1.0, 2.0 * (uBoxSize.x + uBoxSize.y));
-    sourceRim = inside * exp(-pow(distanceInside / max(borderWidth + (3.0 + pow(energy, 0.85) * 22.0) * processingBorderScale * uDpr, 1.0), 1.34));
-
-    for (int i = 0; i < 6; i++) {
-      float center = (float(i) + 0.5) / 6.0;
-      float lobeCoord = mix(mirroredAudioCoord(center), center, processing);
-      float lobeLevel = max(audioLevelAt(lobeCoord), clamp(uIdleLevel, 0.0, 0.28));
-      float lobeEnergy = pow(smoothstep(0.0, 1.0, lobeLevel), 0.70);
-      float along = loopDistance(positionCoord, center) * perimeterApprox;
-      float radial = distanceInside;
-      float radiusX = (48.0 + lobeEnergy * 88.0) * innerGlowScaleX * uDpr;
-      float radiusY = (70.0 + lobeEnergy * 126.0) * innerGlowScaleY * uDpr;
-      float field = exp(-((along * along) / (radiusX * radiusX) + (radial * radial) / (radiusY * radiusY)) * 1.08) * lobeEnergy;
-      float washRadiusX = radiusX * 1.72;
-      float washRadiusY = radiusY * 1.58;
-      float wash = exp(-((along * along) / (washRadiusX * washRadiusX) + (radial * radial) / (washRadiusY * washRadiusY)) * 0.84) * lobeEnergy;
-      vec3 lobeColor = audioPalette(center * 0.68 + 0.16 + uHueShift * 0.35);
-
-      bloomField += field;
-      washField += wash;
-      bloomMix += lobeColor * field;
-      washMix += lobeColor * wash;
-    }
+    bloomField += field;
+    washField += wash;
+    bloomMix += lobeColor * field;
+    washMix += lobeColor * wash;
   }
 
   float bloomStrength = clamp(bloomField, 0.0, 1.65);
   float washStrength = clamp(washField, 0.0, 1.35);
-  edgeGlow = inside * clamp(bloomStrength + washStrength * 0.34, 0.0, 1.62);
+  edgeGlow = clamp(bloomStrength + washStrength * 0.34, 0.0, 1.62);
   bloomColor = bloomMix / max(bloomField, 0.001);
   vec3 washColor = washMix / max(washField, 0.001);
 
-  float strokeAlpha = max(stroke * strokeEdge, sourceRim * 0.36) * energy * uAlpha * 1.06 * borderBrightness;
+  float sourceRimAlpha = sourceRim * energy * uAlpha * 0.88 * borderBrightness;
   float sourceScaleAlpha = sourceRim * pow(energy, 1.04) * uAlpha * 0.22;
   float glowAlpha = edgeGlow * uAlpha * 0.26 * innerGlowAmount;
-  float bloomAlpha = inside * pow(bloomStrength, 1.02) * uAlpha * 0.22 * innerGlowAmount;
-  float washAlpha = inside * pow(washStrength, 1.08) * uAlpha * 0.050 * innerGlowAmount;
-  float shine = stroke * strokeEdge * pow(energy, 1.55) * uAlpha * 0.08 * borderBrightness;
-  vec3 shineColor = mix(lineColor, vec3(1.0), 0.05);
+  float bloomAlpha = pow(bloomStrength, 1.02) * uAlpha * 0.22 * innerGlowAmount;
+  float washAlpha = pow(washStrength, 1.08) * uAlpha * 0.050 * innerGlowAmount;
   vec3 body =
-    lineColor * (strokeAlpha + sourceScaleAlpha + glowAlpha) +
+    lineColor * (sourceRimAlpha + sourceScaleAlpha + glowAlpha) +
     bloomColor * bloomAlpha +
-    washColor * washAlpha +
-    shineColor * shine;
+    washColor * washAlpha;
 
-  gl_FragColor = vec4(body, min(strokeAlpha + sourceScaleAlpha + glowAlpha + bloomAlpha + washAlpha + shine, 1.0));
+  float finalAlpha = min(sourceRimAlpha + sourceScaleAlpha + glowAlpha + bloomAlpha + washAlpha, 1.0);
+
+  gl_FragColor = vec4(body, finalAlpha);
 }
 `;
 
@@ -353,12 +276,6 @@ function finiteOr(value: number | undefined, fallback: number) {
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
-}
-
-function smoothstepNumber(value: number, edge0: number, edge1: number) {
-  const t = clamp((value - edge0) / Math.max(0.0001, edge1 - edge0), 0, 1);
-
-  return t * t * (3 - 2 * t);
 }
 
 function resolveAudioPalette(palette: GlimmPaletteName | GlimmPalette | undefined) {
@@ -372,7 +289,6 @@ function sideToUniform(side: WebGLAudioBorderSide) {
   if (side === "top") return 1;
   if (side === "right") return 2;
   if (side === "left") return 3;
-  if (side === "around") return 4;
 
   return 0;
 }
@@ -397,6 +313,30 @@ function detectBorderRadius(target: HTMLElement, fallback: number) {
   const raw = Number.parseFloat(getComputedStyle(target).borderTopLeftRadius);
 
   return Number.isFinite(raw) ? raw : fallback;
+}
+
+function syncAudioBorderClip(
+  host: HTMLElement,
+  target: HTMLElement,
+  input: AudioBorderGeometryInput,
+) {
+  if (typeof input.borderRadius === "number" && Number.isFinite(input.borderRadius)) {
+    const radius = `${Math.max(0, input.borderRadius)}px`;
+
+    host.style.borderTopLeftRadius = radius;
+    host.style.borderTopRightRadius = radius;
+    host.style.borderBottomRightRadius = radius;
+    host.style.borderBottomLeftRadius = radius;
+    return;
+  }
+
+  const styles = getComputedStyle(target);
+  const fallback = styles.borderRadius || "0px";
+
+  host.style.borderTopLeftRadius = styles.borderTopLeftRadius || fallback;
+  host.style.borderTopRightRadius = styles.borderTopRightRadius || fallback;
+  host.style.borderBottomRightRadius = styles.borderBottomRightRadius || fallback;
+  host.style.borderBottomLeftRadius = styles.borderBottomLeftRadius || fallback;
 }
 
 function measureAudioBorderGeometry(
@@ -494,7 +434,9 @@ function createWebGLAudioBorderShader(
 
   const uniforms = {
     alpha: gl.getUniformLocation(program, "uAlpha"),
-    audioBins: gl.getUniformLocation(program, "uAudioBins"),
+    audioBins:
+      gl.getUniformLocation(program, "uAudioBins[0]") ??
+      gl.getUniformLocation(program, "uAudioBins"),
     borderBrightness: gl.getUniformLocation(program, "uBorderBrightness"),
     borderRadius: gl.getUniformLocation(program, "uBorderRadius"),
     borderWidth: gl.getUniformLocation(program, "uBorderWidth"),
@@ -570,19 +512,21 @@ function createWebGLAudioBorderShader(
     }
 
     for (let i = 0; i < AUDIO_BIN_COUNT; i += 1) {
-      const targetBin = state.targetAudioBins[i] ?? 0;
-      const delta = targetBin - state.audioBins[i];
-      const attack = 0.18 + smoothstepNumber(targetBin, 0.16, 0.72) * 0.48;
-      const follow = delta > 0 ? attack : 0.16;
+      const rawTarget = state.targetAudioBins[i] ?? 0;
+      const targetBin = rawTarget - PEAK_FLATTEN * rawTarget * rawTarget;
+      const prevBin = state.audioBins[i] ?? 0;
+      const delta = targetBin - prevBin;
+      const stepT = clamp((targetBin - 0.16) / Math.max(0.0001, 0.72 - 0.16), 0, 1);
+      const smooth = stepT * stepT * (3 - 2 * stepT);
+      const attack = ATTACK_BASE + smooth * ATTACK_RANGE;
+      const follow = delta > 0 ? attack : RELEASE;
+      const value = prevBin + delta * follow;
 
-      state.audioBins[i] += delta * follow;
-      visualEnergy = Math.max(visualEnergy, state.audioBins[i]);
+      state.audioBins[i] = value;
+      visualEnergy = Math.max(visualEnergy, value);
     }
 
-    const targetProcessingMix =
-      state.processing || (!state.processing && state.processingMix > 0.001 && visualEnergy > 0.08)
-        ? 1
-        : 0;
+    const targetProcessingMix = state.processing ? 1 : 0;
     const processingFollow = targetProcessingMix > state.processingMix ? 0.14 : 0.08;
 
     state.processingMix += (targetProcessingMix - state.processingMix) * processingFollow;
@@ -625,24 +569,16 @@ function createWebGLAudioBorderShader(
   frame = window.requestAnimationFrame(tick);
 
   function updateProcessingBins(time: number) {
+    const waveHead = ((time * 0.34) % 1.42) - 0.21;
+
     for (let i = 0; i < AUDIO_BIN_COUNT; i += 1) {
       const x = i / Math.max(1, AUDIO_BIN_COUNT - 1);
-      const centerWeight = 0.72 + Math.sin(x * Math.PI) * 0.28;
-      const carrier = 0.5 + Math.sin(time * 1.42 - x * Math.PI * 2.15) * 0.5;
-      const undertow = 0.5 + Math.sin(time * 0.74 + x * Math.PI * 1.08) * 0.5;
-      const shimmer = 0.5 + Math.cos(time * 1.92 - x * Math.PI * 0.76) * 0.5;
-      const value = (0.12 + carrier * 0.42 + undertow * 0.18 + shimmer * 0.10) * centerWeight;
+      const distance = x - waveHead;
+      const head = Math.exp(-(distance * distance) * 28);
+      const tailDistance = waveHead - x;
+      const tail = tailDistance > 0 ? Math.exp(-tailDistance * 2.4) * 0.2 : 0;
 
-      state.targetAudioBins[i] = clamp(value, 0.08, 0.82);
-    }
-  }
-
-  function releaseProcessingBins() {
-    for (let i = 0; i < AUDIO_BIN_COUNT; i += 1) {
-      state.targetAudioBins[i] = Math.min(
-        state.targetAudioBins[i] ?? 0,
-        (state.audioBins[i] ?? 0) * 0.16,
-      );
+      state.targetAudioBins[i] = Math.min(0.56, Math.max(0.03, head * 0.42 + tail));
     }
   }
 
@@ -678,12 +614,7 @@ function createWebGLAudioBorderShader(
       state.palette = palette;
     },
     setProcessing: (processing) => {
-      const wasProcessing = state.processing;
-
       state.processing = processing;
-      if (!processing && wasProcessing && state.active) {
-        releaseProcessingBins();
-      }
     },
     setSide: (side) => {
       state.side = side;
@@ -696,6 +627,7 @@ function buildStaticAudioBins(
   sensitivity: number,
   noiseFloor: number,
   responseCurve: WebGLAudioResponseCurve,
+  previousPeak: number,
 ) {
   const bins = new Float32Array(AUDIO_BIN_COUNT);
   const startFreq = Math.floor(dataArray.length * 0.05);
@@ -703,6 +635,14 @@ function buildStaticAudioBins(
   const relevantLength = endFreq - startFreq;
   const floor = clamp(noiseFloor, 0, 0.95);
   const range = Math.max(0.05, 1 - floor);
+  let frameMax = 0;
+
+  for (let index = startFreq; index < endFreq; index += 1) {
+    frameMax = Math.max(frameMax, dataArray[index] ?? 0);
+  }
+
+  const peak = Math.max(frameMax / 255, previousPeak * MIC_PEAK_DECAY_PER_FRAME, MIC_MIN_PEAK);
+  const gain = 1 / peak;
 
   for (let i = 0; i < AUDIO_BIN_COUNT; i += 1) {
     const dataIndex =
@@ -711,14 +651,17 @@ function buildStaticAudioBins(
         relevantLength - 1,
         Math.floor((i / Math.max(1, AUDIO_BIN_COUNT - 1)) * relevantLength),
       );
-    const rawValue = dataArray[dataIndex] / 255;
+    const rawValue = Math.max(MIC_MIN_ACTIVE_MAGNITUDE, ((dataArray[dataIndex] ?? 0) / 255) * gain);
     const gatedValue = Math.max(0, rawValue - floor) / range;
     const shapedValue = shapeAudioResponse(gatedValue, responseCurve);
 
     bins[i] = clamp(shapedValue * sensitivity, 0, 1);
   }
 
-  return smoothAudioBins(bins);
+  return {
+    bins: smoothAudioBins(bins),
+    peak,
+  };
 }
 
 function shapeAudioResponse(level: number, responseCurve: WebGLAudioResponseCurve) {
@@ -795,9 +738,7 @@ function cubicBezierAxisDerivative(t: number, pointOne: number, pointTwo: number
   const inv = 1 - t;
 
   return (
-    3 * inv * inv * pointOne +
-    6 * inv * t * (pointTwo - pointOne) +
-    3 * t * t * (1 - pointTwo)
+    3 * inv * inv * pointOne + 6 * inv * t * (pointTwo - pointOne) + 3 * t * t * (1 - pointTwo)
   );
 }
 
@@ -857,12 +798,7 @@ function smoothAudioBins(bins: Float32Array) {
     const nextOne = bins[Math.min(lastIndex, i + 1)] ?? 0;
     const nextTwo = bins[Math.min(lastIndex, i + 2)] ?? 0;
 
-    smoothed[i] =
-      prevTwo * 0.08 +
-      prevOne * 0.20 +
-      current * 0.44 +
-      nextOne * 0.20 +
-      nextTwo * 0.08;
+    smoothed[i] = prevTwo * 0.08 + prevOne * 0.2 + current * 0.44 + nextOne * 0.2 + nextTwo * 0.08;
   }
 
   return smoothed;
@@ -878,7 +814,7 @@ const WebGLAudioBorder = React.forwardRef<HTMLDivElement, WebGLAudioBorderProps>
       children,
       className,
       deviceId,
-      fftSize = 128,
+      fftSize = 256,
       idleLevel = 0.015,
       innerGlowBrightness = 1,
       innerGlowHeight = 1,
@@ -891,7 +827,7 @@ const WebGLAudioBorder = React.forwardRef<HTMLDivElement, WebGLAudioBorderProps>
       responseCurve = defaultAudioResponseCurve,
       sensitivity = 0.9,
       side = "bottom",
-      smoothingTimeConstant = 0.35,
+      smoothingTimeConstant = 0.8,
       style,
       updateRate = 16,
       ...props
@@ -904,6 +840,7 @@ const WebGLAudioBorder = React.forwardRef<HTMLDivElement, WebGLAudioBorderProps>
     const containerRef = React.useRef<HTMLDivElement | null>(null);
     const controllerRef = React.useRef<WebGLAudioBorderController | null>(null);
     const lastUpdateRef = React.useRef(0);
+    const peakRef = React.useRef(MIC_MIN_PEAK);
     const rafRef = React.useRef(0);
     const streamRef = React.useRef<MediaStream | null>(null);
     const audioParamsRef = React.useRef({
@@ -911,12 +848,13 @@ const WebGLAudioBorder = React.forwardRef<HTMLDivElement, WebGLAudioBorderProps>
       responseCurve,
       sensitivity,
     });
+    const captureActive = active && !processing;
     const geometryInputRef = React.useRef<AudioBorderGeometryInput>({
       borderRadius,
       borderWidth,
     });
     const shaderOptionsRef = React.useRef({
-      active,
+      active: captureActive,
       borderBrightness,
       idleLevel,
       innerGlowBrightness,
@@ -931,7 +869,7 @@ const WebGLAudioBorder = React.forwardRef<HTMLDivElement, WebGLAudioBorderProps>
       borderWidth,
     };
     shaderOptionsRef.current = {
-      active,
+      active: captureActive,
       borderBrightness,
       idleLevel,
       innerGlowBrightness,
@@ -951,7 +889,7 @@ const WebGLAudioBorder = React.forwardRef<HTMLDivElement, WebGLAudioBorderProps>
 
       if (!controller) return;
 
-      controller.setActive(active);
+      controller.setActive(captureActive);
       controller.setBorderBrightness(borderBrightness);
       controller.setIdleLevel(idleLevel);
       controller.setInnerGlowBrightness(innerGlowBrightness);
@@ -960,8 +898,8 @@ const WebGLAudioBorder = React.forwardRef<HTMLDivElement, WebGLAudioBorderProps>
       controller.setProcessing(processing);
       controller.setSide(side);
     }, [
-      active,
       borderBrightness,
+      captureActive,
       idleLevel,
       innerGlowBrightness,
       innerGlowHeight,
@@ -992,6 +930,7 @@ const WebGLAudioBorder = React.forwardRef<HTMLDivElement, WebGLAudioBorderProps>
         width: "100%",
       });
 
+      syncAudioBorderClip(host, target, geometryInputRef.current);
       host.appendChild(canvas);
 
       const controller = createWebGLAudioBorderShader(
@@ -1016,19 +955,30 @@ const WebGLAudioBorder = React.forwardRef<HTMLDivElement, WebGLAudioBorderProps>
     }, []);
 
     React.useEffect(() => {
-      if (active || processing) return;
+      if (captureActive || processing) return;
 
       controllerRef.current?.setAudioBins(emptyAudioBins);
-    }, [active, processing]);
+    }, [captureActive, processing]);
 
     React.useEffect(() => {
-      if (!active) {
+      const host = canvasHostRef.current;
+      const target = containerRef.current?.firstElementChild;
+
+      if (!host || !(target instanceof HTMLElement)) return;
+
+      syncAudioBorderClip(host, target, geometryInputRef.current);
+    });
+
+    React.useEffect(() => {
+      if (!captureActive) {
         controllerRef.current?.setActive(false);
 
         if (rafRef.current) {
           window.cancelAnimationFrame(rafRef.current);
           rafRef.current = 0;
         }
+
+        peakRef.current = MIC_MIN_PEAK;
 
         if (streamRef.current) {
           streamRef.current.getTracks().forEach((track) => track.stop());
@@ -1100,14 +1050,16 @@ const WebGLAudioBorder = React.forwardRef<HTMLDivElement, WebGLAudioBorderProps>
               const audioParams = audioParamsRef.current;
 
               analyserNode.getByteFrequencyData(dataArray);
-              controllerRef.current?.setAudioBins(
-                buildStaticAudioBins(
-                  dataArray,
-                  audioParams.sensitivity,
-                  audioParams.noiseFloor,
-                  audioParams.responseCurve,
-                ),
+              const frame = buildStaticAudioBins(
+                dataArray,
+                audioParams.sensitivity,
+                audioParams.noiseFloor,
+                audioParams.responseCurve,
+                peakRef.current,
               );
+
+              peakRef.current = frame.peak;
+              controllerRef.current?.setAudioBins(frame.bins);
             }
 
             rafRef.current = window.requestAnimationFrame(updateAudio);
@@ -1129,6 +1081,8 @@ const WebGLAudioBorder = React.forwardRef<HTMLDivElement, WebGLAudioBorderProps>
           rafRef.current = 0;
         }
 
+        peakRef.current = MIC_MIN_PEAK;
+
         if (streamRef.current) {
           streamRef.current.getTracks().forEach((track) => track.stop());
           streamRef.current = null;
@@ -1143,7 +1097,7 @@ const WebGLAudioBorder = React.forwardRef<HTMLDivElement, WebGLAudioBorderProps>
         analyserRef.current = null;
       };
     }, [
-      active,
+      captureActive,
       deviceId,
       fftSize,
       onError,

@@ -77,11 +77,7 @@ function lineNumberTransformer(showLineNumbers: boolean): ShikiTransformer {
   };
 }
 
-function highlightCode(
-  code: string,
-  language: string,
-  showLineNumbers: boolean,
-) {
+function highlightCode(code: string, language: string, showLineNumbers: boolean) {
   return highlighter.codeToHtml(code, {
     lang: language,
     themes: { dark: "vesper", light: "catppuccin-latte" },
@@ -100,9 +96,7 @@ type CodeBlockContextValue = {
   toggleExpanded: () => void;
 };
 
-const CodeBlockContext = React.createContext<CodeBlockContextValue | null>(
-  null,
-);
+const CodeBlockContext = React.createContext<CodeBlockContextValue | null>(null);
 const COLLAPSED_CODE_BLOCK_HEIGHT = 116;
 
 function useCodeBlockContext() {
@@ -129,10 +123,7 @@ function CodeBlock({
   ...props
 }: CodeBlockProps) {
   const [expanded, setExpanded] = React.useState(defaultExpanded);
-  const toggleExpanded = React.useCallback(
-    () => setExpanded((current) => !current),
-    [],
-  );
+  const toggleExpanded = React.useCallback(() => setExpanded((current) => !current), []);
   const value = React.useMemo<CodeBlockContextValue>(
     () => ({ expanded, setExpanded, toggleExpanded }),
     [expanded, toggleExpanded],
@@ -302,11 +293,7 @@ function CodeBlockContent({
 
   if (highlighted) {
     return (
-      <div
-        data-slot="code-block-content"
-        className={highlightClassName}
-        {...props}
-      >
+      <div data-slot="code-block-content" className={highlightClassName} {...props}>
         {highlighted}
       </div>
     );

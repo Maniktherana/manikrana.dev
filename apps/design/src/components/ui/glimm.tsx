@@ -776,10 +776,7 @@ function Sweep({
   return (
     <div
       data-slot="sweep"
-      className={cn(
-        "relative isolate h-full w-full overflow-hidden contain-paint",
-        className,
-      )}
+      className={cn("relative isolate h-full w-full overflow-hidden contain-paint", className)}
       {...props}
     >
       {children}

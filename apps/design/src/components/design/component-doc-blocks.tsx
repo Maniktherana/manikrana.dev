@@ -10,6 +10,7 @@ import { renderButtonGroupPreview } from "@/components/design/examples/button-gr
 import { renderButtonPreview } from "@/components/design/examples/button-examples";
 import { renderCardPreview } from "@/components/design/examples/card-examples";
 import { renderCalendarPreview } from "@/components/design/examples/calendar-examples";
+import { renderChapterNavigatorPreview } from "@/components/design/examples/chapter-navigator-examples";
 import { renderCheckboxPreview } from "@/components/design/examples/checkbox-examples";
 import { renderCodePreview } from "@/components/design/examples/code-examples";
 import { renderCodeBlockPreview } from "@/components/design/examples/code-block-examples";
@@ -189,6 +190,12 @@ function renderPreview(name: string) {
 
   if (calendarPreview) {
     return calendarPreview;
+  }
+
+  const chapterNavigatorPreview = renderChapterNavigatorPreview(name);
+
+  if (chapterNavigatorPreview) {
+    return chapterNavigatorPreview;
   }
 
   const hoverCardPreview = renderHoverCardPreview(name);

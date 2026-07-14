@@ -5,15 +5,9 @@ import { motion } from "motion/react";
 import { ChevronRightIcon, PanelLeftIcon, PlusIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarGroup,
-  AvatarImage,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { CopyButton } from "@/components/ui/copy-button";
-import { GradientShimmer } from "@/components/ui/gradient-shimmer";
 import {
   SidePanel,
   SidePanelBody,
@@ -21,10 +15,7 @@ import {
   SidePanelHeader,
   SidePanelTitle,
 } from "@/components/ui/side-panel";
-import {
-  MessageComposer,
-  type MessageComposerSubmit,
-} from "@/components/design/message-composer";
+import { MessageComposer, type MessageComposerSubmit } from "@/components/design/message-composer";
 
 type Source = {
   id: string;
@@ -202,7 +193,12 @@ function AiChat() {
     setPanelOpen(false);
     setMessages([
       { id: nextId("user"), role: "user", text: thread?.title ?? "New chat" },
-      { id: nextId("ai"), role: "assistant", kind: id === "news" ? "news" : "generic", pending: true },
+      {
+        id: nextId("ai"),
+        role: "assistant",
+        kind: id === "news" ? "news" : "generic",
+        pending: true,
+      },
     ]);
   }
 
@@ -495,14 +491,14 @@ function AssistantMessage({
       {/* Same element/size whether thinking or done — only the shimmer toggles. */}
       {pending ? (
         <div className="flex items-center gap-1.5 text-base leading-[1.7] font-medium text-muted-foreground">
-          <GradientShimmer variant="muted">Thinking</GradientShimmer>
+          <span className="shimmer text-muted-foreground">Thinking</span>
           <ChevronRightIcon className="size-4 shrink-0" />
         </div>
       ) : (
         <button
           type="button"
           onClick={onToggleThinking}
-          className="flex w-fit items-center gap-1.5 text-base leading-[1.7] font-medium text-muted-foreground transition-colors hover:text-foreground"
+          className="flex w-fit items-center gap-1.5 text-base leading-[1.7] font-medium text-muted-foreground transition-colors"
         >
           Thought for a few seconds
           <ChevronRightIcon className="size-4 shrink-0" />

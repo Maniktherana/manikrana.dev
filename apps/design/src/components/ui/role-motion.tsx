@@ -310,11 +310,7 @@ function clampPeakScale(value: number, fallback: number) {
 function cubicBezierCoordinate(t: number, point1: number, point2: number) {
   const invertedT = 1 - t;
 
-  return (
-    3 * invertedT * invertedT * t * point1 +
-    3 * invertedT * t * t * point2 +
-    t * t * t
-  );
+  return 3 * invertedT * invertedT * t * point1 + 3 * invertedT * t * t * point2 + t * t * t;
 }
 
 function overshootForControlPoint(controlY1: number) {
@@ -863,10 +859,13 @@ function RoleMotion({
       startResize();
     }
 
-    rootSizeCleanupTimer.current = window.setTimeout(() => {
-      rootSizeCleanupTimer.current = null;
-      clearRootSizeStyles(root);
-    }, resizeDelay + resizeDuration + 80);
+    rootSizeCleanupTimer.current = window.setTimeout(
+      () => {
+        rootSizeCleanupTimer.current = null;
+        clearRootSizeStyles(root);
+      },
+      resizeDelay + resizeDuration + 80,
+    );
   }, [
     activeRole,
     config.exitDuration,
@@ -990,10 +989,7 @@ function RoleMotion({
       aria-live="polite"
       data-slot="role-motion"
       ref={rootElement}
-      className={cn(
-        "relative isolate inline-grid w-fit overflow-visible leading-tight",
-        className,
-      )}
+      className={cn("relative isolate inline-grid w-fit overflow-visible leading-tight", className)}
       {...props}
     >
       <span

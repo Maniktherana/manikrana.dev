@@ -12,11 +12,6 @@ import {
 } from "lucide-react";
 import { BorderBeam, type BorderBeamColorVariant, type BorderBeamSize } from "border-beam";
 import { useDialKit } from "dialkit";
-import {
-  GradientShimmer as AnimatedGradientShimmer,
-  type EasingPreset,
-  type GradientPresetName,
-} from "gradient-shimmer";
 import { Stepper, useAutoPlay } from "pasito/react";
 import { chromatic, type SlotOptions } from "slot-text";
 import { SlotText } from "slot-text/react";
@@ -24,19 +19,11 @@ import { TextMorph } from "torph/react";
 
 import { Button } from "@/components/ui/button";
 import { Sweep, type GlimmDirection, type GlimmPaletteName } from "@/components/ui/glimm";
-import {
-  GradientShimmer as GradientShimmerPrimitive,
-  buildGradientShimmerGradient,
-  type GradientShimmerStop,
-} from "@/components/ui/gradient-shimmer";
 import { Marquee } from "@/components/ui/marquee";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { RoleMotion, defaultRoleMotionRoles } from "@/components/ui/role-motion";
 import { RoleText } from "@/components/ui/role-text";
-import {
-  WebGLAudioBorder,
-  type WebGLAudioBorderSide,
-} from "@/components/ui/webgl-audio-border";
+import { WebGLAudioBorder, type WebGLAudioBorderSide } from "@/components/ui/webgl-audio-border";
 import {
   WebGLBorderBeam,
   type WebGLBorderBeamDirection,
@@ -76,8 +63,6 @@ const animationPreviewTitles: Record<string, string> = {
   "animation-border-beam": "Border Beam",
   "animation-webgl-border-beam": "WebGL Border Beam",
   "animation-webgl-audio-border": "WebGL Audio Border",
-  "animation-gradient-shimmer": "Gradient Shimmer",
-  "animation-gradient-shimmer-primitive": "Gradient Shimmer Primitive",
   "animation-progressive-blur-slider": "Progressive Blur Slider",
   "animation-progressive-blur-image": "Progressive Blur Image",
   "animation-gradient-border": "Gradient Border Plugin",
@@ -93,49 +78,6 @@ const progressiveBlurSliderItems = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 const actionScenarioLabels = ["Processing Transaction", "Transaction Safe"] as const;
 const copyScenarioLabels = ["Copy", "Copied"] as const;
 const pricingScenarioLabels = ["Buy for $19.99 / Month", "Buy for $200 / Year"] as const;
-const gradientShimmerPrimitivePalettes = {
-  sunrise: [
-    { color: "#B6D3EF", position: 0 },
-    { color: "#CAD1D7", position: 0.153 },
-    { color: "#D7CFC8", position: 0.252 },
-    { color: "#E1CDB9", position: 0.341 },
-    { color: "#EAC6A5", position: 0.424 },
-    { color: "#EDB185", position: 0.505 },
-    { color: "#EF9B62", position: 0.586 },
-    { color: "#F18F60", position: 0.669 },
-    { color: "#F48D7A", position: 0.758 },
-    { color: "#F78A94", position: 0.857 },
-    { color: "#F888A0", position: 1 },
-  ],
-  bubble: [
-    { color: "#F5EBD9", position: 0 },
-    { color: "#F2D4DB", position: 0.31 },
-    { color: "#EBBDDE", position: 0.5 },
-    { color: "#CCBAE3", position: 0.65 },
-    { color: "#8CBFF0", position: 0.82 },
-    { color: "#78B0FF", position: 1 },
-  ],
-  mint: [
-    { color: "#DECEE8", position: 0 },
-    { color: "#CBBAEE", position: 0.21 },
-    { color: "#7DC0FB", position: 0.46 },
-    { color: "#00C7A6", position: 1 },
-  ],
-  twilight: [
-    { color: "#E3CCE6", position: 0 },
-    { color: "#4E8CD5", position: 0.35 },
-    { color: "#6068C2", position: 0.64 },
-    { color: "#38364E", position: 1 },
-  ],
-  bay: [
-    { color: "#DBE3D0", position: 0 },
-    { color: "#8DB8A7", position: 0.23 },
-    { color: "#2D8E9A", position: 0.42 },
-    { color: "#076492", position: 0.59 },
-    { color: "#154288", position: 0.79 },
-    { color: "#262C81", position: 1 },
-  ],
-} satisfies Record<string, GradientShimmerStop[]>;
 const numberScenarioSteps = [
   { value: "$", delay: 0 },
   { value: "$2", delay: 150 },
@@ -206,7 +148,6 @@ const webglAudioBorderSides: Array<SelectOption<WebGLAudioBorderSide>> = [
   { label: "Top", value: "top" },
   { label: "Right", value: "right" },
   { label: "Left", value: "left" },
-  { label: "Around", value: "around" },
 ];
 
 const webglBorderBeamEasings: Array<SelectOption<WebGLBorderBeamEasing>> = [
@@ -223,19 +164,6 @@ const webglBorderBeamEasings: Array<SelectOption<WebGLBorderBeamEasing>> = [
     label: "cubic-bezier(.3,0,.2,1)",
     value: "cubic-bezier(0.3,0,0.2,1)",
   },
-];
-
-const shimmerGradients: Array<SelectOption<GradientPresetName>> = [
-  { label: "Sunrise", value: "sunrise" },
-  { label: "Mint", value: "mint" },
-  { label: "Twilight", value: "twilight" },
-  { label: "Bay", value: "bay" },
-];
-
-const shimmerEasings: Array<SelectOption<EasingPreset>> = [
-  { label: "Smooth", value: "smooth" },
-  { label: "Gentle", value: "gentle" },
-  { label: "Snappy", value: "snappy" },
 ];
 
 const gradientBorderWidths: Array<SelectOption<GradientBorderWidth>> = [
@@ -686,11 +614,11 @@ function WebGLAudioBorderDemo() {
         ease: [0.55, 0.04, 0.16, 0.85],
       },
       noiseFloor: [0.08, 0, 0.55, 0.005],
-      idleLevel: [0.015, 0, 0.35, 0.005],
+      idleLevel: [0.12, 0, 0.35, 0.005],
       borderWidth: [1, 0.1, 4, 0.1],
       borderBrightness: [1, 0, 2, 0.05],
       innerGlowBrightness: [1, 0, 2, 0.05],
-      innerGlowHeight: [1, 0.2, 3, 0.05],
+      innerGlowHeight: [1.5, 0.2, 3, 0.05],
     },
     { id: "animation-webgl-audio-border" },
   );
@@ -765,67 +693,6 @@ function WebGLAudioBorderDemo() {
           WebGLAudioBorder
         </div>
       </WebGLAudioBorder>
-    </PreviewFrame>
-  );
-}
-
-function GradientShimmerDemo() {
-  const dial = useDialKit(
-    "Gradient Shimmer",
-    {
-      gradient: {
-        type: "select",
-        options: shimmerGradients,
-        default: "sunrise",
-      },
-      easing: { type: "select", options: shimmerEasings, default: "smooth" },
-      duration: [1.45, 0.5, 4, 0.05],
-      pauseBetween: [1000, 0, 3000, 50],
-    },
-    { id: "animation-gradient-shimmer" },
-  );
-  const gradient = optionValue(shimmerGradients, dial.gradient, "sunrise");
-  const easing = optionValue(shimmerEasings, dial.easing, "smooth");
-
-  return (
-    <PreviewFrame>
-      <AnimatedGradientShimmer
-        as="p"
-        className="m-0 max-w-full overflow-hidden text-center text-[clamp(2rem,6vw,4rem)] leading-none font-semibold tracking-normal text-foreground"
-        duration={dial.duration}
-        easing={easing}
-        gradient={gradient}
-        pauseBetween={Math.round(dial.pauseBetween)}
-      >
-        memory-research
-      </AnimatedGradientShimmer>
-    </PreviewFrame>
-  );
-}
-
-function GradientShimmerPrimitiveDemo() {
-  const palettes = gradientShimmerPrimitivePalettes;
-  const mintHighlight = palettes.mint.at(-1)?.color ?? "currentColor";
-
-  return (
-    <PreviewFrame className="h-auto min-h-[260px] overflow-visible py-8">
-      <div className="flex max-w-full flex-col items-center justify-center gap-2 text-center text-base leading-[1.35] font-normal tracking-normal [&_[data-slot=gradient-shimmer]]:py-1">
-        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.sunrise)}>
-          Creating the perfect dish...
-        </GradientShimmerPrimitive>
-        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.bubble)}>
-          Plating the next course...
-        </GradientShimmerPrimitive>
-        <GradientShimmerPrimitive highlightColor={mintHighlight}>
-          Seasoning the details...
-        </GradientShimmerPrimitive>
-        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.twilight)}>
-          Whisking the sauce...
-        </GradientShimmerPrimitive>
-        <GradientShimmerPrimitive gradient={buildGradientShimmerGradient(palettes.bay)}>
-          Resting before service...
-        </GradientShimmerPrimitive>
-      </div>
     </PreviewFrame>
   );
 }
@@ -1251,8 +1118,6 @@ const animationPreviews: Record<string, React.ComponentType> = {
   "animation-border-beam": BorderBeamDemo,
   "animation-webgl-border-beam": WebGLBorderBeamDemo,
   "animation-webgl-audio-border": WebGLAudioBorderDemo,
-  "animation-gradient-shimmer": GradientShimmerDemo,
-  "animation-gradient-shimmer-primitive": GradientShimmerPrimitiveDemo,
   "animation-progressive-blur-slider": ProgressiveBlurSliderDemo,
   "animation-progressive-blur-image": ProgressiveBlurImageDemo,
   "animation-gradient-border": GradientBorderPluginDemo,

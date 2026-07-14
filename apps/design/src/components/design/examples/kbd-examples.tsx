@@ -1,11 +1,7 @@
 import type * as React from "react";
 import { ArrowUpIcon, SearchIcon } from "lucide-react";
 
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 
 const kbdPreviewTitles: Record<string, string> = {

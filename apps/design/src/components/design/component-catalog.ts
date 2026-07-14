@@ -84,19 +84,17 @@ export const componentCatalog = [
     title: "Animations",
     category: "Animations",
     primitive:
-      "Torph, Sweep, BorderBeam, WebGLBorderBeam, WebGLAudioBorder, GradientShimmer, GradientShimmerPrimitive, Marquee, ProgressiveBlur, Gradient Border Plugin, Pasito, Slot Text, RoleMotion, RoleText",
+      "Torph, Sweep, BorderBeam, WebGLBorderBeam, WebGLAudioBorder, Marquee, ProgressiveBlur, Gradient Border Plugin, Pasito, Slot Text, RoleMotion, RoleText",
     files: [
       "src/components/design/examples/animation-examples.tsx",
       "src/components/ui/glimm.tsx",
       "src/components/ui/webgl-border-beam.tsx",
       "src/components/ui/webgl-audio-border.tsx",
-      "src/components/ui/gradient-shimmer.tsx",
       "src/components/ui/marquee.tsx",
       "src/components/ui/progressive-blur.tsx",
       "src/components/ui/role-text.tsx",
       "node_modules/torph",
       "node_modules/border-beam",
-      "node_modules/gradient-shimmer",
       "node_modules/gradient-border-plugin",
       "node_modules/pasito",
       "node_modules/slot-text",
@@ -261,6 +259,20 @@ export const componentCatalog = [
     description:
       "React DayPicker primitive with compact density, range states, and composition examples.",
     custom: false,
+  },
+  {
+    id: "chapter-navigator",
+    title: "Chapter Navigator",
+    category: "Components",
+    primitive: "ChapterNavigator",
+    files: [
+      "src/components/ui/chapter-navigator.tsx",
+      "src/components/design/examples/chapter-navigator-examples.tsx",
+    ],
+    figmaSource: "Puch app chat chapter rail",
+    description:
+      "A compact chat chapter rail with viewport-lit markers, wave sizing on hover, and an instant preview card.",
+    custom: true,
   },
   {
     id: "checkbox",
@@ -431,8 +443,7 @@ export const componentCatalog = [
       "Sheet, SheetTrigger, SheetContent, SheetHeader, SheetFooter, SheetTitle, SheetDescription",
     files: ["src/components/ui/sheet.tsx"],
     figmaSource: "Base UI sheet motion",
-    description:
-      "Slide-in Base UI panel for contextual editing, filters, and responsive drawers.",
+    description: "Slide-in Base UI panel for contextual editing, filters, and responsive drawers.",
     custom: false,
   },
   {
@@ -451,10 +462,7 @@ export const componentCatalog = [
     title: "Stepper",
     category: "Components",
     primitive: "Stepper, StepperTrack, StepperStep, StepperIndicator, StepperFill",
-    files: [
-      "src/components/ui/stepper.tsx",
-      "src/components/ui/hooks/use-stepper-auto-play.ts",
-    ],
+    files: ["src/components/ui/stepper.tsx", "src/components/ui/hooks/use-stepper-auto-play.ts"],
     figmaSource: "Pasito pill stepper restyled with design system tokens",
     description:
       "Count-based progress steps with value control, windowing, vertical layout, and autoplay fill.",

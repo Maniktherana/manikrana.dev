@@ -16,6 +16,7 @@ import buttonSource from "@/components/design/examples/button-examples.tsx?raw";
 import buttonGroupSource from "@/components/design/examples/button-group-examples.tsx?raw";
 import cardSource from "@/components/design/examples/card-examples.tsx?raw";
 import calendarSource from "@/components/design/examples/calendar-examples.tsx?raw";
+import chapterNavigatorSource from "@/components/design/examples/chapter-navigator-examples.tsx?raw";
 import codeSource from "@/components/design/examples/code-examples.tsx?raw";
 import codeBlockSource from "@/components/design/examples/code-block-examples.tsx?raw";
 import commandbarSource from "@/components/design/examples/commandbar-examples.tsx?raw";
@@ -58,6 +59,7 @@ const rawSources = [
   buttonGroupSource,
   cardSource,
   calendarSource,
+  chapterNavigatorSource,
   codeSource,
   codeBlockSource,
   commandbarSource,
@@ -272,15 +274,15 @@ export function WebGLAudioBorderDemo() {
   const [processingActive, setProcessingActive] = useState(false);
   const p = useDialKit("WebGL Audio Border", {
     palette: { type: "select", options: ["prism", "berry", "lagoon", "citrus", "azure", "ember", "neutral"] },
-    side: { type: "select", options: ["bottom", "top", "right", "left", "around"] },
+    side: { type: "select", options: ["bottom", "top", "right", "left"] },
     sensitivity: [0.9, 0.2, 4, 0.05],
     responseCurve: { type: "easing", duration: 0.3, ease: [0.55, 0.04, 0.16, 0.85] },
     noiseFloor: [0.08, 0, 0.55, 0.005],
-    idleLevel: [0.015, 0, 0.35, 0.005],
+    idleLevel: [0.12, 0, 0.35, 0.005],
     borderWidth: [1, 0.1, 4, 0.1],
     borderBrightness: [1, 0, 2, 0.05],
     innerGlowBrightness: [1, 0, 2, 0.05],
-    innerGlowHeight: [1, 0.2, 3, 0.05],
+    innerGlowHeight: [1.5, 0.2, 3, 0.05],
   });
 
   return (
@@ -337,99 +339,6 @@ export function WebGLAudioBorderDemo() {
         {processingActive ? "Stop processing" : "Processing"}
       </Button>
     </>
-  );
-}`,
-  "animation-gradient-shimmer": `import { GradientShimmer } from "gradient-shimmer";
-import { useDialKit } from "dialkit";
-
-export function GradientShimmerDemo() {
-  const p = useDialKit("Gradient Shimmer", {
-    gradient: { type: "select", options: ["sunrise", "mint", "twilight", "bay"] },
-    easing: { type: "select", options: ["smooth", "gentle", "snappy"] },
-    duration: [1.45, 0.5, 4, 0.05],
-    pauseBetween: [1000, 0, 3000, 50],
-  });
-
-  return (
-    <GradientShimmer
-      gradient={p.gradient}
-      easing={p.easing}
-      duration={p.duration}
-      pauseBetween={Math.round(p.pauseBetween)}
-    >
-      memory-research
-    </GradientShimmer>
-  );
-}`,
-  "animation-gradient-shimmer-primitive": `import {
-  GradientShimmer,
-  buildGradientShimmerGradient,
-  type GradientShimmerStop,
-} from "@/components/ui/gradient-shimmer";
-
-const palettes = {
-  sunrise: [
-    { color: "#B6D3EF", position: 0 },
-    { color: "#CAD1D7", position: 0.153 },
-    { color: "#D7CFC8", position: 0.252 },
-    { color: "#E1CDB9", position: 0.341 },
-    { color: "#EAC6A5", position: 0.424 },
-    { color: "#EDB185", position: 0.505 },
-    { color: "#EF9B62", position: 0.586 },
-    { color: "#F18F60", position: 0.669 },
-    { color: "#F48D7A", position: 0.758 },
-    { color: "#F78A94", position: 0.857 },
-    { color: "#F888A0", position: 1 },
-  ],
-  bubble: [
-    { color: "#F5EBD9", position: 0 },
-    { color: "#F2D4DB", position: 0.31 },
-    { color: "#EBBDDE", position: 0.5 },
-    { color: "#CCBAE3", position: 0.65 },
-    { color: "#8CBFF0", position: 0.82 },
-    { color: "#78B0FF", position: 1 },
-  ],
-  mint: [
-    { color: "#DECEE8", position: 0 },
-    { color: "#CBBAEE", position: 0.21 },
-    { color: "#7DC0FB", position: 0.46 },
-    { color: "#00C7A6", position: 1 },
-  ],
-  twilight: [
-    { color: "#E3CCE6", position: 0 },
-    { color: "#4E8CD5", position: 0.35 },
-    { color: "#6068C2", position: 0.64 },
-    { color: "#38364E", position: 1 },
-  ],
-  bay: [
-    { color: "#DBE3D0", position: 0 },
-    { color: "#8DB8A7", position: 0.23 },
-    { color: "#2D8E9A", position: 0.42 },
-    { color: "#076492", position: 0.59 },
-    { color: "#154288", position: 0.79 },
-    { color: "#262C81", position: 1 },
-  ],
-} satisfies Record<string, GradientShimmerStop[]>;
-
-export function GradientShimmerPrimitiveDemo() {
-  const mintHighlight = palettes.mint.at(-1)?.color ?? "currentColor";
-
-  return (
-    <div className="flex flex-col items-center justify-center gap-2 text-center text-base leading-[1.35] font-normal [&_[data-slot=gradient-shimmer]]:py-1">
-      <GradientShimmer gradient={buildGradientShimmerGradient(palettes.sunrise)}>
-        Creating the perfect dish...
-      </GradientShimmer>
-      <GradientShimmer gradient={buildGradientShimmerGradient(palettes.bubble)}>
-        Plating the next course...
-      </GradientShimmer>
-      <GradientShimmer highlightColor={mintHighlight}>Seasoning the details...</GradientShimmer>
-      <GradientShimmer gradient={buildGradientShimmerGradient(palettes.twilight)}>
-        Whisking the sauce...
-      </GradientShimmer>
-      <GradientShimmer gradient={buildGradientShimmerGradient(palettes.bay)}>
-        Resting before service...
-      </GradientShimmer>
-    </div>
   );
 }`,
   "animation-progressive-blur-slider": `import { Marquee } from "@/components/ui/marquee";

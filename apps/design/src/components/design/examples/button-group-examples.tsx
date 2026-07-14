@@ -143,12 +143,7 @@ function ButtonGroupDemo() {
 
 function ButtonGroupOrientation() {
   return (
-    <Group
-      variant="base"
-      orientation="vertical"
-      aria-label="Media controls"
-      className="h-fit"
-    >
+    <Group variant="base" orientation="vertical" aria-label="Media controls" className="h-fit">
       <Button type="button" variant="outline" size="icon" aria-label="Increase">
         <PlusIcon />
       </Button>

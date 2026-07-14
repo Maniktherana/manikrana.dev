@@ -151,9 +151,12 @@ export default function RoleMotion({
     const longestRoleLength = Math.max(...safeRoles.map((nextRole) => nextRole.length));
     const transitionWindowMs =
       (0.24 + ENTER_DELAY_SECONDS + longestRoleLength * ENTER_STAGGER_SECONDS) * 1000;
-    const interval = window.setInterval(() => {
-      setInternalIndex((current) => (current + 1) % safeRoles.length);
-    }, Math.max(ROLE_HOLD_MS, transitionWindowMs + 700));
+    const interval = window.setInterval(
+      () => {
+        setInternalIndex((current) => (current + 1) % safeRoles.length);
+      },
+      Math.max(ROLE_HOLD_MS, transitionWindowMs + 700),
+    );
 
     return () => window.clearInterval(interval);
   }, [controlledIndex, safeRoles]);
