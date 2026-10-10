@@ -303,7 +303,7 @@ export const work = [
 
 export const filters = [
   { value: "project", label: "Projects" },
-  { value: "component", label: "Components" },
+  { value: "component", label: "Selected Work" },
 ] as const;
 
 export type Filter = (typeof filters)[number]["value"];
