@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "base-nova",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@manikrana/ui/components",
+    "utils": "@manikrana/ui/lib/utils",
+    "ui": "@manikrana/ui/components/ui",
+    "lib": "@manikrana/ui/lib",
+    "hooks": "@manikrana/ui/hooks"
+  }
+}

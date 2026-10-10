@@ -1,0 +1,190 @@
+@import "@manikrana/ui/styles/globals.css";
+@import "@maniktherana/gust/styles.css";
+@source "../**/*.{ts,tsx}";
+
+@theme {
+  --container-reading: 644px;
+  --container-stage: 75rem;
+  --container-work: 90rem;
+}
+
+/* An off-black page instead of the shared pure black, so cards and tiles read
+   as surfaces on it. The rest of the ladder (stage, card, popover) stays. */
+:root {
+  --background: hsl(0 0% 6.5%);
+}
+@layer base {
+  body {
+    font-feature-settings: "cv11", "ss01";
+  }
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Logo marks: monochrome at rest; hover animates them in their brand colors.
+   TurboML's color comes from its source asset, so it needs no override. */
+.mark--prometheus {
+  color: #e6522c; /* Official Prometheus orange. */
+}
+.mark--gsoc {
+  color: oklch(0.83 0.16 85);
+}
+.turbo-rotor {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.gsoc-sun {
+  transform-origin: 12px 12px;
+}
+.gsoc-code {
+  stroke: var(--background);
+}
+
+.portrait-glow::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 2.5rem -0.25rem oklch(1 0 0 / 22%);
+}
+/* Where the portrait sits before Backdrop measures it, so the light starts on
+   it instead of the middle of the page: the center of a 48px avatar at the
+   start of the reading column, below the page's top padding. */
+.backdrop-dots--lit,
+.backdrop-glow {
+  --portrait-x: calc((100% - min(100% - 40px, var(--container-reading))) / 2 + 24px);
+  --portrait-y: 80px;
+}
+@media (min-width: 641px) {
+  .backdrop-dots--lit,
+  .backdrop-glow {
+    --portrait-y: 120px;
+  }
+}
+/* The agentsims dot grid (0.9px dots on a 24px tile), revealed only where the
+   portrait's light falls. */
+.backdrop-dots {
+  background-image: radial-gradient(circle, var(--dot, oklch(1 0 0 / 13%)) 0.9px, transparent 1px);
+  background-size: 24px 24px;
+}
+.backdrop-dots--lit {
+  mask-image: radial-gradient(
+    ellipse 128px 88px at var(--light-x, var(--portrait-x)) var(--light-y, var(--portrait-y)),
+    black,
+    oklch(0 0 0 / 40%) 45%,
+    transparent
+  );
+}
+.backdrop-glow {
+  top: calc(var(--light-y, var(--portrait-y)) - 144px);
+  left: calc(var(--light-x, var(--portrait-x)) - 192px);
+  background: radial-gradient(closest-side, oklch(1 0 0 / 3%), transparent);
+}
+
+/* A thin scrollbar that is always visible. Styling the WebKit scrollbar opts
+   it out of macOS overlay scrollbars, which only show while scrolling. */
+@utility scrollbar-visible {
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 9999px;
+    background: var(--color-control-hover) padding-box;
+  }
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-control-hover) transparent;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .inline-link:hover .animated-mark {
+    filter: none;
+    opacity: 1;
+  }
+}
+/* Entrances run on the first page of a session only (see useFirstVisit). */
+@media (prefers-reduced-motion: no-preference) {
+  .entering .reveal {
+    animation: reveal 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation-delay: calc(var(--i, 0) * 80ms + 60ms);
+  }
+  .entering .backdrop-glow,
+  .entering .backdrop-dots--lit {
+    animation: fade-in 1200ms cubic-bezier(0.22, 1, 0.36, 1) 150ms backwards;
+  }
+  .animated-mark {
+    transition:
+      filter 300ms ease,
+      opacity 300ms ease;
+  }
+}
+/* Opening a tile: the tile and its page's stage share a view-transition name,
+   so the browser morphs one box into the other. Both snapshots stay centered
+   at their own scale while the box grows around them, and the card color
+   fills the box, so the preview cross-fades into the stage inside it. */
+::view-transition-group(.work) {
+  animation-duration: var(--vt-tile-duration, 500ms);
+  animation-timing-function: var(--vt-tile-ease, cubic-bezier(0.075, 0.82, 0.165, 1));
+  border-radius: var(--radius-card);
+  overflow: clip;
+  background: var(--card);
+}
+::view-transition-old(.work),
+::view-transition-new(.work) {
+  height: 100%;
+  object-fit: none;
+  animation-duration: var(--vt-crossfade-duration, 300ms);
+  animation-timing-function: var(--vt-crossfade-ease, ease-out);
+}
+::view-transition-new(.work) {
+  animation-delay: var(--vt-crossfade-delay, 100ms);
+}
+/* The page behind the morph clears out before the next one fades in, so the
+   two never show through each other. */
+::view-transition-old(root) {
+  animation-duration: var(--vt-page-out, 150ms);
+}
+::view-transition-new(root) {
+  animation-duration: var(--vt-page-in, 200ms);
+  animation-delay: var(--vt-page-in-delay, 100ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .entering .preview-enter {
+    animation: preview-enter 500ms ease-out backwards;
+  }
+}
+@keyframes preview-enter {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+}
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(4px);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,184 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Consumers add their own @source for app code. */
+@source "../../components/**/*.{ts,tsx}";
+
+/* Base UI marks orientation with data-orientation, not a bare data attribute. */
+@custom-variant data-horizontal (&:where([data-orientation="horizontal"]));
+@custom-variant data-vertical (&:where([data-orientation="vertical"]));
+
+/* A lightness ladder modelled on transitions.dev/library.html. Only the page
+   is black; every other layer keeps its visible lightness and its step
+   relative to the card, the main surface:
+     page 0  <  stage 7.5 (recessed, just under the card)  <  card 9.5  <  popover 12.5
+   Controls are translucent white layers, so they lighten whatever they sit on:
+     rest 11%  ->  hover 14%  ->  selected 20%
+   Edges are layered inset shadows, never borders. Dark is the default. */
+:root {
+  color-scheme: dark;
+
+  /* Surfaces */
+  --background: hsl(0 0% 0%);
+  --stage: hsl(0 0% 7.5%);
+  --card: hsl(0 0% 9.5%);
+  --popover: hsl(0 0% 12.5%);
+
+  /* Text */
+  --foreground: hsl(0 0% 93%);
+  --control-foreground: hsl(0 0% 80%); /* resting chip and ghost labels */
+  --muted-foreground: hsl(0 0% 58%); /* descriptions, idle navigation */
+
+  /* Control layers */
+  --control: hsl(0 0% 100% / 11%);
+  --control-hover: hsl(0 0% 100% / 14%);
+  --control-selected: hsl(0 0% 100% / 20%);
+
+  /* The one filled action per view */
+  --primary: hsl(0 0% 95%);
+  --primary-hover: hsl(0 0% 100%);
+  --primary-foreground: hsl(0 0% 7%);
+
+  /* Flat tints, one recipe per hue (transitions' "Get Pro"): a dark surface of
+     the hue, a lighter hover step, and the hue at 74% lightness for labels. */
+  --blue-surface: hsl(219 42% 15.5%);
+  --blue-surface-hover: hsl(219 48% 20%);
+  --blue-foreground: hsl(219 100% 74%);
+  --cyan-surface: hsl(197 42% 15.5%);
+  --cyan-surface-hover: hsl(197 48% 20%);
+  --cyan-foreground: hsl(197 100% 74%);
+  --green-surface: hsl(150 42% 15.5%);
+  --green-surface-hover: hsl(150 48% 20%);
+  --green-foreground: hsl(150 100% 74%);
+  --amber-surface: hsl(38 42% 15.5%);
+  --amber-surface-hover: hsl(38 48% 20%);
+  --amber-foreground: hsl(38 100% 74%);
+  --red-surface: hsl(2 42% 15.5%);
+  --red-surface-hover: hsl(2 48% 20%);
+  --red-foreground: hsl(2 100% 74%);
+
+  /* Invalid states */
+  --destructive: var(--red-foreground);
+
+  /* Lines and focus */
+  --border: hsl(0 0% 77% / 7%);
+  --underline: hsl(0 0% 22.4%);
+  --ring: hsl(0 0% 58%);
+
+  /* Edges are one principle applied by a prop (`bordered`) or by a surface:
+     a top highlight, a faint inner ring and a soft drop that shows on cards. */
+  --edge-raised:
+    0 1px 3px hsl(0 0% 0% / 4%), inset 0 1px 0 hsl(0 0% 100% / 4%),
+    inset 0 0 0 1px hsl(0 0% 0% / 6%), inset 0 -1px 0 hsl(0 0% 0% / 6%),
+    inset 0 0 0 1px var(--border);
+  --edge-control:
+    0 1px 1px hsl(0 0% 0% / 24%), inset 0 0 0 1px hsl(0 0% 100% / 4%),
+    inset 0 1px 0 hsl(0 0% 100% / 6%);
+  --edge-stage: inset 0 0 0 1px hsl(235 10% 77% / 8%);
+}
+
+/* Opt-in light theme: white page, quiet gray surfaces, black control layers.
+   The default remains dark so existing consumers retain their palette. */
+[data-theme="light"] {
+  color-scheme: light;
+  --background: hsl(0 0% 100%);
+  --stage: hsl(0 0% 97.5%);
+  --card: hsl(0 0% 95.5%);
+  --popover: hsl(0 0% 100%);
+  --foreground: hsl(0 0% 9%);
+  --control-foreground: hsl(0 0% 24%);
+  --muted-foreground: hsl(0 0% 42%);
+  --control: hsl(0 0% 0% / 5%);
+  --control-hover: hsl(0 0% 0% / 8%);
+  --control-selected: hsl(0 0% 0% / 12%);
+  --primary: hsl(0 0% 12%);
+  --primary-hover: hsl(0 0% 20%);
+  --primary-foreground: hsl(0 0% 100%);
+  --blue-surface: hsl(219 85% 95%);
+  --blue-surface-hover: hsl(219 85% 91%);
+  --blue-foreground: hsl(219 80% 37%);
+  --cyan-surface: hsl(197 70% 94%);
+  --cyan-surface-hover: hsl(197 70% 89%);
+  --cyan-foreground: hsl(197 85% 28%);
+  --green-surface: hsl(150 55% 94%);
+  --green-surface-hover: hsl(150 55% 88%);
+  --green-foreground: hsl(150 70% 25%);
+  --amber-surface: hsl(38 90% 94%);
+  --amber-surface-hover: hsl(38 90% 87%);
+  --amber-foreground: hsl(38 95% 27%);
+  --red-surface: hsl(2 80% 96%);
+  --red-surface-hover: hsl(2 80% 91%);
+  --red-foreground: hsl(2 75% 38%);
+  --destructive: var(--red-foreground);
+  --border: hsl(0 0% 0% / 8%);
+  --underline: hsl(0 0% 76%);
+  --ring: hsl(0 0% 42%);
+  --edge-raised:
+    0 1px 3px hsl(0 0% 0% / 6%), inset 0 1px 0 hsl(0 0% 100% / 80%), inset 0 0 0 1px var(--border);
+  --edge-control:
+    0 1px 1px hsl(0 0% 0% / 5%), inset 0 0 0 1px hsl(0 0% 0% / 7%),
+    inset 0 1px 0 hsl(0 0% 100% / 60%);
+  --edge-stage: inset 0 0 0 1px hsl(0 0% 0% / 6%);
+}
+
+@theme inline {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-card: var(--card);
+  --color-stage: var(--stage);
+  --color-popover: var(--popover);
+  --color-foreground: var(--foreground);
+  --color-control-foreground: var(--control-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-control: var(--control);
+  --color-control-hover: var(--control-hover);
+  --color-control-selected: var(--control-selected);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-blue-surface: var(--blue-surface);
+  --color-blue-surface-hover: var(--blue-surface-hover);
+  --color-blue-foreground: var(--blue-foreground);
+  --color-cyan-surface: var(--cyan-surface);
+  --color-cyan-surface-hover: var(--cyan-surface-hover);
+  --color-cyan-foreground: var(--cyan-foreground);
+  --color-green-surface: var(--green-surface);
+  --color-green-surface-hover: var(--green-surface-hover);
+  --color-green-foreground: var(--green-foreground);
+  --color-amber-surface: var(--amber-surface);
+  --color-amber-surface-hover: var(--amber-surface-hover);
+  --color-amber-foreground: var(--amber-foreground);
+  --color-red-surface: var(--red-surface);
+  --color-red-surface-hover: var(--red-surface-hover);
+  --color-red-foreground: var(--red-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-underline: var(--underline);
+  --color-ring: var(--ring);
+
+  --shadow-raised: var(--edge-raised);
+  --shadow-control: var(--edge-control);
+  --shadow-stage: var(--edge-stage);
+
+  /* Card 24px with a 12px inset stage: concentric, so the stage is 12px. */
+  --radius-card: 24px;
+  --radius-stage: 12px;
+
+  --animate-ring-spin: spin 4s linear infinite;
+}
+
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background: var(--control-selected);
+  }
+}
