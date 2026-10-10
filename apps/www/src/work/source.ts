@@ -9,7 +9,7 @@ export type ItemSource = { files: SourceFile[]; dependencies: Dependencies };
 // they need to install, all on the server, so neither Shiki nor that work runs
 // in the browser. The page copies text from what this returns.
 export const getSource = createServerFn({ method: "GET" })
-  .inputValidator((slug: string) => slug)
+  .validator((slug: string) => slug)
   .handler(async ({ data: slug }): Promise<ItemSource | null> => {
     const item = findWork(slug);
     const files = [...(item?.files ?? []), ...(item?.usage ? [item.usage] : [])];
