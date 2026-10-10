@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { Gust, type GustProps } from "@maniktherana/gust";
 import { Liveline, type LivelinePoint } from "liveline";
+import { usePrefersReducedMotion } from "@/work/gust/use-prefers-reduced-motion";
 
 export const tickerMotion = {
   duration: 320,
@@ -25,22 +26,6 @@ const tickerPrices = [
   200.73, 201.48, 201.12, 200.69, 199.93, 199.97, 200.31, 199.64, 198.88, 198.14, 197.69, 197.74,
   196.83, 196.26, 195.48, 195.63, 195.21, 194.57, 194.91, 194.33, 193.72,
 ];
-
-const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
-
-function subscribeToReducedMotion(onChange: () => void) {
-  const media = window.matchMedia(reducedMotionQuery);
-  media.addEventListener("change", onChange);
-  return () => media.removeEventListener("change", onChange);
-}
-
-function usePrefersReducedMotion() {
-  return useSyncExternalStore(
-    subscribeToReducedMotion,
-    () => window.matchMedia(reducedMotionQuery).matches,
-    () => false,
-  );
-}
 
 export function TickerDemo({
   motion = tickerMotion,

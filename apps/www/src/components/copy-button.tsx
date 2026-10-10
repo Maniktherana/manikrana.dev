@@ -1,16 +1,12 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { Gust } from "@maniktherana/gust";
+import { IconSwap } from "@manikrana/ui/components/motion/icon-swap";
 import { Button } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
 import { CheckIcon, CopyIcon } from "@/components/icons";
+import { quietGust } from "@/lib/gust";
 
 const RESET_MS = 1600;
-
-const ICON = {
-  hidden: { opacity: 0, scale: 0.25, filter: "blur(4px)" },
-  shown: { opacity: 1, scale: 1, filter: "blur(0px)" },
-  spring: { type: "spring", duration: 0.3, bounce: 0 },
-} as const;
 
 export function CopyButton({
   value,
@@ -49,21 +45,8 @@ export function CopyButton({
         setCopied(true);
       }}
     >
-      <span className="grid size-4 place-items-center">
-        <AnimatePresence mode="popLayout" initial={false}>
-          <motion.span
-            key={copied ? "copied" : "idle"}
-            className="grid"
-            initial={ICON.hidden}
-            animate={ICON.shown}
-            exit={ICON.hidden}
-            transition={ICON.spring}
-          >
-            {copied ? <CheckIcon /> : icon}
-          </motion.span>
-        </AnimatePresence>
-      </span>
-      {!iconOnly && <span>{copied ? copiedLabel : label}</span>}
+      <IconSwap state={copied ? "b" : "a"} a={icon} b={<CheckIcon />} className="size-4" />
+      {!iconOnly && <Gust value={copied ? copiedLabel : label} {...quietGust} />}
       <span aria-live="polite" className="sr-only">
         {copied ? copiedLabel : ""}
       </span>

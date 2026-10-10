@@ -1,4 +1,5 @@
 import { createRouter } from "@tanstack/react-router";
+import type { Filter } from "@/work/registry";
 
 import { routeTree } from "./routeTree.gen";
 
@@ -8,7 +9,12 @@ export function getRouter() {
     scrollRestoration: true,
     scrollRestorationBehavior: "instant",
     defaultPreload: "intent",
-    defaultViewTransition: true,
+    defaultViewTransition: {
+      types: ({ fromLocation, toLocation }) =>
+        toLocation.pathname === "/" && fromLocation && fromLocation.pathname !== "/"
+          ? ["close"]
+          : [],
+    },
   });
 }
 
@@ -17,6 +23,6 @@ declare module "@tanstack/react-router" {
     router: ReturnType<typeof getRouter>;
   }
   interface HistoryState {
-    fromGrid?: boolean;
+    grid?: Filter;
   }
 }

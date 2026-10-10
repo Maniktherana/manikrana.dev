@@ -3,36 +3,29 @@ import { InlineLink } from "@/components/inline-link";
 import { AnimatedRing } from "@manikrana/ui/components/animated-ring";
 import { Avatar, AvatarImage, AvatarFallback } from "@manikrana/ui/components/ui/avatar";
 import { Link } from "@manikrana/ui/components/ui/link";
+import { TextReveal } from "@manikrana/ui/components/motion/text-reveal";
 import { Backdrop } from "@/components/backdrop";
 import { Segmented } from "@/components/segmented";
 import { cn } from "@manikrana/ui/lib/utils";
 import { useFirstVisit } from "@/lib/use-first-visit";
 import { WorkGrid } from "@/work/grid";
-import { filters, work, type Filter } from "@/work/registry";
+import { filters } from "@/work/registry";
 
 export const Route = createFileRoute("/")({
-  validateSearch: (search: Record<string, unknown>): { show?: Exclude<Filter, "all"> } => {
-    const show = filters.find((filter) => filter.value === search.show)?.value;
-    return show && show !== "all" ? { show } : {};
-  },
+  validateSearch: (search: Record<string, unknown>): { show?: "component" } =>
+    search.show === "component" ? { show: "component" } : {},
   component: Home,
 });
 
-const filterOptions = filters.map((filter) => ({
-  ...filter,
-  count:
-    filter.value === "all" ? work.length : work.filter((item) => item.kind === filter.value).length,
-}));
-
 function Home() {
-  const { show = "all" } = Route.useSearch();
+  const { show = "project" } = Route.useSearch();
   const navigate = Route.useNavigate();
   const first = useFirstVisit();
   return (
     <main
       id="main-content"
       className={cn(
-        "grid grid-cols-1 gap-18 pt-14 min-[641px]:gap-20 min-[641px]:pt-24",
+        "grid grid-cols-1 gap-18 pt-20 min-[641px]:gap-20 min-[641px]:pt-24",
         first && "entering",
       )}
     >
@@ -43,7 +36,7 @@ function Home() {
         className="mx-auto w-[calc(100%-40px)] max-w-reading"
       >
         <div>
-          <header className="reveal mb-5 flex items-center gap-3">
+          <TextReveal as="header" play={first} className="mb-5 flex items-center gap-3">
             <AnimatedRing className="portrait-glow size-12 [--ring-radius:14px]">
               <Avatar size="xl" className="size-full rounded-[calc(var(--ring-radius)_-_5px)]">
                 <AvatarImage
@@ -63,16 +56,26 @@ function Home() {
               </h1>
               <p className="text-muted-foreground font-[450] leading-5.5">Engineer at TurboML</p>
             </div>
-          </header>
-          <p className="mb-3 text-pretty text-muted-foreground last:mb-0 reveal [--i:1]">
+          </TextReveal>
+          <TextReveal
+            as="p"
+            index={1}
+            play={first}
+            className="mb-3 text-pretty text-muted-foreground last:mb-0"
+          >
             I'm an engineer at{" "}
             <InlineLink href="https://turboml.com/" mark="turboml">
               TurboML
             </InlineLink>
             . I build ambitious software with a strong attention to craft, from the systems
             underneath it to the interfaces people actually use.
-          </p>
-          <p className="mb-3 text-pretty text-muted-foreground last:mb-0 reveal [--i:2]">
+          </TextReveal>
+          <TextReveal
+            as="p"
+            index={2}
+            play={first}
+            className="mb-3 text-pretty text-muted-foreground last:mb-0"
+          >
             Previously, I worked on{" "}
             <InlineLink
               href="https://github.com/prometheus/prometheus/issues/14217"
@@ -95,8 +98,13 @@ function Home() {
               10x
             </InlineLink>
             .
-          </p>
-          <p className="mb-3 text-pretty text-muted-foreground last:mb-0 reveal [--i:3]">
+          </TextReveal>
+          <TextReveal
+            as="p"
+            index={3}
+            play={first}
+            className="mb-3 text-pretty text-muted-foreground last:mb-0"
+          >
             You can reach me at{" "}
             <Link
               className="font-[450] motion-safe:duration-200 motion-safe:ease-[ease] motion-reduce:transition-none"
@@ -123,11 +131,17 @@ function Home() {
               GitHub
             </Link>
             .
-          </p>
+          </TextReveal>
         </div>
       </section>
 
-      <section aria-labelledby="work-title" className="reveal [--i:4]">
+      <TextReveal
+        as="section"
+        index={4}
+        play={first}
+        aria-labelledby="work-title"
+        className="@container"
+      >
         <h2 id="work-title" className="sr-only">
           Work
         </h2>
@@ -137,17 +151,17 @@ function Home() {
             value={show}
             onChange={(value) =>
               navigate({
-                search: value === "all" ? {} : { show: value },
+                search: value === "component" ? { show: value } : {},
                 replace: true,
                 resetScroll: false,
                 viewTransition: { types: ["filter"] },
               })
             }
-            options={filterOptions}
+            options={filters}
           />
         </div>
         <WorkGrid filter={show} />
-      </section>
+      </TextReveal>
     </main>
   );
 }

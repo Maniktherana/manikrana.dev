@@ -8,18 +8,24 @@ import {
   type RefObject,
 } from "react";
 import { Link } from "@tanstack/react-router";
-import { previews } from "@/work/previews";
-import { tileAspects, work, type Filter, type Work } from "@/work/registry";
+import { cn } from "@manikrana/ui/lib/utils";
+import { preloadPreviews, previews } from "@/work/previews";
+import { tileAspects, work, type Filter, type WorkItem } from "@/work/registry";
 import { setTransitionTarget, useTransitionTarget } from "@/work/transition";
 
 export function WorkGrid({ filter }: { filter: Filter }) {
+  useEffect(() => {
+    const id = window.setTimeout(preloadPreviews, 1000);
+    return () => window.clearTimeout(id);
+  }, []);
   return (
     <ul
       data-slot="work-grid"
-      className="mx-auto grid w-[calc(100%-40px)] max-w-work grid-flow-row-dense auto-rows-[--spacing(1)] grid-cols-[repeat(auto-fill,minmax(max(17rem,calc((100%_-_--spacing(9))/4)),1fr))] gap-x-3"
+      style={{ "--tiles": work.filter((item) => item.kind === filter).length } as CSSProperties}
+      className="work-grid mx-auto grid grid-flow-row-dense auto-rows-[--spacing(1)] gap-x-3"
     >
       {work.map((item) => (
-        <WorkTile key={item.slug} item={item} hidden={filter !== "all" && item.kind !== filter} />
+        <WorkTile key={item.slug} item={item} filter={filter} />
       ))}
     </ul>
   );
@@ -30,7 +36,7 @@ const ROW = 4;
 const GAP = 12;
 const WIDEST_COLUMN = (1440 - 3 * GAP) / 4;
 
-function WorkTile({ item, hidden }: { item: Work; hidden: boolean }) {
+function WorkTile({ item, filter }: { item: WorkItem; filter: Filter }) {
   const tile = useRef<HTMLLIElement>(null);
   const surface = useRef<HTMLDivElement>(null);
   const near = useNearViewport(surface, item.slug);
@@ -41,7 +47,8 @@ function WorkTile({ item, hidden }: { item: Work; hidden: boolean }) {
   return (
     <li
       ref={tile}
-      hidden={hidden}
+      id={item.slug}
+      hidden={item.kind !== filter}
       style={{ "--span": span, "--aspect": aspect } as CSSProperties}
       className="group relative self-start [grid-row:span_var(--span)/span_var(--span)]"
     >
@@ -61,16 +68,20 @@ function WorkTile({ item, hidden }: { item: Work; hidden: boolean }) {
       <Link
         to="/$slug"
         params={{ slug: item.slug }}
-        state={{ fromGrid: true }}
+        state={{ grid: filter }}
         onClick={() => setTransitionTarget(item.slug)}
         aria-label={`Open ${item.title}`}
         className="absolute inset-0 z-10 rounded-3xl outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
       />
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute start-3 bottom-3 z-20 flex h-6 translate-y-1 items-center rounded-xl bg-popover px-2.5 text-xs leading-none text-control-foreground opacity-0 shadow-raised transition-[opacity,translate] duration-200 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-has-focus-visible:translate-y-0 group-has-focus-visible:opacity-100"
+        className={cn(
+          "pointer-events-none absolute start-3 bottom-3 z-20 flex h-6 translate-y-1 items-center rounded-xl bg-popover px-2.5 text-xs leading-none text-control-foreground opacity-0 shadow-raised transition-[opacity,translate] duration-200 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-has-focus-visible:translate-y-0 group-has-focus-visible:opacity-100",
+          item.kind === "project" && "translate-y-0 opacity-100",
+        )}
       >
         {item.title}
+        {item.tagline && <span className="ms-1 text-muted-foreground">- {item.tagline}</span>}
       </span>
     </li>
   );
@@ -106,7 +117,7 @@ function useNearViewport(ref: RefObject<HTMLElement | null>, key: string) {
         setNear(true);
         observer.disconnect();
       },
-      { rootMargin: "50% 0px" },
+      { rootMargin: "100% 0px" },
     );
     observer.observe(node);
     return () => observer.disconnect();

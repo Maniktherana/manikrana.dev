@@ -1,33 +1,14 @@
-import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { cn } from "@manikrana/ui/lib/utils";
+import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { CopyButton } from "@/components/copy-button";
-import type { Dependencies } from "@/work/dependencies";
 import { WorkSection } from "@/work/section";
 import type { SourceFile } from "@/work/source";
 
-export function CodeView({
-  files,
-  included,
-  notIncluded,
-  dependencies,
-}: {
-  files: SourceFile[];
-  included?: string;
-  notIncluded?: string;
-  dependencies?: Dependencies;
-}) {
+export function CodeView({ files }: { files: SourceFile[] }) {
   const [active, setActive] = useState(0);
   const file = files[active] ?? files[0]!;
   const id = useId();
   return (
     <WorkSection title="Code">
-      {(included || notIncluded || dependencies) && (
-        <dl className="mb-4 flex max-w-reading flex-col gap-3 px-1 text-sm text-pretty">
-          {included && <Scope term="Included">{included}</Scope>}
-          {notIncluded && <Scope term="Not included">{notIncluded}</Scope>}
-          {dependencies && <Requires dependencies={dependencies} />}
-        </dl>
-      )}
       <div className="overflow-hidden rounded-3xl bg-card">
         <div className="flex h-12 items-center gap-2 px-2">
           {files.length > 1 ? (
@@ -52,7 +33,7 @@ export function CodeView({
           tabIndex={0}
           // oxlint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: file.html }}
-          className="scrollbar-visible max-h-160 overflow-auto outline-none focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset [&_pre]:w-fit [&_pre]:min-w-full [&_pre]:bg-transparent! [&_pre]:p-6 [&_pre]:font-mono [&_pre]:text-xs/5"
+          className="scrollbar-visible scroll-fade-t max-h-160 overflow-auto outline-none focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset [&_pre]:w-fit [&_pre]:min-w-full [&_pre]:bg-transparent! [&_pre]:p-6 [&_pre]:font-mono [&_pre]:text-xs/5"
         />
       </div>
     </WorkSection>
@@ -121,51 +102,5 @@ function FileTabs({
         </button>
       ))}
     </div>
-  );
-}
-
-function Scope({ term, children }: { term: string; children: ReactNode }) {
-  return (
-    <div className="flex flex-col gap-1 sm:flex-row sm:gap-6">
-      <dt className="shrink-0 text-muted-foreground sm:w-24">{term}</dt>
-      <dd className="text-control-foreground">{children}</dd>
-    </div>
-  );
-}
-
-const CHIP = "rounded-md bg-control px-2 py-1 text-xs leading-none text-control-foreground";
-
-function Requires({ dependencies }: { dependencies: Dependencies }) {
-  const { packages, registry, assets } = dependencies;
-  if (!packages.length && !registry.length && !assets.length) return null;
-  return (
-    <Scope term="Requires">
-      <ul className="flex flex-wrap gap-1.5">
-        {packages.map((name) => (
-          <li key={name} className={CHIP}>
-            {name}
-          </li>
-        ))}
-        {registry.map((name) => (
-          <li key={name} className={CHIP}>
-            shadcn {name}
-          </li>
-        ))}
-        {assets.map((path) => (
-          <li key={path}>
-            <a
-              href={path}
-              download
-              className={cn(
-                CHIP,
-                "block transition-[background-color,color] duration-150 ease-out hover:bg-control-hover hover:text-foreground",
-              )}
-            >
-              {path.split("/").at(-1)}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </Scope>
   );
 }

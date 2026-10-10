@@ -14,7 +14,7 @@ export function Segmented<T extends string>({
   label: string;
   value: T;
   onChange: (value: T) => void;
-  options: readonly { value: T; label: ReactNode; count?: number }[];
+  options: readonly { value: T; label: ReactNode }[];
   className?: string;
 }) {
   const indicator = useId();
@@ -34,7 +34,7 @@ export function Segmented<T extends string>({
             type="button"
             aria-pressed={pressed}
             onClick={() => onChange(option.value)}
-            className="relative flex h-7 items-center gap-1.5 rounded-lg px-2.5 text-sm leading-none whitespace-nowrap text-control-foreground outline-none transition-[color] duration-150 ease-out hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 aria-pressed:text-foreground"
+            className="relative flex h-7 items-center rounded-lg px-2.5 text-sm leading-none whitespace-nowrap text-control-foreground outline-none transition-[color] duration-150 ease-out hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 aria-pressed:text-foreground"
           >
             {pressed && (
               <motion.span
@@ -44,11 +44,6 @@ export function Segmented<T extends string>({
               />
             )}
             <span className="relative">{option.label}</span>
-            {option.count !== undefined && (
-              <span className="relative text-xs text-muted-foreground tabular-nums">
-                {option.count}
-              </span>
-            )}
           </button>
         );
       })}

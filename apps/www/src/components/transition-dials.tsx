@@ -51,5 +51,5 @@ function useTransitionDials() {
 
 export default function TransitionDials() {
   useTransitionDials();
-  return <DialRoot position="bottom-right" theme="dark" />;
+  return <DialRoot position="bottom-right" theme="dark" defaultOpen={false} />;
 }

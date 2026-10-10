@@ -1,19 +1,23 @@
-import { useEffect, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
+import { flushSync } from "react-dom";
+import { Gust } from "@maniktherana/gust";
+import { AnimatePresence } from "motion/react";
 import { createFileRoute, Link, notFound, useLocation, useRouter } from "@tanstack/react-router";
+import { PresenceFade } from "@manikrana/ui/components/motion/presence-fade";
 import { Button, buttonVariants } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
 import { CopyButton } from "@/components/copy-button";
+import { quietGust } from "@/lib/gust";
 import {
   ArrowUpRightIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   CloseIcon,
   GithubIcon,
-  SparkleIcon,
 } from "@/components/icons";
 import { CodeView } from "@/work/code-view";
 import { componentPrompt } from "@/work/prompt";
-import { findWork, neighbours } from "@/work/registry";
+import { findWork, neighbours, type Filter, type WorkItem } from "@/work/registry";
 import { getSource } from "@/work/source";
 import { setTransitionTarget } from "@/work/transition";
 import { details, stages } from "@/work/stages";
@@ -40,6 +44,8 @@ export const Route = createFileRoute("/$slug")({
   component: WorkPage,
 });
 
+const STEP = { types: ["step"] };
+
 const iconLink =
   "flex size-7 items-center justify-center rounded-lg text-control-foreground transition-[background-color,color,scale] duration-150 ease-out outline-none hover:bg-control hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.96]";
 
@@ -50,10 +56,13 @@ function WorkPage() {
   const Stage = stages[item.slug];
   const Details = details[item.slug];
   const { previous, next } = neighbours(item.slug);
-  const fromGrid = useLocation({ select: (location) => location.state.fromGrid });
+  const [grid] = useState(useLocation({ select: (location) => location.state.grid }));
+  const { close, morphs } = useClose(item, grid);
+  const fadeIn =
+    useStepped(item.slug) && "motion-safe:animate-in motion-safe:fade-in duration-200 ease-out";
 
   useEffect(() => setTransitionTarget(item.slug), [item.slug]);
-  useItemKeys(previous.slug, next.slug, fromGrid);
+  useItemKeys(previous.slug, next.slug, grid, close);
   usePreload(previous.slug, next.slug);
 
   return (
@@ -62,6 +71,9 @@ function WorkPage() {
         <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-2 text-sm">
           <Link
             to="/"
+            search={item.kind === "component" ? { show: "component" } : {}}
+            hash={item.slug}
+            hashScrollIntoView={TILE_INTO_VIEW}
             className="shrink-0 text-control-foreground transition-[color] duration-150 ease-out hover:text-foreground"
           >
             Manik Rana
@@ -69,63 +81,85 @@ function WorkPage() {
           <span aria-hidden="true" className="text-muted-foreground">
             /
           </span>
-          <span aria-current="page" className="truncate text-foreground">
-            {item.title}
-          </span>
+          <Gust value={item.title} {...quietGust} aria-current="page" className="text-foreground" />
         </nav>
-        <CloseButton fromGrid={fromGrid} />
+        <Button
+          variant="secondary"
+          size="icon"
+          aria-label="Close"
+          aria-keyshortcuts="Escape"
+          className="rounded-xl text-control-foreground hover:text-foreground"
+          onClick={close}
+        >
+          <CloseIcon />
+        </Button>
       </header>
 
       <div
-        style={{ "--work": `work-${item.slug}` } as CSSProperties}
-        className={cn(
-          "relative overflow-hidden rounded-3xl bg-card [view-transition-name:var(--work)] [view-transition-class:work]",
-          item.tile === "video"
-            ? "aspect-video"
-            : "h-[clamp(25rem,54svh,30rem)] sm:h-[clamp(27.5rem,64svh,42.5rem)]",
-        )}
+        data-slot="stage"
+        className="@container-size grid h-[clamp(25rem,54svh,30rem)] place-items-center sm:h-[clamp(27.5rem,64svh,42.5rem)]"
       >
-        {Stage && <Stage />}
+        <div
+          style={morphs ? ({ "--work": `work-${item.slug}` } as CSSProperties) : undefined}
+          className={cn(
+            "relative overflow-hidden rounded-3xl bg-card [view-transition-name:var(--work)] [view-transition-class:work]",
+            item.tile === "video"
+              ? "aspect-video w-[min(100cqw,100cqh*16/9)] rounded-[calc(min(100cqw,100cqh*16/9)/64)]"
+              : "size-full",
+          )}
+        >
+          {Stage && <Stage />}
+        </div>
       </div>
 
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-x-4 gap-y-3 px-1">
-        <h1 className="text-xl leading-snug font-medium text-balance">{item.title}</h1>
-        <div className="flex items-center gap-2">
-          {item.kind === "component" && dependencies && (
-            <CopyButton
-              label="Copy prompt"
-              copiedLabel="Prompt copied"
-              icon={<SparkleIcon />}
-              value={() => componentPrompt(item, files, dependencies)}
-            />
-          )}
-          {item.links?.map((link) => {
-            const github = link.label === "GitHub";
-            return (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={github ? `${item.title} on GitHub` : undefined}
-                className={cn(
-                  buttonVariants({ variant: "secondary" }),
-                  "gap-2 rounded-xl font-normal text-control-foreground hover:text-foreground",
-                  github ? "ps-2.5 pe-3" : "ps-3 pe-2.5",
-                )}
-              >
-                {github && <GithubIcon />}
-                {link.label}
-                {!github && <ArrowUpRightIcon className="text-muted-foreground" />}
-              </a>
-            );
-          })}
+      <div className="mt-4 grid gap-x-4 gap-y-5 px-1 sm:mt-6 sm:grid-cols-[1fr_auto] sm:items-center">
+        <div className="relative flex flex-wrap items-center justify-end gap-2 sm:col-start-2 sm:row-start-1">
+          <AnimatePresence initial={false} mode="popLayout" anchorX="right">
+            {item.kind === "component" && dependencies && (
+              <PresenceFade key="copy-prompt">
+                <CopyButton
+                  label="Copy prompt"
+                  copiedLabel="Prompt copied"
+                  value={() => componentPrompt(item, files, dependencies)}
+                />
+              </PresenceFade>
+            )}
+            {item.links?.map((link) => {
+              const github = link.label === "GitHub";
+              return (
+                <PresenceFade
+                  as="a"
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={github ? `${item.title} on GitHub` : undefined}
+                  title={github ? "GitHub" : undefined}
+                  className={cn(
+                    buttonVariants({ variant: "secondary", size: github ? "icon" : "default" }),
+                    "rounded-xl font-normal text-control-foreground hover:text-foreground",
+                    !github && "gap-2 ps-3 pe-2.5",
+                  )}
+                >
+                  {github ? (
+                    <GithubIcon />
+                  ) : (
+                    <>
+                      {link.label}
+                      <ArrowUpRightIcon className="text-muted-foreground" />
+                    </>
+                  )}
+                </PresenceFade>
+              );
+            })}
+          </AnimatePresence>
           <nav aria-label="Work" className="flex items-center gap-1 rounded-xl bg-control p-1">
             <Link
               to="/$slug"
               params={{ slug: previous.slug }}
-              state={{ fromGrid }}
+              state={{ grid }}
               replace
+              viewTransition={STEP}
               aria-label={`Previous: ${previous.title}`}
               aria-keyshortcuts="ArrowLeft"
               title={previous.title}
@@ -136,8 +170,9 @@ function WorkPage() {
             <Link
               to="/$slug"
               params={{ slug: next.slug }}
-              state={{ fromGrid }}
+              state={{ grid }}
               replace
+              viewTransition={STEP}
               aria-label={`Next: ${next.title}`}
               aria-keyshortcuts="ArrowRight"
               title={next.title}
@@ -147,48 +182,63 @@ function WorkPage() {
             </Link>
           </nav>
         </div>
+        <h1
+          key={item.slug}
+          className={cn(
+            "text-xl leading-snug font-medium text-balance sm:col-start-1 sm:row-start-1",
+            fadeIn,
+          )}
+        >
+          {item.title}
+        </h1>
       </div>
-      <p className="mt-3 max-w-reading px-1 text-pretty text-muted-foreground">{item.summary}</p>
-      {item.uses && (
-        <dl className="mt-4 flex flex-wrap items-center gap-1.5 px-1 text-xs leading-none">
-          <dt className="me-1 text-muted-foreground">Uses</dt>
-          {item.uses.map((use) => (
-            <dd key={use} className="rounded-md bg-control px-2 py-1 text-control-foreground">
-              {use}
-            </dd>
-          ))}
-        </dl>
-      )}
+      <div key={item.slug} className={cn(fadeIn)}>
+        <p className="mt-3 max-w-reading px-1 text-pretty text-muted-foreground">{item.summary}</p>
+        {item.uses && (
+          <dl className="mt-4 flex flex-wrap items-center gap-1.5 px-1 text-xs leading-none">
+            <dt className="me-1 text-muted-foreground">Uses</dt>
+            {item.uses.map((use) => (
+              <dd key={use} className="rounded-md bg-control px-2 py-1 text-control-foreground">
+                {use}
+              </dd>
+            ))}
+          </dl>
+        )}
 
-      {Details && <Details />}
-      {files.length > 0 && (
-        <CodeView
-          files={files}
-          included={item.included}
-          notIncluded={item.notIncluded}
-          dependencies={item.kind === "component" ? dependencies : undefined}
-        />
-      )}
+        {Details && <Details />}
+        {files.length > 0 && <CodeView files={files} />}
+      </div>
     </main>
   );
 }
 
-const OWNS_KEYS =
-  'input, textarea, select, [contenteditable], [role="slider"], [role="tablist"], [role="menu"], [role="listbox"], .dialkit-root';
+function useStepped(slug: string) {
+  const [first] = useState(slug);
+  const [stepped, setStepped] = useState(false);
+  if (!stepped && slug !== first) setStepped(true);
+  return stepped;
+}
 
-function useItemKeys(previous: string, next: string, fromGrid?: boolean) {
-  const router = useRouter();
+const OWNS_KEYS =
+  'input, textarea, select, [contenteditable], [role="slider"], [role="tablist"], [role="menu"], [role="listbox"], [role="dialog"], .dialkit-root';
+
+function useItemKeys(previous: string, next: string, grid: Filter | undefined, close: () => void) {
   const navigate = Route.useNavigate();
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
       if (event.target instanceof Element && event.target.closest(OWNS_KEYS)) return;
       if (event.key === "Escape") {
-        if (fromGrid) router.history.back();
-        else void navigate({ to: "/" });
+        close();
       } else if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
         const slug = event.key === "ArrowLeft" ? previous : next;
-        void navigate({ to: "/$slug", params: { slug }, state: { fromGrid }, replace: true });
+        void navigate({
+          to: "/$slug",
+          params: { slug },
+          state: { grid },
+          replace: true,
+          viewTransition: STEP,
+        });
       } else {
         return;
       }
@@ -196,7 +246,7 @@ function useItemKeys(previous: string, next: string, fromGrid?: boolean) {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [fromGrid, navigate, next, previous, router]);
+  }, [close, grid, navigate, next, previous]);
 }
 
 function usePreload(previous: string, next: string) {
@@ -207,32 +257,24 @@ function usePreload(previous: string, next: string) {
   }, [previous, next, router]);
 }
 
-// history.back() keeps the grid's scroll, so previous and next must replace, not push.
-function CloseButton({ fromGrid }: { fromGrid?: boolean }) {
+const TILE_INTO_VIEW = { block: "center", behavior: "instant" } as const;
+
+// Closing lands on the item's own tab so its tile is there to morph into. history.back() keeps
+// that grid's scroll, so previous and next must replace, not push. Any other way back fades.
+function useClose(item: WorkItem, grid: Filter | undefined) {
   const router = useRouter();
-  const className = "rounded-xl text-control-foreground hover:text-foreground";
-  if (fromGrid) {
-    return (
-      <Button
-        variant="secondary"
-        size="icon"
-        aria-label="Close"
-        aria-keyshortcuts="Escape"
-        className={className}
-        onClick={() => router.history.back()}
-      >
-        <CloseIcon />
-      </Button>
-    );
-  }
-  return (
-    <Link
-      to="/"
-      aria-label="Close"
-      aria-keyshortcuts="Escape"
-      className={cn(buttonVariants({ variant: "secondary", size: "icon" }), className)}
-    >
-      <CloseIcon />
-    </Link>
-  );
+  const navigate = Route.useNavigate();
+  const [target, setTarget] = useState<Filter>();
+  const close = () => {
+    if (grid === item.kind) return router.history.back();
+    flushSync(() => setTarget(item.kind));
+    void navigate({
+      to: "/",
+      search: item.kind === "component" ? { show: "component" } : {},
+      hash: item.slug,
+      hashScrollIntoView: TILE_INTO_VIEW,
+      replace: grid !== undefined,
+    });
+  };
+  return { close, morphs: item.kind === (target ?? grid ?? "project") };
 }

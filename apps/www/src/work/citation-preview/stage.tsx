@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
-import { TooltipProvider } from "@manikrana/ui/components/ui/tooltip";
 import { Toolbar, ToolbarButton } from "@/components/toolbar";
 import { useWatching } from "@/work/use-watching";
 import { Answer } from "./answer";
@@ -12,7 +11,6 @@ const TIMING = {
 
 const BEATS = ["sent", "answered"] as const;
 
-// The TooltipProvider lets moving straight between chips skip the open delay.
 export function Stage() {
   const ref = useRef<HTMLDivElement>(null);
   const watching = useWatching(ref);
@@ -35,13 +33,11 @@ export function Stage() {
   };
 
   return (
-    <TooltipProvider>
-      <div ref={ref} className="relative flex size-full items-center justify-center px-6 pb-14">
-        <Answer sent={reached >= 1} answered={reached >= 2} className="w-full max-w-xl" />
-        <Toolbar aria-label="Citation chips">
-          <ToolbarButton onClick={replay}>Replay</ToolbarButton>
-        </Toolbar>
-      </div>
-    </TooltipProvider>
+    <div ref={ref} className="relative flex size-full items-center justify-center px-6 pb-14">
+      <Answer sent={reached >= 1} answered={reached >= 2} className="w-full max-w-xl" />
+      <Toolbar aria-label="Citation chips">
+        <ToolbarButton onClick={replay}>Replay</ToolbarButton>
+      </Toolbar>
+    </div>
   );
 }

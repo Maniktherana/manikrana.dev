@@ -1,16 +1,22 @@
-const repository = "https://github.com/Maniktherana/talks/tree/main";
+export type Talk = {
+  id: string;
+  slides: number;
+  title: string;
+  subtitle: string;
+  video?: string;
+  events: { venue: string; href: string; date: string; dateTime: string }[];
+};
 
-// Titles and slide artwork come from the decks in Maniktherana/talks. Each talk
-// links to its folder on GitHub, where the slides open in the browser.
-export const talks = [
+export const talks: Talk[] = [
   {
     id: "prometheus",
-    folder: "prometheus-parser-talk",
+    slides: 11,
+    video: "lUD2ItyDKL4",
     title: "Go-ing under the hood: the Prometheus parser",
     subtitle: "Breaking and optimizing the Prometheus parser",
     events: [
       {
-        venue: "PromCon 2024",
+        venue: "PromCon",
         href: "https://promcon.io/2024-berlin/",
         date: "Sep 2024",
         dateTime: "2024-09",
@@ -19,7 +25,7 @@ export const talks = [
   },
   {
     id: "observability",
-    folder: "observability-talk",
+    slides: 34,
     title: "Intro to Observability",
     subtitle: "Prometheus, Loki & Grafana",
     events: [
@@ -33,7 +39,7 @@ export const talks = [
   },
   {
     id: "airflow",
-    folder: "airflow-talk",
+    slides: 36,
     title: "Build an ETL pipeline with Apache Airflow",
     subtitle: "With Apache Airflow",
     events: [
@@ -48,14 +54,11 @@ export const talks = [
   },
   {
     id: "rust",
-    folder: "first-foray-into-rust-talk",
+    slides: 37,
     title: "My first foray into Rust",
     subtitle: "A web developer meets the borrow checker",
     events: [
       { venue: "Rust Delhi", href: "https://rustdelhi.in/", date: "Dec 2023", dateTime: "2023-12" },
     ],
   },
-].map((talk) => ({
-  ...talk,
-  code: `${repository}/${talk.folder}`,
-}));
+];

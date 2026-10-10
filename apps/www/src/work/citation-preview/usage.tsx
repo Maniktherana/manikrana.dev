@@ -1,4 +1,3 @@
-import { TooltipProvider } from "@manikrana/ui/components/ui/tooltip";
 import { CitationChip, CitationGroupChip, type CitationSource } from "./citation-chips";
 
 const guide: CitationSource = {
@@ -16,12 +15,10 @@ const deepDive: CitationSource = {
 
 export function Example() {
   return (
-    <TooltipProvider>
-      <p className="max-w-xl text-base leading-relaxed">
-        Cursor pagination hands back an opaque token for the next page{" "}
-        <CitationChip source={guide} />, so results stay stable as rows are inserted{" "}
-        <CitationGroupChip sources={[guide, deepDive]} />.
-      </p>
-    </TooltipProvider>
+    <p className="max-w-xl text-base leading-relaxed">
+      Cursor pagination hands back an opaque token for the next page <CitationChip source={guide} />
+      , so results stay stable as rows are inserted{" "}
+      <CitationGroupChip sources={[guide, deepDive]} />.
+    </p>
   );
 }

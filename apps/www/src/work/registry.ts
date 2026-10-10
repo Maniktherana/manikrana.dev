@@ -3,6 +3,7 @@ export type WorkKind = "project" | "component";
 export type WorkItem = {
   slug: string;
   title: string;
+  tagline?: string;
   kind: WorkKind;
   summary: string;
   tile: keyof typeof tileAspects;
@@ -28,6 +29,7 @@ export const work = [
   {
     slug: "agentsims",
     title: "Agentsims",
+    tagline: "Tooling for mobile devs",
     kind: "project",
     summary:
       "A local workspace for iOS simulators and Android devices. You inspect and drive your app from the browser, the CLI or a coding agent, all through one native executable.",
@@ -41,23 +43,20 @@ export const work = [
   {
     slug: "gust",
     title: "Gust",
+    tagline: "Text animation library",
     kind: "project",
-    summary:
-      "A React component that animates changing text one character at a time. Shared prefixes stay still, old glyphs lift out, new ones settle in, and the width eases to fit.",
+    summary: "A React text animation component built on the Web Animations API.",
     tile: "lg",
-    uses: ["React", "Web Animations API"],
     links: [
       { label: "gust.manikrana.dev", href: "https://gust.manikrana.dev" },
       { label: "GitHub", href: "https://github.com/Maniktherana/gust" },
     ],
-    files: ["live-price.tsx", "ticker-demo.tsx"],
   },
   {
     slug: "talks",
     title: "Talks",
     kind: "project",
-    summary:
-      "Talks I've given at PromCon and Delhi meetups, mostly about observability and what happens under the hood. The slides and code for each one are on GitHub.",
+    summary: "Talks I've given at various meetups and conferences.",
     tile: "lg",
     links: [{ label: "GitHub", href: "https://github.com/Maniktherana/talks" }],
   },
@@ -217,7 +216,7 @@ export const work = [
     title: "Citation chips",
     kind: "component",
     summary:
-      "Source chips that sit inline in an AI answer for an AI chat app. Hover or focus one and the cited page opens above it with its image, favicon and title; a chip for several sources opens a row of their cards, each naming its domain.",
+      "Source chips that sit inline in an AI answer for an AI chat app. Hover one, or tap it on a phone, and the cited page opens above it with its image, favicon and title; a chip for several sources opens a row of their cards, each naming its domain.",
     tile: "lg",
     uses: ["Base UI"],
     files: [
@@ -229,10 +228,10 @@ export const work = [
     ],
     usage: "usage.tsx",
     notes: [
-      "The tooltip is shadcn's Base UI tooltip: the chips set delay, closeOnClick and render on its trigger. With the Radix version, use delayDuration and asChild instead.",
+      "The cards are Base UI popovers that open on hover. On a touch screen a tap on a chip opens its card instead of following the link, and the card itself links to the source.",
     ],
     included:
-      "CitationChip and CitationGroupChip with their hover and focus cards: the image card with its progressive blur, a plain card when a source has no image, and favicons with a globe fallback. A chip for several sources opens a scrolling row of linked cards, one per source, each naming its domain. Each source comes in as an object with its URL, title, image, favicon and snippet.",
+      "CitationChip and CitationGroupChip with their hover cards: the image card with its progressive blur, a plain card when a source has no image, and favicons with a globe fallback. A chip for several sources opens a scrolling row of linked cards, one per source, each naming its domain. Each source comes in as an object with its URL, title, image, favicon and snippet.",
     notIncluded:
       "The question, the answer and the sources it cites, and the send, stream and cursor that play on the tile and stage. Parsing citations out of markdown and fetching link previews are left to your app.",
   },
@@ -297,10 +296,7 @@ export const work = [
   },
 ] as const satisfies readonly WorkItem[];
 
-export type Work = (typeof work)[number];
-
 export const filters = [
-  { value: "all", label: "All" },
   { value: "project", label: "Projects" },
   { value: "component", label: "Components" },
 ] as const;

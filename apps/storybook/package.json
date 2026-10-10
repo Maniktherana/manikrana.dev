@@ -15,6 +15,7 @@
   "dependencies": {
     "@manikrana/ui": "workspace:*",
     "lucide-react": "^1.17.0",
+    "motion": "^12.40.0",
     "react": "19",
     "react-dom": "19"
   },

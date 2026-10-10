@@ -1,6 +1,5 @@
-import { useState, type ComponentProps } from "react";
+import { useRef, useState, type ComponentProps } from "react";
 import { Popover } from "@base-ui/react/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@manikrana/ui/components/ui/tooltip";
 import { cn } from "@manikrana/ui/lib/utils";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/components/icons";
 import { CitationPreview } from "./citation-preview";
@@ -14,24 +13,28 @@ const CHIP =
 
 const OPEN_DELAY_MS = 120;
 
-// `[&>[data-side]]:hidden` hides the shared tooltip's arrow.
-const POPUP =
-  "w-80 max-w-[calc(100vw-2rem)] flex-col items-stretch rounded-lg p-0 text-left leading-[1.6] font-medium text-wrap motion-reduce:animate-none! [&>[data-side]]:hidden";
+const POP =
+  "w-80 max-w-[calc(100vw-2rem)] origin-(--transform-origin) text-left outline-none data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 motion-reduce:animate-none!";
 
 export type CitationChipProps = Omit<ComponentProps<"a">, "href" | "children"> & {
   source: CitationSource;
 };
 
+// A click follows the link; a tap opens the card instead, since a touch screen can't hover.
 export function CitationChip({ source, className, ...props }: CitationChipProps) {
   const name = sourceName(source);
+  const touch = useRef(false);
+  const href = sourceHref(source.url);
 
   return (
-    <Tooltip>
-      <TooltipTrigger
+    <Popover.Root>
+      <Popover.Trigger
+        openOnHover
         delay={OPEN_DELAY_MS}
+        nativeButton={false}
         render={
           <a
-            href={sourceHref(source.url)}
+            href={href}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`Open source: ${name}`}
@@ -39,14 +42,33 @@ export function CitationChip({ source, className, ...props }: CitationChipProps)
             {...props}
           />
         }
+        onPointerDown={(event) => {
+          touch.current = event.pointerType !== "mouse";
+        }}
+        onClick={(event) => {
+          if (touch.current) event.preventDefault();
+          else event.preventBaseUIHandler();
+        }}
       >
         <SourceFavicon src={source.favicon} size={14} />
         <span className="truncate">{name}</span>
-      </TooltipTrigger>
-      <TooltipContent sideOffset={8} className={cn(POPUP, "bg-transparent shadow-none")}>
-        <CitationPreview source={source} />
-      </TooltipContent>
-    </Tooltip>
+      </Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Positioner side="top" sideOffset={8} className="isolate z-50">
+          <Popover.Popup className={cn(POP, "rounded-xl")}>
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open source: ${name}`}
+              className="block rounded-xl outline-ring/50 focus-visible:outline-2"
+            >
+              <CitationPreview source={source} />
+            </a>
+          </Popover.Popup>
+        </Popover.Positioner>
+      </Popover.Portal>
+    </Popover.Root>
   );
 }
 
@@ -85,7 +107,12 @@ export function CitationGroupChip({ sources, className, ...props }: CitationGrou
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Positioner side="top" sideOffset={8} className="isolate z-50">
-          <Popover.Popup className="w-80 max-w-[calc(100vw-2rem)] origin-(--transform-origin) rounded-xl bg-popover p-1 text-left outline-none shadow-[0_-1px_0_0_rgb(255_255_255/6%),0_0_0_1px_rgb(255_255_255/6%),0_0_0_1px_#2c2c2c,0_4px_8px_0_rgb(0_0_0/32%),0_2px_4px_0_rgb(0_0_0/28%)] data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 motion-reduce:animate-none!">
+          <Popover.Popup
+            className={cn(
+              POP,
+              "rounded-xl bg-popover p-1 shadow-[0_-1px_0_0_rgb(255_255_255/6%),0_0_0_1px_rgb(255_255_255/6%),0_0_0_1px_#2c2c2c,0_4px_8px_0_rgb(0_0_0/32%),0_2px_4px_0_rgb(0_0_0/28%)]",
+            )}
+          >
             <a
               href={sourceHref(source.url)}
               target="_blank"

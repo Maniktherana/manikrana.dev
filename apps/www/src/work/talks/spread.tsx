@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { cn } from "@manikrana/ui/lib/utils";
 import { talks } from "@/data/talks";
+import { TalkLink } from "@/work/talks/viewer";
 
 const PLACES = [
   { id: "airflow", className: "translate-x-0 translate-y-2 -rotate-6" },
@@ -43,12 +44,10 @@ export function Spread({
             />
           );
           return linked ? (
-            <a
+            <TalkLink
               key={talk.id}
-              href={talk.code}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`${talk.title}: slides and code on GitHub`}
+              talk={talk}
+              aria-label={talk.video ? `Watch ${talk.title}` : `${talk.title} slides`}
               className={cn(
                 COVER,
                 place.className,
@@ -56,7 +55,7 @@ export function Spread({
               )}
             >
               {cover}
-            </a>
+            </TalkLink>
           ) : (
             <div key={talk.id} className={cn(COVER, place.className)}>
               {cover}

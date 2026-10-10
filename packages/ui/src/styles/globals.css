@@ -168,6 +168,15 @@
   --radius-stage: 12px;
 
   --animate-ring-spin: spin 4s linear infinite;
+  --animate-text-reveal: text-reveal 280ms cubic-bezier(0.22, 1, 0.36, 1)
+    calc(var(--reveal-index, 0) * 40ms) backwards;
+
+  @keyframes text-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
 }
 
 @layer base {
