@@ -37,11 +37,11 @@ export function Stage() {
           </ToolbarButton>
         ))}
       </Toolbar>
-      <Toolbar
-        aria-label="Pattern"
-        className="max-w-[calc(100%_-_2rem)] overflow-x-auto [scrollbar-width:none]"
-      >
-        <ToolbarGroup aria-label="Pattern">
+      <Toolbar aria-label="Pattern" className="max-w-[calc(100%_-_2rem)]">
+        <ToolbarGroup
+          aria-label="Pattern"
+          className="scroll-fade-x -my-1 overflow-x-auto py-1 [scrollbar-width:none]"
+        >
           {PATTERNS.map(({ label }, position) => (
             <ToolbarButton
               key={label}
