@@ -81,10 +81,16 @@ function WorkPage() {
         <CloseButton fromGrid={fromGrid} />
       </header>
 
-      {/* Shares its view-transition name with the item's tile on the grid. */}
+      {/* Shares its view-transition name with the item's tile on the grid. A 16:9 tile keeps
+          its shape here, since its scene is laid out for that frame. */}
       <div
         style={{ "--work": `work-${item.slug}` } as CSSProperties}
-        className="relative h-[clamp(25rem,54svh,30rem)] overflow-hidden rounded-3xl bg-card [view-transition-name:var(--work)] [view-transition-class:work] sm:h-[clamp(27.5rem,64svh,42.5rem)]"
+        className={cn(
+          "relative overflow-hidden rounded-3xl bg-card [view-transition-name:var(--work)] [view-transition-class:work]",
+          item.tile === "video"
+            ? "aspect-video"
+            : "h-[clamp(25rem,54svh,30rem)] sm:h-[clamp(27.5rem,64svh,42.5rem)]",
+        )}
       >
         {Stage && <Stage />}
       </div>

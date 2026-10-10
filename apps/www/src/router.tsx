@@ -6,6 +6,7 @@ export function getRouter() {
   return createRouter({
     routeTree,
     scrollRestoration: true,
+    scrollRestorationBehavior: "instant",
     defaultPreload: "intent",
     // Every navigation is a view transition: tiles morph into stages and back.
     defaultViewTransition: true,
