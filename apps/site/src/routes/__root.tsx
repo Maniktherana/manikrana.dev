@@ -1,25 +1,18 @@
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { MotionConfig } from "motion/react";
 
 import Footer from "@/components/footer";
-import Navbar from "@/components/navbar";
 import NotFound from "@/components/not-found";
-import { ThemeProvider } from "@/components/theme-provider";
 
 import appCss from "@/styles/globals.css?url";
 
-const themeScript = `
-(() => {
-  try {
-    const stored = localStorage.getItem("manikrana-theme");
-    const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const theme = stored || "system";
-    document.documentElement.classList.toggle("dark", theme === "dark" || (theme === "system" && systemDark));
-  } catch (_) {}
-})();
-`;
+// DialKit for tuning the page transition. Only development builds load it.
+const TransitionDials = import.meta.env.DEV
+  ? lazy(() => import("@/components/transition-dials"))
+  : null;
 
 export const Route = createRootRoute({
   head: () => ({
@@ -36,7 +29,8 @@ export const Route = createRootRoute({
       },
       {
         name: "description",
-        content: "Manik Rana, a full stack developer based in India.",
+        content:
+          "Manik Rana, engineer at TurboML. Previously a Google Summer of Code contributor to Prometheus.",
       },
       {
         property: "og:title",
@@ -44,7 +38,8 @@ export const Route = createRootRoute({
       },
       {
         property: "og:description",
-        content: "Manik Rana, a full stack developer based in India.",
+        content:
+          "Manik Rana, engineer at TurboML. Previously a Google Summer of Code contributor to Prometheus.",
       },
       {
         property: "og:url",
@@ -64,6 +59,8 @@ export const Route = createRootRoute({
       },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
         href: appCss,
@@ -102,25 +99,40 @@ export const Route = createRootRoute({
 
 function RootDocument() {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="scroll-pt-6 motion-safe:scroll-smooth">
       <head>
         <HeadContent />
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>
-        <ThemeProvider defaultTheme="system">
-          <MotionConfig reducedMotion="user">
-            <div className="relative isolate min-h-dvh">
-              <Navbar />
-              <Outlet />
-              <Analytics />
-              <SpeedInsights />
-              <Footer />
-            </div>
-          </MotionConfig>
-        </ThemeProvider>
+      <body className="text-base leading-6.5 font-normal">
+        <MotionConfig reducedMotion="user">
+          <div className="relative isolate min-h-dvh">
+            <a
+              className="fixed top-3 left-3 z-10 -translate-y-[200%] bg-foreground p-3 text-background focus:translate-y-0"
+              href="#main-content"
+            >
+              Skip to content
+            </a>
+            <Outlet />
+            <Analytics />
+            <SpeedInsights />
+            <Footer />
+          </div>
+        </MotionConfig>
+        {TransitionDials && <DevTools />}
         <Scripts />
       </body>
     </html>
+  );
+}
+
+// The panel touches the document, so it mounts after hydration, never on the server.
+function DevTools() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted || !TransitionDials) return null;
+  return (
+    <Suspense>
+      <TransitionDials />
+    </Suspense>
   );
 }

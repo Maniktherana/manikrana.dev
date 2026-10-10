@@ -1,7 +1,0 @@
-import { Navigate, createFileRoute } from "@tanstack/react-router";
-
-export const Route = createFileRoute("/")({ component: DesignIndexRedirect });
-
-function DesignIndexRedirect() {
-  return <Navigate to="/docs/$" params={{ _splat: "button" }} replace />;
-}

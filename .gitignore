@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /apps/*/node_modules
+/packages/*/node_modules
 /.pnp
 .pnp.js
 .yarn/install-state.gz
@@ -14,6 +15,7 @@
 **/.turbo/
 /apps/*/.output/
 /apps/*/dist/
+/apps/*/storybook-static/
 
 # production
 /build

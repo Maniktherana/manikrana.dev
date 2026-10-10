@@ -1,17 +1,17 @@
-import React from "react";
-import WorkStatus from "@/components/work-status";
+import { ArrowUp } from "lucide-react";
+import { Link } from "@manikrana/ui/components/ui/link";
 
-const Footer = () => {
+export default function Footer() {
   return (
-    <footer className="bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-xl absolute z-50 font-sans">
-      <div className="animate-fade-up w-full flex flex-col gap-2 md:flex-row justify-between items-start md:items-center align-middle text-center p-5 md:p-3">
-        <WorkStatus />
-        <p className="text-neutral-500 text-sm font-mono">
-          <span className="font-sans">&copy;</span> 2024 Manik Rana. All rights reserved.
-        </p>
-      </div>
+    <footer className="mx-auto flex w-[calc(100%-40px)] max-w-reading items-center justify-between gap-3 pt-26 pb-12 text-sm leading-5 text-muted-foreground">
+      <p>© 2024 Manik Rana. All rights reserved.</p>
+      <Link
+        href="/#home"
+        aria-label="Back to top"
+        className="grid size-8 place-items-center font-normal text-muted-foreground no-underline hover:text-foreground motion-safe:transition-colors motion-safe:duration-200 motion-reduce:transition-none"
+      >
+        <ArrowUp size={16} />
+      </Link>
     </footer>
   );
-};
-
-export default Footer;
+}

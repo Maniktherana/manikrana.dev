@@ -9,55 +9,48 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TalksRouteImport } from './routes/talks'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SlugRouteImport } from './routes/$slug'
 
-const TalksRoute = TalksRouteImport.update({
-  id: '/talks',
-  path: '/talks',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SlugRoute = SlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/talks': typeof TalksRoute
+  '/$slug': typeof SlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/talks': typeof TalksRoute
+  '/$slug': typeof SlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/talks': typeof TalksRoute
+  '/$slug': typeof SlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/talks'
+  fullPaths: '/' | '/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/talks'
-  id: '__root__' | '/' | '/talks'
+  to: '/' | '/$slug'
+  id: '__root__' | '/' | '/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  TalksRoute: typeof TalksRoute
+  SlugRoute: typeof SlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/talks': {
-      id: '/talks'
-      path: '/talks'
-      fullPath: '/talks'
-      preLoaderRoute: typeof TalksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -65,12 +58,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$slug': {
+      id: '/$slug'
+      path: '/$slug'
+      fullPath: '/$slug'
+      preLoaderRoute: typeof SlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  TalksRoute: TalksRoute,
+  SlugRoute: SlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

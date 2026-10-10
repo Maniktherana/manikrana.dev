@@ -7,7 +7,8 @@
       ],
       "outputs": [
         ".output/**",
-        "dist/**"
+        "dist/**",
+        "storybook-static/**"
       ]
     },
     "dev": {
