@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { TerminalFrame, TerminalRow } from "./agent-terminal";
 
-// A prompt can type into the composer first: from `typing.from`, for `typing.duration` ms,
-// until it lands at `at`.
 export type ScriptedRow =
   | (Extract<TerminalRow, { kind: "prompt" }> & {
       at: number;
@@ -10,10 +8,8 @@ export type ScriptedRow =
     })
   | (Exclude<TerminalRow, { kind: "prompt" }> & { at: number });
 
-// Every time is in ms from the start of the script.
 export type TerminalScript = {
   rows: readonly ScriptedRow[];
-  // An empty label clears the status word.
   activity: readonly { at: number; label: string }[];
   duration: number;
 };
@@ -44,7 +40,7 @@ function beatTimes(script: TerminalScript) {
   return [...new Set(times)].sort((a, b) => a - b);
 }
 
-// Pass a script that keeps its identity between renders.
+// `script` must keep its identity between renders.
 export function useTerminalPlayback(
   script: TerminalScript,
   { playing = true, loop = true }: { playing?: boolean; loop?: boolean } = {},
@@ -87,8 +83,7 @@ export function useTerminalPlayback(
     };
   }, [playing, loop, beats, script.duration, lap]);
 
-  // The effect's cleanup saves the elapsed time when it re-runs, so the reset is
-  // flagged in a ref and applied by the effect afterwards.
+  // The effect's cleanup would overwrite clock.current, so the reset is applied by the effect.
   const replay = useCallback(() => {
     reset.current = true;
     setPosition((now) => ({ ...now, lap: now.lap + 1 }));

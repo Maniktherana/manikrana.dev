@@ -19,8 +19,7 @@ export type DiffusionOrbProps = Omit<React.ComponentProps<"span">, "children"> &
   paused?: boolean;
 };
 
-// Great-circle projection and two traveling waves, adapted from thinking-orbs
-// (MIT; see THINKING-ORBS-LICENSE).
+// Adapted from thinking-orbs (MIT; see THINKING-ORBS-LICENSE).
 const FRAGMENT = orbFragment(`
 uniform float compact;
 uniform vec3 midColor;
@@ -120,7 +119,6 @@ function DiffusionOrb({
     },
     uniforms: ({ search, focus }) => {
       const morph = listening.current;
-      // Listening is the same painter with zero angles and no secondary wave.
       const settle = (value: number) => (morph === 1 ? 0 : value * (1 - morph));
       const [, midColor, lightColor] = PALETTES[palette];
       return {

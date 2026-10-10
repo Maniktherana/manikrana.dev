@@ -8,8 +8,7 @@ export type DotMatrixProps = Omit<
   ComponentPropsWithoutRef<"canvas">,
   "children" | "width" | "height"
 > & {
-  // Create a custom pattern once, outside render or in useMemo: each new one
-  // sets the canvas up again.
+  // Keep a custom pattern's identity stable (module scope or useMemo): a new one re-runs setup.
   pattern?: DotMatrixPatternName | DotMatrixPattern;
   hueMap?: DotMatrixHueName | DotMatrixHueMap;
   cell?: number;
@@ -97,7 +96,6 @@ export function DotMatrix({
     draw(time.current);
     if (paused) return;
 
-    // Carries on from the frame on screen, so new props or a pause never jump the loop.
     const from = time.current;
     let start: number | undefined;
     return subscribe((seconds) => {

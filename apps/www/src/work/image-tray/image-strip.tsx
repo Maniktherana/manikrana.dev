@@ -9,15 +9,11 @@ export type ImageStripProps = Omit<ComponentProps<"div">, "children" | "onSelect
 };
 
 const SLIDE = { duration: 0.22, ease: [0.23, 1, 0.32, 1] } as const;
-// Reanimated's FadeIn, which eases in and out on a quad.
 const FADE = { duration: 0.16, ease: [0.455, 0.03, 0.515, 0.955] } as const;
 
-// scroll-fade-x needs "shadcn/tailwind.css". It masks the strip so the tiles dissolve into
-// whatever is behind it, over 24px, on each side that has more to scroll, reaching full
-// strength once 12px has scrolled past.
+// scroll-fade-x needs "shadcn/tailwind.css".
 export function ImageStrip({ images, onSelect, className, ...props }: ImageStripProps) {
   const reduceMotion = useReducedMotion();
-  // Images already there on the first render appear in place; later ones slide in.
   const [present] = useState(() => new Set(images.map(({ id }) => id)));
 
   if (images.length === 0) return null;

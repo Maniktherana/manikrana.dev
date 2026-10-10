@@ -110,7 +110,6 @@ function normalizeValue(value: number, min: number, max: number, step: number) {
   return clamp(roundValue(value, min, step), min, max);
 }
 
-// Snaps to the nearest tenth when within 1/32 of the range.
 function snapToDecile(rawValue: number, min: number, max: number) {
   const range = max - min;
 
@@ -197,7 +196,6 @@ export function Slider({
   const fillPercent = useMotionValue(currentPercent);
   const fillWidth = useTransform(fillPercent, (percent) => `${percent}%`);
   const handleLeft = useTransform(fillPercent, (percent) => `max(5px, calc(${percent}% - 9px))`);
-  // Negative when the start is pulled: the track widens and shifts left.
   const rubberStretchPx = useMotionValue(0);
   const rubberBandWidth = useTransform(
     rubberStretchPx,
@@ -211,7 +209,6 @@ export function Slider({
     setUncontrolledValue((current) => normalizeValue(current, safeMin, safeMax, safeStep));
   }, [isControlled, safeMax, safeMin, safeStep]);
 
-  // Follow value changes from outside, unless a drag or a spring owns the fill.
   useEffect(() => {
     if (isInteracting || fillAnimationRef.current) return;
 
@@ -296,7 +293,6 @@ export function Slider({
     }
   }
 
-  // The track may sit in a scaled parent, so divide the pointer offset by the scale.
   function positionToValue(clientX: number) {
     const rect = wrapperRectRef.current;
     const wrapper = wrapperRef.current;
@@ -621,7 +617,7 @@ export function Slider({
           </span>
         ) : null}
 
-        {/* The 1px underline sits below the text, so the value and input sit 1px lower to stay centered. */}
+        {/* mt-px offsets the 1px underline so the value and input stay centered. */}
         {showValue ? (
           showInput ? (
             <input

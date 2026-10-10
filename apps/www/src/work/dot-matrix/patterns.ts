@@ -1,5 +1,3 @@
-// `light` returns how lit the dot at column x, row y is, from 0 to 1. `t` runs
-// from 0 to 1 over each period, or keeps counting periods when `loop` is false.
 export type DotMatrixPattern = {
   period: number;
   loop?: boolean;
@@ -124,8 +122,6 @@ const WAVE_AXES = {
 export type WaveShape = keyof typeof WAVE_SHAPES;
 export type WaveAxis = keyof typeof WAVE_AXES;
 
-// "waveform" draws the wave as a line across the grid, `thickness` dots thick.
-// "brightness" pulses every dot, offset along `axis`, with `gamma` shaping the pulse.
 export type WavePatternOptions = {
   shape?: WaveShape;
   drive?: "waveform" | "brightness";

@@ -2,8 +2,6 @@ import { useEffect } from "react";
 import { DialRoot, useDialKit, type DialConfig, type TransitionConfig } from "dialkit";
 import "dialkit/styles.css";
 
-// Development only: live controls for the tile-to-page view transition. The
-// stylesheet reads these custom properties and falls back to its own values.
 const CONFIG = {
   slowMotion: [1, 1, 10, 0.5],
   tile: { type: "easing", duration: 0.5, ease: [0.075, 0.82, 0.165, 1] },
@@ -18,8 +16,6 @@ const CONFIG = {
 
 const ms = (seconds: number, slow: number) => `${Math.round(seconds * slow * 1000)}ms`;
 
-// CSS can't run a spring, so a curve switched to spring mode leaves the
-// stylesheet's value in place.
 function easing(curve: TransitionConfig, slow: number) {
   if (curve.type !== "easing") return {};
   return { duration: ms(curve.duration, slow), ease: `cubic-bezier(${curve.ease.join(", ")})` };

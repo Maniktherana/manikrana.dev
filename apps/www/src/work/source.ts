@@ -6,11 +6,6 @@ import { findWork } from "@/work/registry";
 export type SourceFile = { name: string; code: string; html: string };
 export type ItemSource = { files: SourceFile[]; dependencies: Dependencies };
 
-// Highlights an item's source files, then its usage example, and reads what
-// they need to install, all at build time, so neither Shiki nor that work runs
-// in the browser. Prerendering saves each result as JSON next to the pages,
-// and the built site fetches that file instead of calling a server. The page
-// copies text from what this returns.
 export const getSource = createServerFn({ method: "GET" })
   .middleware([staticFunctionMiddleware])
   .validator((slug: string) => slug)
@@ -28,7 +23,6 @@ export const getSource = createServerFn({ method: "GET" })
     ]);
     const highlighted = await Promise.all(
       files.map(async (entry) => {
-        // "../iphone.tsx" is a module several items share, beside the registry.
         const path = entry.startsWith("../") ? `./${entry.slice(3)}` : `./${slug}/${entry}`;
         const load = sources[path];
         if (!load) throw new Error(`No source file at src/work/${path.slice(2)}`);

@@ -9,7 +9,6 @@ import NotFound from "@/components/not-found";
 
 import appCss from "@/styles/globals.css?url";
 
-// DialKit for tuning the page transition. Only development builds load it.
 const TransitionDials = import.meta.env.DEV
   ? lazy(() => import("@/components/transition-dials"))
   : null;
@@ -125,7 +124,6 @@ function RootDocument() {
   );
 }
 
-// The panel touches the document, so it mounts after hydration, never on the server.
 function DevTools() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);

@@ -6,13 +6,8 @@ import { ImageTray, type WebImage } from "@/work/image-tray/image-tray";
 import { images } from "@/work/image-tray/images";
 import { Stream, streamDuration, words } from "@/work/image-tray/stream";
 
-// A Puch chat column at a phone's 400px, where the tray spans 368px and stands 313px tall: the
-// question, then the reply with its strip and answer. At 520px tall the open tray clears the strip,
-// so the tapped image stays in view above it. tan(atan2(a, b)) is a / b: the scene zooms down to
-// fit the box less a 16px gutter each side, never past 1x. The gutter keeps the strip, which bleeds
-// to the column's edges, clear of the box's own. It zooms rather than scales because under a scale
-// transform Chrome clips the tray's blur and scrim a pixel short of its image, leaving a bright
-// line along the image's edges.
+// tan(atan2(a, b)) is the unitless a / b. Zoom, not scale: under a scale transform Chrome clips
+// the tray's blur and scrim a pixel short of the image, leaving a bright edge line.
 const SCENE = { width: 400, height: 520, gutter: 32 };
 const FIT = `min(tan(atan2(100cqw - ${SCENE.gutter}px, ${SCENE.width}px)), tan(atan2(100cqh, ${SCENE.height}px)), 1)`;
 
@@ -21,32 +16,28 @@ const ANSWER = words("Four so far, from the Prometheus parser at PromCon to Rust
 
 export const ANSWER_MS = streamDuration(ANSWER.length);
 
-// Puch's own send: the bubble rises 8px as it fades in.
 const SEND = { y: 8, transition: { duration: 0.18, ease: "easeOut" } } as const;
 
-// The whole chat fades out before a loop starts over.
 const CLEAR = { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] } as const;
 
-// The scripted tap: a soft dot that settles onto a tile and lifts away.
 const TAP = {
-  spots: ["left-18.5", "left-57.5"], // the middle of the first and second 148px tiles
-  landScale: 1.25, // it settles from here
-  liftScale: 0.9, // and shrinks this far as it lifts
+  spots: ["left-18.5", "left-57.5"], // centers of the strip's first two 148px tiles
+  landScale: 1.25,
+  liftScale: 0.9,
   spring: { type: "spring", duration: 0.2, bounce: 0 },
 } as const;
 
 export type ChatBeat = {
-  sent: boolean; // the question is in
-  found: boolean; // the search's images are in the strip
-  answered: boolean; // the answer is streaming or streamed
-  cleared?: boolean; // the chat has faded out
+  sent: boolean;
+  found: boolean;
+  answered: boolean;
+  cleared?: boolean;
 };
 
 type ChatProps = ChatBeat & {
   image: WebImage | null;
   onSelect?: (image: WebImage) => void;
   onClose?: () => void;
-  // The tile a scripted tap is pressing.
   tap?: number | null;
 };
 

@@ -62,12 +62,10 @@ function PendingAttachmentTile({
 }) {
   const isUploading = attachment.status === "uploading";
   const progress = Math.max(0, Math.min(1, attachment.progress ?? 0));
-  // A sliver of ring shows at once, so a just-started upload never looks idle.
   const displayedProgress = isUploading ? Math.max(progress, 0.08) : progress;
   const progressOffset = PROGRESS_CIRCUMFERENCE * (1 - displayedProgress);
 
   return (
-    // Concentric with the composer: its radius less the 4px inset.
     <div className="relative size-28 shrink-0 overflow-hidden rounded-[calc(var(--radius-3xl)-var(--spacing))] bg-control outline -outline-offset-1 outline-white/10">
       <PendingAttachmentPreview attachment={attachment} />
       {isUploading ? (

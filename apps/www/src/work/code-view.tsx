@@ -5,9 +5,6 @@ import type { Dependencies } from "@/work/dependencies";
 import { WorkSection } from "@/work/section";
 import type { SourceFile } from "@/work/source";
 
-// An item's source, highlighted on the server, under a note of what the files
-// include, what only the demo adds, and what to install first. Several files
-// switch in place, from tabs in the code card's header.
 export function CodeView({
   files,
   included,
@@ -51,10 +48,8 @@ export function CodeView({
           id={`${id}-panel`}
           role={files.length > 1 ? "tabpanel" : undefined}
           aria-labelledby={files.length > 1 ? `${id}-tab-${active}` : undefined}
-          // The code scrolls, so it takes focus for keyboard scrolling.
           // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex
           tabIndex={0}
-          // Shiki's output, generated on the server from files in this repo.
           // oxlint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: file.html }}
           className="scrollbar-visible max-h-160 overflow-auto outline-none focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset [&_pre]:w-fit [&_pre]:min-w-full [&_pre]:bg-transparent! [&_pre]:p-6 [&_pre]:font-mono [&_pre]:text-xs/5"
@@ -64,8 +59,6 @@ export function CodeView({
   );
 }
 
-// File names as tabs: arrow keys, Home and End move between them, and the
-// selected one shows its file straight away.
 function FileTabs({
   id,
   files,

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Toolbar, ToolbarButton } from "@/components/toolbar";
 import { PATTERNS, STAGE_FIT, Showcase } from "./demo";
 
-// The loader at up to 1.25x, playing whichever pattern is picked below.
 export function Stage() {
   const [index, setIndex] = useState(0);
 

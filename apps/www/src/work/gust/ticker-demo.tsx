@@ -12,25 +12,18 @@ export const tickerMotion = {
 } satisfies Omit<GustProps, "value">;
 
 const tickerPrices = [
-  // Original phrase. Keep this order intact for the digit/direction demo.
-  199.85, 199.86, 199.91, 200.54, 201, 190.42, 189.76, 189.37, 196, 193.98,
-  // A quiet climb with mixed cent-level reversals.
-  194.01, 194.06, 194.18, 194.14, 194.39, 194.72, 194.68, 195.04, 195.83, 195.77, 196.22, 196.86,
-  196.49, 196.51, 196.93, 197.64, 197.58, 198.12, 198.07, 198.83,
-  // Breakout, hesitation, then a rounded turn.
-  199.41, 199.28, 199.66, 200.12, 201.04, 200.87, 201.33, 202.19, 203.48, 202.96, 203.11, 204.26,
-  203.78, 202.64, 202.71, 202.08, 201.54, 201.72, 200.93, 200.18,
-  // Uneven selloff into a recovery rather than another identical spike.
-  199.84, 198.61, 197.42, 197.09, 196.33, 195.17, 194.81, 194.93, 194.22, 193.76, 193.89, 194.31,
-  194.27, 194.82, 195.56, 196.77, 196.54, 197.38, 198.92, 198.47,
-  // Choppy middle with short direction changes to exercise more digit swaps.
-  198.72, 199.06, 198.94, 199.73, 200.41, 199.88, 200.02, 201.26, 201.19, 200.64, 200.81, 199.57,
-  199.21, 198.73, 198.79, 199.34, 200.58, 202.03, 201.67, 202.44,
-  // One late swing, then a softer descent into the loop restart.
-  203.28, 203.01, 203.84, 204.51, 203.93, 202.76, 202.38, 201.09, 200.42, 199.08, 198.36, 198.49,
-  197.22, 196.84, 197.06, 197.91, 197.87, 198.32, 199.18, 200.73, 201.48, 201.12, 200.69, 199.93,
-  199.97, 200.31, 199.64, 198.88, 198.14, 197.69, 197.74, 196.83, 196.26, 195.48, 195.63, 195.21,
-  194.57, 194.91, 194.33, 193.72,
+  // Keep the first ten prices as they are: they drive the digit and direction demo.
+  199.85, 199.86, 199.91, 200.54, 201, 190.42, 189.76, 189.37, 196, 193.98, 194.01, 194.06, 194.18,
+  194.14, 194.39, 194.72, 194.68, 195.04, 195.83, 195.77, 196.22, 196.86, 196.49, 196.51, 196.93,
+  197.64, 197.58, 198.12, 198.07, 198.83, 199.41, 199.28, 199.66, 200.12, 201.04, 200.87, 201.33,
+  202.19, 203.48, 202.96, 203.11, 204.26, 203.78, 202.64, 202.71, 202.08, 201.54, 201.72, 200.93,
+  200.18, 199.84, 198.61, 197.42, 197.09, 196.33, 195.17, 194.81, 194.93, 194.22, 193.76, 193.89,
+  194.31, 194.27, 194.82, 195.56, 196.77, 196.54, 197.38, 198.92, 198.47, 198.72, 199.06, 198.94,
+  199.73, 200.41, 199.88, 200.02, 201.26, 201.19, 200.64, 200.81, 199.57, 199.21, 198.73, 198.79,
+  199.34, 200.58, 202.03, 201.67, 202.44, 203.28, 203.01, 203.84, 204.51, 203.93, 202.76, 202.38,
+  201.09, 200.42, 199.08, 198.36, 198.49, 197.22, 196.84, 197.06, 197.91, 197.87, 198.32, 199.18,
+  200.73, 201.48, 201.12, 200.69, 199.93, 199.97, 200.31, 199.64, 198.88, 198.14, 197.69, 197.74,
+  196.83, 196.26, 195.48, 195.63, 195.21, 194.57, 194.91, 194.33, 193.72,
 ];
 
 const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
@@ -49,8 +42,6 @@ function usePrefersReducedMotion() {
   );
 }
 
-// Falling prices move down and rising ones up. The unchanged dollars are a
-// shared prefix, so only the digits that change move.
 export function TickerDemo({
   motion = tickerMotion,
   paused = false,
@@ -62,7 +53,6 @@ export function TickerDemo({
 }) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const stopped = paused || prefersReducedMotion;
-  // The chart opens on a full window of earlier prices, so it never starts empty.
   const [data, setData] = useState<LivelinePoint[]>(() => {
     const now = Date.now() / 1000;
     const history = [...tickerPrices.slice(1), tickerPrices[0]];
@@ -129,7 +119,6 @@ export function TickerDemo({
       </div>
 
       <div className="absolute inset-0 z-10 flex items-center justify-center">
-        {/* The badge tints itself from its own text color. */}
         <span
           className={`flex items-center gap-2.5 rounded-xl px-4 py-3 transition-colors duration-300 motion-reduce:transition-none ${up ? "text-emerald-400" : "text-red-400"}`}
           style={{

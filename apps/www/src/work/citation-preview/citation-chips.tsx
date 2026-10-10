@@ -14,7 +14,7 @@ const CHIP =
 
 const OPEN_DELAY_MS = 120;
 
-// The shared tooltip draws an arrow, and these cards have none.
+// `[&>[data-side]]:hidden` hides the shared tooltip's arrow.
 const POPUP =
   "w-80 max-w-[calc(100vw-2rem)] flex-col items-stretch rounded-lg p-0 text-left leading-[1.6] font-medium text-wrap motion-reduce:animate-none! [&>[data-side]]:hidden";
 
@@ -54,9 +54,7 @@ export type CitationGroupChipProps = Omit<ComponentProps<"button">, "children"> 
   sources: readonly CitationSource[];
 };
 
-// Several sources behind one chip. Hovering it opens their cards one at a time, with arrows and
-// a count under them. It's a popover rather than a tooltip, so the arrows and links are
-// reachable from the keyboard.
+// A popover, not a tooltip, so its arrows and links are reachable from the keyboard.
 export function CitationGroupChip({ sources, className, ...props }: CitationGroupChipProps) {
   const [index, setIndex] = useState(0);
   const source = sources[index];

@@ -6,15 +6,12 @@ import { CheckIcon, CopyIcon } from "@/components/icons";
 
 const RESET_MS = 1600;
 
-// The contextual icon swap: scale, opacity and blur on a spring with no bounce.
 const ICON = {
   hidden: { opacity: 0, scale: 0.25, filter: "blur(4px)" },
   shown: { opacity: 1, scale: 1, filter: "blur(0px)" },
   spring: { type: "spring", duration: 0.3, bounce: 0 },
 } as const;
 
-// Copies text and confirms with a check that swaps in for the icon. `value`
-// may be a function, so a long prompt is only built when someone copies it.
 export function CopyButton({
   value,
   label,

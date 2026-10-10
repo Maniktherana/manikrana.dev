@@ -8,8 +8,6 @@
   --container-work: 90rem;
 }
 
-/* An off-black page instead of the shared pure black, so cards and tiles read
-   as surfaces on it. The rest of the ladder (stage, card, popover) stays. */
 :root {
   --background: hsl(0 0% 6.5%);
 }
@@ -22,10 +20,8 @@
   }
 }
 
-/* Logo marks: monochrome at rest; hover animates them in their brand colors.
-   TurboML's color comes from its source asset, so it needs no override. */
 .mark--prometheus {
-  color: #e6522c; /* Official Prometheus orange. */
+  color: #e6522c;
 }
 .mark--gsoc {
   color: oklch(0.83 0.16 85);
@@ -49,9 +45,7 @@
   border-radius: inherit;
   box-shadow: 0 0 2.5rem -0.25rem oklch(1 0 0 / 22%);
 }
-/* Where the portrait sits before Backdrop measures it, so the light starts on
-   it instead of the middle of the page: the center of a 48px avatar at the
-   start of the reading column, below the page's top padding. */
+/* Center of the 48px avatar at the reading column's start, below the page's top padding. */
 .backdrop-dots--lit,
 .backdrop-glow {
   --portrait-x: calc((100% - min(100% - 40px, var(--container-reading))) / 2 + 24px);
@@ -63,8 +57,6 @@
     --portrait-y: 120px;
   }
 }
-/* The agentsims dot grid (0.9px dots on a 24px tile), revealed only where the
-   portrait's light falls. */
 .backdrop-dots {
   background-image: radial-gradient(circle, var(--dot, oklch(1 0 0 / 13%)) 0.9px, transparent 1px);
   background-size: 24px 24px;
@@ -83,8 +75,7 @@
   background: radial-gradient(closest-side, oklch(1 0 0 / 3%), transparent);
 }
 
-/* A thin scrollbar that is always visible. Styling the WebKit scrollbar opts
-   it out of macOS overlay scrollbars, which only show while scrolling. */
+/* Styling ::-webkit-scrollbar opts out of macOS overlay scrollbars, so it stays visible. */
 @utility scrollbar-visible {
   &::-webkit-scrollbar {
     width: 10px;
@@ -111,7 +102,6 @@
     opacity: 1;
   }
 }
-/* Entrances run on the first page of a session only (see useFirstVisit). */
 @media (prefers-reduced-motion: no-preference) {
   .entering .reveal {
     animation: reveal 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
@@ -127,10 +117,6 @@
       opacity 300ms ease;
   }
 }
-/* Opening a tile: the tile and its page's stage share a view-transition name,
-   so the browser morphs one box into the other. Both snapshots stay centered
-   at their own scale while the box grows around them, and the card color
-   fills the box, so the preview cross-fades into the stage inside it. */
 ::view-transition-group(.work) {
   animation-duration: var(--vt-tile-duration, 500ms);
   animation-timing-function: var(--vt-tile-ease, cubic-bezier(0.075, 0.82, 0.165, 1));
@@ -148,12 +134,26 @@
 ::view-transition-new(.work) {
   animation-delay: var(--vt-crossfade-delay, 100ms);
 }
-/* The page behind the morph clears out before the next one fades in, so the
-   two never show through each other. */
 ::view-transition-old(root) {
   animation-duration: var(--vt-page-out, 150ms);
 }
 ::view-transition-new(root) {
+  animation-duration: var(--vt-page-in, 200ms);
+  animation-delay: var(--vt-page-in-delay, 100ms);
+}
+:root:active-view-transition-type(filter) {
+  view-transition-name: none;
+}
+:root:active-view-transition-type(filter) [data-slot="work-grid"] {
+  view-transition-name: work-grid;
+}
+:root:active-view-transition-type(filter) [data-slot="work-grid"] * {
+  view-transition-name: none;
+}
+::view-transition-old(work-grid) {
+  animation-duration: var(--vt-page-out, 150ms);
+}
+::view-transition-new(work-grid) {
   animation-duration: var(--vt-page-in, 200ms);
   animation-delay: var(--vt-page-in-delay, 100ms);
 }

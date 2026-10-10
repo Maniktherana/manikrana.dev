@@ -5,29 +5,14 @@ import { Toolbar, ToolbarButton } from "@/components/toolbar";
 import { useWatching } from "@/work/use-watching";
 import { Answer } from "./answer";
 
-/* ─────────────────────────────────────────────────────────
- * ANIMATION STORYBOARD
- *
- * Plays once the stage is in view; Replay runs it again.
- *
- *    0ms   an empty chat
- *  300ms   the question sends, y 8 → 0 (180ms)
- * 1000ms   the answer streams, a word every 46ms, the chips
- *          landing among the words
- *
- * Then hover or focus a chip to open its card. With reduced
- * motion the chat is there at once.
- * ───────────────────────────────────────────────────────── */
-
 const TIMING = {
-  sent: 300, // question bubble sends
-  answered: 1000, // answer starts streaming
+  sent: 300,
+  answered: 1000,
 };
 
 const BEATS = ["sent", "answered"] as const;
 
-// Puch wraps its app in a tooltip provider, so moving straight from one chip to
-// the next opens the next card without waiting.
+// The TooltipProvider lets moving straight between chips skip the open delay.
 export function Stage() {
   const ref = useRef<HTMLDivElement>(null);
   const watching = useWatching(ref);

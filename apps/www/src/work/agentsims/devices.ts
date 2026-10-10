@@ -2,7 +2,6 @@ import type { DevicePhase } from "@/work/agentsims/storyboard";
 
 export type DeviceType = "iphone" | "ipad" | "android";
 
-/** Display data for the scripted demo; no sessions or stream endpoints. */
 export type DemoDevice = {
   id: string;
   name: string;
@@ -57,7 +56,6 @@ export type DemoDevices = ReturnType<typeof demoDevices>;
 
 const STATUS = { booting: "Booting", connecting: "Connecting", streaming: "Streaming" };
 
-// An available device shows its runtime; a running one, its state too.
 export function deviceStatus({ phase, runtime }: DemoDevice) {
   if (phase === "available") return runtime;
   if (phase === "shutting-down") return "Shutting down";

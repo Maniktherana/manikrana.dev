@@ -1,7 +1,5 @@
 import { useEffect, useRef } from "react";
 
-// The agentsims dot grid shows only where the portrait's light falls on it,
-// under a soft glow.
 export function Backdrop() {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -13,8 +11,7 @@ export function Backdrop() {
         '[data-slot="animated-ring"].portrait-glow',
       );
       if (!portrait) return;
-      // Layout offsets, not the bounding box: the intro rises in on a
-      // transform, and the light should sit where the portrait lands.
+      // Layout offsets, not the bounding box, which the intro's entrance transform skews.
       let x = portrait.offsetWidth / 2;
       let y = portrait.offsetHeight / 2;
       for (let at: HTMLElement | null = portrait; at; at = at.offsetParent as HTMLElement | null) {

@@ -7,9 +7,6 @@ import { useWatching } from "@/work/use-watching";
 
 const BLOCKED_NOTICE_MS = 2400;
 
-// The tile's phone at the same scale, raised clear of the toolbar; a short
-// stage crops its top like the tile does. The voice demo loops until the
-// microphone takes over, and comes back when it is switched off.
 export function Stage() {
   const ref = useRef<HTMLDivElement>(null);
   const watching = useWatching(ref);
@@ -19,7 +16,6 @@ export function Stage() {
   const demo = useVoiceSequence(watching && !microphone);
   const waiting = microphone && !listening;
 
-  // A denied or missing microphone says so in its button for a moment.
   useEffect(() => {
     if (!blocked) return;
     const timer = window.setTimeout(() => setBlocked(false), BLOCKED_NOTICE_MS);

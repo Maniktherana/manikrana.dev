@@ -16,8 +16,6 @@ const directions: { value: SweepDirection; label: string; icon: ReactNode }[] = 
   { value: "btt", label: "Bottom to top", icon: <ArrowUpIcon /> },
 ];
 
-// A palette's colors at full strength, along the same stretch of its cosine
-// ramp that the band runs through, so each swatch shows what the sweep paints.
 function swatch(name: SweepPaletteName) {
   const { a, b, c, d } = sweepPalettes[name];
   const stops = [0, 0.25, 0.5, 0.75, 1].map((axis) => {
@@ -37,8 +35,6 @@ const palettes = (Object.keys(sweepPalettes) as SweepPaletteName[]).map((value) 
   swatch: swatch(value),
 }));
 
-// The sweep across the whole stage. The pill at the top picks a palette, a
-// swatch each; the pill at the bottom picks the direction it travels.
 export function Stage() {
   const [direction, setDirection] = useState<SweepDirection>("ltr");
   const [palette, setPalette] = useState<SweepPaletteName>("prism");

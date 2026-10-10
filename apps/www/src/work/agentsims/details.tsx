@@ -1,4 +1,3 @@
-import { InstallCommand } from "@/work/install-command";
 import { WorkSection } from "@/work/section";
 
 export function Details() {
@@ -16,9 +15,6 @@ export function Details() {
           read a compact accessibility tree, tap, type or swipe by element or coordinate, then get
           fresh state back. React Native and Expo apps can map what is on screen back to source.
         </p>
-      </div>
-      <div className="mt-6">
-        <InstallCommand command="brew install Maniktherana/tap/agentsims" />
       </div>
     </WorkSection>
   );

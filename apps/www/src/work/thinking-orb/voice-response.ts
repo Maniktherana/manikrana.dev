@@ -1,6 +1,5 @@
 export type VoiceEnvelope = { level: number; velocity: number };
 
-/** Exact critically damped step. Retargets immediately; never queues input. */
 export function followVoice(
   envelope: VoiceEnvelope,
   target: number,

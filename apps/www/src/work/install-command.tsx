@@ -1,6 +1,5 @@
 import { CopyButton } from "@/components/copy-button";
 
-// A one-line shell command with a copy button, for a project's install step.
 export function InstallCommand({ command }: { command: string }) {
   return (
     <div className="flex h-11 max-w-reading items-center gap-3 rounded-2xl bg-card ps-4 pe-1">

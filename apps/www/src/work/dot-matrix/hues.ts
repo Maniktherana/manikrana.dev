@@ -1,7 +1,5 @@
 export type DotMatrixHueShape = "solid" | "x" | "y" | "diagonal" | "radial";
 
-// Each dot keeps one OKLCH hue: `base`, plus `spread` degrees across the grid
-// along `shape`. The pattern only moves lightness, and chroma a little with it.
 export type DotMatrixHueMap = {
   shape: DotMatrixHueShape;
   base: number;

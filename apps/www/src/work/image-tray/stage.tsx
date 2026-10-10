@@ -6,25 +6,10 @@ import { Chat } from "@/work/image-tray/chat";
 import type { WebImage } from "@/work/image-tray/image-tray";
 import { useWatching } from "@/work/use-watching";
 
-/* ─────────────────────────────────────────────────────────
- * ANIMATION STORYBOARD
- *
- * Plays once the stage is in view; Replay runs it again.
- *
- *    0ms   an empty chat
- *  300ms   the question sends, y 8 → 0 (180ms)
- * 1000ms   the images slide into the strip (staggered 35ms)
- * 1700ms   the answer streams, a word every 46ms
- *
- * Then tap an image to raise its tray. The toolbar steps aside
- * while the tray is up, since the tray rises where it floats.
- * With reduced motion the chat is there at once.
- * ───────────────────────────────────────────────────────── */
-
 const TIMING = {
-  sent: 300, // question bubble sends
-  found: 1000, // images slide into the strip
-  answered: 1700, // answer starts streaming
+  sent: 300,
+  found: 1000,
+  answered: 1700,
 };
 
 const BEATS = ["sent", "found", "answered"] as const;

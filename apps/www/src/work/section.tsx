@@ -1,7 +1,6 @@
 import { useId, type ReactNode } from "react";
 import { cn } from "@manikrana/ui/lib/utils";
 
-// A titled block below an item's summary, like "About" or "Code".
 export function WorkSection({
   title,
   aside,

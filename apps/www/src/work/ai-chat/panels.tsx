@@ -13,7 +13,6 @@ const ITEM_VARIANTS = {
 } as const;
 
 const SOURCES = 5;
-// The trace's steps: how many outlet chips each read, and the bar's width.
 const STEPS = [
   { bar: "w-48", chips: 0 },
   { bar: "w-40", chips: 3 },
@@ -37,7 +36,6 @@ function PanelBody({ children }: { children: ReactNode }) {
   return <div className="min-h-0 flex-1 overflow-hidden">{children}</div>;
 }
 
-// The sources: an outlet and its headline and summary, one card-less row each.
 function SourcesList() {
   const reduceMotion = useReducedMotion();
 
@@ -65,8 +63,6 @@ function SourcesList() {
   );
 }
 
-// The trace is a timeline: a marker per step joined by a dashed connector, and
-// the outlets a step read as chips under it.
 function ThinkingTrace() {
   const reduceMotion = useReducedMotion();
 
@@ -111,7 +107,6 @@ function ThinkingTrace() {
   );
 }
 
-/** What each panel id shows inside the panel card. */
 export const PANELS: Record<string, ReactNode> = {
   sources: (
     <>

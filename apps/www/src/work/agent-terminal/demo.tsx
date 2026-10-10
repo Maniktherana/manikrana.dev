@@ -31,13 +31,10 @@ const FOOTER = (
   </>
 );
 
-// Plays the storyboard while the terminal is on screen and the page is visible,
-// and loops. With reduced motion it shows one still frame until Replay, which
-// plays the run once and rests on its last frame.
 export function useDemoTerminal(ref: RefObject<Element | null>) {
   const watching = useWatching(ref, { amount: 0.25 });
 
-  // Server and first client render agree: reduced motion applies once mounted.
+  // Gated on mount so server and first client render agree.
   const [mounted, setMounted] = useState(false);
   const reduced = useReducedMotion() === true && mounted;
   useEffect(() => setMounted(true), []);
@@ -58,11 +55,7 @@ export function useDemoTerminal(ref: RefObject<Element | null>) {
   };
 }
 
-// Lays the terminal out at its natural size and scales the whole of it, evenly,
-// to fit what its container leaves: `margin` clear on every side, and `reserve`
-// more along the bottom for controls. The scale is plain CSS: tan(atan2(a, b))
-// is the unitless ratio a/b, so the container's width and height in cqw and cqh
-// divide by the terminal's. It never grows past its natural size.
+// tan(atan2(a, b)) is the unitless ratio a/b in plain CSS.
 export function FittedTerminal({
   ref,
   margin,
@@ -110,7 +103,6 @@ export function FittedTerminal({
   );
 }
 
-// Claude Code's pixel mascot, in the accent.
 function ClaudeMark(props: ComponentProps<"svg">) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>

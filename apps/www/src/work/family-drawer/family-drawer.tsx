@@ -25,7 +25,6 @@ const CONTENT = {
   exit: { duration: 0.07 },
 };
 
-// Composited on the GPU and limited to scale and colour transitions, so the press stays smooth.
 const PRESS =
   "transform-gpu outline-none [backface-visibility:hidden] transition-[scale,background-color] duration-150 ease-out focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.96]";
 const PRESSABLE = cn("flex h-11 w-full items-center text-base leading-none font-semibold", PRESS);
@@ -39,7 +38,7 @@ type DrawerContextValue = {
   setPage: (page: string) => void;
 };
 
-// Kept apart from DrawerContext so `useFamilyDrawer` consumers do not re-render on it.
+// Separate from DrawerContext so `useFamilyDrawer` consumers don't re-render on it.
 type FrameContextValue = {
   measure: RefCallback<HTMLDivElement>;
   fadeDuration: number;
@@ -49,10 +48,9 @@ type FrameContextValue = {
 const DrawerContext = createContext<DrawerContextValue | null>(null);
 const FrameContext = createContext<FrameContextValue | null>(null);
 const MeasuringContext = createContext(false);
-// Each layer keeps the page it rendered with, so a fading-out layer does not switch pages.
+// Per layer, so a fading-out layer keeps its old page instead of reading the drawer's.
 const ActivePageContext = createContext<string | null>(null);
 
-// motion's elements type these handlers differently.
 type ElementProps<Tag extends "div" | "button"> = Omit<
   ComponentProps<Tag>,
   "onAnimationStart" | "onDrag" | "onDragStart" | "onDragEnd"
@@ -230,8 +228,7 @@ export function FamilyDrawerTrigger({
   );
 }
 
-// Also renders an invisible copy of the children, measured so the surface can start
-// resizing before the visible page swaps.
+// The invisible copy is measured so the surface resizes before the visible page swaps.
 export function FamilyDrawerContent({ className, children, ...props }: ElementProps<"div">) {
   const { open } = useFamilyDrawer();
   const { measure } = useFrame();
@@ -249,7 +246,6 @@ export function FamilyDrawerContent({ className, children, ...props }: ElementPr
 
       <AnimatePresence initial={false}>
         {open ? (
-          // Centered, not pinned left, so it rises straight up while the surface widens.
           <motion.div
             animate={{ ...CONTENT.shown, transition: CONTENT.enter }}
             className={cn(
@@ -279,7 +275,6 @@ export function FamilyDrawerClose({
   const measuring = use(MeasuringContext);
   const { setOpen } = useFamilyDrawer();
 
-  // Absolutely positioned, so leaving it out of the measuring copy does not change the height.
   if (measuring) return null;
 
   return (

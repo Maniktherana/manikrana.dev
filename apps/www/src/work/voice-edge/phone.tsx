@@ -9,37 +9,20 @@ import {
 } from "@/work/voice-edge/voice-edge";
 import { voiceNote } from "@/work/voice-edge/voice-note";
 
-// Frosted controls that sit above the glow, so their blur picks up its color.
-// They only show the call's state; the phone is a picture, so they take no
-// input. Until someone speaks they read as disabled.
 const glass =
   "flex h-8 items-center justify-center rounded-full bg-control text-control-foreground shadow-control backdrop-blur-md transition-opacity duration-300 ease-out group-data-disabled/controls:opacity-40";
 
-// The design docs demo's idle level, and a shorter inner glow for the tall
-// phone screen: 0.7 makes the band 20% shorter than the default of 1.
 const EDGE = { idleLevel: 0.12, innerGlowHeight: 0.7 };
 
-// The phone is 288px wide, so its screen is 255px and the screen's 15.174%
-// corners come to 39px. The edge takes them explicitly because they are set as
-// percentages, which it cannot read back.
+// The iPhone screen's 15.174% corners at 255px wide; the edge can't read back a percentage.
 const SCREEN_RADIUS = 39;
 
 type PhoneProps = Omit<VoiceEdgeProps, "children" | "className" | "side" | "borderRadius"> & {
   children: ReactNode;
   className?: string;
-  // Whether someone is speaking: the controls come alive and the waveform
-  // follows the voice.
   speaking?: boolean;
 };
 
-// A voice assistant on the agentsims iPhone, after libraries.dev/voice: pinned
-// to the bottom of an @container frame and running off the top when the frame
-// is short. Narrow frames scale the whole phone down from its bottom edge, so
-// nothing inside it reflows. The screen is a dark gray just under the page's,
-// with the island at the top, and the voice edge glows up from the bottom of
-// it. Along the bottom sit a camera button, then a mic button beside an
-// end-call pill, its close mark next to a waveform that follows the voice,
-// after the call controls in the Puch app.
 export function Phone({ children, className, speaking = false, ...edge }: PhoneProps) {
   return (
     <div className={cn("absolute inset-x-0 flex justify-center", className)}>
@@ -76,8 +59,6 @@ export function Phone({ children, className, speaking = false, ...edge }: PhoneP
             <span className={cn(glass, "w-8")}>
               <MicIcon />
             </span>
-            {/* The pill's ends round over its first 16px. The close mark's glyph and
-                the bars both dip about 2px into that curve, no further. */}
             <span className={cn(glass, "gap-1 ps-2.5 pe-3.5")}>
               <CloseBoldIcon className="size-5" />
               <Waveform analyser={speaking ? edge.analyser : undefined} />
@@ -89,20 +70,11 @@ export function Phone({ children, className, speaking = false, ...edge }: PhoneP
   );
 }
 
-/* ─────────────────────────────────────────────────────────
- * WAVEFORM
- *
- * Four dots that rise into bars with the voice. Each bar takes one quarter of
- * the speech range the edge itself listens to (the analyser's bins from 5% to
- * 40%), so the bars and the glow move together. With no voice they rest as
- * dots.
- * ───────────────────────────────────────────────────────── */
-
 const WAVEFORM = {
   bands: 4,
-  speech: [0.05, 0.4], // the share of the analyser's bins that carries speech
-  floor: 0.35, // the room's own level, which leaves the bars as dots
-  follow: 0.35, // how far each bar moves toward its level per frame
+  speech: [0.05, 0.4],
+  floor: 0.35,
+  follow: 0.35,
 };
 
 function Waveform({ analyser }: { analyser?: VoiceEdgeAnalyser }) {
@@ -147,9 +119,6 @@ function Waveform({ analyser }: { analyser?: VoiceEdgeAnalyser }) {
   );
 }
 
-// The voice note's transcript: each word blurs in once `shown` passes it, and
-// out again when it drops back. Every word is laid out from the start, so the
-// lines never reflow as they fill.
 export function Words({ shown }: { shown: number }) {
   return (
     <p className="w-52 text-center text-xl leading-snug text-balance text-foreground">

@@ -1,9 +1,5 @@
 import { Slider } from "@/work/slider/slider";
 
-// Each slider shows a different detail. A fine range marks every tenth, a
-// coarse one marks every step, the value takes a typed number once you rest
-// on it, and one that starts near the low end shows the thumb dimming under
-// the label.
 export function Stage() {
   return (
     <div className="flex size-full items-center justify-center px-6">

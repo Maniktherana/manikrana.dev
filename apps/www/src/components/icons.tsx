@@ -1,8 +1,6 @@
 import type { SVGProps } from "react";
 import { cn } from "@manikrana/ui/lib/utils";
 
-// Central Icons, round filled (radius 2, stroke 1.5), copied as raw SVG paths.
-// Every icon is 24px artwork drawn at size-4 unless a size-* class says otherwise.
 type IconProps = SVGProps<SVGSVGElement>;
 
 function Icon({ className, children, ...props }: IconProps) {
@@ -88,7 +86,6 @@ export function CameraIcon(props: IconProps) {
   );
 }
 
-// Gust's checkmark: the inner mark of its badge, on Gust's 20-unit grid.
 export function CheckIcon(props: IconProps) {
   return (
     <Icon viewBox="0 0 20 20" {...props}>
@@ -121,8 +118,6 @@ export function ChevronRightIcon(props: IconProps) {
   );
 }
 
-// From Central's 2px-stroke set: the end-call pill's close mark, where the
-// 1.5px cross reads thin.
 export function CloseBoldIcon(props: IconProps) {
   return (
     <Icon {...props}>
@@ -151,8 +146,6 @@ export function CloseSmallIcon(props: IconProps) {
   );
 }
 
-// Gust's copy glyph, on Gust's 20-unit grid: the front square filled, the back
-// one outlined.
 export function CopyIcon(props: IconProps) {
   return (
     <Icon viewBox="0 0 20 20" {...props}>
@@ -179,8 +172,6 @@ export function CopyIcon(props: IconProps) {
   );
 }
 
-// Hugeicons' Globe02 from the Puch app, stroked at 2.2 by default: the stand-in
-// for a source with no favicon, in the image tray and the citation chips.
 export function GlobeIcon(props: IconProps) {
   return (
     <Icon

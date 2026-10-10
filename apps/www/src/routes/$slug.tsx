@@ -52,8 +52,6 @@ function WorkPage() {
   const { previous, next } = neighbours(item.slug);
   const fromGrid = useLocation({ select: (location) => location.state.fromGrid });
 
-  // Going back to the grid morphs this stage into its own tile, whichever tile
-  // was opened before previous and next moved on.
   useEffect(() => setTransitionTarget(item.slug), [item.slug]);
   useItemKeys(previous.slug, next.slug, fromGrid);
   usePreload(previous.slug, next.slug);
@@ -61,10 +59,7 @@ function WorkPage() {
   return (
     <main id="main-content" className="mx-auto w-[calc(100%-40px)] max-w-stage">
       <header className="flex h-16 items-center justify-between gap-4">
-        <nav
-          aria-label="Breadcrumb"
-          className="flex min-w-0 items-center gap-2 text-sm"
-        >
+        <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-2 text-sm">
           <Link
             to="/"
             className="shrink-0 text-control-foreground transition-[color] duration-150 ease-out hover:text-foreground"
@@ -81,8 +76,6 @@ function WorkPage() {
         <CloseButton fromGrid={fromGrid} />
       </header>
 
-      {/* Shares its view-transition name with the item's tile on the grid. A 16:9 tile keeps
-          its shape here, since its scene is laid out for that frame. */}
       <div
         style={{ "--work": `work-${item.slug}` } as CSSProperties}
         className={cn(
@@ -180,12 +173,9 @@ function WorkPage() {
   );
 }
 
-// Keys that belong to whatever has focus: text, sliders, menus and the dev panel.
 const OWNS_KEYS =
   'input, textarea, select, [contenteditable], [role="slider"], [role="tablist"], [role="menu"], [role="listbox"], .dialkit-root';
 
-// Escape closes the page like the close button, and the arrow keys step to the
-// previous and next item like the arrow buttons.
 function useItemKeys(previous: string, next: string, fromGrid?: boolean) {
   const router = useRouter();
   const navigate = Route.useNavigate();
@@ -209,7 +199,6 @@ function useItemKeys(previous: string, next: string, fromGrid?: boolean) {
   }, [fromGrid, navigate, next, previous, router]);
 }
 
-// The arrows and arrow keys step to these items, so their pages load ahead.
 function usePreload(previous: string, next: string) {
   const router = useRouter();
   useEffect(() => {
@@ -218,9 +207,7 @@ function usePreload(previous: string, next: string) {
   }, [previous, next, router]);
 }
 
-// Opened from the grid, close steps back to it, so the grid keeps its scroll
-// and the stage folds back into its tile. Previous and next replace the entry,
-// so back still lands on the grid. Arriving any other way, close opens the grid.
+// history.back() keeps the grid's scroll, so previous and next must replace, not push.
 function CloseButton({ fromGrid }: { fromGrid?: boolean }) {
   const router = useRouter();
   const className = "rounded-xl text-control-foreground hover:text-foreground";

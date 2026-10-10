@@ -8,9 +8,6 @@ const SURFACE = {
   enterScale: 0.96,
 };
 
-// The iPhone simulator always runs. The Pixel appears beside it once it
-// connects and shows its home screen while it streams; alone, the iPhone
-// slides over by half of the Pixel and the gap so it stays centered.
 export function DemoPhones({
   androidVisible,
   androidStreaming,
@@ -38,7 +35,6 @@ export function DemoPhones({
         </IPhone>
         <ResizeHandle device="iphone" />
       </motion.div>
-      {/* Pixel_10 AVD: 1080 × 2424, with the circular display cutout. */}
       <motion.div
         className="relative aspect-[1080/2424] w-[42.5cqw] flex-none rounded-[14%/6.24%] bg-linear-[155deg,oklch(0.224584_0.026372_258.317),oklch(0.189824_0.027443_258.29)_52%,oklch(0.157319_0.017155_256.284)] shadow-[inset_0_1px_0_oklch(1_0_0/7%),inset_0_0_0_1px_oklch(1_0_0/14%),0_14px_24px_oklch(0_0_0/53%)]"
         initial={false}
@@ -67,8 +63,6 @@ export function DemoPhones({
   );
 }
 
-// The workspace's name bar over each device, at the dock's scale. This demo
-// does not show FPS.
 function DeviceNamePill({ name }: { name: string }) {
   return (
     <div className="absolute bottom-[calc(100%+2cqw)] left-1/2 flex h-8 w-55 origin-bottom -translate-x-1/2 scale-(--scale) items-center gap-2.5 rounded-lg bg-popover px-2.5 shadow-raised">
@@ -78,8 +72,6 @@ function DeviceNamePill({ name }: { name: string }) {
   );
 }
 
-// The workspace's resize affordance: an arc around each frame's bottom-right
-// corner, fitted to the two frames' corner radii.
 const RESIZE_ARCS = {
   android: { size: 29, path: "M 25.226 13.863 A 15.600 15.600 0 0 1 13.863 25.226" },
   iphone: { size: 31, path: "M 26.863 14.405 A 17.103 17.103 0 0 1 14.405 26.863" },
@@ -87,7 +79,7 @@ const RESIZE_ARCS = {
 
 function ResizeHandle({ device }: { device: keyof typeof RESIZE_ARCS }) {
   const { size, path } = RESIZE_ARCS[device];
-  // A zero-size anchor on the corner scales the arc and its offset together.
+  // Scaling a zero-size anchor on the corner scales the arc and its offset together.
   return (
     <div className="absolute right-0 bottom-0 scale-(--scale)">
       <svg

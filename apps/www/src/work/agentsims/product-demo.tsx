@@ -8,16 +8,8 @@ import { DemoPhones } from "@/work/agentsims/phones";
 import { useCursorTargets } from "@/work/agentsims/use-cursor-targets";
 import { useDemoPlayback } from "@/work/agentsims/use-playback";
 
-// The dock, the device name pills and the resize handles draw at three
-// quarters of the scene's scale.
 const DOCK_SCALE = 0.75;
 
-// The agentsims.dev hero scene on its dot grid: a cursor opens the device
-// dock, boots a Pixel beside an iPhone simulator, then shuts it down again.
-//
-// The scene is laid out in a 480 × 530 design space, in container units, and
-// scales as one piece. Its frame adds 36 units of headroom above it for the
-// pills and fits the container both ways, so it never reflows or clips.
 export function ProductDemo({ className }: { className?: string }) {
   const sceneRef = useRef<HTMLDivElement>(null);
   const { frame, phase, playing } = useDemoPlayback(sceneRef);

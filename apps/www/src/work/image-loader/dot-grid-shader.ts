@@ -22,8 +22,6 @@ void main() {
 }
 `;
 
-// Lengths are in CSS pixels, with y running down: uPixelRatio maps the
-// buffer's pixels back onto them.
 export const dotGridFragment = `
 precision highp float;
 

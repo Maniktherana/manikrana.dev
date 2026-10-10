@@ -1,4 +1,3 @@
-// TurboML geometry traced from its official PNG; provenance is in CONTENT-SOURCES.md.
 export const brandPaths = {
   turboml: {
     viewBox: "0 0 456 400",

@@ -25,8 +25,7 @@ const HIDDEN = { opacity: 0, scale: 1.5 } as const;
 const REST = { opacity: 1, scale: 1 } as const;
 const ENTRANCE = { duration: 2, ease: [0.25, 0.1, 0.25, 1] } as const;
 
-// The layer is 130% of the box, so the box's 80% radius and 20% centre become these shares of it.
-// The layer's transform origin repeats the centre, so scaling it is the same as resizing the radius.
+// The box's 80% radius and 20% centre as shares of the 130% layer; its transform origin repeats the centre.
 const SHAPE = "61.538% 61.538% at 50% 26.923%";
 
 const BREATHING: Keyframe[] = [

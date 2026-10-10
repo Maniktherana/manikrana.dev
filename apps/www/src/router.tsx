@@ -8,7 +8,6 @@ export function getRouter() {
     scrollRestoration: true,
     scrollRestorationBehavior: "instant",
     defaultPreload: "intent",
-    // Every navigation is a view transition: tiles morph into stages and back.
     defaultViewTransition: true,
   });
 }
@@ -18,7 +17,6 @@ declare module "@tanstack/react-router" {
     router: ReturnType<typeof getRouter>;
   }
   interface HistoryState {
-    // Set when a work page was opened from the grid, so closing can go back.
     fromGrid?: boolean;
   }
 }

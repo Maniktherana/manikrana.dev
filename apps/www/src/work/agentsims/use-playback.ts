@@ -7,8 +7,6 @@ import {
   type DemoPlayback,
 } from "@/work/agentsims/storyboard";
 
-// Steps through the storyboard while at least half the scene is on screen and
-// the page is visible. A paused frame keeps the rest of its duration.
 export function useDemoPlayback(sceneRef: RefObject<HTMLDivElement | null>) {
   const inView = useInView(sceneRef, { amount: 0.5 });
   const reducedMotion = useReducedMotion();

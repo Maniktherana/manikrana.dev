@@ -3,7 +3,6 @@ import { MessageComposer, type MessageComposerAttachment } from "./message-compo
 
 type NewAttachment = Omit<MessageComposerAttachment, "id">;
 
-// What the + button attaches, in turn: a photo, then a document.
 const SAMPLES: NewAttachment[] = [
   { name: "manik.png", kind: "image", objectUrl: "/manik.png" },
   { name: "rollout-notes.md", kind: "document", mimeType: "text/markdown" },
@@ -20,11 +19,9 @@ export function Stage() {
   const [status, setStatus] = useState<"idle" | "sending" | "working">("idle");
   const added = useRef(0);
   const replyTimer = useRef(0);
-  // Previews of dropped files, released once a file is removed or sent.
   const objectUrls = useRef(new Set<string>());
   const uploading = attachments.some((attachment) => attachment.status === "uploading");
 
-  // Uploads are simulated: progress ticks up until each file is ready.
   useEffect(() => {
     if (!uploading) return;
     const interval = window.setInterval(() => {
@@ -64,8 +61,7 @@ export function Stage() {
   }
 
   return (
-    // The composer is fluid and never scaled, which would throw off its layout
-    // animations. It sits on a fixed bottom edge and grows up from it.
+    // Never scaled: a scaled parent throws off the composer's layout animations.
     <div className="flex size-full items-end justify-center px-4 pb-24">
       <div className="w-full max-w-120">
         <MessageComposer
@@ -88,8 +84,6 @@ export function Stage() {
             release(attachments.filter((attachment) => attachment.id === id));
             setAttachments((current) => current.filter((attachment) => attachment.id !== id));
           }}
-          // Sending is simulated too: a beat to send, then a reply that works
-          // until it finishes or is stopped.
           onSubmit={() => {
             release(attachments);
             setAttachments([]);

@@ -1,17 +1,17 @@
 import { ArrowUp } from "lucide-react";
-import { Link } from "@manikrana/ui/components/ui/link";
 
 export default function Footer() {
   return (
     <footer className="mx-auto flex w-[calc(100%-40px)] max-w-reading items-center justify-between gap-3 pt-26 pb-12 text-sm leading-5 text-muted-foreground">
-      <p>© 2024 Manik Rana. All rights reserved.</p>
-      <Link
-        href="/#home"
+      <p>© 2026 Manik Rana</p>
+      <button
+        type="button"
         aria-label="Back to top"
-        className="grid size-8 place-items-center font-normal text-muted-foreground no-underline hover:text-foreground motion-safe:transition-colors motion-safe:duration-200 motion-reduce:transition-none"
+        onClick={() => window.scrollTo({ top: 0 })}
+        className="grid size-8 place-items-center rounded-lg text-muted-foreground outline-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 motion-safe:transition-colors motion-safe:duration-200 motion-reduce:transition-none"
       >
         <ArrowUp size={16} />
-      </Link>
+      </button>
     </footer>
   );
 }

@@ -4,8 +4,6 @@ import { cn } from "@manikrana/ui/lib/utils";
 import type { DeviceType } from "@/work/agentsims/devices";
 import type { DevicePhase } from "@/work/agentsims/storyboard";
 
-// The agentsims workspace's own glyphs, kept as its artwork: 24-unit stroke
-// icons with round caps, drawn at size-3.5 unless a size-* class says otherwise.
 function Glyph({ className, strokeWidth = 2, ...props }: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -109,8 +107,6 @@ function LoaderGlyph(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-// Device-family glyphs: a screen that lights up while the device streams,
-// under the device's outline.
 const DEVICE_ART = {
   iphone: {
     screen: { x: 6, y: 3, width: 11, height: 19, rx: 2 },
@@ -167,12 +163,9 @@ const STATUS_COLOR = {
 };
 const ICON_HIDDEN = { opacity: 0, filter: "blur(2px)", scale: 0.25 };
 const ICON_VISIBLE = { opacity: 1, filter: "blur(0px)", scale: 1 };
-// Status animations stop with the rest of the scene while it is paused.
 const SPIN =
   "motion-safe:animate-[spin_900ms_linear_infinite_reverse] group-data-[playing=false]/scene:paused";
 
-// A badge on the device's tile: a spinner while it boots and connects, a dot
-// while it streams, and a breathing ring while it shuts down.
 export function DeviceStatusGlyph({ phase }: { phase: DevicePhase }) {
   if (phase === "available") return null;
   return (
@@ -196,7 +189,6 @@ export function DeviceStatusGlyph({ phase }: { phase: DevicePhase }) {
           ) : phase === "connecting" ? (
             <LoaderGlyph className={SPIN} />
           ) : phase === "shutting-down" ? (
-            // Breathes from 82% size and 38% opacity to full size and 90%.
             <span className="size-2.5 rounded-full border border-current opacity-90 duration-575 ease-out repeat-infinite direction-alternate fade-in-38 zoom-in-82 motion-safe:animate-in group-data-[playing=false]/scene:paused" />
           ) : (
             <span className="size-1.5 rounded-full bg-current" />

@@ -15,7 +15,6 @@ export type TerminalRow =
   | { kind: "prompt"; text: string }
   | { kind: "message"; text: string }
   | { kind: "skill"; text: string }
-  // `program` is the leading part of `text` set in bold.
   | { kind: "command"; text: string; tool?: string; program?: string }
   | { kind: "result"; text: string }
   | { kind: "note"; text: string };
@@ -29,14 +28,12 @@ export type TerminalFrame = {
 export type AgentTerminalProps = Omit<ComponentProps<"div">, "children"> &
   TerminalFrame & {
     header: { title: string; version?: string; subtitle?: string; path?: string };
-    // Give it `size-16 shrink-0`.
     logo?: ReactNode;
     footer?: ReactNode;
     paused?: boolean;
     instant?: boolean;
   };
 
-// The terminal lays out at this fixed size; scale it from outside to fit.
 export const TERMINAL_SIZE = { width: 640, height: 528 } as const;
 
 const REVEAL = {
@@ -66,7 +63,6 @@ const SHIMMER = {
   duration: 1800,
   spread: 32,
   angle: 110,
-  // The gradient is twice the word's width, so sliding it carries the glint across.
   frames: [{ backgroundPosition: "100% 0" }, { backgroundPosition: "0 0" }],
 };
 
@@ -83,7 +79,6 @@ const GLINT = [
   .map(([color, offset]) => `${color} calc(50% + ${offset}px)`)
   .join(", ");
 
-// The terminal's own palette, deliberately not the site's tokens.
 const THEME = {
   "--terminal-w": `${TERMINAL_SIZE.width}px`,
   "--terminal-h": `${TERMINAL_SIZE.height}px`,
@@ -198,7 +193,6 @@ export function AgentTerminal({
           )}
         </div>
 
-        {/* The border is an overlay so rows never cover it. */}
         <div className="pointer-events-none absolute inset-0 z-10 rounded-[inherit] border border-(--terminal-border)" />
       </div>
     </MotionConfig>
@@ -395,7 +389,7 @@ function useWebAnimation(
     animation.current = running;
     return () => running.cancel();
   }, [ref, keyframes, duration, iterations]);
-  // Also re-runs when the animation is recreated, so a new one starts paused if it should.
+  // Extra deps re-apply the play state when the animation is recreated.
   useEffect(() => {
     if (playing) animation.current?.play();
     else animation.current?.pause();

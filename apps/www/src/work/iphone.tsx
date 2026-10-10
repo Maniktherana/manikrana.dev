@@ -1,12 +1,8 @@
 import type { ReactNode } from "react";
 import { cn } from "@manikrana/ui/lib/utils";
 
-// The side buttons hang off the frame's left edge, except power on the right.
 const BUTTON = "pointer-events-none absolute z-0 left-[0.881%] w-[3.524%]";
 
-// The iPhone 17 from agentsims.dev's device art. The frame and side buttons
-// are images and the screen is whatever you pass in. Every inset comes from the
-// 454×908 artwork, so the device sizes from its width alone.
 export function IPhone({
   className,
   screenClassName,

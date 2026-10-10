@@ -9,7 +9,7 @@ export type { MessageComposerAttachment } from "./attachments";
 
 const MIN_TEXTAREA_HEIGHT = 40;
 const MAX_TEXTAREA_HEIGHT = 200;
-// The two 40px button columns and their 4px gaps beside an unstacked textarea.
+// Must match the grid's two 2.5rem button columns and gap-x-1.
 const NARROW_COLUMN_RESERVED = 40 * 2 + 4 * 2;
 const EASE = [0.16, 1, 0.3, 1] as const;
 const RADIUS = 24;
@@ -27,7 +27,6 @@ export type MessageComposerProps = {
   defaultValue?: string;
   onAddAttachment?: () => void;
   onChange?: (value: string) => void;
-  /** Without it, the composer ignores file drags. */
   onDropFiles?: (files: File[]) => void;
   onInterrupt?: () => void;
   onRemoveAttachment?: (id: string) => void;
@@ -74,7 +73,6 @@ export function MessageComposer({
     !sending && !uploadInProgress && (draft.trim().length > 0 || attachments.length > 0);
   const isTextareaStacked = draft.includes("\n") || isTextOverflowing;
   const isEnteringTextareaStack = isTextareaStacked && !wasTextareaStackedRef.current;
-  // Animate the switch between pill and stack, but not every line typed once stacked.
   const animateLayout = !isTextareaStacked || isEnteringTextareaStack || stackEntryAnimating;
   const layoutTransition = (duration: number) =>
     animateLayout ? { duration, ease: EASE } : { duration: 0 };
@@ -168,7 +166,6 @@ export function MessageComposer({
     el.scrollTop = 0;
   }, [clearPendingTimers]);
 
-  // Measures in a hidden mirror at the narrow column's width, leaving the visible textarea alone.
   const measureOverflow = useCallback(() => {
     const grid = gridRef.current;
     const mirror = measureRef.current;

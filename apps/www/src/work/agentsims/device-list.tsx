@@ -11,7 +11,6 @@ import {
   SearchGlyph,
 } from "@/work/agentsims/glyphs";
 
-// The open dock: available devices, running ones, and the search field.
 export function DeviceList({ devices }: { devices: DemoDevices }) {
   return (
     <>
@@ -47,8 +46,6 @@ function DeviceSection({ label, devices }: { label: string; devices: DemoDevice[
   );
 }
 
-// A running device can be hidden from the canvas or shut down; both controls
-// rest while it boots, connects or shuts down.
 function DeviceRow({ device }: { device: DemoDevice }) {
   const { phase, visible } = device;
   const transitioning = phase === "booting" || phase === "connecting" || phase === "shutting-down";

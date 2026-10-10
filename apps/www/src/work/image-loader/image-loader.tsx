@@ -9,7 +9,6 @@ export type ImageLoaderProps = Omit<ComponentProps<"div">, "children"> & {
   status: ImageLoaderStatus;
   src?: string;
   alt: string;
-  // Width over height, held while generating so the image lands without a jump.
   aspectRatio?: number;
   grid?: DotGridOptions;
 };
@@ -63,8 +62,7 @@ function Reveal({ src, alt }: { src: string; alt: string }) {
   const ref = useRef<HTMLImageElement>(null);
   const [decoded, setDecoded] = useState(false);
 
-  // decode() also settles for an image that loaded before hydration, whose load
-  // event React never hears.
+  // decode() also settles for an image that loaded before hydration, whose load event React missed.
   useEffect(() => {
     let current = true;
     ref.current?.decode().then(

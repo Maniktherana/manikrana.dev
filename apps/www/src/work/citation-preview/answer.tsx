@@ -5,8 +5,6 @@ import { CitationChip, CitationGroupChip, type CitationChipProps } from "./citat
 import { question, sources, type SourceId } from "./content";
 import { Stream, streamDuration, words } from "./stream";
 
-// The reply as it streams: runs of words, and the chips that land among them as single tokens,
-// each carrying the punctuation that follows it.
 type Piece = string | { cite: SourceId; after?: string } | { group: SourceId[]; after?: string };
 
 const REPLY: Piece[] = [
@@ -24,20 +22,15 @@ export const ANSWER_MS = streamDuration(
   REPLY.reduce((count, piece) => count + (typeof piece === "string" ? words(piece).length : 1), 0),
 );
 
-// Puch's own send: the bubble rises 8px as it fades in.
 const SEND = { y: 8, transition: { duration: 0.18, ease: "easeOut" } } as const;
 
 export type AnswerProps = ComponentProps<"div"> & {
-  // The question is in.
   sent: boolean;
-  // The reply is streaming or streamed.
   answered: boolean;
-  // Extra props for each single-source chip, such as a ref.
   chip?: (id: SourceId) => Partial<CitationChipProps>;
 };
 
-// A question and the reply that cites its sources, as in Puch's chat. The chips
-// mix their favicon circles from --background, and here they sit on the card.
+// Chips mix their favicon circles from --background, which here is the card.
 export function Answer({ sent, answered, chip, className, ...props }: AnswerProps) {
   const reduceMotion = useReducedMotion();
   const tokens = REPLY.flatMap((piece): ReactNode[] => {

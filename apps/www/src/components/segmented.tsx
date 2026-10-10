@@ -4,8 +4,6 @@ import { cn } from "@manikrana/ui/lib/utils";
 
 const glide = { type: "spring", duration: 0.3, bounce: 0 } as const;
 
-// A segmented control after lab.anishfn.ink: a 12px-round track with a 4px
-// inset holds 8px-round segments, and a raised pill glides to the pressed one.
 export function Segmented<T extends string>({
   label,
   value,

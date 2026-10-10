@@ -1,22 +1,12 @@
 import type { WorkItem } from "@/work/registry";
 
 export type Dependencies = {
-  // npm packages, in the order the files first import them.
   packages: string[];
-  // shadcn registry components.
   registry: string[];
-  // Whether the files use the site's icon set, which a project swaps for its own.
   icons: boolean;
-  // Images the files load from the site's public folder.
   assets: string[];
 };
 
-// What an item's files need besides React, read from their imports on the
-// server (see source.ts), so the page only receives the result. The site's own
-// modules map to what another project would install in their place: `cn` is
-// shadcn's helper, built on clsx and tailwind-merge, and
-// "@manikrana/ui/components/ui/*" are shadcn components. The usage example is
-// left out, since it is not saved.
 export function dependencies(
   item: WorkItem,
   files: readonly { name: string; code: string }[],
@@ -59,8 +49,6 @@ export function dependencies(
   };
 }
 
-// The install steps as text to copy. Nothing runs them; the page shows them and
-// the prompt passes them on.
 export function installCommands({ packages, registry }: Dependencies) {
   return [
     ...(packages.length ? [`bun add ${packages.join(" ")}`] : []),

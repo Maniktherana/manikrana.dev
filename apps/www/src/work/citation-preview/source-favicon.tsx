@@ -8,8 +8,6 @@ export type SourceFaviconProps = {
   className?: string;
 };
 
-// The circle fills with --favicon-surface, the color of whatever it sits on, so
-// a transparent favicon and the ring between stacked ones blend into it.
 export function SourceFavicon({ src, size, className }: SourceFaviconProps) {
   const [loaded, setLoaded] = useState(false);
 

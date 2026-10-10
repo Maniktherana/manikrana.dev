@@ -17,28 +17,6 @@ import { PANELS } from "./panels";
 import { SidebarContent } from "./sidebar";
 import { Blob } from "./skeleton";
 
-/* ─────────────────────────────────────────────────────────
- * ANIMATION STORYBOARD
- *
- * The shell is laid out at its desktop size (1024×576) and scaled to fit its
- * box, so small boxes show the same layout. Read top-to-bottom. Each time is
- * ms after the loop starts.
- *
- *     0ms   shell at rest: sidebar open with its recents, the question asked
- *   700ms   reply starts thinking (the active thread pulses)
- *  2000ms   answer lines draw in, actions fade in
- *  3800ms   Sources panel docks in, chat card narrows (slot 0 → 320px, 200ms)
- *  5800ms   panel swaps to the thinking trace (cards slide past each other)
- *  7600ms   panel docks out, chat card widens back
- *  8600ms   sidebar collapses to the icon rail (224 → 48px, 200ms)
- * 10400ms   sidebar expands again
- * 11800ms   reply fades out, loop restarts
- *
- * The scale is a plain ancestor transform, so every move is a CSS width
- * transition or an animation to an explicit value. Nothing uses `layout`,
- * which would measure the scaled boxes wrongly.
- * ───────────────────────────────────────────────────────── */
-
 const STAGE = {
   asked: 0,
   thinking: 1,
@@ -50,24 +28,21 @@ const STAGE = {
   expanded: 7,
 } as const;
 
-// The stage each beat steps to, ms after the loop starts; `restart` loops.
 const TIMING = {
-  thinking: 700, // the reply starts thinking
-  answered: 2000, // the answer draws in
-  sources: 3800, // the sources panel docks in
-  trace: 5800, // the panel swaps to the thinking trace
-  closed: 7600, // the panel docks out
-  rail: 8600, // the sidebar collapses to the rail
-  expanded: 10400, // the sidebar expands again
-  restart: 11800, // the loop starts over
+  thinking: 700,
+  answered: 2000,
+  sources: 3800,
+  trace: 5800,
+  closed: 7600,
+  rail: 8600,
+  expanded: 10400,
+  restart: 11800,
 };
 
 type ShellState = { reply: ChatReply; panel: string | null; sidebarOpen: boolean };
 
-// Reduced motion holds one frame: sidebar open, the sources panel docked.
 const STILL: ShellState = { reply: "answered", panel: "sources", sidebarOpen: true };
 
-/** Steps through the storyboard while `active`; coming back from a pause replays from the top. */
 function useTour(active: boolean): ShellState {
   const [cycle, setCycle] = useState(0);
   const [stage, setStage] = useState<number>(STAGE.asked);
@@ -98,10 +73,6 @@ function useTour(active: boolean): ShellState {
   };
 }
 
-/**
- * The shell on its tour, scaled to fit the box it fills. With `interactive`,
- * its controls work, and using one takes over from the tour.
- */
 export function TourShell({ interactive = false }: { interactive?: boolean }) {
   const reduceMotion = useReducedMotion();
   const frameRef = useRef<HTMLDivElement>(null);
@@ -111,7 +82,7 @@ export function TourShell({ interactive = false }: { interactive?: boolean }) {
   const tour = useTour(useWatching(frameRef) && !reduceMotion && !taken);
   const shell = taken ?? (reduceMotion ? STILL : tour);
 
-  // Fit the shell's fixed size (its w-256 h-144) inside the box.
+  // Scaled by an ancestor transform, so nothing inside may use motion `layout`: it measures scaled boxes wrongly.
   useLayoutEffect(() => {
     const frame = frameRef.current;
     const node = shellRef.current;
@@ -126,7 +97,6 @@ export function TourShell({ interactive = false }: { interactive?: boolean }) {
     return () => observer.disconnect();
   }, []);
 
-  // Taking over holds the shell where the tour had it, with the reply done.
   const take = (patch: Partial<ShellState>) => setTaken({ ...shell, reply: "answered", ...patch });
 
   return (

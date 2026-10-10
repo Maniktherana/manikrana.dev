@@ -2,9 +2,6 @@ import type { CSSProperties } from "react";
 import { cn } from "@manikrana/ui/lib/utils";
 import { talks } from "@/data/talks";
 
-// Where each cover lies on the 288×216 board, back to front, so the Go talk
-// ends up on top. Every cover is 176px wide and tilted a little, like slides
-// tossed on a table.
 const PLACES = [
   { id: "airflow", className: "translate-x-0 translate-y-2 -rotate-6" },
   { id: "observability", className: "translate-x-28 translate-y-0 rotate-4" },
@@ -12,7 +9,7 @@ const PLACES = [
   { id: "prometheus", className: "translate-x-26 translate-y-23 rotate-3" },
 ] as const;
 
-// Scales the board to fit its box, up to `max`: tan(atan2(a, b)) is a / b.
+// tan(atan2(a, b)) is a / b, since CSS can't divide a length by a length.
 const fit = (max: number) =>
   `min(tan(atan2(100cqw - 32px, 288px)), tan(atan2(100cqh - 32px, 216px)), ${max})`;
 
@@ -25,7 +22,6 @@ export function Spread({
   className,
 }: {
   max?: number;
-  // Each cover opens its talk's slides and code on GitHub.
   linked?: boolean;
   className?: string;
 }) {

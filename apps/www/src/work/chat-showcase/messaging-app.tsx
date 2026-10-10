@@ -59,8 +59,7 @@ export function MessagingApp({ contact, messages, className, ...props }: Messagi
           aria-label={`Conversation with ${contact.name}`}
           className="flex flex-col gap-2 px-3 pt-22 pb-4"
         >
-          {/* Its own presence scope: the phone's AnimatePresence skips the first phone's initial
-              animations, and without this the bubbles inside it would never rise. */}
+          {/* Own presence scope: the phone's AnimatePresence skips initial animations, so bubbles would never rise. */}
           <AnimatePresence>
             {messages.map((message, index) => (
               <motion.li

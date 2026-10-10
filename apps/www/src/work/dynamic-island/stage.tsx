@@ -9,7 +9,6 @@ export function Stage() {
 
   return (
     <div className="@container relative flex size-full items-center justify-center">
-      {/* The same box as the preview: the island hangs from its top edge. */}
       <div className="h-40 w-80 shrink-0 @max-xs:scale-85">
         <DynamicIsland view={view} onViewChange={setView} />
       </div>

@@ -3,8 +3,6 @@ import { dotMatrixPatterns, makeWavePattern, type DotMatrixPattern } from "./pat
 
 const capitalize = (name: string) => name.charAt(0).toUpperCase() + name.slice(1);
 
-// The built-in patterns in order, then the wave at its defaults, as the
-// storybook lays them out.
 export const PATTERNS: { label: string; pattern: DotMatrixPattern }[] = [
   ...Object.entries(dotMatrixPatterns).map(([name, pattern]) => ({
     label: capitalize(name),

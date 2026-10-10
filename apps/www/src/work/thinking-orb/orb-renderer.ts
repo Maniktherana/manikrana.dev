@@ -36,7 +36,6 @@ void main() {
 }
 `;
 
-/** An orb's shader body defines `paint(uv, rr, edge)`: the point on the unit disc, its squared radius and the antialiased rim. */
 export function orbFragment(body: string) {
   return PRELUDE + body + MAIN;
 }
@@ -128,8 +127,7 @@ function createRenderer() {
   };
 }
 
-// Every orb on a page draws through one WebGL context and copies its frame
-// onto its own 2D canvas, so many orbs never hit the browser's context limit.
+// One WebGL context shared by every orb, since browsers cap live contexts.
 let renderer: ReturnType<typeof createRenderer> = null;
 let consumers = 0;
 

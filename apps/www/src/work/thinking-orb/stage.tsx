@@ -9,19 +9,12 @@ const LOOKS = [
   { name: "thinking", label: "Thinking" },
 ] as const;
 
-// Switching orbs crossfades them in place, the new one rising from 90%.
 const SWAP = { type: "spring", visualDuration: 0.4, bounce: 0 } satisfies Transition;
 const HIDDEN = { opacity: 0, scale: 0.9 };
 
-// The orb as large as the stage allows, between the two pills: the stage's
-// short side less 7rem, up to the orb's drawing size of 20rem.
 const ORB_SIZE = 320;
 const ORB_BOX = "col-start-1 row-start-1 flex size-[clamp(8rem,calc(100cqmin_-_7rem),20rem)]";
 
-// One orb, large. The pill at the top picks which, a swatch each; the pill at
-// the bottom picks its state. Listening plays the voice note over and over into
-// the orb, which only Gemini's reacts to. Reduced motion keeps the crossfade
-// and drops the scale.
 export function Stage() {
   const [id, setId] = useState<OrbId>("diffusion");
   const [look, setLook] = useState<(typeof LOOKS)[number]["name"]>("thinking");

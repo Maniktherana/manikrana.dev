@@ -1,9 +1,6 @@
 import { useSyncExternalStore } from "react";
 
-// The one tile that shares its view-transition name with an item page: the
-// tile being opened, or the one whose page we are coming back from. Naming
-// every tile would leave the rest as card-colored boxes over the page while it
-// transitions, since they have nothing to morph into.
+// Only one tile is named: unmatched named tiles show as blank boxes over the page mid-transition.
 let target: string | undefined;
 const listeners = new Set<() => void>();
 

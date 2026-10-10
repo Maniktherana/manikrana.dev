@@ -1,14 +1,3 @@
-/*
- * PRODUCT DEMO STORYBOARD
- * Boot and shutdown are separate phases. Each frame declares the complete
- * visible state; neither phase depends on numeric ranges from the other.
- *
- * Boot: open → select Pixel → Booting → Connecting → Streaming → close.
- * Shutdown: reopen → press Pixel's power control → Shutting down → remove
- * Pixel → close. Hold the iPhone-only workspace, then repeat the boot phase.
- *
- * Reduced motion shows both devices.
- */
 export type DevicePhase = "available" | "booting" | "connecting" | "streaming" | "shutting-down";
 export type PointerTarget = "start" | "dock" | "device" | "shutdown";
 export type DemoFrame = {

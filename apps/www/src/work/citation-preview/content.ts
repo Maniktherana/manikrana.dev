@@ -1,7 +1,5 @@
 import type { CitationSource } from "./source";
 
-// The demo's question and the sources its answer cites, each with its site's own favicon
-// and preview image. PromCon's page has no preview image, so it shows the talk's cover.
 export const question = "How do I monitor my API?";
 
 export const sources = {

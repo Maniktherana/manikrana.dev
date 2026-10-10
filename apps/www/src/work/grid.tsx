@@ -12,14 +12,12 @@ import { previews } from "@/work/previews";
 import { tileAspects, work, type Filter, type Work } from "@/work/registry";
 import { setTransitionTarget, useTransitionTarget } from "@/work/transition";
 
-// A masonry of work tiles, after lab.anishfn.ink. Row tracks are 4px and each
-// tile spans its own height, so dense auto-placement drops every tile into the
-// shortest column: masonry from plain CSS grid. A column is at least 17rem and
-// at least a quarter of the grid, less its three gaps, so there are never more
-// than four.
 export function WorkGrid({ filter }: { filter: Filter }) {
   return (
-    <ul className="mx-auto grid w-[calc(100%-40px)] max-w-work grid-flow-row-dense auto-rows-[--spacing(1)] grid-cols-[repeat(auto-fill,minmax(max(17rem,calc((100%_-_--spacing(9))/4)),1fr))] gap-x-3">
+    <ul
+      data-slot="work-grid"
+      className="mx-auto grid w-[calc(100%-40px)] max-w-work grid-flow-row-dense auto-rows-[--spacing(1)] grid-cols-[repeat(auto-fill,minmax(max(17rem,calc((100%_-_--spacing(9))/4)),1fr))] gap-x-3"
+    >
       {work.map((item) => (
         <WorkTile key={item.slug} item={item} hidden={filter !== "all" && item.kind !== filter} />
       ))}
@@ -27,9 +25,7 @@ export function WorkGrid({ filter }: { filter: Filter }) {
   );
 }
 
-// A tile's height follows its column's width, so it measures itself to span as
-// many 4px rows as that height plus the 12px gap. Until it has, it spans what
-// it would in the widest column: a quarter of the 90rem grid, less the gaps.
+// Until measured, a tile spans as in the widest column: a quarter of max-w-work (90rem).
 const ROW = 4;
 const GAP = 12;
 const WIDEST_COLUMN = (1440 - 3 * GAP) / 4;
@@ -49,8 +45,6 @@ function WorkTile({ item, hidden }: { item: Work; hidden: boolean }) {
       style={{ "--span": span, "--aspect": aspect } as CSSProperties}
       className="group relative self-start [grid-row:span_var(--span)/span_var(--span)]"
     >
-      {/* When it is the transition target, it shares its view-transition name
-          with the stage on the item's page, so opening it morphs it into the stage. */}
       <div
         ref={surface}
         style={morphs ? ({ "--work": `work-${item.slug}` } as CSSProperties) : undefined}
@@ -82,7 +76,6 @@ function WorkTile({ item, hidden }: { item: Work; hidden: boolean }) {
   );
 }
 
-// The 4px rows a tile spans for its measured height; undefined until measured.
 function useRowSpan(ref: RefObject<HTMLElement | null>) {
   const [span, setSpan] = useState<number>();
   useLayoutEffect(() => {
@@ -97,13 +90,8 @@ function useRowSpan(ref: RefObject<HTMLElement | null>) {
   return span;
 }
 
-// Slugs whose previews have mounted this session. Coming back to the grid,
-// those mount straight away instead of waiting on the observer, so the tiles
-// never show empty.
 const seen = new Set<string>();
 
-// True once the element comes within half a screen of the viewport. It stays
-// true, so a preview mounts once and keeps its state while scrolled past.
 function useNearViewport(ref: RefObject<HTMLElement | null>, key: string) {
   const [near, setNear] = useState(() => seen.has(key));
   useEffect(() => {

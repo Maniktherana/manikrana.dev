@@ -6,8 +6,6 @@ import type { DemoDevices } from "@/work/agentsims/devices";
 import { DevicesGlyph, RefreshGlyph, SettingsGlyph } from "@/work/agentsims/glyphs";
 
 const SURFACE_SPRING = { type: "spring", bounce: 0.03, visualDuration: 0.15 } as const;
-// The device list slides in from the left as the dock opens and out to the
-// right as it closes.
 const PANEL_VARIANTS = {
   enter: { opacity: 0, x: -16, filter: "blur(4px)" },
   center: { opacity: 1, x: 0, filter: "blur(0px)" },
@@ -17,9 +15,6 @@ const PANEL_TRANSITION = { duration: 0.24, ease: [0, 0, 0.2, 1] } as const;
 const DOCK_BUTTON =
   "relative grid size-10 place-items-center rounded-lg text-control-foreground transition-colors";
 
-// The workspace dock: a devices button and a settings button that grow into
-// the device list. It is drawn at the dock's scale (zoom), on the scene's
-// bottom edge.
 export function DemoDock({ expanded, devices }: { expanded: boolean; devices: DemoDevices }) {
   return (
     <div className="absolute bottom-0 left-1/2 h-12 w-24 -translate-x-1/2 [zoom:var(--scale)]">

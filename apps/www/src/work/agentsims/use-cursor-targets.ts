@@ -5,8 +5,6 @@ export type CursorPoint = { x: number; y: number };
 
 const ORIGIN: CursorPoint = { x: 0, y: 0 };
 
-// Measures where the cursor points in each frame, relative to the scene, and
-// the scene's scale against its 480-unit design width (0 until measured).
 export function useCursorTargets(
   sceneRef: RefObject<HTMLDivElement | null>,
   frame: DemoFrame,
@@ -51,8 +49,7 @@ export function useCursorTargets(
         };
         let changed = false;
         for (const key of Object.keys(next) as PointerTarget[]) {
-          // Dock layout can drift by a fraction of a pixel while opening.
-          // Replaying an arc for that drift still applies its full rotation.
+          // Ignore sub-pixel drift while the dock opens: replaying an arc still applies its full rotation.
           if (Math.hypot(next[key].x - previous[key].x, next[key].y - previous[key].y) < 1) {
             next[key] = previous[key];
           } else {

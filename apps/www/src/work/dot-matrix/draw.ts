@@ -25,7 +25,6 @@ const clamp01 = (v: number): number => (v < 0 ? 0 : v > 1 ? 1 : v);
 
 const bevelCache = new Map<number, HTMLCanvasElement>();
 
-// The inset shadow every dot wears: lit from the top left, shaded to the bottom right.
 function getBevel(size: number): HTMLCanvasElement {
   const hit = bevelCache.get(size);
   if (hit) return hit;
@@ -113,7 +112,6 @@ function tick(now: number) {
   frame = requestAnimationFrame(tick);
 }
 
-// One animation frame loop paints every matrix on the page, and stops when none is left.
 export function subscribe(subscriber: (seconds: number) => void): () => void {
   subscribers.add(subscriber);
   frame ??= requestAnimationFrame(tick);

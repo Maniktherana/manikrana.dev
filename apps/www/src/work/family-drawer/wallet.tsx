@@ -20,8 +20,6 @@ import {
 
 export type WalletPage = "default" | "key" | "phrase" | "remove";
 
-// The private key and the recovery phrase share one layout: what the secret
-// is, three warnings and a button to reveal it.
 const SECRETS = {
   key: {
     title: "Private Key",
@@ -51,8 +49,7 @@ const SECRETS = {
 
 const DESTRUCTIVE_ITEM = "bg-[#ff3f40]/12 text-[#ff6b6c] hover:bg-[#ff3f40]/18";
 
-// The base button lightens on hover. The red one keeps its fill, so it names
-// its hover colour too.
+// Destructive repeats its fill on hover to override the base button's hover.
 const BUTTON_TONES = {
   destructive: "bg-[#ff3f40] text-white hover:bg-[#ff3f40]",
   blue: "bg-[#4dafff] text-[#062032] hover:bg-[#69bdff]",
@@ -162,8 +159,6 @@ function RemovePage() {
   );
 }
 
-// The wallet options drawer: a pill that opens into an options list, with a
-// page each for the private key, the recovery phrase and removing the wallet.
 export function WalletDrawer({
   open,
   page,

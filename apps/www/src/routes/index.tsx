@@ -11,8 +11,6 @@ import { WorkGrid } from "@/work/grid";
 import { filters, work, type Filter } from "@/work/registry";
 
 export const Route = createFileRoute("/")({
-  // The grid's filter lives in the URL, so it survives opening a tile and
-  // coming back. "All" is the bare URL.
   validateSearch: (search: Record<string, unknown>): { show?: Exclude<Filter, "all"> } => {
     const show = filters.find((filter) => filter.value === search.show)?.value;
     return show && show !== "all" ? { show } : {};
@@ -142,6 +140,7 @@ function Home() {
                 search: value === "all" ? {} : { show: value },
                 replace: true,
                 resetScroll: false,
+                viewTransition: { types: ["filter"] },
               })
             }
             options={filterOptions}

@@ -22,9 +22,7 @@ export type ChatShowcaseProps = Omit<ComponentProps<"div">, "children"> & {
   gradient?: readonly GradientStop[];
 };
 
-// tan(atan2(a, b)) is the unitless ratio a / b: the box's cqw and cqh over the 288px-wide phone and
-// the top 288px of it that must show, less a 24px gutter each side and 56px for the stepper. The rest
-// of the phone runs off the bottom edge, and it never grows past 1.5x.
+// tan(atan2(a, b)) is the unitless ratio a / b. 288px is the phone's width and the height of it that must show.
 const FIT =
   "max(0.1, min(tan(atan2(100cqw - 48px, 288px)), tan(atan2(100cqh - 56px, 288px)), 1.5))";
 
@@ -106,8 +104,8 @@ export function ChatShowcase({
         onStepChange={setStep}
         className="absolute inset-x-6 top-4 z-10"
       />
-      <div className="absolute inset-x-0 bottom-0 flex justify-center">
-        <div className="relative h-72 w-72 shrink-0 origin-bottom scale-(--fit)">
+      <div className="absolute inset-x-0 top-14 flex justify-center">
+        <div className="relative h-72 w-72 shrink-0 origin-top scale-(--fit)">
           <AnimatePresence initial={false}>
             {current && (
               <motion.div

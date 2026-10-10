@@ -4,14 +4,10 @@ import { useWatching } from "@/work/use-watching";
 import { DotMatrix } from "./dot-matrix";
 import { PATTERNS } from "./showcase";
 
-// Each pattern plays through twice before the next one takes over.
 const LOOPS = 2;
 
-// Twice the storybook's 9px cell, so the canvas is drawn larger than it shows
-// and only ever scales down to fit the tile.
 const CELL = 18;
 
-// The matrix stepping through every pattern. Reduced motion holds Flow still.
 export function Preview() {
   const ref = useRef<HTMLDivElement>(null);
   const watching = useWatching(ref);

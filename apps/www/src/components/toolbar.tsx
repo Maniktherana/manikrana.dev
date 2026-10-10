@@ -4,10 +4,6 @@ import { cn } from "@manikrana/ui/lib/utils";
 
 const glide = { type: "spring", duration: 0.3, bounce: 0 } as const;
 
-// Floating controls on a work stage, after lab.anishfn.ink: a raised pill of
-// small buttons pinned to the stage's bottom edge. The pill is 16px round with
-// a 4px inset, so its 12px buttons sit concentric inside it. Each pill is its
-// own layout group, so its selected fill only glides between its own buttons.
 export function Toolbar({ className, children, ...props }: ComponentProps<"div">) {
   const group = useId();
   return (
@@ -24,8 +20,6 @@ export function Toolbar({ className, children, ...props }: ComponentProps<"div">
   );
 }
 
-// A set of choices inside a toolbar with its own selected fill, so a toggle
-// beside it keeps a fill of its own.
 export function ToolbarGroup({ className, children, ...props }: ComponentProps<"fieldset">) {
   const group = useId();
   return (
@@ -45,9 +39,6 @@ export function ToolbarSeparator({ className, ...props }: ComponentProps<"hr">) 
   );
 }
 
-// Pass aria-pressed for a toggle. The pressed button gets a selected fill that
-// glides over from whichever button held it, like the code tabs' segments.
-// An icon-only button is square and needs an aria-label.
 export function ToolbarButton({
   className,
   iconOnly = false,

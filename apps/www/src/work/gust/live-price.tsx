@@ -14,8 +14,6 @@ export const livePriceMotion: Omit<GustProps, "value"> = {
   exitBlur: 4,
 };
 
-// Short transitions leave a settled price between market updates. The dollar
-// prefix stays put, and changing digits follow the direction of the price.
 export function LivePriceExample({
   paused = false,
   motion = livePriceMotion,

@@ -1,36 +1,20 @@
-// Everything on the work grid, in grid order. The grid is a masonry: each tile
-// drops into the shortest column, so order sets roughly where a tile lands and
-// `tile` sets its height. Previews and stages live in each item's folder.
-
 export type WorkKind = "project" | "component";
 
 export type WorkItem = {
   slug: string;
   title: string;
   kind: WorkKind;
-  // The paragraph under the title on the item's page.
   summary: string;
-  // A shape from tileAspects.
   tile: keyof typeof tileAspects;
   uses?: readonly string[];
   links?: readonly { label: string; href: string }[];
-  // Source files shown on the item's page and handed out by "Copy prompt",
-  // relative to src/work/<slug>/. The first is the entry point.
   files?: readonly string[];
-  // A short example in the same folder: the last Code tab, and the prompt's
-  // usage block.
   usage?: string;
-  // What the files give you, and what the demo around them adds that they
-  // don't, both shown above the code.
   included?: string;
   notIncluded?: string;
-  // Extra lines for "Copy prompt", such as a licence to keep.
   notes?: readonly string[];
 };
 
-// Tile shapes as width-to-height ratios, so a tile keeps its proportions and
-// grows as its column widens. In the narrowest column, 17rem, the first five
-// are 160, 224, 288, 352 and 384px tall.
 export const tileAspects = {
   sm: 17 / 10,
   md: 17 / 14,
@@ -97,7 +81,7 @@ export const work = [
     title: "AI chat",
     kind: "component",
     summary:
-      "The shell of an AI chat app, after Puch's desktop layout: a sidebar that folds to an icon rail, the chat as an inset card, and a side panel that docks beside it for sources or the thinking trace.",
+      "The layout shell of an AI chat app: a sidebar that folds to an icon rail, the chat as an inset card, and a side panel that docks beside it for sources or the thinking trace.",
     tile: "video",
     uses: ["motion"],
     files: ["ai-chat.tsx"],
@@ -233,7 +217,7 @@ export const work = [
     title: "Citation chips",
     kind: "component",
     summary:
-      "Source chips that sit inline in an AI answer, from Puch's web app. Hover or focus one and the cited page opens above it with its image, favicon and title; a chip for several sources opens a row of their cards, each naming its domain.",
+      "Source chips that sit inline in an AI answer for an AI chat app. Hover or focus one and the cited page opens above it with its image, favicon and title; a chip for several sources opens a row of their cards, each naming its domain.",
     tile: "lg",
     uses: ["Base UI"],
     files: [
@@ -257,7 +241,7 @@ export const work = [
     title: "Image tray",
     kind: "component",
     summary:
-      "The web-search images from Puch's iPhone app: a strip of thumbnails under a reply, and a tray that springs up when you tap one. It shows the image under a progressive blur with its source, and lets you copy the link or visit the page.",
+      "The web-search results for an AI chat: a strip of thumbnails under a reply, and a tray that springs up when you tap one. It shows the image under a progressive blur with its source, and lets you copy the link or visit the page.",
     tile: "xl",
     uses: ["motion"],
     files: ["image-tray.tsx", "image-strip.tsx", "../progressive-blur.tsx"],
@@ -266,16 +250,13 @@ export const work = [
       "The strip, which scrolls sideways, dissolves into its background at whichever edge has more to show, and slides in images that arrive later; and the tray: the image under a progressive blur and scrim, the source's favicon, name and link, close, copy and visit buttons, and the spring that raises it. Drag its top edge down, tap outside or press Escape to close it. With reduced motion it fades in place.",
     notIncluded:
       "The chat around the strip, the talk covers it shows, and the scripted send, stream and tap on the tile. There is no toast for a copied link; onCopy is where to show one.",
-    notes: [
-      "The hex colors are the Puch app's own dark palette; keep them unless the project wants its tokens instead.",
-    ],
   },
   {
     slug: "image-loader",
     title: "Image loader",
     kind: "component",
     summary:
-      "The placeholder from Puch's app that holds an image's place while it generates: a grid of tiny dots that sparkle or weave, until the finished image fades in.",
+      "The placeholder for AI image generation. a grid of tiny dots that sparkle or weave, until the finished image fades in.",
     tile: "lg",
     uses: ["WebGL", "motion"],
     files: ["image-loader.tsx", "dot-grid.tsx", "dot-grid-shader.ts"],
@@ -330,7 +311,6 @@ export function findWork(slug: string): WorkItem | undefined {
   return work.find((item) => item.slug === slug);
 }
 
-// The items either side of one, wrapping around the ends.
 export function neighbours(slug: string) {
   const index = work.findIndex((item) => item.slug === slug);
   return {

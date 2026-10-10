@@ -10,9 +10,6 @@ export type CitationPreviewProps = ComponentProps<"div"> & {
 
 const SHADOW = "shadow-[0_2px_4px_0_rgb(0_0_0/0.28),0_8px_20px_0_rgb(0_0_0/0.36)]";
 
-// The source's image with its title over a blurred, darkened foot, or a plain card with the
-// title when there is no image or it fails to load. The image and its blur sit in an inner
-// frame clipped to the card's corners, so the outer card keeps its shadow.
 export function CitationPreview({ source, className, ...props }: CitationPreviewProps) {
   const [failed, setFailed] = useState<string>();
   const image = source.image === failed ? undefined : source.image;
@@ -44,7 +41,6 @@ export function CitationPreview({ source, className, ...props }: CitationPreview
           className="absolute inset-0 size-full object-cover"
         />
         <ProgressiveBlur side="bottom" size={64} max={16} />
-        {/* The Puch app's own scrim, which keeps white text legible over a light image. */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(to_bottom,rgb(0_0_0/0),rgb(0_0_0/0.16)_45%,rgb(0_0_0/0.74))]" />
         <div className="absolute inset-x-0 bottom-0 px-2.5 pb-2.5">
           <Headline source={source} overlay />

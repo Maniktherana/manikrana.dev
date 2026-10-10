@@ -1,4 +1,3 @@
-// Cosine palettes: each channel is a + b * cos(2 * PI * (c * t + d)).
 type Vec3 = [number, number, number];
 
 export type VoiceEdgePalette = {

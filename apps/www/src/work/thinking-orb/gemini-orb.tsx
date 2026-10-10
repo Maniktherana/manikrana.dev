@@ -15,14 +15,11 @@ export type GeminiOrbProps = Omit<React.ComponentProps<"span">, "children"> & {
   speed?: number;
   brilliance?: number;
   paused?: boolean;
-  /** Normalized voice activity, 0-1. A ref avoids per-frame React updates. */
   audioLevel?: number | { readonly current: number };
-  /** Independently normalized low-to-high frequency bands. Not inferred from volume. */
   audioBands?: readonly number[] | { readonly current: readonly number[] };
   audioMode?: GeminiOrbAudioMode;
 };
 
-// Heights are fractions of the aperture from its bottom edge; x is uv.x.
 const FRAGMENT = orbFragment(`
 uniform float voice;
 uniform float voiceBand0;
@@ -51,16 +48,13 @@ const vec3 hueCyan = vec3(0.3, 0.7, 0.94);
 
 float softRamp(float d, float knee) { return 0.5 * (d + sqrt(d * d + knee * knee)); }
 
-// Opaque body below the edge, exponential tail above it.
 float edgeGlow(float d, float tail, float knee) {
   return exp(-softRamp(d, knee) / max(tail, 0.01));
 }
 
-// Cycles per visible width, not per height, so the spectrum keeps its shape on a circle.
 const vec3 modeFrequency = vec3(3.14159, 6.28318, 9.42478);
 const vec3 modeWeight = vec3(1.0, 0.65, 0.25);
 
-// Spectral bands only reweight the synthetic modes, so live voice and a plain level share one motion.
 vec3 voiceModes() {
   float level = clamp(voice * voiceStrength, 0.0, 1.0);
   float drive = level + 0.25 * userPresence * (1.0 - level);
@@ -72,7 +66,6 @@ vec3 voiceModes() {
   return synthetic * mix(vec3(1.0), 0.6 + 0.8 * relative, 0.5 * supplied);
 }
 
-// Phases wander around the center, since a circle shows only the middle of the field.
 vec3 modePhase() {
   float t = time;
   vec3 wander = vec3(0.45, 0.6, 0.8) * (1.0 + search * 1.6) * (1.0 - focus * 0.85);

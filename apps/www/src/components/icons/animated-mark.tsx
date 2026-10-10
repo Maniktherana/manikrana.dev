@@ -15,7 +15,6 @@ const hoverEffects = {
   gsoc: { selector: ".gsoc-sun", from: "rotate(0deg)", to: "rotate(180deg)", duration: 700 },
 } as const;
 
-/** Each mark occupies the same optical slot; motion stays inside the artwork. */
 export function AnimatedMark({ name, hovered }: { name: MarkName; hovered: boolean }) {
   const id = useId().replace(/:/g, "");
   const ref = useRef<SVGSVGElement>(null);
@@ -30,7 +29,7 @@ export function AnimatedMark({ name, hovered }: { name: MarkName; hovered: boole
     if (!hovered || name === "prometheus" || hoverAnimation.current?.playState === "running")
       return;
     const effect = hoverEffects[name];
-    // These finish at the same visual pose. Leaving mid-turn never snaps the mark back.
+    // `to` must look identical to `from`: the turn has no fill and finishes after hover ends.
     hoverAnimation.current = ref.current
       ?.querySelector(effect.selector)
       ?.animate([{ transform: effect.from }, { transform: effect.to }], {
@@ -58,7 +57,6 @@ export function AnimatedMark({ name, hovered }: { name: MarkName; hovered: boole
       {name === "turboml" ? (
         <>
           <defs>
-            {/* The source asset supplies its exact orange-to-coral gradient. */}
             <pattern id={`${id}-color`} patternUnits="userSpaceOnUse" width="456" height="400">
               <image href="/logos/turboml.png" width="456" height="400" />
             </pattern>

@@ -8,9 +8,6 @@ const when = (test: boolean, text: string) => (test ? [text] : []);
 const block = (file: SourceFile) =>
   `\`\`\`${file.name.endsWith(".tsx") ? "tsx" : "ts"}\n${file.code.trim()}\n\`\`\``;
 
-// What "Copy prompt" hands a coding agent: what the component is and what it
-// leaves out, what to install, how it is used, and its files. It only puts
-// text together, when someone copies.
 export function componentPrompt(item: WorkItem, sources: SourceFile[], deps: Dependencies) {
   const usage = sources.find((file) => file.name === item.usage);
   const files = sources.filter((file) => file !== usage);

@@ -1,7 +1,6 @@
 export type CitationSource = {
   url: string;
   title?: string;
-  // The site's name on the chip. Without it, the chip names the site after its domain.
   name?: string;
   domain?: string;
   favicon?: string;
@@ -22,7 +21,6 @@ export function sourceDomain(source: CitationSource) {
   }
 }
 
-// "developer.mozilla.org" becomes "Mozilla" and "my-site.dev" becomes "My Site".
 export function sourceName(source: CitationSource) {
   if (source.name) return source.name;
   const domain = sourceDomain(source);

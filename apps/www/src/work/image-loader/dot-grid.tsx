@@ -14,31 +14,22 @@ export type DotGridImageFit = "cover" | "contain" | "stretch" | "center";
 
 export type DotGridOptions = {
   pattern?: DotGridPattern;
-  // Dot diameter, in pixels.
   cell?: number;
-  // Space between dots, as a multiple of the dot size.
   gap?: number;
-  // 0 is square, 1 is round.
   radius?: number;
-  // Brightness of an unlit dot.
   floor?: number;
   dotAlpha?: number;
-  // How much quiet dots shrink.
   scaleDots?: number;
-  // Cycles per second of the wave every pattern shares.
   waveFrequency?: number;
   wavePhase?: number;
   waveThickness?: number;
-  // How far, in pixels, the wave's crest and trough push the dots.
   wavePeakTop?: number;
   wavePeakBottom?: number;
   waveDotLight?: number;
   waveDotDark?: number;
   waveBackgroundLight?: number;
   waveBackgroundDark?: number;
-  // Direction of the band and sweep waves, in radians.
   waveAngle?: number;
-  // Where the wave starts, from 0 to 1 across and down.
   waveX?: number;
   waveY?: number;
   wavePattern?: DotGridWavePattern;
@@ -57,7 +48,6 @@ export type DotGridProps = Omit<ComponentProps<"div">, "children"> & DotGridOpti
 
 type Uniforms = Record<string, number | readonly [number, number] | string>;
 
-// The frame a paused or reduced-motion grid holds on.
 const FROZEN_TIME = 1.4;
 
 const imageFit: Record<DotGridImageFit, string> = {
@@ -70,8 +60,7 @@ const imageFit: Record<DotGridImageFit, string> = {
 const colors = new Map<string, readonly [number, number, number]>();
 let colorProbe: CanvasRenderingContext2D | null = null;
 
-// Reads any CSS color the way the browser parses it. One it can't parse stays
-// white, the fill set before it.
+// An unparseable color leaves fillStyle unchanged, so the white set first is the fallback.
 function toRgb(color: string) {
   const cached = colors.get(color);
   if (cached) return cached;
@@ -133,9 +122,7 @@ function createRenderer(canvas: HTMLCanvasElement) {
       const width = canvas.clientWidth;
       const height = canvas.clientHeight;
       if (!width || !height || gl.isContextLost()) return;
-      // Fills the buffer at the size the canvas shows at, so the dots stay sharp
-      // inside a scaled parent. Rounding the scale up to quarters keeps a scale
-      // animation from resizing the buffer every frame.
+      // Rounding the scale up to quarters stops a scale animation resizing the buffer every frame.
       const shown = canvas.getBoundingClientRect().width / width;
       const scale = Math.max(0.25, Math.ceil(shown * 4 - 0.01) / 4);
       const ratio = Math.min(window.devicePixelRatio || 1, 2) * scale;
@@ -234,8 +221,7 @@ export function DotGrid({
   useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
-    // A new canvas each time: one whose context was released can't make another,
-    // and Strict Mode runs this twice.
+    // A new canvas each time: a released context can't be recreated, and Strict Mode runs this twice.
     const canvas = document.createElement("canvas");
     canvas.className = "block size-full";
     host.append(canvas);
@@ -249,7 +235,6 @@ export function DotGrid({
     let elapsed = 0;
     let onScreen = false;
 
-    // Time runs only while the grid is drawn, so it picks up where it left off.
     const tick = (now: number) => {
       request = 0;
       const { frozen, uniforms } = latest.current;

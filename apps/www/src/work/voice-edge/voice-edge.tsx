@@ -24,7 +24,6 @@ type VoiceEdgeAnalyser = Pick<AnalyserNode, "frequencyBinCount" | "getByteFreque
 
 type VoiceEdgeProps = Omit<React.ComponentProps<"div">, "children"> & {
   active?: boolean;
-  // Replaces the microphone while active, for audio that plays elsewhere.
   analyser?: VoiceEdgeAnalyser;
   borderBrightness?: number;
   borderRadius?: number;

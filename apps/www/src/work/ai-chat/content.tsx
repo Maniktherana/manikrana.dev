@@ -5,15 +5,12 @@ import { cn } from "@manikrana/ui/lib/utils";
 import { useAiChat } from "./ai-chat";
 import { Bar, Blob } from "./skeleton";
 
-/** Where the demo reply is: asked (no reply yet), thinking, or answered. */
 export type ChatReply = "asked" | "thinking" | "answered";
 
 const ENTER = { duration: 0.22, ease: [0, 0, 0.2, 1] } as const;
 const EXIT = { duration: 0.2, ease: [0, 0, 0.2, 1] } as const;
 
-// The answer's lines draw in left to right, one after another, like text
-// streaming in; the actions under them fade in once the last line has landed.
-const ANSWER_LINES = [100, 96, 100, 58]; // each line's width, as a % of the column
+const ANSWER_LINES = [100, 96, 100, 58];
 const LINE = { duration: 0.5, stagger: 0.18, ease: [0.2, 0, 0, 1] } as const;
 const ACTIONS_DELAY = (ANSWER_LINES.length - 1) * LINE.stagger + LINE.duration;
 
@@ -31,8 +28,6 @@ function Row({ className, children }: { className: string; children: ReactNode }
   );
 }
 
-// A question, then a reply: the thinking row, the answer's lines, and the
-// actions. The thinking row and the sources button open their panels.
 export function Conversation({ reply }: { reply: ChatReply }) {
   const { panel, setPanel } = useAiChat();
   const reduceMotion = useReducedMotion();
@@ -110,7 +105,6 @@ export function Conversation({ reply }: { reply: ChatReply }) {
   );
 }
 
-/** The composer drawn as a bar with two buttons, for the footer. */
 export function ComposerSkeleton() {
   return (
     <div aria-hidden="true" className="mx-auto w-full max-w-3xl px-4 pt-8 pb-4">

@@ -51,7 +51,6 @@ export function DynamicIsland({
   onViewChange?: (view: IslandView) => void;
 }) {
   const reduceMotion = useReducedMotion();
-  // Remember the shown view so a change can be keyed from-to.
   const [shownView, setShownView] = useState(view);
   const [change, setChange] = useState<string>(view);
 
@@ -68,7 +67,7 @@ export function DynamicIsland({
   return (
     <MotionConfig reducedMotion="user">
       <div className="relative flex justify-center">
-        {/* The radius is in `style` so layout animations correct it while the island stretches. */}
+        {/* borderRadius stays in `style` so layout animations correct its distortion. */}
         <motion.div
           layout
           className="min-w-25 shrink-0 overflow-hidden bg-black"
@@ -92,7 +91,6 @@ export function DynamicIsland({
           </motion.div>
         </motion.div>
 
-        {/* An overlaid copy of the content plays the exit while the island morphs underneath. */}
         <div className="pointer-events-none absolute top-0 left-1/2 flex w-80 -translate-x-1/2 items-start justify-center">
           <AnimatePresence custom={exitTarget} mode="popLayout">
             <motion.div exit="exit" initial={{ opacity: 0 }} key={view} variants={exitVariants}>
@@ -169,7 +167,6 @@ function Ring() {
         initial={false}
       >
         <BellSvg />
-        {/* A pill-colored bar cuts through the bell; the white hairline inside it is the slash. */}
         <motion.div
           animate={{
             opacity: isSilent ? 1 : 0,

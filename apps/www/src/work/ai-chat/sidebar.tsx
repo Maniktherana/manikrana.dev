@@ -3,16 +3,10 @@ import { cn } from "@manikrana/ui/lib/utils";
 import { AiChatSidebarLabel } from "./ai-chat";
 import { Bar, Blob } from "./skeleton";
 
-// How long each recent's bar runs, by row, so the list isn't a block.
 const RECENTS = ["w-28", "w-36", "w-32", "w-24", "w-32", "w-40", "w-28"];
-const ACTIVE = 0; // the thread the chat shows
-const UNREAD = 1; // a thread with the unread dot
+const ACTIVE = 0;
+const UNREAD = 1;
 
-/**
- * The demo's sidebar content. It fills the sidebar column, and the labels and
- * the recents fold away with the column. `working` pulses the active thread
- * while it replies.
- */
 export function SidebarContent({ working }: { working: boolean }) {
   return (
     <div className="flex h-full w-full flex-col overflow-hidden pt-2">
@@ -79,7 +73,6 @@ export function SidebarContent({ working }: { working: boolean }) {
   );
 }
 
-// The slot at a row's end for a status dot: pulsing while the thread works, still when unread.
 function Marker({ children }: { children: ReactNode }) {
   return <span className="grid size-5 shrink-0 place-items-center">{children}</span>;
 }

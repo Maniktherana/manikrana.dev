@@ -18,7 +18,7 @@ export function useStepPlayback({
   paused,
   onComplete,
 }: StepPlaybackOptions) {
-  // The server cannot know the preference, so it applies once mounted, after hydration.
+  // Gated on mount so server and first client render agree.
   const [mounted, setMounted] = useState(false);
   const instant = useReducedMotion() === true && mounted;
   const [playback, setPlayback] = useState({ step, shown: 0 });

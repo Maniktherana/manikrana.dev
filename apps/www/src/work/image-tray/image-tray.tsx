@@ -27,11 +27,8 @@ export type ImageTrayProps = Omit<ComponentProps<"div">, "children"> & {
   onCopy?: (image: WebImage) => void;
 };
 
-// Reanimated's withSpring({ duration: 300, dampingRatio: 0.86 }), solved for the stiffness and
-// damping it settles on.
+// Reanimated's withSpring({ duration: 300, dampingRatio: 0.86 }), solved for stiffness and damping.
 const SPRING = { type: "spring", stiffness: 4039.55, damping: 218.64, mass: 4 } as const;
-// With reduced motion the tray fades in at rest instead of rising, and fades out a little faster.
-// A drag still moves it, since the reader is the one moving it.
 const FADE = {
   in: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] },
   out: { duration: 0.15, ease: [0.25, 0.1, 0.25, 1] },
@@ -40,7 +37,6 @@ const INSTANT = { duration: 0 } as const;
 const BACKDROP_OPACITY = 0.55;
 const PAN = { activate: 8, cancel: 24, dismissBelow: 0.5 };
 
-// The press from the Puch app: 97% and 78% opacity, in over 50ms and out over 150ms.
 const PRESS =
   "transform-gpu outline-none [backface-visibility:hidden] transition-[scale,opacity] duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-97 active:opacity-78 active:duration-50 disabled:pointer-events-none aria-disabled:pointer-events-none motion-reduce:active:scale-100";
 
@@ -51,7 +47,6 @@ const clamp01 = (value: number) => Math.min(Math.max(value, 0), 1);
 export function ImageTray({ image, onClose, onCopy, className, ...props }: ImageTrayProps) {
   const reduceMotion = useReducedMotion();
   const open = image !== null;
-  // The last image stays up while the tray slides away.
   const [shown, setShown] = useState(image);
   const surface = useRef<HTMLDialogElement>(null);
   const pan = useRef<{
@@ -111,7 +106,6 @@ export function ImageTray({ image, onClose, onCopy, className, ...props }: Image
   const headline = shown.title ?? shown.sourceName ?? "Web search image";
   const caption = shown.title ?? shown.description;
 
-  // The pan reads the pointer in screen pixels, so it divides out any scale the tray is drawn at.
   function startPan(event: PointerEvent<HTMLDivElement>) {
     if (!open || !event.isPrimary) return;
     const region = event.currentTarget;
@@ -153,7 +147,6 @@ export function ImageTray({ image, onClose, onCopy, className, ...props }: Image
     else animate(progress, 1, reduceMotion ? INSTANT : SPRING);
   }
 
-  // Tab and Shift+Tab cycle through the tray's controls while it is open.
   function keepFocus(event: KeyboardEvent<HTMLDialogElement>) {
     const controls = event.currentTarget.querySelectorAll<HTMLElement>(
       "button:not(:disabled), a[href]",
@@ -196,9 +189,7 @@ export function ImageTray({ image, onClose, onCopy, className, ...props }: Image
         onClick={onClose}
         style={{ opacity: backdrop }}
       />
-      {/* Shown with the open attribute rather than showModal(), so it stays inside its container
-          instead of rising to the top layer. On a phone it spans the screen less 16px a side; on
-          anything wider it stops at the widest iPhone's 408px and centres. */}
+      {/* `open` rather than showModal(), so it stays in its container instead of the top layer. */}
       <motion.dialog
         ref={surface}
         open
@@ -214,8 +205,6 @@ export function ImageTray({ image, onClose, onCopy, className, ...props }: Image
         tabIndex={-1}
       >
         <div className="-mx-6 -mt-4.5">
-          {/* The image bleeds to the tray's top and sides, so its corners are the tray's own and
-              no sliver of the tray shows around them. */}
           <div className="relative aspect-video overflow-hidden rounded-t-[40px] bg-[#2a2a2a]">
             <img
               src={shown.url}
@@ -224,8 +213,6 @@ export function ImageTray({ image, onClose, onCopy, className, ...props }: Image
               className="absolute inset-0 size-full object-cover"
             />
             <ProgressiveBlur side="bottom" size={112} max={24} />
-            {/* The dark material's saturation and tint at intensity 60, ramped in by the app's own
-                mask gradient. */}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-38 bg-[rgb(25_25_25/0.468)] backdrop-saturate-180 [mask-image:linear-gradient(to_bottom,rgb(255_255_255/0),rgb(255_255_255/0.08)_22%,rgb(255_255_255/0.72)_62%,rgb(255_255_255))]" />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-38 bg-[linear-gradient(to_bottom,rgb(0_0_0/0),rgb(0_0_0/0.16)_45%,rgb(0_0_0/0.74))]" />
             <div className="pointer-events-none absolute inset-x-4 bottom-3.5">
@@ -265,7 +252,6 @@ export function ImageTray({ image, onClose, onCopy, className, ...props }: Image
                 onClick={onClose}
               >
                 <span className="flex size-8.5 items-center justify-center rounded-full bg-black/52">
-                  {/* Outlined by 1.5 units, the 2-unit cross reaches the Puch close mark's 3.5. */}
                   <CloseBoldIcon
                     className="text-white"
                     stroke="currentColor"

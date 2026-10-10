@@ -40,7 +40,7 @@ function Fill({ duration, paused }: StepperFillProps) {
     };
   }, [duration, reduced]);
 
-  // Reruns when the animation is recreated. A finished one is left alone, since play() rewinds it.
+  // Extra deps rerun this for a recreated animation. Skip a finished one: play() rewinds it.
   useEffect(() => {
     const running = animation.current;
     if (!running || running.playState === "finished") return;

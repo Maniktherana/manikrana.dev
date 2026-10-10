@@ -1,7 +1,4 @@
-// The "voice demo" note from Voice Memos, as an AnalyserNode would hear it: the
-// byte frequency data (fftSize 256, smoothing 0.8, -100 to -30 dB) for every
-// 60th of a second, base64 encoded, 128 bins per frame. The word timings are
-// the ones Voice Memos transcribed, in seconds.
+// AnalyserNode byte frequency data (fftSize 256, smoothing 0.8, -100 to -30 dB), base64.
 export const voiceNote = {
   fps: 60,
   bins: 128,

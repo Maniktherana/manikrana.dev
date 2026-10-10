@@ -10,13 +10,12 @@ import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
 
-// The slot animates width and margin together, so a closed panel leaves no gutter.
 const PANEL_WIDTH = 320; // matches the w-80 classes below
 const PANEL_GAP = 8;
 const SLIDE = { duration: 0.2, ease: [0, 0, 0.2, 1] } as const;
 const SWAP = { duration: 0.16, ease: [0, 0, 0.2, 1] } as const;
 
-// The edge is an overlay shadow, so nothing inside can cover it.
+// The inset edge shadow sits on an overlay; on the card itself, its children would cover it.
 const INSET_CARD =
   "relative overflow-hidden rounded-2xl bg-stage text-foreground after:pointer-events-none after:absolute after:inset-0 after:z-30 after:rounded-[inherit] after:shadow-stage";
 
