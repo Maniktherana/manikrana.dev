@@ -16,6 +16,13 @@ export type WorkItem = {
   notes?: readonly string[];
 };
 
+// Summaries mark links as [text](href).
+export const SUMMARY_LINK = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+export function plainSummary(item: WorkItem) {
+  return item.summary.replace(SUMMARY_LINK, "$1");
+}
+
 export const tileAspects = {
   sm: 17 / 10,
   md: 17 / 14,
@@ -31,8 +38,7 @@ export const work = [
     title: "Agentsims",
     tagline: "Tooling for mobile devs",
     kind: "project",
-    summary:
-      "A local workspace for iOS simulators and Android devices. You inspect and drive your app from the browser, the CLI or a coding agent, all through one native executable.",
+    summary: "Rich tooling for iOS and Android simulators for mobile devs.",
     tile: "xxl",
     uses: ["Bun", "Effect", "React"],
     links: [
@@ -201,8 +207,7 @@ export const work = [
     slug: "slider",
     title: "Slider",
     kind: "component",
-    summary:
-      "A slider that snaps to tenths, stretches like a rubber band past its ends, and lets you click the value to type an exact one.",
+    summary: "My attempt at recreating the slider from [dialkit.dev](https://dialkit.dev).",
     tile: "sm",
     uses: ["motion"],
     files: ["slider.tsx"],
@@ -270,7 +275,7 @@ export const work = [
     title: "Dynamic Island",
     kind: "component",
     summary:
-      "The iPhone's Dynamic Island in React. It morphs between idle, an incoming call that flips to silent, and a countdown timer you can pause or dismiss.",
+      "My attempt at recreating dynamic island from the [animations.dev](https://animations.dev) course.",
     tile: "md",
     uses: ["motion"],
     files: ["dynamic-island.tsx"],
@@ -285,7 +290,7 @@ export const work = [
     title: "Family drawer",
     kind: "component",
     summary:
-      "A drawer that opens from a pill. Its height follows each page and the content crossfades between them; the demo builds a wallet's options from its parts.",
+      "My attempt at recreating the family drawer from the [animations.dev](https://animations.dev) course.",
     tile: "lg",
     uses: ["motion"],
     files: ["family-drawer.tsx"],

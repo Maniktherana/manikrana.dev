@@ -1,5 +1,5 @@
 import { installCommands, type Dependencies } from "@/work/dependencies";
-import type { WorkItem } from "@/work/registry";
+import { plainSummary, type WorkItem } from "@/work/registry";
 import type { SourceFile } from "@/work/source";
 
 const site = "https://manikrana.dev";
@@ -50,7 +50,7 @@ export function componentPrompt(item: WorkItem, sources: SourceFile[], deps: Dep
   ];
 
   return `${[
-    `Add the ${item.title} component to my React project. ${item.summary}`,
+    `Add the ${item.title} component to my React project. ${plainSummary(item)}`,
     ...when(Boolean(item.included), `Included: ${item.included}`),
     ...when(
       Boolean(item.notIncluded),

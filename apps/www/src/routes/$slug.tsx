@@ -7,6 +7,7 @@ import { PresenceFade } from "@manikrana/ui/components/motion/presence-fade";
 import { Button, buttonVariants } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
 import { CopyButton } from "@/components/copy-button";
+import { InlineLink } from "@/components/inline-link";
 import { quietGust } from "@/lib/gust";
 import {
   ArrowUpRightIcon,
@@ -17,7 +18,14 @@ import {
 } from "@/components/icons";
 import { CodeView } from "@/work/code-view";
 import { componentPrompt } from "@/work/prompt";
-import { findWork, neighbours, type Filter, type WorkItem } from "@/work/registry";
+import {
+  findWork,
+  neighbours,
+  plainSummary,
+  SUMMARY_LINK,
+  type Filter,
+  type WorkItem,
+} from "@/work/registry";
 import { getSource } from "@/work/source";
 import { setTransitionTarget } from "@/work/transition";
 import { details, stages } from "@/work/stages";
@@ -35,9 +43,9 @@ export const Route = createFileRoute("/$slug")({
     return {
       meta: [
         { title: `${item.title} · Manik Rana` },
-        { name: "description", content: item.summary },
+        { name: "description", content: plainSummary(item) },
         { property: "og:title", content: item.title },
-        { property: "og:description", content: item.summary },
+        { property: "og:description", content: plainSummary(item) },
       ],
     };
   },
@@ -193,7 +201,9 @@ function WorkPage() {
         </h1>
       </div>
       <div key={item.slug} className={cn(fadeIn)}>
-        <p className="mt-3 max-w-reading px-1 text-pretty text-muted-foreground">{item.summary}</p>
+        <p className="mt-3 max-w-reading px-1 text-pretty text-muted-foreground">
+          <Summary text={item.summary} />
+        </p>
         {item.uses && (
           <dl className="mt-4 flex flex-wrap items-center gap-1.5 px-1 text-xs leading-none">
             <dt className="me-1 text-muted-foreground">Uses</dt>
@@ -277,4 +287,17 @@ function useClose(item: WorkItem, grid: Filter | undefined) {
     });
   };
   return { close, morphs: item.kind === (target ?? grid ?? "project") };
+}
+
+function Summary({ text }: { text: string }) {
+  const parts = text.split(SUMMARY_LINK);
+  return parts.map((part, index) =>
+    index % 3 === 1 ? (
+      <InlineLink key={index} href={parts[index + 1]}>
+        {part}
+      </InlineLink>
+    ) : index % 3 === 0 ? (
+      part
+    ) : null,
+  );
 }
