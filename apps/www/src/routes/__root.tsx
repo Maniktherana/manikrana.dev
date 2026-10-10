@@ -28,8 +28,7 @@ export const Route = createRootRoute({
       },
       {
         name: "description",
-        content:
-          "Manik Rana, engineer at TurboML. Previously a Google Summer of Code contributor to Prometheus.",
+        content: "Manik Rana, engineer at TurboML.",
       },
       {
         property: "og:title",
@@ -37,8 +36,7 @@ export const Route = createRootRoute({
       },
       {
         property: "og:description",
-        content:
-          "Manik Rana, engineer at TurboML. Previously a Google Summer of Code contributor to Prometheus.",
+        content: "Manik Rana, engineer at TurboML.",
       },
       {
         property: "og:url",
@@ -51,6 +49,22 @@ export const Route = createRootRoute({
       {
         property: "og:type",
         content: "website",
+      },
+      {
+        property: "og:image",
+        content: "https://manikrana.dev/og.png",
+      },
+      {
+        property: "og:image:width",
+        content: "1200",
+      },
+      {
+        property: "og:image:height",
+        content: "630",
+      },
+      {
+        property: "og:image:alt",
+        content: "Manik Rana",
       },
       {
         name: "twitter:card",
