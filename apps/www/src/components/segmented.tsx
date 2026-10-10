@@ -43,7 +43,7 @@ export function Segmented<T extends string>({
                 className="absolute inset-0 rounded-lg bg-popover shadow-raised"
               />
             )}
-            <span className="relative">{option.label}</span>
+            <span className="relative z-10">{option.label}</span>
           </button>
         );
       })}

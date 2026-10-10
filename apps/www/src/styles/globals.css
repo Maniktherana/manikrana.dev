@@ -37,14 +37,6 @@
   stroke: var(--background);
 }
 
-.portrait-glow::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: 0 0 2.5rem -0.25rem oklch(1 0 0 / 22%);
-}
 /* Center of the 48px avatar at the reading column's start, below the page's top padding. */
 .backdrop-dots--lit,
 .backdrop-glow {
@@ -170,22 +162,6 @@
 :root:active-view-transition-type(close)::view-transition-new(root) {
   animation-duration: 150ms;
   animation-delay: 50ms;
-}
-:root:active-view-transition-type(filter) {
-  view-transition-name: none;
-}
-:root:active-view-transition-type(filter) [data-slot="work-grid"] {
-  view-transition-name: work-grid;
-}
-:root:active-view-transition-type(filter) [data-slot="work-grid"] * {
-  view-transition-name: none;
-}
-::view-transition-old(work-grid) {
-  animation-duration: var(--vt-page-out, 150ms);
-}
-::view-transition-new(work-grid) {
-  animation-duration: var(--vt-page-in, 200ms);
-  animation-delay: var(--vt-page-in-delay, 100ms);
 }
 :root:active-view-transition-type(step) {
   view-transition-name: none;

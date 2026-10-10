@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { InlineLink } from "@/components/inline-link";
-import { AnimatedRing } from "@manikrana/ui/components/animated-ring";
 import { Avatar, AvatarImage, AvatarFallback } from "@manikrana/ui/components/ui/avatar";
 import { Link } from "@manikrana/ui/components/ui/link";
 import { TextReveal } from "@manikrana/ui/components/motion/text-reveal";
@@ -37,19 +36,17 @@ function Home() {
       >
         <div>
           <TextReveal as="header" play={first} className="mb-5 flex items-center gap-3">
-            <AnimatedRing className="portrait-glow size-12 [--ring-radius:14px]">
-              <Avatar size="xl" className="size-full rounded-[calc(var(--ring-radius)_-_5px)]">
-                <AvatarImage
-                  src="/avatar.webp"
-                  alt="Manik Rana"
-                  width={38}
-                  height={38}
-                  fetchPriority="high"
-                  className="rounded-[inherit]"
-                />
-                <AvatarFallback className="rounded-[inherit]">MR</AvatarFallback>
-              </Avatar>
-            </AnimatedRing>
+            <Avatar data-portrait size="xl" className="rounded-xl">
+              <AvatarImage
+                src="/avatar.webp"
+                alt="Manik Rana"
+                width={48}
+                height={48}
+                fetchPriority="high"
+                className="rounded-[inherit]"
+              />
+              <AvatarFallback className="rounded-[inherit]">MR</AvatarFallback>
+            </Avatar>
             <div>
               <h1 id="intro-title" className="text-base leading-5.5 font-medium">
                 Manik Rana
@@ -154,7 +151,7 @@ function Home() {
                 search: value === "component" ? { show: value } : {},
                 replace: true,
                 resetScroll: false,
-                viewTransition: { types: ["filter"] },
+                viewTransition: false,
               })
             }
             options={filters}

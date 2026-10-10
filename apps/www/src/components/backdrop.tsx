@@ -7,9 +7,7 @@ export function Backdrop() {
     if (!node) return;
     const light = node.animate([], { duration: 0, fill: "forwards" });
     const place = () => {
-      const portrait = document.querySelector<HTMLElement>(
-        '[data-slot="animated-ring"].portrait-glow',
-      );
+      const portrait = document.querySelector<HTMLElement>("[data-portrait]");
       if (!portrait) return;
       // Layout offsets, not the bounding box, which the intro's entrance transform skews.
       let x = portrait.offsetWidth / 2;

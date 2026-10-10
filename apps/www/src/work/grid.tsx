@@ -7,6 +7,7 @@ import {
   type CSSProperties,
   type RefObject,
 } from "react";
+import { flushSync } from "react-dom";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@manikrana/ui/lib/utils";
 import { preloadPreviews, previews } from "@/work/previews";
@@ -14,18 +15,23 @@ import { tileAspects, work, type Filter, type WorkItem } from "@/work/registry";
 import { setTransitionTarget, useTransitionTarget } from "@/work/transition";
 
 export function WorkGrid({ filter }: { filter: Filter }) {
+  const [shown, setShown] = useState(filter);
+  const [switched, setSwitched] = useState(false);
+  if (filter !== shown) {
+    setShown(filter);
+    setSwitched(true);
+  }
   useEffect(() => {
     const id = window.setTimeout(preloadPreviews, 1000);
     return () => window.clearTimeout(id);
   }, []);
   return (
     <ul
-      data-slot="work-grid"
       style={{ "--tiles": work.filter((item) => item.kind === filter).length } as CSSProperties}
       className="work-grid mx-auto grid grid-flow-row-dense auto-rows-[--spacing(1)] gap-x-3"
     >
       {work.map((item) => (
-        <WorkTile key={item.slug} item={item} filter={filter} />
+        <WorkTile key={item.slug} item={item} filter={filter} fade={switched} />
       ))}
     </ul>
   );
@@ -36,7 +42,8 @@ const ROW = 4;
 const GAP = 12;
 const WIDEST_COLUMN = (1440 - 3 * GAP) / 4;
 
-function WorkTile({ item, filter }: { item: WorkItem; filter: Filter }) {
+// After a filter switch, tiles fade in as they are unhidden; on mount they are left for the page transition.
+function WorkTile({ item, filter, fade }: { item: WorkItem; filter: Filter; fade: boolean }) {
   const tile = useRef<HTMLLIElement>(null);
   const surface = useRef<HTMLDivElement>(null);
   const near = useNearViewport(surface, item.slug);
@@ -50,7 +57,10 @@ function WorkTile({ item, filter }: { item: WorkItem; filter: Filter }) {
       id={item.slug}
       hidden={item.kind !== filter}
       style={{ "--span": span, "--aspect": aspect } as CSSProperties}
-      className="group relative self-start [grid-row:span_var(--span)/span_var(--span)]"
+      className={cn(
+        "group relative self-start [grid-row:span_var(--span)/span_var(--span)]",
+        fade && "duration-200 ease-out motion-safe:animate-in motion-safe:fade-in",
+      )}
     >
       <div
         ref={surface}
@@ -87,14 +97,19 @@ function WorkTile({ item, filter }: { item: WorkItem; filter: Filter }) {
   );
 }
 
+// Hidden tiles keep their last span, and a tile a filter switch reveals is measured before the grid paints.
 function useRowSpan(ref: RefObject<HTMLElement | null>) {
   const [span, setSpan] = useState<number>();
   useLayoutEffect(() => {
     const node = ref.current;
     if (!node) return;
-    const update = () => setSpan(Math.ceil((node.offsetHeight + GAP) / ROW));
-    update();
-    const observer = new ResizeObserver(update);
+    const measure = () => node.offsetHeight && Math.ceil((node.offsetHeight + GAP) / ROW);
+    const initial = measure();
+    if (initial) setSpan(initial);
+    const observer = new ResizeObserver(() => {
+      const next = measure();
+      if (next) flushSync(() => setSpan(next));
+    });
     observer.observe(node);
     return () => observer.disconnect();
   }, [ref]);
