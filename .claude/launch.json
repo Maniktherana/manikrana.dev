@@ -2,28 +2,27 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "design",
+      "name": "www",
       "runtimeExecutable": "bun",
       "runtimeArgs": [
         "run",
         "--cwd",
-        "apps/design",
-        "dev"
-      ],
-      "port": 5173,
-      "autoPort": true
-    },
-    {
-      "name": "site",
-      "runtimeExecutable": "bun",
-      "runtimeArgs": [
-        "run",
-        "--cwd",
-        "apps/site",
+        "apps/www",
         "dev"
       ],
       "port": 3000,
       "autoPort": true
+    },
+    {
+      "name": "www-static",
+      "runtimeExecutable": "bunx",
+      "runtimeArgs": [
+        "serve@14.2.5",
+        "apps/www/.vercel/output/static",
+        "-l",
+        "4173"
+      ],
+      "port": 4173
     },
     {
       "name": "storybook",

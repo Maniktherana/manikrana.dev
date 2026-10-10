@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { staticFunctionMiddleware } from "@tanstack/start-static-server-functions";
 import type { Dependencies } from "@/work/dependencies";
 import { findWork } from "@/work/registry";
 
@@ -6,9 +7,12 @@ export type SourceFile = { name: string; code: string; html: string };
 export type ItemSource = { files: SourceFile[]; dependencies: Dependencies };
 
 // Highlights an item's source files, then its usage example, and reads what
-// they need to install, all on the server, so neither Shiki nor that work runs
-// in the browser. The page copies text from what this returns.
+// they need to install, all at build time, so neither Shiki nor that work runs
+// in the browser. Prerendering saves each result as JSON next to the pages,
+// and the built site fetches that file instead of calling a server. The page
+// copies text from what this returns.
 export const getSource = createServerFn({ method: "GET" })
+  .middleware([staticFunctionMiddleware])
   .validator((slug: string) => slug)
   .handler(async ({ data: slug }): Promise<ItemSource | null> => {
     const item = findWork(slug);

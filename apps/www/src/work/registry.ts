@@ -69,6 +69,75 @@ export const work = [
     files: ["live-price.tsx", "ticker-demo.tsx"],
   },
   {
+    slug: "talks",
+    title: "Talks",
+    kind: "project",
+    summary:
+      "Talks I've given at PromCon and Delhi meetups, mostly about observability and what happens under the hood. The slides and code for each one are on GitHub.",
+    tile: "lg",
+    links: [{ label: "GitHub", href: "https://github.com/Maniktherana/talks" }],
+  },
+  {
+    slug: "voice-edge",
+    title: "Voice edge",
+    kind: "component",
+    summary:
+      "A WebGL glow that rises from one edge of a surface as you speak, and sweeps side to side while the reply is worked out.",
+    tile: "xl",
+    uses: ["WebGL", "Web Audio"],
+    files: ["voice-edge.tsx", "shader.ts", "audio-response.ts", "palettes.ts"],
+    usage: "usage.tsx",
+    included:
+      "The VoiceEdge wrapper: a glow along one edge of whatever it wraps, driven by the microphone or an analyser you pass in, with a sweeping processing state and seven palettes.",
+    notIncluded:
+      "The phone, its call controls and waveform, the transcript and the recorded voice note.",
+  },
+  {
+    slug: "ai-chat",
+    title: "AI chat",
+    kind: "component",
+    summary:
+      "The shell of an AI chat app, after Puch's desktop layout: a sidebar that folds to an icon rail, the chat as an inset card, and a side panel that docks beside it for sources or the thinking trace.",
+    tile: "video",
+    uses: ["motion"],
+    files: ["ai-chat.tsx"],
+    usage: "usage.tsx",
+    included:
+      "The shell: a sidebar that folds to a rail, the inset chat card with its header and footer, and a side panel that docks beside it, with the layout animations between them. Every area is a slot for your own content.",
+    notIncluded:
+      "The skeleton bars standing in for threads, messages, sources and the thinking trace, and the scripted tour.",
+  },
+  {
+    slug: "agent-terminal",
+    title: "Agent terminal",
+    kind: "component",
+    summary:
+      "The Claude Code terminal from the agentsims.dev landing page, running an agent through two requests on its own. Prompts type into the composer, answers stream in word by word, and tool calls scroll past under a shimmering status line.",
+    tile: "lg",
+    uses: ["motion", "Web Animations API"],
+    files: ["agent-terminal.tsx", "use-terminal-playback.ts"],
+    usage: "usage.tsx",
+    included:
+      "The terminal view, which renders the rows, status word and composer text you give it, and a playback hook that steps a timed script through it.",
+    notIncluded:
+      "The Claude Code session it plays, the header text and logo, and the wrapper that scales it to fit. Write your own script, or feed it live rows from an agent.",
+  },
+  {
+    slug: "message-composer",
+    title: "Message composer",
+    kind: "component",
+    summary:
+      "A chat composer that starts as a pill, stacks into a card when the text wraps, and carries attachments with an upload ring. Drop files on it to attach them; while a reply is working, send becomes stop.",
+    tile: "lg",
+    uses: ["motion"],
+    files: ["message-composer.tsx", "attachments.tsx"],
+    usage: "usage.tsx",
+    included:
+      "The composer, the attachment strip with its upload ring, and the drop overlay. You hold the attachments and the sending state, through props and callbacks.",
+    notIncluded:
+      "The typing loop and the simulated uploads and replies. Wire the callbacks to your own upload and chat code.",
+  },
+  {
     slug: "thinking-orb",
     title: "Thinking orbs",
     kind: "component",
@@ -95,43 +164,33 @@ export const work = [
       "The carousel, the recorded voice note and the analyser that plays it. Feed the Gemini orb from your own microphone or speech output.",
   },
   {
-    slug: "talks",
-    title: "Talks",
-    kind: "project",
-    summary:
-      "Talks I've given at PromCon and Delhi meetups, mostly about observability and what happens under the hood. The slides and code for each one are on GitHub.",
-    tile: "lg",
-    links: [{ label: "GitHub", href: "https://github.com/Maniktherana/talks" }],
-  },
-  {
-    slug: "agent-terminal",
-    title: "Agent terminal",
+    slug: "dot-matrix",
+    title: "Dot matrix",
     kind: "component",
     summary:
-      "The Claude Code terminal from the agentsims.dev landing page, running an agent through two requests on its own. Prompts type into the composer, answers stream in word by word, and tool calls scroll past under a shimmering status line.",
-    tile: "lg",
-    uses: ["motion", "Web Animations API"],
-    files: ["agent-terminal.tsx", "use-terminal-playback.ts"],
+      "A thinking loader drawn as a small grid of dots. Six patterns light it up, from a comet to a helix, plus a wave you shape yourself; each dot keeps its color and only the brightness moves.",
+    tile: "sm",
+    uses: ["Canvas"],
+    files: ["dot-matrix.tsx", "patterns.ts", "hues.ts", "draw.ts"],
     usage: "usage.tsx",
     included:
-      "The terminal view, which renders the rows, status word and composer text you give it, and a playback hook that steps a timed script through it.",
+      "DotMatrix, its six patterns, a builder for wave patterns, four hue maps, and the canvas renderer that one shared frame loop paints. Grid and dot size, spacing, roundness, bevel, brightness range, speed and pausing are props.",
     notIncluded:
-      "The Claude Code session it plays, the header text and logo, and the wrapper that scales it to fit. Write your own script, or feed it live rows from an agent.",
+      "The cycle through the patterns on the tile, and the hue and pattern buttons on the stage.",
   },
   {
-    slug: "ai-chat",
-    title: "AI chat",
+    slug: "sweep",
+    title: "Sweep",
     kind: "component",
     summary:
-      "The shell of an AI chat app, after Puch's desktop layout: a sidebar that folds to an icon rail, the chat as an inset card, and a side panel that docks beside it for sources or the thinking trace.",
-    tile: "video",
-    uses: ["motion"],
-    files: ["ai-chat.tsx"],
+      "A band of color that sweeps across a surface and waves as it passes. It works as a loading state, or as a highlight that runs over content.",
+    tile: "md",
+    uses: ["WebGL"],
+    files: ["sweep.tsx"],
     usage: "usage.tsx",
     included:
-      "The shell: a sidebar that folds to a rail, the inset chat card with its header and footer, and a side panel that docks beside it, with the layout animations between them. Every area is a slot for your own content.",
-    notIncluded:
-      "The skeleton bars standing in for threads, messages, sources and the thinking trace, and the scripted tour.",
+      "The Sweep wrapper, its seven palettes, four directions, and a still band for reduced motion.",
+    notIncluded: "The direction and palette buttons on the stage.",
   },
   {
     slug: "chat-showcase",
@@ -154,6 +213,20 @@ export const work = [
       "The whole box: the breathing gradient, the iPhone with a plain messaging app inside it, and the stepper. You pass the conversations and the contact, set the timing, and either control the step or leave it alone.",
     notIncluded:
       "The four sample conversations, and the pause while the tile is off screen. Feed it your own conversations, and pause it however suits your page.",
+  },
+  {
+    slug: "slider",
+    title: "Slider",
+    kind: "component",
+    summary:
+      "A slider that snaps to tenths, stretches like a rubber band past its ends, and lets you click the value to type an exact one.",
+    tile: "sm",
+    uses: ["motion"],
+    files: ["slider.tsx"],
+    usage: "usage.tsx",
+    included:
+      "The slider with snapping, the rubber band past its ends, a typed value, keyboard control, and a hidden input for forms.",
+    notIncluded: "The cursor that works it on the tile.",
   },
   {
     slug: "citation-preview",
@@ -180,109 +253,6 @@ export const work = [
       "The question, the answer and the sources it cites, and the send, stream and cursor that play on the tile and stage. Parsing citations out of markdown and fetching link previews are left to your app.",
   },
   {
-    slug: "dynamic-island",
-    title: "Dynamic Island",
-    kind: "component",
-    summary:
-      "The iPhone's Dynamic Island in React. It morphs between idle, an incoming call that flips to silent, and a countdown timer you can pause or dismiss.",
-    tile: "md",
-    uses: ["motion"],
-    files: ["dynamic-island.tsx"],
-    usage: "usage.tsx",
-    included:
-      "The island with its idle, call and timer views and the morph between them, driven by a view prop.",
-    notIncluded:
-      "The loop that cycles through the views on the tile, and the view buttons on the stage.",
-  },
-  {
-    slug: "voice-edge",
-    title: "Voice edge",
-    kind: "component",
-    summary:
-      "A WebGL glow that rises from one edge of a surface as you speak, and sweeps side to side while the reply is worked out.",
-    tile: "xl",
-    uses: ["WebGL", "Web Audio"],
-    files: ["voice-edge.tsx", "shader.ts", "audio-response.ts", "palettes.ts"],
-    usage: "usage.tsx",
-    included:
-      "The VoiceEdge wrapper: a glow along one edge of whatever it wraps, driven by the microphone or an analyser you pass in, with a sweeping processing state and seven palettes.",
-    notIncluded:
-      "The phone, its call controls and waveform, the transcript and the recorded voice note.",
-  },
-  {
-    slug: "sweep",
-    title: "Sweep",
-    kind: "component",
-    summary:
-      "A band of color that sweeps across a surface and waves as it passes. It works as a loading state, or as a highlight that runs over content.",
-    tile: "md",
-    uses: ["WebGL"],
-    files: ["sweep.tsx"],
-    usage: "usage.tsx",
-    included:
-      "The Sweep wrapper, its seven palettes, four directions, and a still band for reduced motion.",
-    notIncluded: "The direction and palette buttons on the stage.",
-  },
-  {
-    slug: "dot-matrix",
-    title: "Dot matrix",
-    kind: "component",
-    summary:
-      "A thinking loader drawn as a small grid of dots. Six patterns light it up, from a comet to a helix, plus a wave you shape yourself; each dot keeps its color and only the brightness moves.",
-    tile: "sm",
-    uses: ["Canvas"],
-    files: ["dot-matrix.tsx", "patterns.ts", "hues.ts", "draw.ts"],
-    usage: "usage.tsx",
-    included:
-      "DotMatrix, its six patterns, a builder for wave patterns, four hue maps, and the canvas renderer that one shared frame loop paints. Grid and dot size, spacing, roundness, bevel, brightness range, speed and pausing are props.",
-    notIncluded:
-      "The cycle through the patterns on the tile, and the hue and pattern buttons on the stage.",
-  },
-  {
-    slug: "image-loader",
-    title: "Image loader",
-    kind: "component",
-    summary:
-      "The placeholder from Puch's app that holds an image's place while it generates: a grid of tiny dots that sparkle or weave, until the finished image fades in.",
-    tile: "lg",
-    uses: ["WebGL", "motion"],
-    files: ["image-loader.tsx", "dot-grid.tsx", "dot-grid-shader.ts"],
-    usage: "usage.tsx",
-    included:
-      "ImageLoader, a frame at the image's aspect ratio that plays the dot grid while generating and fades the image in once it has decoded, and DotGrid, the WebGL shader on its own, with its spark and weave patterns, four wave shapes and every other setting from the original.",
-    notIncluded:
-      "The cycle through the patterns and the pattern buttons. Set the status and image from your own generation API.",
-  },
-  {
-    slug: "family-drawer",
-    title: "Family drawer",
-    kind: "component",
-    summary:
-      "A drawer that opens from a pill. Its height follows each page and the content crossfades between them; the demo builds a wallet's options from its parts.",
-    tile: "lg",
-    uses: ["motion"],
-    files: ["family-drawer.tsx"],
-    usage: "usage.tsx",
-    included:
-      "The drawer's parts: a pill trigger that opens into a surface sized to its content, pages that crossfade as you move between them, a close button, and header, item and footer parts to build pages from.",
-    notIncluded: "The wallet's pages: its options, private key, recovery phrase and remove.",
-  },
-  {
-    slug: "message-composer",
-    title: "Message composer",
-    kind: "component",
-    summary:
-      "A chat composer that starts as a pill, stacks into a card when the text wraps, and carries attachments with an upload ring. Drop files on it to attach them; while a reply is working, send becomes stop.",
-    tile: "lg",
-    uses: ["motion"],
-    files: ["message-composer.tsx", "attachments.tsx"],
-    usage: "usage.tsx",
-    included:
-      "The composer, the attachment strip with its upload ring, and the drop overlay. You hold the attachments and the sending state, through props and callbacks.",
-    notIncluded:
-      "The typing loop and the simulated uploads and replies. Wire the callbacks to your own upload and chat code.",
-  },
-  {
     slug: "image-tray",
     title: "Image tray",
     kind: "component",
@@ -301,18 +271,48 @@ export const work = [
     ],
   },
   {
-    slug: "slider",
-    title: "Slider",
+    slug: "image-loader",
+    title: "Image loader",
     kind: "component",
     summary:
-      "A slider that snaps to tenths, stretches like a rubber band past its ends, and lets you click the value to type an exact one.",
-    tile: "sm",
-    uses: ["motion"],
-    files: ["slider.tsx"],
+      "The placeholder from Puch's app that holds an image's place while it generates: a grid of tiny dots that sparkle or weave, until the finished image fades in.",
+    tile: "lg",
+    uses: ["WebGL", "motion"],
+    files: ["image-loader.tsx", "dot-grid.tsx", "dot-grid-shader.ts"],
     usage: "usage.tsx",
     included:
-      "The slider with snapping, the rubber band past its ends, a typed value, keyboard control, and a hidden input for forms.",
-    notIncluded: "The cursor that works it on the tile.",
+      "ImageLoader, a frame at the image's aspect ratio that plays the dot grid while generating and fades the image in once it has decoded, and DotGrid, the WebGL shader on its own, with its spark and weave patterns, four wave shapes and every other setting from the original.",
+    notIncluded:
+      "The cycle through the patterns and the pattern buttons. Set the status and image from your own generation API.",
+  },
+  {
+    slug: "dynamic-island",
+    title: "Dynamic Island",
+    kind: "component",
+    summary:
+      "The iPhone's Dynamic Island in React. It morphs between idle, an incoming call that flips to silent, and a countdown timer you can pause or dismiss.",
+    tile: "md",
+    uses: ["motion"],
+    files: ["dynamic-island.tsx"],
+    usage: "usage.tsx",
+    included:
+      "The island with its idle, call and timer views and the morph between them, driven by a view prop.",
+    notIncluded:
+      "The loop that cycles through the views on the tile, and the view buttons on the stage.",
+  },
+  {
+    slug: "family-drawer",
+    title: "Family drawer",
+    kind: "component",
+    summary:
+      "A drawer that opens from a pill. Its height follows each page and the content crossfades between them; the demo builds a wallet's options from its parts.",
+    tile: "lg",
+    uses: ["motion"],
+    files: ["family-drawer.tsx"],
+    usage: "usage.tsx",
+    included:
+      "The drawer's parts: a pill trigger that opens into a surface sized to its content, pages that crossfade as you move between them, a close button, and header, item and footer parts to build pages from.",
+    notIncluded: "The wallet's pages: its options, private key, recovery phrase and remove.",
   },
 ] as const satisfies readonly WorkItem[];
 

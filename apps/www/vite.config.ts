@@ -14,10 +14,13 @@ export default defineConfig({
   },
   plugins: [
     tailwindcss(),
-    tanstackStart(),
-    nitro({
-      preset: process.env.VERCEL ? undefined : "bun",
+    // Every page is prerendered from the links on the home page, so each one
+    // ships as a static file. The server only renders the 404 page. The filter
+    // skips the anchors and the images the pages link to.
+    tanstackStart({
+      prerender: { enabled: true, crawlLinks: true, filter: ({ path }) => !/[.#]/.test(path) },
     }),
+    nitro({ preset: process.env.VERCEL ? "vercel" : "bun" }),
     viteReact(),
   ],
 });

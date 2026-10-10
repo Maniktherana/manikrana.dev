@@ -56,13 +56,14 @@ function WorkPage() {
   // was opened before previous and next moved on.
   useEffect(() => setTransitionTarget(item.slug), [item.slug]);
   useItemKeys(previous.slug, next.slug, fromGrid);
+  usePreload(previous.slug, next.slug);
 
   return (
     <main id="main-content" className="mx-auto w-[calc(100%-40px)] max-w-stage">
       <header className="flex h-16 items-center justify-between gap-4">
         <nav
           aria-label="Breadcrumb"
-          className="flex min-w-0 items-center gap-2 text-sm leading-none"
+          className="flex min-w-0 items-center gap-2 text-sm"
         >
           <Link
             to="/"
@@ -200,6 +201,15 @@ function useItemKeys(previous: string, next: string, fromGrid?: boolean) {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [fromGrid, navigate, next, previous, router]);
+}
+
+// The arrows and arrow keys step to these items, so their pages load ahead.
+function usePreload(previous: string, next: string) {
+  const router = useRouter();
+  useEffect(() => {
+    void router.preloadRoute({ to: "/$slug", params: { slug: previous } });
+    void router.preloadRoute({ to: "/$slug", params: { slug: next } });
+  }, [previous, next, router]);
 }
 
 // Opened from the grid, close steps back to it, so the grid keeps its scroll
