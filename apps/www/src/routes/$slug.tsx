@@ -1,19 +1,18 @@
 import { useEffect, useState, type CSSProperties } from "react";
-import { flushSync } from "react-dom";
 import { Gust } from "@maniktherana/gust";
 import { AnimatePresence } from "motion/react";
 import { createFileRoute, Link, notFound, useLocation, useRouter } from "@tanstack/react-router";
 import { PresenceFade } from "@manikrana/ui/components/motion/presence-fade";
-import { Button, buttonVariants } from "@manikrana/ui/components/ui/button";
+import { buttonVariants } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
 import { CopyButton } from "@/components/copy-button";
+import { BreadcrumbLink, BreadcrumbSeparator, PageHeader } from "@/components/page-header";
 import { InlineLink } from "@/components/inline-link";
 import { quietGust } from "@/lib/gust";
 import {
   ArrowUpRightIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  CloseIcon,
   GithubIcon,
 } from "@/components/icons";
 import { CodeView } from "@/work/code-view";
@@ -23,7 +22,7 @@ import {
   neighbours,
   plainSummary,
   SUMMARY_LINK,
-  type Filter,
+  type WorkList,
   type WorkItem,
 } from "@/work/registry";
 import { getSource } from "@/work/source";
@@ -65,50 +64,37 @@ function WorkPage() {
   const Details = details[item.slug];
   const { previous, next } = neighbours(item.slug);
   const [grid] = useState(useLocation({ select: (location) => location.state.grid }));
-  const { close, morphs } = useClose(item, grid);
+  const close = useClose(item, grid);
   const fadeIn =
     useStepped(item.slug) && "motion-safe:animate-in motion-safe:fade-in duration-200 ease-out";
 
-  useEffect(() => setTransitionTarget(item.slug), [item.slug]);
+  useEffect(() => setTransitionTarget(item.slug, "work"), [item.slug]);
   useItemKeys(previous.slug, next.slug, grid, close);
   usePreload(previous.slug, next.slug);
 
   return (
     <main id="main-content" className="mx-auto w-[calc(100%-40px)] max-w-stage">
-      <header className="flex h-16 items-center justify-between gap-4">
-        <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-2 text-sm">
-          <Link
-            to="/"
-            search={item.kind === "component" ? { show: "component" } : {}}
-            hash={item.slug}
-            hashScrollIntoView={TILE_INTO_VIEW}
-            className="shrink-0 text-control-foreground transition-[color] duration-150 ease-out hover:text-foreground"
-          >
-            Manik Rana
-          </Link>
-          <span aria-hidden="true" className="text-muted-foreground">
-            /
-          </span>
-          <Gust value={item.title} {...quietGust} aria-current="page" className="text-foreground" />
-        </nav>
-        <Button
-          variant="secondary"
-          size="icon"
-          aria-label="Close"
-          aria-keyshortcuts="Escape"
-          className="rounded-xl text-control-foreground hover:text-foreground"
-          onClick={close}
-        >
-          <CloseIcon />
-        </Button>
-      </header>
+      <PageHeader onClose={close}>
+        <BreadcrumbLink to="/">Manik Rana</BreadcrumbLink>
+        <BreadcrumbSeparator />
+        <BreadcrumbLink to="/work" hash={item.slug} hashScrollIntoView={TILE_INTO_VIEW}>
+          Work
+        </BreadcrumbLink>
+        <BreadcrumbSeparator />
+        <Gust
+          value={item.title}
+          {...quietGust}
+          aria-current="page"
+          className="truncate text-foreground"
+        />
+      </PageHeader>
 
       <div
         data-slot="stage"
         className="@container-size grid h-[clamp(25rem,54svh,30rem)] place-items-center sm:h-[clamp(27.5rem,64svh,42.5rem)]"
       >
         <div
-          style={morphs ? ({ "--work": `work-${item.slug}` } as CSSProperties) : undefined}
+          style={{ "--work": `work-${item.slug}` } as CSSProperties}
           className={cn(
             "relative overflow-hidden rounded-3xl bg-card [view-transition-name:var(--work)] [view-transition-class:work]",
             item.tile === "video"
@@ -232,7 +218,12 @@ function useStepped(slug: string) {
 const OWNS_KEYS =
   'input, textarea, select, [contenteditable], [role="slider"], [role="tablist"], [role="menu"], [role="listbox"], [role="dialog"], .dialkit-root';
 
-function useItemKeys(previous: string, next: string, grid: Filter | undefined, close: () => void) {
+function useItemKeys(
+  previous: string,
+  next: string,
+  grid: WorkList | undefined,
+  close: () => void,
+) {
   const navigate = Route.useNavigate();
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -269,24 +260,19 @@ function usePreload(previous: string, next: string) {
 
 const TILE_INTO_VIEW = { block: "center", behavior: "instant" } as const;
 
-// Closing lands on the item's own tab so its tile is there to morph into. history.back() keeps
-// that grid's scroll, so previous and next must replace, not push. Any other way back fades.
-function useClose(item: WorkItem, grid: Filter | undefined) {
+// Closing lands on the work page at the item's tile so it can morph back: history.back() when that
+// is where it was opened, keeping its scroll, so previous and next must replace, not push.
+function useClose(item: WorkItem, grid: WorkList | undefined) {
   const router = useRouter();
-  const navigate = Route.useNavigate();
-  const [target, setTarget] = useState<Filter>();
-  const close = () => {
-    if (grid === item.kind) return router.history.back();
-    flushSync(() => setTarget(item.kind));
-    void navigate({
-      to: "/",
-      search: item.kind === "component" ? { show: "component" } : {},
+  return () => {
+    if (grid === "work") return router.history.back();
+    void router.navigate({
+      to: "/work",
       hash: item.slug,
       hashScrollIntoView: TILE_INTO_VIEW,
       replace: grid !== undefined,
     });
   };
-  return { close, morphs: item.kind === (target ?? grid ?? "project") };
 }
 
 function Summary({ text }: { text: string }) {

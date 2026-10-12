@@ -11,6 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SlugRouteImport } from './routes/$slug'
+import { Route as WorkRouteImport } from './routes/work'
+import { Route as LibraryIndexRouteImport } from './routes/library.index'
+import { Route as LibraryIdRouteImport } from './routes/library.$id'
+import { Route as TalksIndexRouteImport } from './routes/talks.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +26,74 @@ const SlugRoute = SlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkRoute = WorkRouteImport.update({
+  id: '/work',
+  path: '/work',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LibraryIndexRoute = LibraryIndexRouteImport.update({
+  id: '/library/',
+  path: '/library/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LibraryIdRoute = LibraryIdRouteImport.update({
+  id: '/library/$id',
+  path: '/library/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TalksIndexRoute = TalksIndexRouteImport.update({
+  id: '/talks/',
+  path: '/talks/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
+  '/work': typeof WorkRoute
+  '/library/$id': typeof LibraryIdRoute
+  '/library/': typeof LibraryIndexRoute
+  '/talks/': typeof TalksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
+  '/work': typeof WorkRoute
+  '/library/$id': typeof LibraryIdRoute
+  '/library': typeof LibraryIndexRoute
+  '/talks': typeof TalksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
+  '/work': typeof WorkRoute
+  '/library/$id': typeof LibraryIdRoute
+  '/library/': typeof LibraryIndexRoute
+  '/talks/': typeof TalksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$slug'
+  fullPaths: '/' | '/$slug' | '/work' | '/library/$id' | '/library/' | '/talks/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$slug'
-  id: '__root__' | '/' | '/$slug'
+  to: '/' | '/$slug' | '/work' | '/library/$id' | '/library' | '/talks'
+  id:
+    | '__root__'
+    | '/'
+    | '/$slug'
+    | '/work'
+    | '/library/$id'
+    | '/library/'
+    | '/talks/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SlugRoute: typeof SlugRoute
+  WorkRoute: typeof WorkRoute
+  LibraryIdRoute: typeof LibraryIdRoute
+  LibraryIndexRoute: typeof LibraryIndexRoute
+  TalksIndexRoute: typeof TalksIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +112,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/work': {
+      id: '/work'
+      path: '/work'
+      fullPath: '/work'
+      preLoaderRoute: typeof WorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/library/': {
+      id: '/library/'
+      path: '/library'
+      fullPath: '/library/'
+      preLoaderRoute: typeof LibraryIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/library/$id': {
+      id: '/library/$id'
+      path: '/library/$id'
+      fullPath: '/library/$id'
+      preLoaderRoute: typeof LibraryIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/talks/': {
+      id: '/talks/'
+      path: '/talks'
+      fullPath: '/talks/'
+      preLoaderRoute: typeof TalksIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SlugRoute: SlugRoute,
+  WorkRoute: WorkRoute,
+  LibraryIdRoute: LibraryIdRoute,
+  LibraryIndexRoute: LibraryIndexRoute,
+  TalksIndexRoute: TalksIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

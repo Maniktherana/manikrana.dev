@@ -2,52 +2,76 @@ import { Suspense, useEffect, useRef, useState, type CSSProperties, type RefObje
 import { Link } from "@tanstack/react-router";
 import { cn } from "@manikrana/ui/lib/utils";
 import { preloadPreviews, previews } from "@/work/previews";
-import { tileAspects, work, type Filter, type WorkItem } from "@/work/registry";
+import {
+  components,
+  featured,
+  projects,
+  tileAspects,
+  type WorkItem,
+  type WorkList,
+} from "@/work/registry";
 import { setTransitionTarget, useTransitionTarget } from "@/work/transition";
 
-export function WorkGrid({ filter }: { filter: Filter }) {
-  const [shown, setShown] = useState(filter);
-  const [switched, setSwitched] = useState(false);
-  if (filter !== shown) {
-    setShown(filter);
-    setSwitched(true);
-  }
+export function FeaturedGrid() {
+  return (
+    <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {featured.map((item) => (
+        <WorkTile key={item.slug} item={item} list="home" aspect={tileAspects.square} />
+      ))}
+    </ul>
+  );
+}
+
+export function ProjectGrid({ list }: { list: WorkList }) {
+  return (
+    <ul className="grid gap-3 sm:grid-cols-2">
+      {projects.map((item) => (
+        <WorkTile key={item.slug} item={item} list={list} />
+      ))}
+    </ul>
+  );
+}
+
+export function WorkGrid({ list }: { list: WorkList }) {
   useEffect(() => {
     const id = window.setTimeout(preloadPreviews, 1000);
     return () => window.clearTimeout(id);
   }, []);
   return (
     <ul
-      style={{ "--tiles": work.filter((item) => item.kind === filter).length } as CSSProperties}
+      style={{ "--tiles": components.length } as CSSProperties}
       className="work-grid mx-auto grid grid-flow-row-dense auto-rows-[--spacing(1)] gap-x-3"
     >
-      {work.map((item) => (
-        <WorkTile key={item.slug} item={item} filter={filter} fade={switched} />
+      {components.map((item) => (
+        <WorkTile key={item.slug} item={item} list={list} />
       ))}
     </ul>
   );
 }
 
-// After a filter switch, tiles fade in as they are unhidden; on mount they are left for the page transition.
-function WorkTile({ item, filter, fade }: { item: WorkItem; filter: Filter; fade: boolean }) {
+function WorkTile({
+  item,
+  list,
+  aspect = tileAspects[item.tile],
+}: {
+  item: WorkItem;
+  list: WorkList;
+  aspect?: number;
+}) {
   const surface = useRef<HTMLDivElement>(null);
   const near = useNearViewport(surface, item.slug);
   const Preview = previews[item.slug];
-  const morphs = useTransitionTarget() === item.slug;
+  const morphs = useTransitionTarget(list) === item.slug;
   return (
     <li
       id={item.slug}
-      hidden={item.kind !== filter}
-      style={{ "--aspect": tileAspects[item.tile] } as CSSProperties}
-      className={cn(
-        "group relative self-start",
-        fade && "duration-200 ease-out motion-safe:animate-in motion-safe:fade-in",
-      )}
+      style={{ "--aspect": aspect } as CSSProperties}
+      className="group relative self-start"
     >
       <div
         ref={surface}
         style={morphs ? ({ "--work": `work-${item.slug}` } as CSSProperties) : undefined}
-        className="relative aspect-(--aspect) w-full transform-gpu overflow-hidden rounded-3xl bg-card [view-transition-name:var(--work)] [view-transition-class:work] transition-[scale] duration-150 ease-out group-active:scale-[0.985]"
+        className="work-tile relative aspect-(--aspect) w-full transform-gpu overflow-hidden rounded-3xl bg-card [view-transition-name:var(--work)] [view-transition-class:work] transition-[scale] duration-150 ease-out group-active:scale-[0.985]"
       >
         {near && Preview && (
           <Suspense>
@@ -60,8 +84,8 @@ function WorkTile({ item, filter, fade }: { item: WorkItem; filter: Filter; fade
       <Link
         to="/$slug"
         params={{ slug: item.slug }}
-        state={{ grid: filter }}
-        onClick={() => setTransitionTarget(item.slug)}
+        state={{ grid: list }}
+        onClick={() => setTransitionTarget(item.slug, list)}
         aria-label={`Open ${item.title}`}
         className="absolute inset-0 z-10 rounded-3xl outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
       />

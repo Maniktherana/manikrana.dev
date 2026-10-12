@@ -6,6 +6,6 @@ export const images: WebImage[] = talks.map((talk) => ({
   url: `/talks/${talk.id}-cover.png`,
   title: `${talk.title}, ${talk.events.map(({ venue }) => venue).join(" and ")}`,
   sourceName: "manikrana.dev",
-  sourceUrl: "https://manikrana.dev/talks",
+  sourceUrl: `https://manikrana.dev/library/${talk.id}`,
   faviconUrl: "/apple-touch-icon.png",
 }));

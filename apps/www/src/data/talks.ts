@@ -1,9 +1,12 @@
+import type { MarkName } from "@/components/icons/animated-mark";
+
 export type Talk = {
   id: string;
   slides: number;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   video?: string;
+  mark?: MarkName;
   events: { venue: string; href: string; date: string; dateTime: string }[];
 };
 
@@ -12,8 +15,8 @@ export const talks: Talk[] = [
     id: "prometheus",
     slides: 11,
     video: "lUD2ItyDKL4",
-    title: "Go-ing under the hood: the Prometheus parser",
-    subtitle: "Breaking and optimizing the Prometheus parser",
+    mark: "prometheus",
+    title: "Breaking and optimizing the Prometheus parser",
     events: [
       {
         venue: "PromCon",
@@ -32,7 +35,7 @@ export const talks: Talk[] = [
       {
         venue: "FOSS United Delhi",
         href: "https://fossunited.org/c/delhi/delhi_june_2024",
-        date: "June 2024",
+        date: "Jun 2024",
         dateTime: "2024-06",
       },
     ],
@@ -41,7 +44,6 @@ export const talks: Talk[] = [
     id: "airflow",
     slides: 36,
     title: "Build an ETL pipeline with Apache Airflow",
-    subtitle: "With Apache Airflow",
     events: [
       {
         venue: "FOSS United",

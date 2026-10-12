@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
+import { cn } from "@manikrana/ui/lib/utils";
 import { brandPaths } from "./brand-paths";
 import { flamePaths } from "./prometheus-flame";
 
@@ -15,7 +16,15 @@ const hoverEffects = {
   gsoc: { selector: ".gsoc-sun", from: "rotate(0deg)", to: "rotate(180deg)", duration: 700 },
 } as const;
 
-export function AnimatedMark({ name, hovered }: { name: MarkName; hovered: boolean }) {
+export function AnimatedMark({
+  name,
+  hovered,
+  className,
+}: {
+  name: MarkName;
+  hovered: boolean;
+  className?: string;
+}) {
   const id = useId().replace(/:/g, "");
   const ref = useRef<SVGSVGElement>(null);
   const hoverAnimation = useRef<Animation | undefined>(undefined);
@@ -48,7 +57,10 @@ export function AnimatedMark({ name, hovered }: { name: MarkName; hovered: boole
   return (
     <svg
       ref={ref}
-      className={`animated-mark mark--${name} size-4 shrink-0 self-center overflow-visible text-foreground grayscale opacity-[0.72]`}
+      className={cn(
+        `animated-mark mark--${name} size-4 shrink-0 self-center overflow-visible text-foreground grayscale opacity-[0.72]`,
+        className,
+      )}
       viewBox={viewBox}
       aria-hidden="true"
       focusable="false"

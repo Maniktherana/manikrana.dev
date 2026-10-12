@@ -173,6 +173,10 @@
   animation-duration: 150ms;
   animation-delay: 50ms;
 }
+/* Tiles morph only into and out of an item page; between home and /work the page just fades. */
+:root:not(:active-view-transition-type(open, close)) .work-tile {
+  view-transition-name: none;
+}
 :root:active-view-transition-type(step) {
   view-transition-name: none;
 }

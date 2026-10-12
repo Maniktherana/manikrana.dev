@@ -28,7 +28,7 @@ export const tileAspects = {
   md: 17 / 14,
   lg: 17 / 18,
   xl: 17 / 22,
-  xxl: 17 / 24,
+  square: 1,
   video: 16 / 9,
 } as const;
 
@@ -39,7 +39,7 @@ export const work = [
     tagline: "Tooling for mobile devs",
     kind: "project",
     summary: "Rich tooling for iOS and Android simulators for mobile devs.",
-    tile: "xxl",
+    tile: "square",
     uses: ["Bun", "Effect", "React"],
     links: [
       { label: "agentsims.dev", href: "https://agentsims.dev" },
@@ -52,19 +52,11 @@ export const work = [
     tagline: "Text animation library",
     kind: "project",
     summary: "A React text animation component built on the Web Animations API.",
-    tile: "lg",
+    tile: "square",
     links: [
       { label: "gust.manikrana.dev", href: "https://gust.manikrana.dev" },
       { label: "GitHub", href: "https://github.com/Maniktherana/gust" },
     ],
-  },
-  {
-    slug: "talks",
-    title: "Talks",
-    kind: "project",
-    summary: "Talks I've given at various meetups and conferences.",
-    tile: "lg",
-    links: [{ label: "GitHub", href: "https://github.com/Maniktherana/talks" }],
   },
   {
     slug: "voice-edge",
@@ -301,12 +293,18 @@ export const work = [
   },
 ] as const satisfies readonly WorkItem[];
 
-export const filters = [
-  { value: "project", label: "Projects" },
-  { value: "component", label: "Selected Work" },
-] as const;
+export const projects = work.filter((item) => item.kind === "project");
+export const components = work.filter((item) => item.kind === "component");
+export const featured = [
+  "agentsims",
+  "gust",
+  "voice-edge",
+  "citation-preview",
+  "thinking-orb",
+  "message-composer",
+].map((slug) => work.find((item) => item.slug === slug)!);
 
-export type Filter = (typeof filters)[number]["value"];
+export type WorkList = "home" | "work";
 
 export function findWork(slug: string): WorkItem | undefined {
   return work.find((item) => item.slug === slug);

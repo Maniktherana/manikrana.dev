@@ -1,24 +1,25 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link as RouterLink, redirect } from "@tanstack/react-router";
 import { InlineLink } from "@/components/inline-link";
 import { Avatar, AvatarImage, AvatarFallback } from "@manikrana/ui/components/ui/avatar";
 import { Link } from "@manikrana/ui/components/ui/link";
 import { TextReveal } from "@manikrana/ui/components/motion/text-reveal";
 import { Backdrop } from "@/components/backdrop";
-import { Segmented } from "@/components/segmented";
 import { cn } from "@manikrana/ui/lib/utils";
 import { useFirstVisit } from "@/lib/use-first-visit";
-import { WorkGrid } from "@/work/grid";
-import { filters } from "@/work/registry";
+import { LibraryList } from "@/library/library-list";
+import { FeaturedGrid } from "@/work/grid";
+import { work } from "@/work/registry";
 
 export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>): { show?: "component" } =>
     search.show === "component" ? { show: "component" } : {},
+  beforeLoad: ({ search }) => {
+    if (search.show) throw redirect({ to: "/work", hash: "selected-work" });
+  },
   component: Home,
 });
 
 function Home() {
-  const { show = "project" } = Route.useSearch();
-  const navigate = Route.useNavigate();
   const first = useFirstVisit();
   return (
     <main
@@ -132,32 +133,36 @@ function Home() {
         </div>
       </section>
 
+      <TextReveal as="section" index={4} play={first} aria-labelledby="work-title">
+        <div className="mx-auto w-[calc(100%-40px)] max-w-reading">
+          <h2 id="work-title" className="mb-6 border-b border-border pb-6 leading-5.5 font-medium">
+            <RouterLink
+              to="/work"
+              state={{ back: true }}
+              className="relative isolate flex w-fit gap-2 outline-none before:absolute before:-inset-x-1.5 before:-inset-y-1 before:-z-1 before:rounded-md before:bg-card before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 focus-visible:before:opacity-100 focus-visible:before:ring-3 focus-visible:before:ring-ring/50 motion-reduce:before:transition-none"
+            >
+              Work{" "}
+              <span className="text-muted-foreground">{Math.floor(work.length / 10) * 10}+</span>
+            </RouterLink>
+          </h2>
+        </div>
+        <div className="mx-auto w-[calc(100%-40px)] max-w-5xl">
+          <FeaturedGrid />
+        </div>
+      </TextReveal>
+
       <TextReveal
         as="section"
-        index={4}
+        index={5}
         play={first}
-        aria-labelledby="work-title"
-        className="@container"
+        id="library"
+        aria-labelledby="library-title"
+        className="mx-auto w-[calc(100%-40px)] max-w-reading"
       >
-        <h2 id="work-title" className="sr-only">
-          Work
+        <h2 id="library-title" className="mb-3 border-b border-border pb-6 leading-5.5 font-medium">
+          Library
         </h2>
-        <div className="mx-auto mb-5 w-[calc(100%-40px)] max-w-reading">
-          <Segmented
-            label="Show"
-            value={show}
-            onChange={(value) =>
-              navigate({
-                search: value === "component" ? { show: value } : {},
-                replace: true,
-                resetScroll: false,
-                viewTransition: false,
-              })
-            }
-            options={filters}
-          />
-        </div>
-        <WorkGrid filter={show} />
+        <LibraryList />
       </TextReveal>
     </main>
   );
