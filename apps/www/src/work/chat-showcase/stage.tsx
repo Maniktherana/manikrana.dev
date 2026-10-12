@@ -7,13 +7,5 @@ export function Stage() {
   const ref = useRef<HTMLDivElement>(null);
   const watching = useWatching(ref);
 
-  return (
-    <ChatShowcase
-      ref={ref}
-      contact={contact}
-      steps={conversations}
-      paused={!watching}
-      appear={false}
-    />
-  );
+  return <ChatShowcase ref={ref} contact={contact} steps={conversations} paused={!watching} />;
 }

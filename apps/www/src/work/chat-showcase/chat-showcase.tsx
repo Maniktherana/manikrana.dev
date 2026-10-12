@@ -71,6 +71,7 @@ export function ChatShowcase({
   ...props
 }: ChatShowcaseProps) {
   const reduced = useReducedMotion();
+  const [entered, setEntered] = useState(!appear);
   const [step, setStep] = useControllable(stepProp, defaultStep, onStepChange);
   const current = steps[step];
   const count = current?.messages.length ?? 0;
@@ -84,6 +85,8 @@ export function ChatShowcase({
       if (steps.length > 1) setStep((step + 1) % steps.length);
     },
   });
+
+  if (!paused && !entered) setEntered(true);
 
   return (
     <div
@@ -106,8 +109,8 @@ export function ChatShowcase({
       />
       <div className="absolute inset-x-0 top-14 flex justify-center">
         <div className="relative h-72 w-72 shrink-0 origin-top scale-(--fit)">
-          <AnimatePresence initial={false}>
-            {current && (
+          <AnimatePresence initial={appear}>
+            {entered && current && (
               <motion.div
                 key={step}
                 className="absolute inset-x-0 top-0"
