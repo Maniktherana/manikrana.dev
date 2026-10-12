@@ -17,23 +17,22 @@ export type PendingAttachmentStripProps = {
   transition: Transition;
 };
 
-// Only fades, and pops out of layout on exit, so the composer's layout animation alone resizes it.
-// scroll-fade-x needs "shadcn/tailwind.css".
+// Grows from zero height, so the composer around it grows with it. scroll-fade-x needs "shadcn/tailwind.css".
 export function PendingAttachmentStrip({
   attachments,
   onRemove,
   transition,
 }: PendingAttachmentStripProps) {
   return (
-    <AnimatePresence initial={false} mode="popLayout">
+    <AnimatePresence initial={false}>
       {attachments.length > 0 ? (
         <motion.div
           key="pending-attachments"
-          layout
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
           transition={transition}
+          className="overflow-hidden"
         >
           <div className="scroll-fade-x flex gap-1.5 overflow-x-auto pb-1">
             {attachments.map((attachment) => (
