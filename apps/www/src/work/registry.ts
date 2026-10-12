@@ -172,13 +172,13 @@ export const work = [
     title: "Sweep",
     kind: "component",
     summary:
-      "A band of color that sweeps across a surface and waves as it passes. It works as a loading state, or as a highlight that runs over content.",
+      "A version of [glimm](https://glimm.dev/) that's contained to a parent element. A band of color that sweeps across a surface as it passes. It works as a loading state, or as a highlight that runs over content.",
     tile: "md",
     uses: ["WebGL"],
     files: ["sweep.tsx"],
     usage: "usage.tsx",
     included:
-      "The Sweep wrapper, its seven palettes, four directions, and a still band for reduced motion.",
+      "The Sweep wrapper, its four palettes, four directions, and a still band for reduced motion.",
     notIncluded: "The direction and palette buttons on the stage.",
   },
   {

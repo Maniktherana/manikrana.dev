@@ -10,10 +10,10 @@ import {
 } from "@/work/sweep/sweep";
 
 const directions: { value: SweepDirection; label: string; icon: ReactNode }[] = [
-  { value: "ltr", label: "Left to right", icon: <ArrowRightIcon /> },
-  { value: "ttb", label: "Top to bottom", icon: <ArrowUpIcon className="rotate-180" /> },
   { value: "rtl", label: "Right to left", icon: <ArrowLeftIcon /> },
   { value: "btt", label: "Bottom to top", icon: <ArrowUpIcon /> },
+  { value: "ttb", label: "Top to bottom", icon: <ArrowUpIcon className="rotate-180" /> },
+  { value: "ltr", label: "Left to right", icon: <ArrowRightIcon /> },
 ];
 
 function swatch(name: SweepPaletteName) {
@@ -37,7 +37,7 @@ const palettes = (Object.keys(sweepPalettes) as SweepPaletteName[]).map((value) 
 
 export function Stage() {
   const [direction, setDirection] = useState<SweepDirection>("ltr");
-  const [palette, setPalette] = useState<SweepPaletteName>("prism");
+  const [palette, setPalette] = useState<SweepPaletteName>("aurora");
 
   return (
     <div className="relative size-full">

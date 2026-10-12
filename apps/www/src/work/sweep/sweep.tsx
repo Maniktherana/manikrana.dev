@@ -11,43 +11,25 @@ type SweepPalette = {
 };
 
 const sweepPalettes = {
-  prism: {
+  aurora: {
     a: [0.46, 0.88, 0.33],
     b: [0.6, 0.58, 0.74],
     c: [0.5, 0.5, 0.5],
     d: [0.54, 0.22, 0.84],
   },
-  berry: {
+  bloom: {
     a: [0.92, 0.36, 0.56],
     b: [0.1, 0.14, 0.37],
     c: [0.5, 0.5, 0.5],
     d: [0.84, 0.11, 0.5],
   },
-  lagoon: {
-    a: [0.58, 0.64, 0.52],
-    b: [0.64, 0.3, 0.5],
-    c: [0.5, 0.5, 0.5],
-    d: [0.37, 0.66, 0.89],
-  },
-  citrus: {
-    a: [0.55, 0.61, 0.61],
-    b: [0.54, 0.41, 0.63],
-    c: [0.5, 0.5, 0.5],
-    d: [0.66, 0.92, 0.23],
-  },
-  azure: {
+  tide: {
     a: [0.13, 0.61, 1],
     b: [0.15, 0.14, 0],
     c: [0.5, 0.5, 0.5],
     d: [0.29, 0.98, 0.74],
   },
-  ember: {
-    a: [0.83, 0.61, 0.6],
-    b: [0.2, 0.41, 0.62],
-    c: [0.5, 0.5, 0.5],
-    d: [0.73, 0.05, 0.36],
-  },
-  neutral: {
+  ash: {
     a: [0.62, 0.62, 0.62],
     b: [0.24, 0.24, 0.24],
     c: [0.5, 0.5, 0.5],
@@ -61,11 +43,10 @@ type SweepDirection = "ltr" | "rtl" | "ttb" | "btt";
 type SweepShaderOptions = {
   bandTight?: number;
   brightness?: number;
+  curveAmount?: number;
   direction?: SweepDirection;
   palette?: SweepPaletteName | SweepPalette;
   swellAmount?: number;
-  waveAmount?: number;
-  waveSpeed?: number;
 };
 
 type SweepRunOptions = SweepShaderOptions & {
@@ -81,12 +62,11 @@ type SweepController = {
   setAlpha: (alpha: number) => void;
   setBandTight: (tightness: number) => void;
   setBrightness: (brightness: number) => void;
+  setCurveAmount: (amount: number) => void;
   setDirection: (direction: SweepDirection) => void;
   setPalette: (palette: SweepPalette) => void;
   setProgress: (progress: number) => void;
   setSwellAmount: (amount: number) => void;
-  setWaveAmount: (amount: number) => void;
-  setWaveSpeed: (speed: number) => void;
   start: () => void;
   stop: () => void;
 };
@@ -123,8 +103,7 @@ uniform float uPosStart;
 uniform float uPosEnd;
 uniform float uHueShift;
 uniform float uDirection;
-uniform float uWaveAmount;
-uniform float uWaveSpeed;
+uniform float uCurveAmount;
 uniform float uBrightness;
 uniform float uSwellAmount;
 uniform vec3 uPalA;
@@ -142,22 +121,20 @@ void main() {
   vec2 uv = gl_FragCoord.xy / uRes;
   float axis = mix(uv.x, uv.y, uDirection);
   float cross = mix(uv.y, uv.x, uDirection);
-  float pos = uPosStart + uProgress * (uPosEnd - uPosStart);
-  float tick = uTime * uWaveSpeed;
+  float travel = sign(uPosEnd - uPosStart);
+  float lead = uCurveAmount * mix(uRes.y / uRes.x, uRes.x / uRes.y, uDirection);
+  float pos = uPosStart + uProgress * (uPosEnd - uPosStart + travel * lead);
+  float centered = cross * 2.0 - 1.0;
 
-  float wave =
-    sin(cross * 6.0 + tick * 1.3) * 0.020 +
-    sin(cross * 13.0 - tick * 0.9 + 1.4) * 0.012 +
-    sin(cross * 21.0 + tick * 1.7 + 2.6) * 0.006;
-  wave *= uWaveAmount;
-
-  float distToBand = (axis - pos) - wave;
+  float distToBand = (axis - pos) * travel + lead * centered * centered;
   float band = exp(-distToBand * distToBand * uBandTight);
-  float slopeAxis = -2.0 * distToBand * uBandTight * band;
+  float falloff = -2.0 * distToBand * uBandTight * band;
+  float slopeAxis = falloff * travel;
+  float slopeCross = falloff * uCurveAmount * centered * 4.0;
 
   vec2 slope;
-  slope.x = mix(slopeAxis, 0.0, uDirection);
-  slope.y = mix(0.0, slopeAxis, uDirection);
+  slope.x = mix(slopeAxis, slopeCross, uDirection);
+  slope.y = mix(slopeCross, slopeAxis, uDirection);
 
   vec3 normal = normalize(vec3(-slope.x * 0.18, slope.y * 0.18, 1.0));
   float trailDistance = max(-distToBand, 0.0);
@@ -200,7 +177,7 @@ function finiteOr(value: number | undefined, fallback: number) {
 }
 
 function resolvePalette(palette: SweepPaletteName | SweepPalette | undefined) {
-  if (!palette) return sweepPalettes.prism;
+  if (!palette) return sweepPalettes.aurora;
   if (typeof palette === "string") return sweepPalettes[palette];
 
   return palette;
@@ -209,14 +186,14 @@ function resolvePalette(palette: SweepPaletteName | SweepPalette | undefined) {
 function directionUniforms(direction: SweepDirection) {
   switch (direction) {
     case "rtl":
-      return { axis: 0, posEnd: -0.65, posStart: 1.65 };
+      return { axis: 0, posEnd: -0.725, posStart: 1.65 };
     case "ttb":
-      return { axis: 1, posEnd: 1.65, posStart: -0.65 };
+      return { axis: 1, posEnd: -0.725, posStart: 1.65 };
     case "btt":
-      return { axis: 1, posEnd: -0.65, posStart: 1.65 };
+      return { axis: 1, posEnd: 1.725, posStart: -0.65 };
     case "ltr":
     default:
-      return { axis: 0, posEnd: 1.65, posStart: -0.65 };
+      return { axis: 0, posEnd: 1.725, posStart: -0.65 };
   }
 }
 
@@ -307,6 +284,7 @@ function createSweepShader(
     alpha: gl.getUniformLocation(program, "uAlpha"),
     bandTight: gl.getUniformLocation(program, "uBandTight"),
     brightness: gl.getUniformLocation(program, "uBrightness"),
+    curveAmount: gl.getUniformLocation(program, "uCurveAmount"),
     direction: gl.getUniformLocation(program, "uDirection"),
     hueShift: gl.getUniformLocation(program, "uHueShift"),
     palA: gl.getUniformLocation(program, "uPalA"),
@@ -319,8 +297,6 @@ function createSweepShader(
     res: gl.getUniformLocation(program, "uRes"),
     swellAmount: gl.getUniformLocation(program, "uSwellAmount"),
     time: gl.getUniformLocation(program, "uTime"),
-    waveAmount: gl.getUniformLocation(program, "uWaveAmount"),
-    waveSpeed: gl.getUniformLocation(program, "uWaveSpeed"),
   };
 
   gl.enable(gl.BLEND);
@@ -328,14 +304,13 @@ function createSweepShader(
 
   const state = {
     alpha: 0,
-    bandTight: finiteOr(opts.bandTight, 14),
+    bandTight: finiteOr(opts.bandTight, 10),
     brightness: finiteOr(opts.brightness, 1),
+    curveAmount: finiteOr(opts.curveAmount, 0.15),
     direction: opts.direction ?? "ltr",
     palette: resolvePalette(opts.palette),
     progress: 0,
     swellAmount: finiteOr(opts.swellAmount, 0.55),
-    waveAmount: finiteOr(opts.waveAmount, 1),
-    waveSpeed: finiteOr(opts.waveSpeed, 1),
   };
   const hueShift = Math.random() * 0.4;
 
@@ -382,8 +357,7 @@ function createSweepShader(
     gl.uniform1f(uniforms.posStart, direction.posStart);
     gl.uniform1f(uniforms.posEnd, direction.posEnd);
     gl.uniform1f(uniforms.direction, direction.axis);
-    gl.uniform1f(uniforms.waveAmount, state.waveAmount);
-    gl.uniform1f(uniforms.waveSpeed, state.waveSpeed);
+    gl.uniform1f(uniforms.curveAmount, state.curveAmount);
     gl.uniform1f(uniforms.brightness, state.brightness);
     gl.uniform1f(uniforms.swellAmount, state.swellAmount);
     gl.uniform1f(uniforms.hueShift, hueShift);
@@ -416,6 +390,9 @@ function createSweepShader(
     setBrightness: (brightness) => {
       state.brightness = brightness;
     },
+    setCurveAmount: (amount) => {
+      state.curveAmount = amount;
+    },
     setDirection: (direction) => {
       state.direction = direction;
     },
@@ -427,12 +404,6 @@ function createSweepShader(
     },
     setSwellAmount: (amount) => {
       state.swellAmount = amount;
-    },
-    setWaveAmount: (amount) => {
-      state.waveAmount = amount;
-    },
-    setWaveSpeed: (speed) => {
-      state.waveSpeed = speed;
     },
     start: () => {
       if (!frame) frame = window.requestAnimationFrame(tick);
@@ -498,8 +469,7 @@ function playSweepAnimation(
   if (opts.palette) controller.setPalette(resolvePalette(opts.palette));
   if (opts.bandTight !== undefined) controller.setBandTight(opts.bandTight);
   if (opts.direction) controller.setDirection(opts.direction);
-  if (opts.waveAmount !== undefined) controller.setWaveAmount(opts.waveAmount);
-  if (opts.waveSpeed !== undefined) controller.setWaveSpeed(opts.waveSpeed);
+  if (opts.curveAmount !== undefined) controller.setCurveAmount(opts.curveAmount);
   if (opts.brightness !== undefined) controller.setBrightness(opts.brightness);
   if (opts.swellAmount !== undefined) {
     controller.setSwellAmount(opts.swellAmount);
@@ -628,20 +598,19 @@ function useOnScreen(ref: RefObject<HTMLElement | null>) {
 
 function Sweep({
   active = true,
-  bandTight = 14,
+  bandTight = 10,
   brightness = 1,
   children,
   className,
+  curveAmount = 0.15,
   direction = "ltr",
   onMidpoint,
   outroMs = 0,
-  palette = "prism",
+  palette = "aurora",
   pauseMs = 900,
   peakAlpha = 1,
   swellAmount = 0.55,
   sweepMs = 1100,
-  waveAmount = 1,
-  waveSpeed = 1,
   ...props
 }: SweepProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -650,6 +619,7 @@ function Sweep({
   const options = {
     bandTight,
     brightness,
+    curveAmount,
     direction,
     onMidpoint,
     outroMs,
@@ -658,8 +628,6 @@ function Sweep({
     peakAlpha,
     swellAmount,
     sweepMs,
-    waveAmount,
-    waveSpeed,
   };
   const optionsRef = useRef(options);
   const reducedMotion = usePrefersReducedMotion();
@@ -674,12 +642,11 @@ function Sweep({
 
     controller.setBandTight(bandTight);
     controller.setBrightness(brightness);
+    controller.setCurveAmount(curveAmount);
     controller.setDirection(direction);
     controller.setPalette(resolvePalette(palette));
     controller.setSwellAmount(swellAmount);
-    controller.setWaveAmount(waveAmount);
-    controller.setWaveSpeed(waveSpeed);
-  }, [bandTight, brightness, direction, palette, swellAmount, waveAmount, waveSpeed]);
+  }, [bandTight, brightness, curveAmount, direction, palette, swellAmount]);
 
   useEffect(() => {
     if (reducedMotion) return undefined;
@@ -762,7 +729,7 @@ function Sweep({
 
 // Mirrors the shader's coloring at its default falloff; keep the two in sync.
 function stillBand(
-  palette: SweepPaletteName | SweepPalette = "prism",
+  palette: SweepPaletteName | SweepPalette = "aurora",
   direction: SweepDirection = "ltr",
 ) {
   const { a, b, c, d } = resolvePalette(palette);
@@ -774,7 +741,7 @@ function stillBand(
   const stops = Array.from({ length: 11 }, (_, step) => {
     const axis = step / 10;
     const hue = axis * 1.4 + 0.5 * 0.35;
-    const alpha = Math.exp(-((axis - 0.5) ** 2) * 14) * 0.95;
+    const alpha = Math.exp(-((axis - 0.5) ** 2) * 10) * 0.95;
 
     return `rgb(${channel(0, hue)} ${channel(1, hue)} ${channel(2, hue)} / ${alpha.toFixed(3)}) ${step * 10}%`;
   });
