@@ -86,6 +86,16 @@
   grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
 }
 
+/* A tile spans enough 1-spacing rows for its height and the 3-spacing gap below it. */
+.work-grid > li {
+  grid-row: span
+    round(
+      up,
+      tan(atan2(var(--grid-column) / var(--aspect) + var(--spacing) * 3, var(--spacing))),
+      1
+    );
+}
+
 /* Styling ::-webkit-scrollbar opts out of macOS overlay scrollbars, so it stays visible. */
 @utility scrollbar-visible {
   &::-webkit-scrollbar {

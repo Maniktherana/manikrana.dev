@@ -1,13 +1,4 @@
-import {
-  Suspense,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-  type RefObject,
-} from "react";
-import { flushSync } from "react-dom";
+import { Suspense, useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@manikrana/ui/lib/utils";
 import { preloadPreviews, previews } from "@/work/previews";
@@ -37,28 +28,19 @@ export function WorkGrid({ filter }: { filter: Filter }) {
   );
 }
 
-// Until measured, a tile spans as in the widest column: a quarter of max-w-work (90rem).
-const ROW = 4;
-const GAP = 12;
-const WIDEST_COLUMN = (1440 - 3 * GAP) / 4;
-
 // After a filter switch, tiles fade in as they are unhidden; on mount they are left for the page transition.
 function WorkTile({ item, filter, fade }: { item: WorkItem; filter: Filter; fade: boolean }) {
-  const tile = useRef<HTMLLIElement>(null);
   const surface = useRef<HTMLDivElement>(null);
   const near = useNearViewport(surface, item.slug);
-  const aspect = tileAspects[item.tile];
-  const span = useRowSpan(tile) ?? Math.ceil((WIDEST_COLUMN / aspect + GAP) / ROW);
   const Preview = previews[item.slug];
   const morphs = useTransitionTarget() === item.slug;
   return (
     <li
-      ref={tile}
       id={item.slug}
       hidden={item.kind !== filter}
-      style={{ "--span": span, "--aspect": aspect } as CSSProperties}
+      style={{ "--aspect": tileAspects[item.tile] } as CSSProperties}
       className={cn(
-        "group relative self-start [grid-row:span_var(--span)/span_var(--span)]",
+        "group relative self-start",
         fade && "duration-200 ease-out motion-safe:animate-in motion-safe:fade-in",
       )}
     >
@@ -95,25 +77,6 @@ function WorkTile({ item, filter, fade }: { item: WorkItem; filter: Filter; fade
       </span>
     </li>
   );
-}
-
-// Hidden tiles keep their last span, and a tile a filter switch reveals is measured before the grid paints.
-function useRowSpan(ref: RefObject<HTMLElement | null>) {
-  const [span, setSpan] = useState<number>();
-  useLayoutEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    const measure = () => node.offsetHeight && Math.ceil((node.offsetHeight + GAP) / ROW);
-    const initial = measure();
-    if (initial) setSpan(initial);
-    const observer = new ResizeObserver(() => {
-      const next = measure();
-      if (next) flushSync(() => setSpan(next));
-    });
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [ref]);
-  return span;
 }
 
 const seen = new Set<string>();
