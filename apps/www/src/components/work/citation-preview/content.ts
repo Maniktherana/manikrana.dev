@@ -1,0 +1,42 @@
+import type { CitationSource } from "./source";
+
+export const question = "How do I monitor my API?";
+
+export const sources = {
+  grafana: {
+    url: "https://grafana.com/docs/loki/latest/",
+    name: "Grafana",
+    title: "Grafana Loki documentation",
+    favicon: "/work/citation-preview/grafana-icon.webp",
+    image: "/work/citation-preview/grafana-loki.webp",
+    snippet:
+      "Loki stores and queries logs, indexing only their labels, the way Prometheus handles metrics.",
+  },
+  fossUnited: {
+    url: "https://fossunited.org/c/delhi/delhi_june_2024",
+    name: "FOSS United",
+    title: "Intro to Observability",
+    favicon: "/work/citation-preview/fossunited-icon.webp",
+    image: "/work/citation-preview/fossunited-delhi.webp",
+    snippet: "Prometheus, Loki and Grafana, at FOSS United Delhi in June 2024.",
+  },
+  promcon: {
+    url: "https://promcon.io/2024-berlin/",
+    name: "PromCon",
+    title: "Go-ing under the hood: the Prometheus parser",
+    favicon: "/work/citation-preview/promcon-icon.webp",
+    image: "/work/citation-preview/promcon-talk.webp",
+    snippet: "Breaking and optimizing the Prometheus parser, at PromCon 2024 in Berlin.",
+  },
+  shadcn: {
+    url: "https://ui.shadcn.com/blocks",
+    name: "shadcn/ui",
+    title: "Building Blocks for the Web",
+    favicon: "/work/citation-preview/shadcn-icon.webp",
+    image: "/work/citation-preview/shadcn-blocks.webp",
+    snippet:
+      "Clean, modern building blocks. Copy and paste into your apps. Works with all React frameworks.",
+  },
+} satisfies Record<string, CitationSource>;
+
+export type SourceId = keyof typeof sources;

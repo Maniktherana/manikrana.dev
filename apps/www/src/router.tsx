@@ -1,5 +1,5 @@
 import { createRouter } from "@tanstack/react-router";
-import type { WorkList } from "@/work/registry";
+import type { WorkList } from "@/components/work/registry";
 
 import { routeTree } from "./routeTree.gen";
 

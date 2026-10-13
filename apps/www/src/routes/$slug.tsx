@@ -3,20 +3,22 @@ import { Gust } from "@maniktherana/gust";
 import { AnimatePresence } from "motion/react";
 import { createFileRoute, Link, notFound, useLocation, useRouter } from "@tanstack/react-router";
 import { PresenceFade } from "@manikrana/ui/components/motion/presence-fade";
-import { buttonVariants } from "@manikrana/ui/components/ui/button";
+import { IconSwap } from "@manikrana/ui/components/motion/icon-swap";
+import { Button, buttonVariants } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
 import { CopyButton } from "@/components/copy-button";
 import { BreadcrumbLink, BreadcrumbSeparator, PageHeader } from "@/components/page-header";
 import { InlineLink } from "@/components/inline-link";
 import { quietGust } from "@/lib/gust";
-import {
-  ArrowUpRightIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  GithubIcon,
-} from "@/components/icons";
-import { CodeView } from "@/work/code-view";
-import { componentPrompt } from "@/work/prompt";
+import { play } from "@/lib/sounds";
+import { ArrowUpRightIcon } from "@/components/icons/arrow-up-right";
+import { ChevronLeftIcon } from "@/components/icons/chevron-left";
+import { ChevronRightIcon } from "@/components/icons/chevron-right";
+import { CodeIcon } from "@/components/icons/code";
+import { EyeIcon } from "@/components/icons/eye";
+import { GithubIcon } from "@/components/icons/github";
+import { CodeView } from "@/components/work/code-view";
+import { componentPrompt } from "@/components/work/prompt";
 import {
   findWork,
   neighbours,
@@ -24,10 +26,10 @@ import {
   SUMMARY_LINK,
   type WorkList,
   type WorkItem,
-} from "@/work/registry";
-import { getSource } from "@/work/source";
-import { setTransitionTarget } from "@/work/transition";
-import { details, stages } from "@/work/stages";
+} from "@/components/work/registry";
+import { getSource } from "@/components/work/source";
+import { setTransitionTarget } from "@/components/work/transition";
+import { details, stages } from "@/components/work/stages";
 
 export const Route = createFileRoute("/$slug")({
   loader: async ({ params }) => {
@@ -65,6 +67,8 @@ function WorkPage() {
   const { previous, next } = neighbours(item.slug);
   const [grid] = useState(useLocation({ select: (location) => location.state.grid }));
   const close = useClose(item, grid);
+  const [codeFor, setCodeFor] = useState<string>();
+  const showCode = codeFor === item.slug && files.length > 0;
   const fadeIn =
     useStepped(item.slug) && "motion-safe:animate-in motion-safe:fade-in duration-200 ease-out";
 
@@ -73,7 +77,7 @@ function WorkPage() {
   usePreload(previous.slug, next.slug);
 
   return (
-    <main id="main-content" className="mx-auto w-[calc(100%-40px)] max-w-stage">
+    <main id="main-content" className="mx-auto min-h-svh w-[calc(100%-40px)] max-w-stage">
       <PageHeader onClose={close}>
         <BreadcrumbLink to="/">Manik Rana</BreadcrumbLink>
         <BreadcrumbSeparator />
@@ -97,23 +101,32 @@ function WorkPage() {
           style={{ "--work": `work-${item.slug}` } as CSSProperties}
           className={cn(
             "relative overflow-hidden rounded-3xl bg-card [view-transition-name:var(--work)] [view-transition-class:work]",
-            item.tile === "video"
+            item.tile === "video" && !showCode
               ? "aspect-video w-[min(100cqw,100cqh*16/9)] rounded-[calc(min(100cqw,100cqh*16/9)/64)]"
               : "size-full",
           )}
         >
-          {Stage && <Stage />}
+          {showCode ? <CodeView key={item.slug} files={files} /> : Stage && <Stage />}
         </div>
       </div>
 
       <div className="mt-4 grid gap-x-4 gap-y-5 px-1 sm:mt-6 sm:grid-cols-[1fr_auto] sm:items-center">
         <div className="relative flex flex-wrap items-center justify-end gap-2 sm:col-start-2 sm:row-start-1">
           <AnimatePresence initial={false} mode="popLayout" anchorX="right">
+            {files.length > 0 && (
+              <PresenceFade key="view-toggle">
+                <ViewToggle
+                  code={showCode}
+                  onChange={(code) => setCodeFor(code ? item.slug : undefined)}
+                />
+              </PresenceFade>
+            )}
             {item.kind === "component" && dependencies && (
               <PresenceFade key="copy-prompt">
                 <CopyButton
                   label="Copy prompt"
                   copiedLabel="Prompt copied"
+                  sound="success"
                   value={() => componentPrompt(item, files, dependencies)}
                 />
               </PresenceFade>
@@ -202,9 +215,23 @@ function WorkPage() {
         )}
 
         {Details && <Details />}
-        {files.length > 0 && <CodeView files={files} />}
       </div>
     </main>
+  );
+}
+
+function ViewToggle({ code, onChange }: { code: boolean; onChange: (code: boolean) => void }) {
+  return (
+    <Button
+      variant="secondary"
+      size="icon"
+      aria-label={code ? "Show preview" : "Show code"}
+      title={code ? "Preview" : "Code"}
+      className="rounded-xl text-control-foreground hover:text-foreground"
+      onClick={() => onChange(!code)}
+    >
+      <IconSwap state={code ? "b" : "a"} a={<CodeIcon />} b={<EyeIcon />} className="size-4" />
+    </Button>
   );
 }
 
@@ -216,7 +243,7 @@ function useStepped(slug: string) {
 }
 
 const OWNS_KEYS =
-  'input, textarea, select, [contenteditable], [role="slider"], [role="tablist"], [role="menu"], [role="listbox"], [role="dialog"], .dialkit-root';
+  'input, textarea, select, [contenteditable], [role="slider"], [role="tablist"], [data-slot="code-view"], [role="menu"], [role="listbox"], [role="dialog"], .dialkit-root';
 
 function useItemKeys(
   previous: string,
@@ -265,6 +292,7 @@ const TILE_INTO_VIEW = { block: "center", behavior: "instant" } as const;
 function useClose(item: WorkItem, grid: WorkList | undefined) {
   const router = useRouter();
   return () => {
+    play("page-exit");
     if (grid === "work") return router.history.back();
     void router.navigate({
       to: "/work",

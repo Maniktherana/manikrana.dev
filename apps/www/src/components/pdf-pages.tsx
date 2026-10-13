@@ -1,35 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import type { PDFDocumentProxy, RenderTask } from "pdfjs-dist";
-import openjpegSrc from "pdfjs-dist/wasm/openjpeg.wasm?url";
+// oxlint-disable-next-line import/default -- Vite's ?url import is a string default export.
+import worker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import { cn } from "@manikrana/ui/lib/utils";
-
-// pdf.js asks for its image decoders by filename; this hands it the bundled ones.
-const decoders: Record<string, string> = { "openjpeg.wasm": openjpegSrc };
-
-class DecoderFactory {
-  async fetch({ filename }: { filename: string }) {
-    const response = await fetch(decoders[filename]);
-    if (!response.ok) throw new Error(`Unable to load ${filename}`);
-    return new Uint8Array(await response.arrayBuffer());
-  }
-}
 
 const documents = new Map<string, Promise<PDFDocumentProxy>>();
 
+// pdf.js touches the DOM as it loads, so it is imported on the client only.
 function loadPdf(url: string) {
   let pdf = documents.get(url);
   if (!pdf) {
-    pdf = Promise.all([
-      import("pdfjs-dist"),
-      import("pdfjs-dist/build/pdf.worker.min.mjs?url"),
-    ]).then(([{ getDocument, GlobalWorkerOptions }, worker]) => {
-      GlobalWorkerOptions.workerSrc = worker.default;
-      return getDocument({
-        url,
-        disableAutoFetch: true,
-        disableStream: true,
-        BinaryDataFactory: DecoderFactory,
-      }).promise;
+    pdf = import("pdfjs-dist").then(({ getDocument, GlobalWorkerOptions }) => {
+      GlobalWorkerOptions.workerSrc = worker;
+      return getDocument({ url }).promise;
     });
     pdf.catch(() => documents.delete(url));
     documents.set(url, pdf);
@@ -53,7 +36,15 @@ function usePdf(url: string) {
   return { pdf, failed };
 }
 
-// Pages draw as they near the viewport and are released once well past it.
+const MAX_WIDTH = 4096;
+const OVERSAMPLE = 2;
+
+/** Device pixels to draw for a page `width` device pixels wide: denser than the screen, and denser still while pinch-zoomed. */
+const density = (width: number) =>
+  Math.min(MAX_WIDTH, Math.round(width * Math.max(OVERSAMPLE, window.visualViewport?.scale ?? 1)));
+
+// Pages draw as they near the viewport, redraw whenever their size in device pixels or the pinch-zoom
+// changes, and are released once well past it.
 function PdfPage({
   pdf,
   number,
@@ -73,49 +64,95 @@ function PdfPage({
   useEffect(() => {
     const canvas = ref.current;
     if (!pdf || !canvas) return;
-    let cancel: (() => void) | undefined;
+    let visible = false;
+    let width = 0;
+    let rendered = 0;
+    let task: RenderTask | undefined;
+    let timer = 0;
 
-    const draw = () => {
-      let task: RenderTask | undefined;
-      let cancelled = false;
-      cancel = () => {
-        cancelled = true;
-        task?.cancel();
-      };
-      pdf
-        .getPage(number)
-        .then((page) => {
-          if (cancelled) return;
-          const scale =
-            (canvas.clientWidth * devicePixelRatio) / page.getViewport({ scale: 1 }).width;
-          const viewport = page.getViewport({ scale });
-          canvas.width = Math.floor(viewport.width);
-          canvas.height = Math.floor(viewport.height);
-          task = page.render({ canvas, viewport });
-          return task.promise.then(() => setDrawn(true));
-        })
-        .catch(() => {});
+    // Renders offscreen and swaps the result in, so a redraw never flashes an empty page.
+    const draw = async () => {
+      task?.cancel();
+      const target = density(width);
+      try {
+        const page = await pdf.getPage(number);
+        const viewport = page.getViewport({ scale: target / page.getViewport({ scale: 1 }).width });
+        const next = document.createElement("canvas");
+        next.width = Math.round(viewport.width);
+        next.height = Math.round(viewport.height);
+        task = page.render({ canvas: next, viewport });
+        await task.promise;
+        if (!visible) return;
+        canvas.width = next.width;
+        canvas.height = next.height;
+        canvas.getContext("2d")?.drawImage(next, 0, 0);
+        rendered = target;
+        setDrawn(true);
+      } catch {
+        // A cancelled render rejects; the next schedule() draws again.
+      }
     };
 
-    const release = () => {
-      cancel?.();
-      cancel = undefined;
-      canvas.width = 0;
-      canvas.height = 0;
-      setDrawn(false);
+    const schedule = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        if (visible && width && density(width) !== rendered) void draw();
+      }, 120);
     };
 
-    const observer = new IntersectionObserver(
+    const measure = (cssWidth: number) => {
+      width = Math.round(cssWidth * devicePixelRatio);
+      schedule();
+    };
+    const resize = new ResizeObserver(([entry]) => {
+      const box = entry?.devicePixelContentBoxSize?.[0];
+      if (box) {
+        width = box.inlineSize;
+        schedule();
+      } else if (entry) measure(entry.contentRect.width);
+    });
+    try {
+      resize.observe(canvas, { box: "device-pixel-content-box" });
+    } catch {
+      resize.observe(canvas);
+    }
+
+    // Safari has no device-pixel box, so it learns about zoom from the resolution changing.
+    let resolution: MediaQueryList | undefined;
+    const onResolution = () => {
+      measure(canvas.clientWidth);
+      watchResolution();
+    };
+    const watchResolution = () => {
+      resolution?.removeEventListener("change", onResolution);
+      resolution = window.matchMedia(`(resolution: ${devicePixelRatio}dppx)`);
+      resolution.addEventListener("change", onResolution);
+    };
+    watchResolution();
+    window.visualViewport?.addEventListener("resize", schedule);
+
+    const intersection = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) release();
-        else if (!cancel) draw();
+        visible = Boolean(entry?.isIntersecting);
+        if (visible) return schedule();
+        window.clearTimeout(timer);
+        task?.cancel();
+        canvas.width = 0;
+        canvas.height = 0;
+        rendered = 0;
+        setDrawn(false);
       },
       { rootMargin: "150% 0px" },
     );
-    observer.observe(canvas);
+    intersection.observe(canvas);
+
     return () => {
-      observer.disconnect();
-      cancel?.();
+      window.clearTimeout(timer);
+      resize.disconnect();
+      intersection.disconnect();
+      resolution?.removeEventListener("change", onResolution);
+      window.visualViewport?.removeEventListener("resize", schedule);
+      task?.cancel();
     };
   }, [pdf, number]);
 

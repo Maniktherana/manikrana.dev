@@ -6,6 +6,7 @@ import { MotionConfig } from "motion/react";
 
 import Footer from "@/components/footer";
 import NotFound from "@/components/not-found";
+import { useSounds } from "@/hooks/use-sounds";
 
 import appCss from "@/styles/globals.css?url";
 
@@ -111,6 +112,7 @@ export const Route = createRootRoute({
 });
 
 function RootDocument() {
+  useSounds();
   return (
     <html lang="en" className="scroll-pt-6 motion-safe:scroll-smooth">
       <head>

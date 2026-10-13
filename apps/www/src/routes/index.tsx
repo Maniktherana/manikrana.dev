@@ -5,10 +5,10 @@ import { Link } from "@manikrana/ui/components/ui/link";
 import { TextReveal } from "@manikrana/ui/components/motion/text-reveal";
 import { Backdrop } from "@/components/backdrop";
 import { cn } from "@manikrana/ui/lib/utils";
-import { useFirstVisit } from "@/lib/use-first-visit";
-import { LibraryList } from "@/library/library-list";
-import { FeaturedGrid } from "@/work/grid";
-import { work } from "@/work/registry";
+import { useFirstVisit } from "@/hooks/use-first-visit";
+import { LibraryList } from "@/routes/-components/library-list";
+import { FeaturedGrid } from "@/components/work/grid";
+import { work } from "@/components/work/registry";
 
 export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>): { show?: "component" } =>

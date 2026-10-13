@@ -40,6 +40,7 @@
     "apps/*/.output/**",
     "apps/*/dist/**",
     "apps/site/src/routeTree.gen.ts",
-    "apps/design/src/routeTree.gen.ts"
+    "apps/design/src/routeTree.gen.ts",
+    "**/src/lib/audio/**"
   ]
 }

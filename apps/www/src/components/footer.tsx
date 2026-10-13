@@ -1,4 +1,4 @@
-import { ArrowUp } from "lucide-react";
+import { ArrowUpIcon } from "@/components/icons/arrow-up";
 
 export default function Footer() {
   return (
@@ -10,7 +10,7 @@ export default function Footer() {
         onClick={() => window.scrollTo({ top: 0 })}
         className="grid size-8 place-items-center rounded-lg text-muted-foreground outline-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 motion-safe:transition-colors motion-safe:duration-200 motion-reduce:transition-none"
       >
-        <ArrowUp size={16} />
+        <ArrowUpIcon className="size-4" />
       </button>
     </footer>
   );

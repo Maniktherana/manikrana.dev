@@ -3,8 +3,10 @@ import { Gust } from "@maniktherana/gust";
 import { IconSwap } from "@manikrana/ui/components/motion/icon-swap";
 import { Button } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
-import { CheckIcon, CopyIcon } from "@/components/icons";
+import { CheckIcon } from "@/components/icons/check";
+import { CopyIcon } from "@/components/icons/copy";
 import { quietGust } from "@/lib/gust";
+import type { Sound } from "@/lib/sounds";
 
 const RESET_MS = 1600;
 
@@ -14,6 +16,7 @@ export function CopyButton({
   copiedLabel = "Copied",
   icon = <CopyIcon />,
   iconOnly = false,
+  sound = "copy",
   className,
 }: {
   value: string | (() => string);
@@ -21,6 +24,7 @@ export function CopyButton({
   copiedLabel?: string;
   icon?: ReactNode;
   iconOnly?: boolean;
+  sound?: Sound;
   className?: string;
 }) {
   const [copied, setCopied] = useState(false);
@@ -35,6 +39,7 @@ export function CopyButton({
       variant="secondary"
       size={iconOnly ? "icon" : "default"}
       aria-label={iconOnly ? label : undefined}
+      data-sound={sound}
       className={cn(
         "rounded-xl font-normal text-control-foreground hover:text-foreground",
         !iconOnly && "gap-2 ps-2.5 pe-3",

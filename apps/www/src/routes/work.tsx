@@ -5,8 +5,8 @@ import {
   PageHeader,
   useClose,
 } from "@/components/page-header";
-import { ProjectGrid, WorkGrid } from "@/work/grid";
-import { components, projects } from "@/work/registry";
+import { ProjectGrid, WorkGrid } from "@/components/work/grid";
+import { components, projects } from "@/components/work/registry";
 
 export const Route = createFileRoute("/work")({
   head: () => ({

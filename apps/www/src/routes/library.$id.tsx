@@ -1,11 +1,14 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { papers } from "@/data/papers";
-import { talks } from "@/data/talks";
-import { PaperPage } from "@/library/paper-page";
-import { TalkPage } from "@/library/talk-page";
+import { papers, posts, talks } from "@/content/library";
+import { PaperPage } from "@/routes/-components/paper-page";
+import { PostPage } from "@/routes/-components/post-page";
+import { TalkPage } from "@/routes/-components/talk-page";
 
 export const Route = createFileRoute("/library/$id")({
   loader: ({ params }) => {
+    const post = posts.find(({ id }) => id === params.id);
+    if (post)
+      return { kind: "post", id: post.id, title: post.title, subtitle: post.description } as const;
     const talk = talks.find(({ id }) => id === params.id);
     if (talk) return { kind: "talk", talk } as const;
     const paper = papers.find(({ id }) => id === params.id);
@@ -14,7 +17,8 @@ export const Route = createFileRoute("/library/$id")({
   },
   head: ({ loaderData: entry }) => {
     if (!entry) return {};
-    const { title, subtitle } = entry.kind === "talk" ? entry.talk : entry.paper;
+    const { title, subtitle } =
+      entry.kind === "talk" ? entry.talk : entry.kind === "post" ? entry : entry.paper;
     const description = subtitle ?? title;
     return {
       meta: [
@@ -38,5 +42,6 @@ export const Route = createFileRoute("/library/$id")({
 
 function LibraryEntryPage() {
   const entry = Route.useLoaderData();
+  if (entry.kind === "post") return <PostPage id={entry.id} />;
   return entry.kind === "talk" ? <TalkPage talk={entry.talk} /> : <PaperPage paper={entry.paper} />;
 }
