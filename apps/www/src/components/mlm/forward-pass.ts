@@ -265,14 +265,13 @@ text(11, outHead.x0, headTop + 6, "out_head, tied to tok_emb");
 down(11, fn.bottom, headTop);
 const logits = lane(11, headTop, 10);
 shape(11, outHead, "(50257, 768)");
-shape(11, logits, "(4, 50257)", "left");
+shape(11, logits, "(4, 50257)");
 wire(11, [outHead.x1 + 1, outHead.bottom + 16], [-1, outHead.bottom + 16]);
 label(11, headTop - 28, "logits");
 
 // 12 · sample the next token
-const last = dotX(10, 3);
-// generate reads only the last position's scores: logits[:, -1, :].
-tap(12, [9, 10, 11], [last, logits.bottom - 1], [last, logits.bottom - 15]);
+// generate reads only the last position's scores, logits[:, -1, :]: the packets come from its columns.
+tap(12, [9, 10, 11], [MID, logits.bottom - 1], [MID, logits.bottom - 15]);
 NEXT.forEach(([word, p], i) => {
   const z = logits.bottom - 16 - i * 11;
   text(12, -4, z - 6, word, "end", i === 0 ? "name" : "dim");
