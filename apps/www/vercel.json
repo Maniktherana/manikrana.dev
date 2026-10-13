@@ -1,0 +1,87 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "outputDirectory": ".output/public",
+  "redirects": [
+    {
+      "source": "/agentsims",
+      "destination": "/work/agentsims",
+      "permanent": true
+    },
+    {
+      "source": "/gust",
+      "destination": "/work/gust",
+      "permanent": true
+    },
+    {
+      "source": "/voice-edge",
+      "destination": "/work/voice-edge",
+      "permanent": true
+    },
+    {
+      "source": "/ai-chat",
+      "destination": "/work/ai-chat",
+      "permanent": true
+    },
+    {
+      "source": "/agent-terminal",
+      "destination": "/work/agent-terminal",
+      "permanent": true
+    },
+    {
+      "source": "/message-composer",
+      "destination": "/work/message-composer",
+      "permanent": true
+    },
+    {
+      "source": "/thinking-orb",
+      "destination": "/work/thinking-orb",
+      "permanent": true
+    },
+    {
+      "source": "/dot-matrix",
+      "destination": "/work/dot-matrix",
+      "permanent": true
+    },
+    {
+      "source": "/sweep",
+      "destination": "/work/sweep",
+      "permanent": true
+    },
+    {
+      "source": "/chat-showcase",
+      "destination": "/work/chat-showcase",
+      "permanent": true
+    },
+    {
+      "source": "/slider",
+      "destination": "/work/slider",
+      "permanent": true
+    },
+    {
+      "source": "/citation-preview",
+      "destination": "/work/citation-preview",
+      "permanent": true
+    },
+    {
+      "source": "/image-tray",
+      "destination": "/work/image-tray",
+      "permanent": true
+    },
+    {
+      "source": "/image-loader",
+      "destination": "/work/image-loader",
+      "permanent": true
+    },
+    {
+      "source": "/dynamic-island",
+      "destination": "/work/dynamic-island",
+      "permanent": true
+    },
+    {
+      "source": "/family-drawer",
+      "destination": "/work/family-drawer",
+      "permanent": true
+    }
+  ]
+}

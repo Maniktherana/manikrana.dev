@@ -17,21 +17,21 @@ import { ChevronRightIcon } from "@/components/icons/chevron-right";
 import { CodeIcon } from "@/components/icons/code";
 import { EyeIcon } from "@/components/icons/eye";
 import { GithubIcon } from "@/components/icons/github";
-import { CodeView } from "@/components/work/code-view";
-import { componentPrompt } from "@/components/work/prompt";
+import { CodeView } from "@/routes/work/-components/code-view";
+import { componentPrompt } from "@/routes/work/-components/prompt";
 import {
   findWork,
   neighbours,
   plainSummary,
   SUMMARY_LINK,
-  type WorkList,
   type WorkItem,
+  type WorkList,
 } from "@/components/work/registry";
 import { getSource } from "@/components/work/source";
 import { setTransitionTarget } from "@/components/work/transition";
 import { details, stages } from "@/components/work/stages";
 
-export const Route = createFileRoute("/$slug")({
+export const Route = createFileRoute("/work/$slug")({
   loader: async ({ params }) => {
     const item = findWork(params.slug);
     if (!item) throw notFound();
@@ -98,6 +98,7 @@ function WorkPage() {
         className="@container-size grid h-[clamp(25rem,54svh,30rem)] place-items-center sm:h-[clamp(27.5rem,64svh,42.5rem)]"
       >
         <div
+          data-morph
           style={{ "--work": `work-${item.slug}` } as CSSProperties}
           className={cn(
             "relative overflow-hidden rounded-3xl bg-card [view-transition-name:var(--work)] [view-transition-class:work]",
@@ -162,7 +163,7 @@ function WorkPage() {
           </AnimatePresence>
           <nav aria-label="Work" className="flex items-center gap-1 rounded-xl bg-control p-1">
             <Link
-              to="/$slug"
+              to="/work/$slug"
               params={{ slug: previous.slug }}
               state={{ grid }}
               replace
@@ -175,7 +176,7 @@ function WorkPage() {
               <ChevronLeftIcon />
             </Link>
             <Link
-              to="/$slug"
+              to="/work/$slug"
               params={{ slug: next.slug }}
               state={{ grid }}
               replace
@@ -261,7 +262,7 @@ function useItemKeys(
       } else if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
         const slug = event.key === "ArrowLeft" ? previous : next;
         void navigate({
-          to: "/$slug",
+          to: "/work/$slug",
           params: { slug },
           state: { grid },
           replace: true,
@@ -280,8 +281,8 @@ function useItemKeys(
 function usePreload(previous: string, next: string) {
   const router = useRouter();
   useEffect(() => {
-    void router.preloadRoute({ to: "/$slug", params: { slug: previous } });
-    void router.preloadRoute({ to: "/$slug", params: { slug: next } });
+    void router.preloadRoute({ to: "/work/$slug", params: { slug: previous } });
+    void router.preloadRoute({ to: "/work/$slug", params: { slug: next } });
   }, [previous, next, router]);
 }
 

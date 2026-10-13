@@ -1,6 +1,5 @@
 import { defineSound } from "@web-kits/audio";
 import { copy, pageEnter, pageExit, success, tabSwitch, tap } from "@/lib/audio/minimal";
-import { findWork } from "@/components/work/registry";
 
 const sounds = {
   copy: defineSound(copy),
@@ -23,11 +22,13 @@ export function play(sound: Sound) {
   sounds[sound]();
 }
 
-const isWork = (pathname: string) => findWork(pathname.slice(1)) !== undefined;
+// Work items and library entries open as their own pages over the home page.
+const isEntry = (pathname: string) =>
+  pathname.startsWith("/work/") || pathname.startsWith("/library/");
 
 export function navigationSound(from: string, to: string): Sound | undefined {
   if (from === to) return;
-  if (isWork(from) && isWork(to)) return "tab-switch";
-  if (isWork(to)) return "page-enter";
-  if (isWork(from)) return "page-exit";
+  if (isEntry(from) && isEntry(to)) return "tab-switch";
+  if (isEntry(to)) return "page-enter";
+  if (isEntry(from)) return "page-exit";
 }

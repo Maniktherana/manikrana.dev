@@ -54,7 +54,7 @@ export function componentPrompt(item: WorkItem, sources: SourceFile[], deps: Dep
     ...when(Boolean(item.included), `Included: ${item.included}`),
     ...when(
       Boolean(item.notIncluded),
-      `Not included: ${item.notIncluded} The demo at ${site}/${item.slug} adds those around the component, so they are not in the files below.`,
+      `Not included: ${item.notIncluded} The demo at ${site}/work/${item.slug} adds those around the component, so they are not in the files below.`,
     ),
     `It is written for React 19 and Tailwind CSS v4.${install.length ? ` First install what this project is missing:${install.map((step) => `\n- ${step}`).join("")}` : ""}`,
     `Save each file under "Files" as its own module in one folder with the same names, so their relative imports resolve, and render the component where I ask.`,

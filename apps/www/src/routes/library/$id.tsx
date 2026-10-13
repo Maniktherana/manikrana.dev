@@ -1,8 +1,8 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { papers, posts, talks } from "@/content/library";
-import { PaperPage } from "@/routes/-components/paper-page";
-import { PostPage } from "@/routes/-components/post-page";
-import { TalkPage } from "@/routes/-components/talk-page";
+import { PaperPage } from "@/routes/library/-components/paper-page";
+import { PostPage } from "@/routes/library/-components/post-page";
+import { TalkPage } from "@/routes/library/-components/talk-page";
 
 export const Route = createFileRoute("/library/$id")({
   loader: ({ params }) => {

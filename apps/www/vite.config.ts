@@ -44,9 +44,15 @@ export default defineConfig({
     tailwindcss(),
     // The filter skips anchors and the image files the pages link to.
     tanstackStart({
-      prerender: { enabled: true, crawlLinks: true, filter: ({ path }) => !/[.#]/.test(path) },
+      prerender: {
+        enabled: true,
+        crawlLinks: true,
+        failOnError: true,
+        filter: ({ path }) => !/[.#]/.test(path),
+      },
+      pages: [{ path: "/404", prerender: { enabled: true, outputPath: "/404.html" } }],
     }),
-    nitro({ preset: process.env.VERCEL ? "vercel" : "bun" }),
+    nitro({ preset: "node" }),
     viteReact(),
   ],
 });

@@ -10,18 +10,14 @@ import {
 } from "@/components/page-header";
 import { PdfPages } from "@/components/pdf-pages";
 import type { Talk } from "@/content/library";
-import { TalkVideo } from "@/routes/-components/talk-video";
-
-const INTO_VIEW = { block: "start", behavior: "instant" } as const;
+import { TalkVideo } from "@/routes/library/-components/talk-video";
 
 export function TalkPage({ talk }: { talk: Talk }) {
-  const close = useClose({ to: "/", hash: "library", hashScrollIntoView: INTO_VIEW });
+  const close = useClose({ to: "/" });
   return (
     <main id="main-content" className="mx-auto w-[calc(100%-40px)] max-w-stage">
       <PageHeader onClose={close}>
-        <BreadcrumbLink to="/" hash="library">
-          Manik Rana
-        </BreadcrumbLink>
+        <BreadcrumbLink to="/">Manik Rana</BreadcrumbLink>
         <BreadcrumbSeparator />
         <span aria-current="page" className="truncate text-foreground">
           {talk.title}

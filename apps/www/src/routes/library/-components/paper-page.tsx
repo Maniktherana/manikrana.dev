@@ -12,16 +12,12 @@ import {
 import { PdfPages } from "@/components/pdf-pages";
 import type { Paper } from "@/content/library";
 
-const INTO_VIEW = { block: "start", behavior: "instant" } as const;
-
 export function PaperPage({ paper }: { paper: Paper }) {
-  const close = useClose({ to: "/", hash: "library", hashScrollIntoView: INTO_VIEW });
+  const close = useClose({ to: "/" });
   return (
     <main id="main-content" className="mx-auto w-[calc(100%-40px)] max-w-stage">
       <PageHeader onClose={close}>
-        <BreadcrumbLink to="/" hash="library">
-          Manik Rana
-        </BreadcrumbLink>
+        <BreadcrumbLink to="/">Manik Rana</BreadcrumbLink>
         <BreadcrumbSeparator />
         <span aria-current="page" className="truncate text-foreground">
           {paper.title}

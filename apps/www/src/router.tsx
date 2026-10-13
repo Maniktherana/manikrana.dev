@@ -1,5 +1,6 @@
 import { createRouter } from "@tanstack/react-router";
 import type { WorkList } from "@/components/work/registry";
+import { morphsInto } from "@/components/work/transition";
 
 import { routeTree } from "./routeTree.gen";
 
@@ -16,7 +17,8 @@ export function getRouter() {
         if (!fromLocation) return [];
         const fromList = lists.includes(fromLocation.pathname);
         if (fromList === lists.includes(toLocation.pathname)) return [];
-        return fromList ? ["open"] : ["close"];
+        if (fromList) return ["open"];
+        return morphsInto(toLocation.pathname) ? ["close"] : [];
       },
     },
   });

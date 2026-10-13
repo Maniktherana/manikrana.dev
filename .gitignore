@@ -16,6 +16,7 @@
 /apps/*/.output/
 /apps/*/dist/
 /apps/*/storybook-static/
+/apps/*/.tanstack/
 
 # production
 /build

@@ -71,7 +71,8 @@ function WorkTile({
       <div
         ref={surface}
         style={morphs ? ({ "--work": `work-${item.slug}` } as CSSProperties) : undefined}
-        className="work-tile relative aspect-(--aspect) w-full transform-gpu overflow-hidden rounded-3xl bg-card [view-transition-name:var(--work)] [view-transition-class:work] transition-[scale] duration-150 ease-out group-active:scale-[0.985]"
+        data-morph
+        className="relative aspect-(--aspect) w-full transform-gpu overflow-hidden rounded-3xl bg-card [view-transition-name:var(--work)] [view-transition-class:work] transition-[scale] duration-150 ease-out group-active:scale-[0.985]"
       >
         {near && Preview && (
           <Suspense>
@@ -82,7 +83,7 @@ function WorkTile({
         )}
       </div>
       <Link
-        to="/$slug"
+        to="/work/$slug"
         params={{ slug: item.slug }}
         state={{ grid: list }}
         onClick={() => setTransitionTarget(item.slug, list)}

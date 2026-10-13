@@ -34,17 +34,13 @@ const mdxComponents: MDXComponents = {
   TrainingGraph,
 };
 
-const INTO_VIEW = { block: "start", behavior: "instant" } as const;
-
 export function PostPage({ id }: { id: string }) {
   const post = posts.find((entry) => entry.id === id)!;
-  const close = useClose({ to: "/", hash: "library", hashScrollIntoView: INTO_VIEW });
+  const close = useClose({ to: "/" });
   return (
     <main id="main-content" className="mx-auto w-[calc(100%-40px)] max-w-stage pb-24">
       <PageHeader onClose={close}>
-        <BreadcrumbLink to="/" hash="library">
-          Manik Rana
-        </BreadcrumbLink>
+        <BreadcrumbLink to="/">Manik Rana</BreadcrumbLink>
         <BreadcrumbSeparator />
         <span aria-current="page" className="truncate text-foreground">
           {post.title}

@@ -8,24 +8,20 @@ import {
 import { ProjectGrid, WorkGrid } from "@/components/work/grid";
 import { components, projects } from "@/components/work/registry";
 
-export const Route = createFileRoute("/work")({
+export const Route = createFileRoute("/work/")({
   head: () => ({
     meta: [{ title: "Work · Manik Rana" }, { property: "og:title", content: "Work · Manik Rana" }],
   }),
   component: WorkPage,
 });
 
-const INTO_VIEW = { block: "center", behavior: "instant" } as const;
-
 function WorkPage() {
-  const close = useClose({ to: "/", hash: "work-title", hashScrollIntoView: INTO_VIEW });
+  const close = useClose({ to: "/" });
   return (
     <main id="main-content" className="@container">
       <div className="mx-auto w-[calc(100%-40px)] max-w-stage">
         <PageHeader onClose={close}>
-          <BreadcrumbLink to="/" hash="work-title">
-            Manik Rana
-          </BreadcrumbLink>
+          <BreadcrumbLink to="/">Manik Rana</BreadcrumbLink>
           <BreadcrumbSeparator />
           <span aria-current="page" className="truncate text-foreground">
             Work
