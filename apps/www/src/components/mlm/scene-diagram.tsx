@@ -1,9 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useInView, useReducedMotion } from "motion/react";
-import { Button } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
-import { PauseIcon } from "@/components/icons/pause";
-import { PlayIcon } from "@/components/icons/play";
 import { BAR, DOT, STACK, LABEL, MARGIN, dotX, noise, type Item } from "@/components/mlm/scene";
 
 const WIDTH = 400;
@@ -333,9 +330,8 @@ export function SceneDiagram({
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.25 });
   const reduced = useReducedMotion();
-  const [paused, setPaused] = useState(false);
   const [step, setStep] = useState(-1);
-  const playing = inView && !paused && !reduced;
+  const playing = inView && !reduced;
   const timing = useMemo(
     () => timingOf(items, step < 0 ? -1 : steps[step]!, (x, z) => at(x, z)),
     [items, step, steps, at],
@@ -689,15 +685,6 @@ export function SceneDiagram({
           })}
         </svg>
         {labels}
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label={paused ? "Play" : "Pause"}
-          className="absolute end-2 bottom-2 motion-reduce:hidden"
-          onClick={() => setPaused(!paused)}
-        >
-          {paused ? <PlayIcon /> : <PauseIcon />}
-        </Button>
       </div>
       <figcaption className="mt-3 text-center text-xs text-pretty text-muted-foreground max-sm:px-5">
         {caption}
