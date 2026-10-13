@@ -1,6 +1,8 @@
 import mdx from "@mdx-js/rollup";
 import rehypeShiki from "@shikijs/rehype";
+import rehypeKatex from "rehype-katex";
 import remarkFrontmatter from "remark-frontmatter";
+import remarkMath from "remark-math";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import tailwindcss from "@tailwindcss/vite";
@@ -29,8 +31,13 @@ export default defineConfig({
     {
       enforce: "pre",
       ...mdx({
-        remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
+        remarkPlugins: [
+          remarkFrontmatter,
+          remarkMdxFrontmatter,
+          [remarkMath, { singleDollarTextMath: false }],
+        ],
         rehypePlugins: [
+          rehypeKatex,
           [
             rehypeShiki,
             {

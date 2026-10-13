@@ -6,10 +6,27 @@
   --container-reading: 644px;
   --container-stage: 75rem;
   --container-work: 90rem;
+  --color-plot: hsl(0 0% 4%);
+  --animate-flow: flow 0.9s linear infinite;
+
+  @keyframes flow {
+    to {
+      stroke-dashoffset: -6;
+    }
+  }
 }
 
 :root {
   --background: hsl(0 0% 6.5%);
+}
+
+article .katex-display {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.5rem;
+  color: var(--foreground);
+  font-size: 0.95em;
 }
 @layer base {
   body {
@@ -223,5 +240,20 @@
   90%,
   100% {
     transform: translateY(22px);
+  }
+}
+
+@keyframes packet {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
   }
 }

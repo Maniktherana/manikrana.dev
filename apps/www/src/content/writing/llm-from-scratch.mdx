@@ -1,0 +1,228 @@
+---
+title: Writing an LLM from scratch
+description: Building my own GPT-2-style language model in PyTorch, from tokenization and attention to the next token.
+date: "2025-08-27"
+github: https://github.com/maniktherana/mlm
+---
+
+I read [Attention Is All You Need](https://arxiv.org/abs/1706.03762), but I still didn't have much of an understanding of how LLMs worked. I'd worked with models such as YOLO and built LSTMs and linear regression models, so I had some background in machine learning. LLMs, though, still looked almost like magic to me. Then I found Sebastian Raschka's [Build a Large Language Model (From Scratch)](https://www.manning.com/books/build-a-large-language-model-from-scratch), and used it to build one myself.
+
+The result is [MLM](https://github.com/maniktherana/mlm), the Manik Language Model. It's a GPT-2-style small model with about 124 million learned parameters, written in PyTorch and trained on 40% of OpenWebText. I rented an L4 GPU through [Modal](https://modal.com) using the $25 in free credits I had. The model doesn't perform anywhere near GPT-2, but every line of it is mine, and I had a lot of fun learning while building it.
+
+<ModelDiagram />
+
+## How an LLM works
+
+For the rest of this article, let's use the prompt “The cat is”. We feed it into MLM, and the model tries to predict the next token. That could be “orange”, “black”, or “the”, among many other possibilities. Rather than producing a single answer straight away, it assigns a score to every token in its vocabulary. We turn these scores into probabilities and select a token from that distribution. MLM and other models don't always choose the token with the highest probability. Temperature lets us adjust the probabilities and sample from other likely candidates, adding some variation to the responses.
+
+Whatever token we select gets appended to the original prompt, and we repeat the process with that longer input. If the next token is “black”, the next prompt becomes “The cat is black”. This continues until we reach the token limit or the model produces an end-of-sequence token. That's the basic loop behind generating a response. The rest of the article follows what happens inside one pass through the model.
+
+## Step zero: the tokenizer
+
+Although the model produces text, it doesn't work directly with words or characters. First, a **tokenizer** splits the prompt into smaller pieces called tokens. A token can be a whole word, part of a word, punctuation, or a piece of whitespace. The tokenizer has a vocabulary of known tokens, and each token has its own integer ID. These IDs tell the model which pieces of text are present, but their numerical values don't describe what those pieces mean.
+
+The vocabulary also contains special tokens that mark the structure of the input. In MLM, `<bos>` marks the beginning of a sequence and `<eos>` marks its end. The `<pad>` token fills unused positions so that sequences in a batch can have the same length. These are markers for processing text, rather than ordinary words. When generating, my code adds `<bos>` before the prompt, so our example becomes `<bos>`, “The”, “cat”, and “is”, each with its own token ID.
+
+For MLM, I used a byte-level **BPE**, or byte pair encoding, tokenizer through Hugging Face Transformers. BPE builds its vocabulary by repeatedly merging common neighboring pieces of text. I trained the tokenizer on samples from the same OpenWebText training data, producing a vocabulary of **50,257 tokens**. The tokenizer gives us the IDs; turning those IDs into vectors is the model's next job.
+
+## Step one: input embeddings
+
+Now that we have a list of token IDs, we can feed them into the model. MLM has a learned **token embedding** table with 50,257 rows and 768 columns: one row per token, with 768 numbers in each row. Each ID performs a lookup and returns its row. For our four-token example, this produces a 4 × 768 matrix, with one vector per token. Training changes the numbers in the table so that these vectors become useful for predicting what comes next.
+
+<InputEmbeddingDiagram />
+
+Those vectors tell the model which tokens it has, but they don't yet tell it their positions. “The dog chased the cat” and “The cat chased the dog” contain the same words in a different order, with different meanings. To represent that order, MLM has a second learned table for **position embeddings**. We look up the vector for each position and add it to that position's token embedding. The output is one 768-number vector per token, which gets fed into the transformer blocks.
+
+The two lookups and the addition are just a few lines in the forward pass. During training, we apply dropout, which randomly zeros some values to help with regularization. Dropout is disabled during inference.
+
+```python file="src/model/transformer.py"
+tok_embeds = self.tok_emb(in_idx)
+pos_embeds = self.pos_emb(torch.arange(seq_len, device=in_idx.device))
+x = tok_embeds + pos_embeds
+x = self.drop_emb(x)
+```
+
+## Step two: layer normalization
+
+Before running attention, we apply **layer normalization** to keep each token's values on a consistent scale. This helps stabilize gradients and makes it easier for training to converge without values blowing up or collapsing.
+
+<LayerNormDiagram />
+
+For each token, we start by finding the **mean** of its 768 feature values:
+
+$$
+\mu = \frac{1}{768}\sum_{i=1}^{768}x_i
+$$
+
+Next, we calculate the **variance**, which measures how spread out those values are around the mean:
+
+$$
+\sigma^2 = \frac{1}{768}\sum_{i=1}^{768}(x_i-\mu)^2
+$$
+
+Finally, we subtract the mean from each value and divide by the square root of the variance plus a small epsilon:
+
+$$
+\hat{x}_i = \frac{x_i-\mu}{\sqrt{\sigma^2+\varepsilon}}
+$$
+
+Here, ε = 10⁻⁵ keeps the denominator away from zero. We repeat this independently for every token.
+
+Normalization alone would force every token's vector to keep that scale. Instead, we give each feature two **learned parameters**, gamma and beta: a scale and a shift. We multiply each normalized value by its feature's gamma and add its beta. There are 768 of each, shared across token positions, and training adjusts them like the other model parameters.
+
+```python file="src/model/model_utils.py"
+class LayerNorm(nn.Module):
+    def __init__(self, emb_dim):
+        super().__init__()
+        self.eps = 1e-5
+        self.scale = nn.Parameter(torch.ones(emb_dim))
+        self.shift = nn.Parameter(torch.zeros(emb_dim))
+
+    def forward(self, x):
+        mean = x.mean(dim=-1, keepdim=True)
+        var = x.var(dim=-1, keepdim=True, unbiased=False)
+        norm_x = (x - mean) / torch.sqrt(var + self.eps)
+        return self.scale * norm_x + self.shift
+```
+
+## Step three: causal self-attention
+
+This is where things get a bit dense.
+
+<AttentionDiagram />
+
+Now we can let the tokens use information from one another. We pass the normalized input through three different learned weight matrices to produce **queries**, **keys**, and **values**, usually written as Q, K, and V (using 768 × 768 weight matrices). A query represents what a token is looking for, a key represents what it can be matched against, and a value carries the information it can contribute.
+
+We then split Q, K, and V into **12 attention heads**, each with 64 features. As a rough comparison, a convolutional neural network uses different kernels to learn different patterns. Attention heads also give the model several ways to process information in parallel, but they learn relationships between tokens rather than using fixed image filters. We don't assign a particular job to each head. Each head learns its own pattern of attention from the training data.
+
+Inside the first head, we multiply Q₁ by K₁ transposed. This compares every token's query with every token's key, giving us a matrix of **attention scores**. The entry at row _i_, column _j_ measures how strongly token _i_'s query matches token _j_'s key. Before turning those scores into weights, we divide them by the square root of the head size: **√64 = 8**. This keeps their scale from growing too large and helps avoid an overly sharp softmax distribution with very small gradients.
+
+There's one more constraint: a token must not peek at future tokens. When the model predicts “is” from the position containing “cat”, seeing “is” would give away the answer. We set every score above the diagonal to negative infinity, which gives those positions a weight of zero after softmax. This is the **causal mask**. Each position can use itself and earlier positions, but never later ones.
+
+We apply **softmax** to each row of scaled, masked scores. Softmax exponentiates the scores and divides each result by their sum, turning arbitrary scores into nonnegative weights that add up to one. A larger weight gives that token's value more influence on the result, while a masked token contributes nothing. With just two keys, we can plot one key's weight against the gap between their scores. The curve below shows how dividing by √64 makes the transition less abrupt.
+
+<SoftmaxGraph />
+
+Next, we multiply the attention weights by V₁. For every query position, this gives a **context vector**, a weighted combination of the value vectors it is allowed to use. We do the same calculation for all 12 heads in parallel, then concatenate their outputs to get 768 features per token again. One more learned linear layer, `out_proj`, mixes the heads' contributions into the final attention output. This output is a matrix of context vectors, one for each token position.
+
+The central part of the calculation looks like this. Q, K, and V are already split into heads here, so the matrix operations run over all 12 heads at once.
+
+```python file="src/model/attention.py"
+attn_scores = queries @ keys.transpose(2, 3)
+mask_bool = self.mask.bool()[:num_tokens, :num_tokens]
+attn_scores.masked_fill_(mask_bool, -torch.inf)
+
+attn_weights = torch.softmax(attn_scores / keys.shape[-1] ** 0.5, dim=-1)
+attn_weights = self.dropout(attn_weights)
+
+context_vec = (attn_weights @ values).transpose(1, 2)
+context_vec = context_vec.contiguous().view(b, num_tokens, self.d_out)
+context_vec = self.out_proj(context_vec)
+```
+
+Finally, we add a **skip connection**, also called a residual connection. We saved the input from before layer normalization, and now add it to the attention output, after dropout. Attention therefore supplies an update to the existing representation. This also gives gradients a direct path through the block during training.
+
+## Step four: the MLP
+
+After attention and its residual connection, we apply another layer normalization and pass the result through a **multilayer perceptron**, or MLP. This is the familiar feed-forward neural network: fully connected layers with an activation function between them. Attention combines information across token positions, while the MLP transforms the features within each token's representation. The same MLP processes every token independently, using shared weights across positions.
+
+<MlpDiagram />
+
+MLM's first linear layer expands each vector from **768 to 3,072** features. We apply **GELU**, a nonlinear activation, to all 3,072 values, then a second linear layer projects them back to **768**. The wider intermediate layer gives the network more features to work with. GELU changes the values without changing their number; the two linear layers do the expansion and contraction. Matching the original width lets us add another residual connection afterward.
+
+While both **ReLU** and **GELU** make the network nonlinear, they treat values around zero differently. ReLU sets negative inputs to zero and passes positive inputs through, creating a sharp corner at zero. GELU makes a smooth transition and allows small negative outputs, so negative inputs can still have a nonzero gradient. I use GELU here, following the GPT-2-style model in Raschka's book, for that smoother behavior.
+
+<GeluGraph />
+
+The MLP itself is three layers in sequence. Its output goes through dropout and is added to the input we saved before the second layer normalization.
+
+```python file="src/model/model_utils.py"
+self.layers = nn.Sequential(
+    nn.Linear(cfg["emb_dim"], 4 * cfg["emb_dim"]),
+    GELU(),
+    nn.Linear(4 * cfg["emb_dim"], cfg["emb_dim"]),
+)
+```
+
+Everything from the first layer norm through attention, the second layer norm, and the MLP makes up **one transformer block**, including both residual connections. MLM runs **12 of these blocks** in sequence, each with its own learned parameters. Each block receives one 768-number vector per token and returns the same shape. These are updated token representations, not yet scores for the next token.
+
+```python file="src/model/transformer.py"
+def forward(self, x):
+    shortcut = x
+    x = self.norm1(x)
+    x = self.attn(x)
+    x = self.drop_shortcut(x)
+    x = x + shortcut
+
+    shortcut = x
+    x = self.norm2(x)
+    x = self.ff(x)
+    x = self.drop_shortcut(x)
+    x = x + shortcut
+    return x
+```
+
+## Step five: logits and the next token
+
+After the 12th transformer block, we apply a final layer normalization, and its output goes into the **language model head** (or `out_head`). This linear layer maps each 768-number vector to **50,257 scores**, one for every token in the vocabulary. These scores are called **logits**. They can be positive or negative and don't have to add up to one, so they are not probabilities yet.
+
+<OutputHeadDiagram />
+
+To choose the next token after “The cat is”, we use the scores from the last position. For MLM, we use a **temperature of 0.8** and keep the **top 50 candidates**. A temperature above 1 spreads probability more evenly across candidates, making responses more varied; below 1, it favors the higher-scoring candidates.
+
+Softmax turns these adjusted scores into probabilities, and we sample the next token from that distribution. Sampling means the highest-scoring token doesn't always win.
+
+The bars in the diagram show some possible continuations and their probabilities. If we select “a”, we append its ID to the input, giving us “The cat is a”, and run the model again. This is the generation loop from the start of the article.
+
+MLM also shares the output head's weights with the token embedding table. At the input, we use the table to look up a vector by token ID. At the output, we use the same weights in a matrix multiplication to score every possible next token. Sharing this 50,257 × 768 matrix saves about 38.6 million parameters, leaving the model with roughly 124 million in total.
+
+```python file="src/model/transformer.py"
+self.final_norm = LayerNorm(cfg["emb_dim"])
+self.out_head = nn.Linear(cfg["emb_dim"], cfg["vocab_size"], bias=False)
+
+self.tie_weights()
+...
+def tie_weights(self):
+    self.out_head.weight = self.tok_emb.weight
+```
+
+## The whole model
+
+Putting it together, the token and position embeddings lead into 12 transformer blocks. A final layer norm and the LM head turn the result into logits. During generation, we use the logits from the last position to sample a token and extend the prompt. The forward pass ends at the logits; the generation code handles softmax, sampling, and repeating the process.
+
+The model's forward pass fits into this function. Each line now corresponds to a piece we've walked through, from looking up the input embeddings to scoring the vocabulary.
+
+```python file="src/model/transformer.py"
+def forward(self, in_idx):
+    batch_size, seq_len = in_idx.shape
+    tok_embeds = self.tok_emb(in_idx)
+    pos_embeds = self.pos_emb(torch.arange(seq_len, device=in_idx.device))
+
+    x = tok_embeds + pos_embeds
+    x = self.drop_emb(x)
+    x = self.trf_blocks(x)
+    x = self.final_norm(x)
+    logits = self.out_head(x)
+    return logits
+```
+
+## Training it
+
+To train a model, we turn a sentence like “The quick brown fox jumps over the lazy dog.” into tokens. We feed in all but the last token and use all but the first as the targets, so the model learns to predict the next token at every position:
+
+```python file="src/dataset.py"
+x = torch.tensor(seq[:T], dtype=torch.long)
+y = torch.tensor(seq[1 : T + 1], dtype=torch.long)
+```
+
+I trained MLM on 40% of OpenWebText, with a 90/10 training and validation split, a context length of 1,024 tokens, and a batch size of 6. I used AdamW at a learning rate of 6e-4, mixed precision, and cross-entropy loss, which penalizes the model for assigning a low probability to the correct token and ignores padding. The run used a rented L4 GPU on Modal, saving a checkpoint every 1,000 steps so it could resume after an interruption. After 60,000 steps, training loss reached 4.06 and validation loss reached 4.10.
+
+<LossGraph />
+
+<TrainingGraph />
+
+## Closing Thoughts
+
+I had a lot of fun learning how to build an LLM. The output was mostly nonsense, even when the words formed coherent sentences. I wish I'd saved some of those outputs to show how funny they were.
+
+My next step would be **supervised fine-tuning**, or SFT, using examples of the kinds of responses I'd want the model to produce. After that, I'd like to learn how to build a **mixture of experts**, or MoE, model and add a KV cache.
