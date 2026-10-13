@@ -394,7 +394,7 @@ export function SceneDiagram({
     );
 
   return (
-    <figure className="my-8">
+    <figure className="my-8 max-sm:-mx-5">
       <div
         ref={ref}
         className="relative rounded-stage bg-plot shadow-stage"
@@ -699,7 +699,7 @@ export function SceneDiagram({
           {paused ? <PlayIcon /> : <PauseIcon />}
         </Button>
       </div>
-      <figcaption className="mt-3 text-center text-xs text-pretty text-muted-foreground">
+      <figcaption className="mt-3 text-center text-xs text-pretty text-muted-foreground max-sm:px-5">
         {caption}
       </figcaption>
     </figure>

@@ -90,7 +90,7 @@ export function PostPage({ id }: { id: string }) {
 
           <article
             ref={article}
-            className="mt-8 text-pretty text-muted-foreground [&_:not(pre)>code]:rounded-md [&_:not(pre)>code]:bg-control [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-sm [&_:not(pre)>code]:text-control-foreground [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:leading-5.5 [&_h2]:font-medium [&_h2]:text-foreground [&_p]:mb-4 [&_strong]:font-medium [&_strong]:text-foreground"
+            className="mt-8 text-muted-foreground sm:text-pretty [&_:not(pre)>code]:rounded-md [&_:not(pre)>code]:bg-control [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-sm [&_:not(pre)>code]:text-control-foreground [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:leading-5.5 [&_h2]:font-medium [&_h2]:text-foreground [&_p]:mb-4 [&_strong]:font-medium [&_strong]:text-foreground"
           >
             <post.Content components={mdxComponents} />
           </article>
