@@ -9,6 +9,8 @@ export type OrbFrame = { time: number; search: number; focus: number };
 
 export type OrbTick = { dt: number; blend: number; motionReduced: boolean };
 
+export type OrbTuning<State extends string, Values> = { [Key in State]?: Partial<Values> };
+
 type UseOrbOptions = {
   fragment: string;
   size: number;
@@ -16,14 +18,33 @@ type UseOrbOptions = {
   variant: OrbVariant;
   brilliance: number;
   paused: boolean;
+  pace?: () => number;
   step?: (tick: OrbTick) => void;
   uniforms: (frame: OrbFrame) => Uniforms;
 };
 
-const START_TIME = 1.8;
+export const START_TIME = 1.8;
 
 export const clamp = (value: number, min: number, max: number) =>
   Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : min;
+
+export function stateBlend(dt: number, transition: number, motionReduced: boolean) {
+  return motionReduced ? 1 : 1 - Math.exp((-dt * 7) / Math.max(0.05, transition));
+}
+
+// Eases every value toward the target state's, so a state change morphs instead of jumping.
+export function settleToward<Values extends Record<string, number>>(
+  current: Values,
+  target: Values,
+  blend: number,
+) {
+  for (const key in target) {
+    const next = current[key] + (target[key] - current[key]) * blend;
+    current[key] = (
+      Math.abs(target[key] - next) < 0.00001 ? target[key] : next
+    ) as Values[typeof key];
+  }
+}
 
 export function useOrb(options: UseOrbOptions) {
   const { fragment, size, speed, variant, brilliance, paused } = options;
@@ -84,7 +105,7 @@ export function useOrb(options: UseOrbOptions) {
         frame.search += ((value.variant === "search" ? 1 : 0) - frame.search) * blend;
         frame.focus += ((value.variant === "focus" ? 1 : 0) - frame.focus) * blend;
         value.step?.({ dt, blend, motionReduced: media.matches });
-        if (!media.matches) frame.time += dt * clamp(value.speed, 0.25, 3);
+        if (!media.matches) frame.time += dt * clamp(value.speed, 0.25, 3) * (value.pace?.() ?? 1);
       }
       draw();
       if (visible && !document.hidden && !value.paused && !media.matches)

@@ -1,35 +1,45 @@
 import type { ComponentProps } from "react";
 import { DiffusionOrb, type DiffusionOrbProps } from "./diffusion-orb";
-import { DnaOrb, type DnaOrbProps } from "./dna-orb";
+import { FoldOrb, type FoldOrbProps } from "./fold-orb";
 import { GeminiOrb, type GeminiOrbProps } from "./gemini-orb";
 import type { NoteAudio } from "./use-note-audio";
 
-export type LookName = "resting" | "listening" | "thinking";
-export type OrbId = "diffusion" | "gemini" | "dna";
+export type LookName = "idle" | "listening" | "thinking";
+export type OrbId = "diffusion" | "gemini" | "fold";
+
+// Gemini has no idle state; it rests as the user look with no voice.
+export type GeminiLook = Exclude<LookName, "idle">;
+
+export const geminiLook = (look: LookName): GeminiLook => (look === "idle" ? "listening" : look);
 
 export const ORBS: Record<OrbId, { name: string }> = {
   diffusion: { name: "Diffusion" },
   gemini: { name: "Gemini" },
-  dna: { name: "DNA" },
+  fold: { name: "Fold" },
 };
 
 const DIFFUSION_LOOKS = {
-  resting: { state: "listening" },
+  idle: { state: "idle" },
   listening: { state: "listening" },
   thinking: { state: "thinking" },
 } satisfies Record<LookName, DiffusionOrbProps>;
 
-const GEMINI_LOOKS = {
-  resting: { audioMode: "user", audioLevel: 0 },
-  listening: { audioMode: "user" },
+export const GEMINI_LOOKS = {
+  listening: { audioMode: "user", audioLevel: 0 },
   thinking: { audioMode: "assistant", audioLevel: 0.3 },
-} satisfies Record<LookName, GeminiOrbProps>;
+} satisfies Record<GeminiLook, GeminiOrbProps>;
 
-const DNA_LOOKS = {
-  resting: { speed: 0.4 },
-  listening: { speed: 0.4 },
-  thinking: { speed: 1.4 },
-} satisfies Record<LookName, DnaOrbProps>;
+const FOLD_LOOKS = {
+  idle: { state: "idle" },
+  listening: { state: "listening" },
+  thinking: { state: "thinking" },
+} satisfies Record<LookName, FoldOrbProps>;
+
+export type OrbDials = {
+  diffusion: DiffusionOrbProps;
+  fold: FoldOrbProps;
+  gemini: GeminiOrbProps & { looks: Record<GeminiLook, GeminiOrbProps> };
+};
 
 export function hearsNote(id: OrbId, look: LookName) {
   return id === "gemini" && look === "listening";
@@ -41,23 +51,25 @@ type DemoOrbProps = Omit<ComponentProps<"span">, "children"> & {
   size: number;
   paused?: boolean;
   audio?: NoteAudio;
+  dials?: OrbDials;
 };
 
-export function DemoOrb({ id, look, audio, ...props }: DemoOrbProps) {
+export function DemoOrb({ id, look, audio, dials, ...props }: DemoOrbProps) {
   switch (id) {
     case "diffusion":
-      return <DiffusionOrb {...props} {...(look && DIFFUSION_LOOKS[look])} />;
-    case "dna":
-      return <DnaOrb {...props} {...(look && DNA_LOOKS[look])} />;
-    case "gemini":
+      return <DiffusionOrb {...props} {...dials?.diffusion} {...(look && DIFFUSION_LOOKS[look])} />;
+    case "fold":
+      return <FoldOrb {...props} {...dials?.fold} {...(look && FOLD_LOOKS[look])} />;
+    case "gemini": {
+      const { looks = GEMINI_LOOKS, ...gemini } = dials?.gemini ?? {};
       return (
         <GeminiOrb
           {...props}
-          {...(look && GEMINI_LOOKS[look])}
-          {...(audio &&
-            look &&
-            hearsNote(id, look) && { audioLevel: audio.level, audioBands: audio.bands })}
+          {...gemini}
+          {...(look && looks[geminiLook(look)])}
+          {...(audio && { audioLevel: audio.level, audioBands: audio.bands })}
         />
       );
+    }
   }
 }

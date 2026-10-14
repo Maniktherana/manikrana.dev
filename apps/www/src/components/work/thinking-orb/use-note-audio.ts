@@ -31,7 +31,9 @@ function readBands(spectrum: Uint8Array, level: number) {
 
 export type NoteAudio = ReturnType<typeof useNoteAudio>;
 
-export function useNoteAudio(playing: boolean, loop = false) {
+type Analyser = Pick<AnalyserNode, "frequencyBinCount" | "getByteFrequencyData">;
+
+export function useNoteAudio(playing: boolean, loop = false, source?: Analyser) {
   const reducedMotion = useReducedMotion();
   const level = useRef(0);
   const bands = useRef([0, 0, 0, 0]);
@@ -40,7 +42,7 @@ export function useNoteAudio(playing: boolean, loop = false) {
     if (!playing || reducedMotion) return undefined;
 
     let startsAt = performance.now();
-    let analyser = noteAnalyser(startsAt);
+    let analyser = source ?? noteAnalyser(startsAt);
     const spectrum = new Uint8Array(analyser.frequencyBinCount);
     let peak = 0.4;
     let last = startsAt;
@@ -49,7 +51,7 @@ export function useNoteAudio(playing: boolean, loop = false) {
     const sample = (now: number) => {
       const dt = clamp((now - last) / 1000, 0, 0.1);
       last = now;
-      if (loop && now - startsAt > NOTE_MS + LOOP_GAP_MS) {
+      if (!source && loop && now - startsAt > NOTE_MS + LOOP_GAP_MS) {
         startsAt = now;
         analyser = noteAnalyser(startsAt);
       }
@@ -70,7 +72,7 @@ export function useNoteAudio(playing: boolean, loop = false) {
       level.current = 0;
       bands.current = [0, 0, 0, 0];
     };
-  }, [playing, loop, reducedMotion]);
+  }, [playing, loop, source, reducedMotion]);
 
   return { level, bands };
 }

@@ -148,7 +148,7 @@ function createRenderer(canvas: HTMLCanvasElement) {
 }
 
 export function DotGrid({
-  pattern = "spark",
+  pattern = "organic",
   cell = 1,
   gap = 14,
   radius = 1,
@@ -158,9 +158,9 @@ export function DotGrid({
   waveFrequency = 0.4,
   wavePhase = 0,
   waveThickness = 1,
-  wavePeakTop = 2.5,
-  wavePeakBottom = 1,
-  waveDotLight = 0.2,
+  wavePeakTop = pattern === "organic" ? 2.5 : 0,
+  wavePeakBottom = pattern === "organic" ? 1 : 0,
+  waveDotLight = pattern === "organic" ? 0.2 : 0,
   waveDotDark = 0,
   waveBackgroundLight = 0,
   waveBackgroundDark = 0,

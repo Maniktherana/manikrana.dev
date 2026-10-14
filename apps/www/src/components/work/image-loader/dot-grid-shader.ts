@@ -1,5 +1,5 @@
 export const dotGridPatterns = {
-  spark: 0,
+  organic: 0,
   weave: 1,
 } as const;
 
@@ -72,7 +72,7 @@ float dotSdf(vec2 p, float halfCell, float squareness) {
   return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - halfCell * (1.0 - squareness);
 }
 
-float sparkAt(vec2 gid, float t) {
+float organicAt(vec2 gid, float t) {
   float f1 = 0.62 + hash1(gid + vec2(11.0, 5.0)) * 0.55;
   float f2 = f1 * 1.6180339887;
   float a = hash1(gid + vec2(1.0, 1.0)) * TAU;
@@ -88,7 +88,7 @@ float weaveAt(vec2 uv, float t) {
 }
 
 float patternAt(vec2 gid, vec2 uv, float t) {
-  if (uPattern < 0.5) return sparkAt(gid, t);
+  if (uPattern < 0.5) return organicAt(gid, t);
   return weaveAt(uv, t);
 }
 

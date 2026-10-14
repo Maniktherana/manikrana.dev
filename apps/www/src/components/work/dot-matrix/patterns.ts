@@ -26,7 +26,7 @@ export const dotMatrixPatterns = {
       wave((x / cols) * TAU * 1.4 + (y / rows) * TAU * 0.5 - t * TAU) ** 1.6,
   },
 
-  comet: {
+  scan: {
     period: 1.8,
     light: (x, y, t, cols, rows) => {
       const head = t * (cols + 17) - 4;
@@ -34,17 +34,6 @@ export const dotMatrixPatterns = {
       const tail = d >= 0 ? Math.exp(-d / 2.2) : Math.exp(d * 3);
       const core = Math.exp(-Math.abs(y - (rows - 1) / 2) / 1.4);
       return clamp01(tail * (0.45 + 0.55 * core));
-    },
-  },
-
-  ripple: {
-    period: 2.2,
-    light: (x, y, t, cols, rows) => {
-      const cx = (cols - 1) / 2;
-      const cy = (rows - 1) / 2;
-      const d = Math.hypot(x - cx, (y - cy) * 1.5);
-      const v = wave(d * 0.78 - t * TAU);
-      return clamp01(v ** 2.2 * Math.exp(-d / 10));
     },
   },
 
@@ -61,7 +50,7 @@ export const dotMatrixPatterns = {
     },
   },
 
-  spark: {
+  organic: {
     period: 2.3,
     loop: false,
     light: (x, y, t) => {

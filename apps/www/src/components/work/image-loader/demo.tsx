@@ -5,7 +5,7 @@ import type { DotGridOptions } from "./dot-grid";
 import { ImageLoader } from "./image-loader";
 
 export const PATTERNS: { label: string; grid: DotGridOptions }[] = [
-  { label: "Spark", grid: { pattern: "spark" } },
+  { label: "Organic", grid: { pattern: "organic" } },
   { label: "Weave", grid: { pattern: "weave" } },
 ];
 

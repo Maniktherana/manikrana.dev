@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { DiffusionOrb } from "./diffusion-orb";
-import { DnaOrb } from "./dna-orb";
+import { FoldOrb } from "./fold-orb";
 import { GeminiOrb } from "./gemini-orb";
 
 export function Example() {
@@ -10,7 +10,7 @@ export function Example() {
   return (
     <div className="flex items-center gap-6">
       <DiffusionOrb state="thinking" size={96} />
-      <DnaOrb palette="tide" size={96} />
+      <FoldOrb palette="tide" size={96} />
       <GeminiOrb audioMode="user" audioLevel={level} audioBands={bands} size={96} />
     </div>
   );

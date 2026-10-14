@@ -123,12 +123,12 @@ export const work = [
     title: "Thinking orbs",
     kind: "component",
     summary:
-      "Three WebGL orbs for AI interfaces: Diffusion, DNA and Gemini. They think and listen, and the Gemini orb moves with your voice.",
+      "Three WebGL orbs for AI interfaces: Diffusion, Fold and Gemini. They think and listen, and the Gemini orb moves with your voice.",
     tile: "lg",
     uses: ["WebGL"],
     files: [
       "diffusion-orb.tsx",
-      "dna-orb.tsx",
+      "fold-orb.tsx",
       "gemini-orb.tsx",
       "use-orb.ts",
       "orb-renderer.ts",
@@ -140,7 +140,7 @@ export const work = [
       "The band motion in diffusion-orb.tsx is adapted from thinking-orbs (MIT, Jakub Antalik); keep the attribution comment.",
     ],
     included:
-      "DiffusionOrb, DnaOrb and GeminiOrb, the shared WebGL renderer and frame loop they draw through, and the voice follower that moves the Gemini orb with a level and four bands you feed it.",
+      "DiffusionOrb, FoldOrb and GeminiOrb, the shared WebGL renderer and frame loop they draw through, and the voice follower that moves the Gemini orb with a level and four bands you feed it.",
     notIncluded:
       "The carousel, the recorded voice note and the analyser that plays it. Feed the Gemini orb from your own microphone or speech output.",
   },
@@ -149,7 +149,7 @@ export const work = [
     title: "Dot matrix",
     kind: "component",
     summary:
-      "A thinking loader drawn as a small grid of dots. Six patterns light it up, from a comet to a helix, plus a wave you shape yourself; each dot keeps its color and only the brightness moves.",
+      "A thinking loader drawn as a small grid of dots. Five patterns light it up, from a scan to a helix, plus a wave you shape yourself; each dot keeps its color and only the brightness moves.",
     tile: "sm",
     uses: ["Canvas"],
     files: ["dot-matrix.tsx", "patterns.ts", "hues.ts", "draw.ts"],
@@ -252,13 +252,13 @@ export const work = [
     title: "Image loader",
     kind: "component",
     summary:
-      "The placeholder for AI image generation. a grid of tiny dots that sparkle or weave, until the finished image fades in.",
+      "The placeholder for AI image generation. a grid of tiny dots that flicker or weave, until the finished image fades in.",
     tile: "lg",
     uses: ["WebGL", "motion"],
     files: ["image-loader.tsx", "dot-grid.tsx", "dot-grid-shader.ts"],
     usage: "usage.tsx",
     included:
-      "ImageLoader, a frame at the image's aspect ratio that plays the dot grid while generating and fades the image in once it has decoded, and DotGrid, the WebGL shader on its own, with its spark and weave patterns, four wave shapes and every other setting from the original.",
+      "ImageLoader, a frame at the image's aspect ratio that plays the dot grid while generating and fades the image in once it has decoded, and DotGrid, the WebGL shader on its own, with its organic and weave patterns, four wave shapes and every other setting from the original.",
     notIncluded:
       "The cycle through the patterns and the pattern buttons. Set the status and image from your own generation API.",
   },

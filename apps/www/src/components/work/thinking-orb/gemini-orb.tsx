@@ -4,7 +4,14 @@ import * as React from "react";
 
 import { cn } from "@manikrana/ui/lib/utils";
 import { orbFragment } from "./orb-renderer";
-import { clamp, useOrb, type OrbVariant } from "./use-orb";
+import {
+  clamp,
+  settleToward,
+  stateBlend,
+  useOrb,
+  type OrbTuning,
+  type OrbVariant,
+} from "./use-orb";
 import { followVoice, type VoiceEnvelope } from "./voice-response";
 
 export type GeminiOrbAudioMode = "user" | "assistant" | "muted";
@@ -18,6 +25,8 @@ export type GeminiOrbProps = Omit<React.ComponentProps<"span">, "children"> & {
   audioLevel?: number | { readonly current: number };
   audioBands?: readonly number[] | { readonly current: readonly number[] };
   audioMode?: GeminiOrbAudioMode;
+  tuning?: OrbTuning<GeminiOrbAudioMode, GeminiTuning>;
+  transition?: number;
 };
 
 const FRAGMENT = orbFragment(`
@@ -37,6 +46,8 @@ uniform float colorFlowSpeed;
 uniform float colorLayerMix;
 uniform float voiceAmplitude;
 uniform float voiceHarmonic;
+uniform float restingWave;
+uniform float restingSway;
 
 const vec3 geminiBlue = vec3(0.24, 0.45, 0.96);
 const vec3 geminiPale = vec3(0.57, 0.73, 0.93);
@@ -57,7 +68,7 @@ const vec3 modeWeight = vec3(1.0, 0.65, 0.25);
 
 vec3 voiceModes() {
   float level = clamp(voice * voiceStrength, 0.0, 1.0);
-  float drive = level + 0.25 * userPresence * (1.0 - level);
+  float drive = level + restingWave * userPresence * (1.0 - level);
   vec3 synthetic = drive * (0.55 + 0.45 * sin(time * vec3(1.4, 2.1, 3.0) + vec3(0.4, 2.2, 4.5)));
   vec3 bands = clamp(vec3(0.5 * (voiceBand0 + voiceBand1), voiceBand2, voiceBand3), 0.0, 1.0);
   float strongest = max(bands.x, max(bands.y, bands.z));
@@ -85,7 +96,8 @@ float voiceEdge(float x, float level, vec3 modes, vec3 phase) {
 
 float ambientEdge(float x, float speech) {
   float t = time * colorFlowSpeed;
-  float sway = (0.04 + 0.05 * speech) * sin(3.14 * x + t * 0.6) + 0.02 * sin(5.8 * x - t * 0.83 + 1.3);
+  float sway = (0.04 * restingSway + 0.05 * speech) * sin(3.14 * x + t * 0.6)
+    + 0.02 * (restingSway + speech) * sin(5.8 * x - t * 0.83 + 1.3);
   return mix(-0.12, 0.24 + clipLift, activity) + 0.14 * speech + sway;
 }
 
@@ -131,6 +143,7 @@ vec4 paint(vec2 uv, float rr, float edge) {
 `);
 
 const GEMINI_TUNING = {
+  pace: 1,
   exposure: 1,
   voiceStrength: 1,
   clipLift: 0,
@@ -140,7 +153,18 @@ const GEMINI_TUNING = {
   colorLayerMix: 1,
   voiceAmplitude: 1,
   voiceHarmonic: 1,
+  // Motion with no audio; 0 keeps the orb still until a voice moves it.
+  restingWave: 0,
+  restingSway: 0,
 };
+
+export type GeminiTuning = typeof GEMINI_TUNING;
+
+export const GEMINI_STATES = {
+  user: GEMINI_TUNING,
+  assistant: GEMINI_TUNING,
+  muted: GEMINI_TUNING,
+} satisfies Record<GeminiOrbAudioMode, GeminiTuning>;
 
 const VOICE_ATTACK = 0.3;
 const VOICE_RELEASE = 0.55;
@@ -162,6 +186,8 @@ function GeminiOrb({
   audioLevel = 0,
   audioBands,
   audioMode = "user",
+  tuning,
+  transition = 0.5,
   className,
   style,
   ...props
@@ -173,6 +199,9 @@ function GeminiOrb({
     bands: Array.from({ length: BAND_COUNT }, () => ({ level: 0, velocity: 0 })),
   });
 
+  const target = { ...GEMINI_STATES[audioMode], ...tuning?.[audioMode] };
+  const tuned = React.useRef({ ...target });
+
   const { canvasRef } = useOrb({
     fragment: FRAGMENT,
     size,
@@ -180,7 +209,10 @@ function GeminiOrb({
     variant,
     brilliance,
     paused,
-    step: ({ dt, blend, motionReduced }) => {
+    pace: () => tuned.current.pace,
+    step: ({ dt, motionReduced }) => {
+      const blend = stateBlend(dt, transition, motionReduced);
+      settleToward(tuned.current, target, blend);
       const current = voice.current;
       const input = typeof audioLevel === "number" ? audioLevel : audioLevel.current;
       current.assistantMix += ((audioMode === "assistant" ? 1 : 0) - current.assistantMix) * blend;
@@ -203,7 +235,7 @@ function GeminiOrb({
     uniforms: () => {
       const current = voice.current;
       return {
-        ...GEMINI_TUNING,
+        ...tuned.current,
         voice: current.level.level,
         voiceBand0: current.bands[0].level,
         voiceBand1: current.bands[1].level,

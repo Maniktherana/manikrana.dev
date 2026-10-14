@@ -7,36 +7,43 @@ import { useNoteAudio } from "./use-note-audio";
 
 type Stage =
   | "diffusion"
-  | "diffusionThinking"
+  | "diffusionListening"
   | "gemini"
   | "geminiListening"
   | "geminiThinking"
-  | "dna"
-  | "dnaThinking";
+  | "fold"
+  | "foldListening";
 
 const LISTENING = Math.ceil((NOTE_MS + 500) / 100) * 100;
 
 const TIMING = {
   diffusion: 0,
-  diffusionThinking: 1400,
+  diffusionListening: 1400,
   gemini: 3600,
   geminiListening: 5000,
   geminiThinking: 5000 + LISTENING,
-  dna: 5000 + LISTENING + 2400,
-  dnaThinking: 5000 + LISTENING + 3800,
+  fold: 5000 + LISTENING + 2400,
+  foldListening: 5000 + LISTENING + 3800,
   loop: 5000 + LISTENING + 6200,
 } satisfies Record<Stage | "loop", number>;
 
-const ORDER: OrbId[] = ["diffusion", "gemini", "dna"];
+const ORDER: OrbId[] = ["diffusion", "gemini", "fold"];
+
+// How each orb looks while it waits off to the side.
+const ASIDE: Record<OrbId, LookName> = {
+  diffusion: "thinking",
+  gemini: "idle",
+  fold: "thinking",
+};
 
 const SHOWING: Record<Stage, { orb: OrbId; look: LookName }> = {
-  diffusion: { orb: "diffusion", look: "resting" },
-  diffusionThinking: { orb: "diffusion", look: "thinking" },
-  gemini: { orb: "gemini", look: "resting" },
+  diffusion: { orb: "diffusion", look: "thinking" },
+  diffusionListening: { orb: "diffusion", look: "listening" },
+  gemini: { orb: "gemini", look: "idle" },
   geminiListening: { orb: "gemini", look: "listening" },
   geminiThinking: { orb: "gemini", look: "thinking" },
-  dna: { orb: "dna", look: "resting" },
-  dnaThinking: { orb: "dna", look: "thinking" },
+  fold: { orb: "fold", look: "thinking" },
+  foldListening: { orb: "fold", look: "listening" },
 };
 
 const SLOTS = [
@@ -75,12 +82,12 @@ function useStoryboard(playing: boolean) {
       timers.push(window.setTimeout(step, ms));
     };
 
-    after(TIMING.diffusionThinking, () => setStage("diffusionThinking"));
+    after(TIMING.diffusionListening, () => setStage("diffusionListening"));
     after(TIMING.gemini, () => setStage("gemini"));
     after(TIMING.geminiListening, () => setStage("geminiListening"));
     after(TIMING.geminiThinking, () => setStage("geminiThinking"));
-    after(TIMING.dna, () => setStage("dna"));
-    after(TIMING.dnaThinking, () => setStage("dnaThinking"));
+    after(TIMING.fold, () => setStage("fold"));
+    after(TIMING.foldListening, () => setStage("foldListening"));
     after(TIMING.loop, () => {
       setStage("diffusion");
       setLap((current) => current + 1);
@@ -104,6 +111,7 @@ export function Preview() {
       {[-2, -1, 0, 1, 2].map((distance) => {
         const index = position + distance;
         const id = ORDER[((index % ORDER.length) + ORDER.length) % ORDER.length];
+        const showing = distance === 0 ? look : ASIDE[id];
 
         return (
           <motion.div
@@ -117,8 +125,8 @@ export function Preview() {
               id={id}
               size={ORB_SIZE}
               className="size-full"
-              look={distance === 0 ? look : "resting"}
-              audio={audio}
+              look={showing}
+              audio={hearsNote(id, showing) ? audio : undefined}
             />
           </motion.div>
         );

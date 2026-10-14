@@ -12,7 +12,7 @@ export function Example() {
   return (
     <div className="flex flex-col items-start gap-6">
       <output className="flex items-center gap-3 text-sm text-muted-foreground">
-        <DotMatrix pattern="comet" />
+        <DotMatrix pattern="scan" />
         Thinking
       </output>
       <DotMatrix pattern="breathe" hueMap="sage" cols={8} rows={2} />
