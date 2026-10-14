@@ -120,7 +120,7 @@ export function MlpDiagram() {
     <SceneDiagram
       source={MLP_SCENE}
       steps={MLP_STEPS}
-      frameHeight={224}
+      frameHeight={231.2}
       zoom={MLP_ZOOM}
       caption="MLP block"
       description="The feed-forward network in mlm, run on each of the four tokens on its own. Every one of a token's 768 features connects to every one of 3072 hidden neurons, which add a bias of their own and apply GELU; every hidden neuron connects to every one of 768 outputs, which add their own bias and stay linear. Three, five and three neurons are drawn, with dots for the rest."

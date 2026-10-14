@@ -140,7 +140,7 @@ export function ModelDiagram() {
     <SceneDiagram
       source={OVERVIEW_SCENE}
       steps={OVERVIEW_STEPS}
-      frameHeight={124}
+      frameHeight={128.6}
       caption="MLM: Manik Language Model"
       description="The whole of mlm. Each token id looks up its row of tok_emb, plus its position's row of pos_emb. The result runs through twelve transformer blocks in turn, drawn as a stack: each adds attention to its input and then a feed-forward network to that, with a layer norm before each. final_norm follows, then out_head, which reuses tok_emb's weights, scores all 50,257 tokens at every position, and generate samples the next token from the last position's scores only."
     />

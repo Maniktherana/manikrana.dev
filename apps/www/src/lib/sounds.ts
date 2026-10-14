@@ -22,13 +22,15 @@ export function play(sound: Sound) {
   sounds[sound]();
 }
 
-// Work items and library entries open as their own pages over the home page.
+// Pages stack over the home page: the work index over home, and a work item or library entry over both.
 const isEntry = (pathname: string) =>
   pathname.startsWith("/work/") || pathname.startsWith("/library/");
+const depthOf = (pathname: string) => (pathname === "/" ? 0 : isEntry(pathname) ? 2 : 1);
 
 export function navigationSound(from: string, to: string): Sound | undefined {
   if (from === to) return;
   if (isEntry(from) && isEntry(to)) return "tab-switch";
-  if (isEntry(to)) return "page-enter";
-  if (isEntry(from)) return "page-exit";
+  const [here, there] = [depthOf(from), depthOf(to)];
+  if (there > here) return "page-enter";
+  if (there < here) return "page-exit";
 }

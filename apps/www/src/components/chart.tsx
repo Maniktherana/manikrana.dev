@@ -27,9 +27,9 @@ const axisAt = (domain: Domain) => Math.min(Math.max(toPercent(0, domain), 0), 1
 
 export function Panel({ caption, children }: { caption: string; children: ReactNode }) {
   return (
-    <figure className="my-8">
+    <figure className="my-8 max-sm:-mx-5 lg:-mx-16">
       {children}
-      <figcaption className="mt-3 text-center text-xs text-pretty text-muted-foreground">
+      <figcaption className="mt-3 text-center text-xs text-pretty text-muted-foreground max-sm:px-5">
         {caption}
       </figcaption>
     </figure>

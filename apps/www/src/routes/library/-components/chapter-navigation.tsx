@@ -124,7 +124,7 @@ export function ChapterNavigation({ article }: { article: RefObject<HTMLElement 
   if (chapters.length < 2) return null;
 
   return (
-    <div className="pointer-events-none absolute inset-y-0 right-full z-50 me-8 hidden lg:block">
+    <div className="pointer-events-none absolute inset-y-0 right-full z-50 me-24 hidden lg:block">
       <nav aria-label="Sections" className="sticky top-24">
         <div
           ref={rail}

@@ -4,6 +4,10 @@ import { cn } from "@manikrana/ui/lib/utils";
 import { BAR, DOT, STACK, LABEL, MARGIN, dotX, noise, type Item } from "@/components/mlm/scene";
 
 const WIDTH = 400;
+/** Space above and below a laid-out diagram, in view box units. */
+const PADDING = 22;
+/** Label sizes by tone, in view box units, matching the classes they render with. */
+const TEXT_SIZE = { chip: 6, name: 8, dim: 6.5, shape: 5.5 } as const;
 const DEPTH = 0.55;
 const DIM = 0.1;
 /** Without a matrix at its start, a wire carries one packet per token of “<bos> The cat is”. */
@@ -264,10 +268,19 @@ function layout(steps: number[], source: Item[], frameHeight?: number, zoom = 1)
   );
   const right = Math.max(...points.map((p) => p[0]), labels.length ? LABEL : -Infinity);
   const scale = Math.min(2.6, (WIDTH - 32 - labelWidth) / (right - left));
-  const ys = [...points.map((p) => p[1]), ...texts.map((item) => -item.z)];
+  // Vertical extent on screen, with each label's real height: it rises about 3/4 of its size above
+  // the baseline and drops 1/4 below. The same padding then goes above and below.
+  const tops = [
+    ...points.map((p) => p[1] * scale),
+    ...texts.map((item) => -item.z * scale - TEXT_SIZE[item.tone] * 0.75),
+  ];
+  const bottoms = [
+    ...points.map((p) => p[1] * scale),
+    ...texts.map((item) => -item.z * scale + TEXT_SIZE[item.tone] * 0.25),
+  ];
   const ox = (WIDTH - labelWidth - (right - left) * scale) / 2 - left * scale;
-  const oy = 28 - Math.min(...ys) * scale;
-  const height = Math.ceil((Math.max(...ys) - Math.min(...ys)) * scale + 44);
+  const oy = PADDING - Math.min(...tops);
+  const height = Math.ceil(Math.max(...bottoms) - Math.min(...tops) + 2 * PADDING);
   const at = (x: number, z: number, y = 0): Point => {
     const [fx, fy] = flat(x, y, z);
     return [ox + fx * scale, oy + fy * scale];
@@ -390,7 +403,7 @@ export function SceneDiagram({
     );
 
   return (
-    <figure className="my-8 max-sm:-mx-5">
+    <figure className="my-8 max-sm:-mx-5 lg:-mx-16">
       <div
         ref={ref}
         className="relative rounded-stage bg-plot shadow-stage"
