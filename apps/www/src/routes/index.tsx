@@ -65,8 +65,8 @@ function Home() {
             <InlineLink href="https://turboml.com/" mark="turboml">
               TurboML
             </InlineLink>
-            . I build ambitious software with a strong attention to craft, from the systems
-            underneath it to the interfaces people actually use.
+            . I build ambitious software end to end, from the systems that make it fast to the
+            interfaces that make it feel good.
           </TextReveal>
           <TextReveal
             as="p"
