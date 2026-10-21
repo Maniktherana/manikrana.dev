@@ -7,7 +7,6 @@ const config: StorybookConfig = {
   framework: "@storybook/react-vite",
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(ts|tsx)"],
   addons: ["@storybook/addon-docs"],
-  // Copies of apps/site/public images (portrait, talk thumbnails) for stories.
   staticDirs: ["../public"],
   core: {
     disableTelemetry: true,

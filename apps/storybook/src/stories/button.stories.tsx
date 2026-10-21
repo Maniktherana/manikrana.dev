@@ -7,7 +7,7 @@ import { Row, Section, Showcase } from "../showcase";
 type Variant = NonNullable<ComponentProps<typeof ButtonComponent>["variant"]>;
 
 const neutral = ["default", "secondary", "ghost"] as const satisfies readonly Variant[];
-const tints = ["blue", "cyan", "green", "amber", "red"] as const satisfies readonly Variant[];
+const tints = ["green", "amber", "red"] as const satisfies readonly Variant[];
 const sizes = ["sm", "default", "lg"] as const;
 const iconSizes = ["icon-sm", "icon", "icon-lg"] as const;
 

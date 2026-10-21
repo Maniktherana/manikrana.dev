@@ -1,7 +1,6 @@
 import { create } from "storybook/theming";
 
-// HSL values copied from @manikrana/ui/styles/globals.css (Storybook's
-// theming needs literal colors, not CSS variables).
+// Storybook's theming needs literal colors, so these mirror @manikrana/ui/styles/globals.css.
 const background = "hsl(0 0% 0%)";
 const foreground = "hsl(0 0% 93%)";
 const mutedForeground = "hsl(0 0% 58%)";
@@ -43,5 +42,4 @@ const vars = {
 
 export const managerTheme = create(vars);
 
-// Docs pages render on the pure black page, like the canvas.
 export const docsTheme = create({ ...vars, appContentBg: background });

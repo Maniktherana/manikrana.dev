@@ -14,7 +14,6 @@ import { Row, Section, Showcase } from "../showcase";
 
 type InputProps = ComponentProps<typeof InputGroupInput>;
 
-/** transitions.dev's search: leading icon, transparent input, trailing shortcut. */
 function SearchPill({
   input,
   ...props

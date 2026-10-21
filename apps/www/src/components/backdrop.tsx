@@ -34,7 +34,7 @@ export function Backdrop() {
       className="pointer-events-none absolute inset-0 -z-1 min-h-dvh overflow-hidden"
       aria-hidden="true"
     >
-      <div className="backdrop-glow absolute h-72 w-96 rounded-full" />
+      <div className="backdrop-glow absolute size-80 rounded-full" />
       <div className="backdrop-dots backdrop-dots--lit absolute inset-0" />
     </div>
   );

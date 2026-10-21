@@ -7,7 +7,7 @@ import { Row, Section, Showcase } from "../showcase";
 type Variant = NonNullable<ComponentProps<typeof BadgeComponent>["variant"]>;
 
 const neutral = ["default", "secondary"] as const satisfies readonly Variant[];
-const tints = ["blue", "cyan", "green", "amber", "red"] as const satisfies readonly Variant[];
+const tints = ["green", "amber", "red"] as const satisfies readonly Variant[];
 const groups = [
   { label: "Neutral", variants: neutral },
   { label: "Tinted", variants: tints },

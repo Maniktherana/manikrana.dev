@@ -22,7 +22,6 @@ export const Link: StoryObj<typeof meta> = {
         </p>
       </Section>
       <Section title="In a paragraph">
-        {/* The site's bio copy. */}
         <div className="flex max-w-prose flex-col gap-3 text-sm text-pretty text-muted-foreground">
           <p>
             I'm an engineer at{" "}

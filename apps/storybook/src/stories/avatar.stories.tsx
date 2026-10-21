@@ -17,7 +17,6 @@ const sizes = ["sm", "default", "lg", "xl"] as const satisfies readonly Size[];
 
 const portrait = { src: "/manik.png", alt: "Manik Rana" };
 
-// Fallbacks stand in for people without a photo.
 const people = ["AK", "PS", "RV"];
 
 const meta = {

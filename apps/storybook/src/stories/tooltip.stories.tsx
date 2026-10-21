@@ -32,7 +32,6 @@ export const Tooltip: StoryObj<typeof meta> = {
         description="A small popover-lightness label with the raised edge and an arrow, shown on hover or focus."
       >
         <Section title="Playground">
-          {/* Open on load; the padding keeps it clear of the heading on any side. */}
           <Row>
             <div className="py-12">
               <TooltipComponent defaultOpen>

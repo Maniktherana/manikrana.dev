@@ -5,7 +5,6 @@ import { docsTheme } from "./theme";
 const preview: Preview = {
   parameters: {
     layout: "fullscreen",
-    // The tokens are dark only, so the page stays pure black.
     backgrounds: { disable: true },
     docs: { theme: docsTheme },
   },

@@ -35,6 +35,29 @@
       ],
       "port": 6006,
       "autoPort": true
+    },
+    {
+      "name": "design",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": [
+        "run",
+        "--cwd",
+        "apps/design",
+        "dev"
+      ],
+      "port": 3001,
+      "autoPort": true
+    },
+    {
+      "name": "design-static",
+      "runtimeExecutable": "bunx",
+      "runtimeArgs": [
+        "serve@14.2.5",
+        "apps/design/.output/public",
+        "-l",
+        "4174"
+      ],
+      "port": 4174
     }
   ]
 }

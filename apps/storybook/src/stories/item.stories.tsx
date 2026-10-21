@@ -23,8 +23,6 @@ const sizes = ["default", "sm", "xs"] as const satisfies readonly Size[];
 
 const repository = "https://github.com/Maniktherana/talks/tree/main";
 
-// The talks from the site. Their thumbnails are 112 × 70, so a talk row sets
-// the image media size and keeps the default row size.
 const talks = [
   {
     id: "prometheus",
@@ -54,7 +52,6 @@ const talks = [
 
 type Talk = (typeof talks)[number];
 
-/** A talk row: a link to the talk's folder on GitHub. */
 function TalkRow({ talk }: { talk: Talk }) {
   return (
     <ItemComponent
@@ -78,7 +75,6 @@ function TalkRow({ talk }: { talk: Talk }) {
   );
 }
 
-/** A link row with a square image, for the playground and sizes. */
 function ProfileRow({ size }: { size?: Size | null }) {
   return (
     <ItemComponent
@@ -125,7 +121,6 @@ export const Item: StoryObj<typeof meta> = {
         <ProfileRow size={size} />
       </Section>
       <Section title="Talks">
-        {/* Bleed the rows so the thumbnails align with the heading. */}
         <ItemGroup className="-mx-3 max-w-xl">
           {talks.map((talk) => (
             <li key={talk.id}>
