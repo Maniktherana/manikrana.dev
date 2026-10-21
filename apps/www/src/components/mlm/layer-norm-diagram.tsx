@@ -2,8 +2,6 @@ import { SceneDiagram } from "@/components/mlm/scene-diagram";
 import { type Item } from "@/components/mlm/scene";
 import { bottom, matrix, middle, shape, text, top, wire } from "@/components/mlm/build";
 
-// LayerNorm.forward: mean and var over each token's 768 features, (x − mean) / √(var + eps), then
-// self.scale * norm_x + self.shift, both 768-long and shared by every token.
 const NORM_Y = 70;
 const NORM_ZOOM = 1.35;
 const normX = matrix(-1, 32, NORM_Y, 101, { rows: 6 });

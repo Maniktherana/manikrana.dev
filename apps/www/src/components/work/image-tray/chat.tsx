@@ -6,8 +6,7 @@ import { ImageTray, type WebImage } from "@/components/work/image-tray/image-tra
 import { images } from "@/components/work/image-tray/images";
 import { Stream, streamDuration, words } from "@/components/work/image-tray/stream";
 
-// tan(atan2(a, b)) is the unitless a / b. Zoom, not scale: under a scale transform Chrome clips
-// the tray's blur and scrim a pixel short of the image, leaving a bright edge line.
+// Zoom, not scale: under a scale transform Chrome clips the tray's blur and scrim a pixel short.
 const SCENE = { width: 400, height: 520, gutter: 32 };
 const FIT = `min(tan(atan2(100cqw - ${SCENE.gutter}px, ${SCENE.width}px)), tan(atan2(100cqh, ${SCENE.height}px)), 1)`;
 
@@ -21,7 +20,7 @@ const SEND = { y: 8, transition: { duration: 0.18, ease: "easeOut" } } as const;
 const CLEAR = { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] } as const;
 
 const TAP = {
-  spots: ["left-18.5", "left-57.5"], // centers of the strip's first two 148px tiles
+  spots: ["left-18.5", "left-57.5"],
   landScale: 1.25,
   liftScale: 0.9,
   spring: { type: "spring", duration: 0.2, bounce: 0 },

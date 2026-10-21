@@ -4,13 +4,11 @@ import { cn } from "@manikrana/ui/lib/utils";
 import { BAR, DOT, STACK, LABEL, MARGIN, dotX, noise, type Item } from "@/components/mlm/scene";
 
 const WIDTH = 400;
-/** Space above and below a laid-out diagram, in view box units. */
 const PADDING = 22;
-/** Label sizes by tone, in view box units, matching the classes they render with. */
+/** Must match the text classes the labels render with. */
 const TEXT_SIZE = { chip: 6, name: 8, dim: 6.5, shape: 5.5 } as const;
 const DEPTH = 0.55;
 const DIM = 0.1;
-/** Without a matrix at its start, a wire carries one packet per token of “<bos> The cat is”. */
 const TOKENS = 4;
 const REACH = 4;
 const LANDS = 6;
@@ -28,7 +26,6 @@ const lengthOf = (points: Point[]) =>
         : sum,
     0,
   );
-/** How far behind the front plate a stacked head sits, so the back one reaches STACK up and right. */
 const behind = (level: number, offset?: number) =>
   offset === undefined ? (-(2 - level) * STACK) / (2 * DEPTH) : -offset / DEPTH;
 const FILL = 260;
@@ -40,13 +37,11 @@ type Point = [number, number];
 type Matrix = Extract<Item, { kind: "matrix" }>;
 type Wire = Extract<Item, { kind: "wire" }>;
 
-/** How far a point lies outside a box in the scene's x and z. */
 const outside = (
   { x0, x1, z0, z1 }: { x0: number; x1: number; z0: number; z1: number },
   [x, z]: Point,
 ) => Math.hypot(Math.max(x0 - x, 0, x - x1), Math.max(z0 - z, 0, z - z1));
 
-/** The matrix or ⊕ at a point, by its index in `items`: a matrix within `reach` of its box, or a ⊕ within `reach` of its centre. */
 function nodeAt(items: Item[], point: Point, reach: number, step?: number) {
   return items
     .map((item, index) => ({
@@ -70,12 +65,6 @@ function nodeAt(items: Item[], point: Point, reach: number, step?: number) {
 
 const range = (count: number) => Array.from({ length: count }, (_, index) => index);
 
-/**
- * What runs down a wire, as scene points. A wire from a token chip carries that one id. A wire from an
- * activation carries one packet per column it reads (all of them, or the ones it takes), each peeling off
- * that column's dot nearest the wire; from the score grid, one per row. A weight never changes, so what leaves it is the transformed
- * activation, one packet per token, and so is what leaves a ⊕ or a branch.
- */
 function packetsOf(wire: Wire, items: Item[]) {
   const start = wire.pts[0]!;
   const chip = items
@@ -90,8 +79,6 @@ function packetsOf(wire: Wire, items: Item[]) {
       pts: wire.pts,
       delay: index * (STAGGER + TOKEN_GAP),
     }));
-  // Row i of the score grid is token i's attention, and a lookup by row hands over the rows it picked:
-  // either way, what leaves is one packet per row.
   if (source.role === "scores" || (source.role === "pick" && source.per === "row"))
     return (source.role === "pick" ? source.pick : range(source.rows)).map((r, index) => {
       const z = source.z1 - MARGIN - (r + 0.5) * DOT;
@@ -118,7 +105,6 @@ function packetsOf(wire: Wire, items: Item[]) {
   });
 }
 
-/** The parts a matrix lights up in as data arrives: tokens, columns or rows. */
 function unitsOf(item: Matrix) {
   if (item.per === "row") return item.role === "pick" ? item.pick.length : item.rows;
   if (item.per === "col") return item.role === "pick" ? item.pick.length : item.cols;
@@ -131,22 +117,12 @@ function unitOf(item: Matrix, r: number, c: number) {
   return Math.floor(c / item.group);
 }
 
-/** The landing time that lights part `unit` of `units` on one input: the last packet of its share. */
 const landingOf = (times: number[], unit: number, units: number) =>
   times[Math.min(Math.ceil(((unit + 1) / units) * times.length) - 1, times.length - 1)]!;
 
-/** A part lights once every input has delivered its share: a sum waits for both of its operands. */
 const landing = (inputs: number[][], unit: number, units: number) =>
   Math.max(...inputs.map((times) => landingOf(times, unit, units)));
 
-/**
- * The active step as a timeline, following the data. A wire leaves once what it reads is ready: a
- * matrix or ⊕ in this step when everything coming into it has landed, anything earlier at once. A
- * matrix lights each part once every wire into it has delivered that part, so a residual sum waits
- * for both the block's output and the shortcut. Wires that each carry a share of the parts (one id
- * each into tok_emb) count as one input. pos_emb, with nothing coming in, lights alongside tok_emb:
- * token i and position i are looked up together.
- */
 function timingOf(items: Item[], step: number, at: (x: number, z: number) => Point) {
   type Packet = { pts: Point[]; delay: number; lands: number };
   const wires = new Map<number, { packets: Packet[]; travel: number }>();
@@ -227,10 +203,8 @@ function roundedRect([x0, y0]: Point, [x1, y1]: Point, r: number) {
   return `M${x0 + r},${y0}H${x1 - r}A${r},${r} 0 0 1 ${x1},${y0 + r}V${y1 - r}A${r},${r} 0 0 1 ${x1 - r},${y1}H${x0 + r}A${r},${r} 0 0 1 ${x0},${y1 - r}V${y0 + r}A${r},${r} 0 0 1 ${x0 + r},${y0}Z`;
 }
 
-/** Frames the steps' part of the scene in a WIDTH-wide view box, leaving room for the labels on the right. */
 function layout(steps: number[], source: Item[], frameHeight?: number, zoom = 1) {
   const items = source.filter((item) => item.step < 0 || steps.includes(item.step));
-  // A laid-out scene in view box units, scaled by `zoom`: geometry and dots grow, text keeps its size.
   if (frameHeight !== undefined) {
     const at = (x: number, z: number, y = 0): Point => [
       (x - DEPTH * y) * zoom,
@@ -268,8 +242,6 @@ function layout(steps: number[], source: Item[], frameHeight?: number, zoom = 1)
   );
   const right = Math.max(...points.map((p) => p[0]), labels.length ? LABEL : -Infinity);
   const scale = Math.min(2.6, (WIDTH - 32 - labelWidth) / (right - left));
-  // Vertical extent on screen, with each label's real height: it rises about 3/4 of its size above
-  // the baseline and drops 1/4 below. The same padding then goes above and below.
   const tops = [
     ...points.map((p) => p[1] * scale),
     ...texts.map((item) => -item.z * scale - TEXT_SIZE[item.tone] * 0.75),
@@ -290,7 +262,6 @@ function layout(steps: number[], source: Item[], frameHeight?: number, zoom = 1)
   return { items, height, scale, at, rect };
 }
 
-/** How bright a dot is heading for, and after what delay, from its matrix's role and state. */
 function brightness(
   item: Matrix,
   state: State,
@@ -317,7 +288,6 @@ function brightness(
   return { o: v, delay: lands ? landing(lands, unit, unitsOf(item)) : base + unit * FILL };
 }
 
-/** Shared matrix styling and dependency-driven playback for every model diagram. */
 export function SceneDiagram({
   source,
   steps,
@@ -332,7 +302,6 @@ export function SceneDiagram({
   caption: string;
   description?: string;
   frameHeight?: number;
-  /** How much a laid-out scene is scaled up to fill the frame. */
   zoom?: number;
   labels?: ReactNode;
 }) {
@@ -372,7 +341,6 @@ export function SceneDiagram({
     };
   }, [playing, step, steps.length, timing.latest]);
 
-  // Freeze delayed dot fills as well as the packets; resume at the same point in the step.
   useEffect(() => {
     ref.current?.getAnimations({ subtree: true }).forEach((animation) => {
       if (playing) animation.play();
@@ -708,15 +676,8 @@ export function SceneDiagram({
 
 const GROW = 400;
 
-/** Names straight from the code stay monospaced; words and tokens are set in the body face. */
 const CODE = /_|^norm\d|^Linear|^(softmax|GELU|logits|mean|var|scale|shift)$/;
 
-/** One next-token bar: flat, grows from zero once the last token's scores arrive, its number counting up with it. */
-/**
- * One next-token bar, flat. It grows a step each time one of the last token's scores lands, its number
- * counting up with it, and reaches its probability with the last one; the sampled token then turns
- * white. `stops` are those landing times; none means it is already done, an empty list that it has not started.
- */
 function Bar({
   d,
   p,
@@ -793,7 +754,6 @@ function Bar({
   );
 }
 
-/** A neuron's function from x = −3 to 3, drawn to fit inside a neuron of radius `r` centred on (cx, cy). */
 function glyphOf(glyph: "gelu" | "linear", cx: number, cy: number, r: number) {
   const gelu = (x: number) =>
     glyph === "linear"
@@ -808,7 +768,6 @@ function glyphOf(glyph: "gelu" | "linear", cx: number, cy: number, r: number) {
   }).join("");
 }
 
-/** A curly brace from screen point a to b, `w` deep, its nib to the right of the way it runs. */
 function braceOf([ax, ay]: Point, [bx, by]: Point, w: number) {
   const length = Math.hypot(bx - ax, by - ay);
   const [ux, uy] = [(bx - ax) / length, (by - ay) / length];

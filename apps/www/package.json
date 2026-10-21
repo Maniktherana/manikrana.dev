@@ -35,7 +35,8 @@
     "remark-frontmatter": "^5.0.0",
     "remark-math": "^6.0.0",
     "remark-mdx-frontmatter": "^6.0.0",
-    "shiki": "^4.2.0"
+    "shiki": "^4.2.0",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",
@@ -43,6 +44,7 @@
     "@types/node": "^25.9.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.186.0",
     "@vitejs/plugin-react": "^6.0.2",
     "dialkit": "2.0.0",
     "nitro": "^3.0.260603-beta",

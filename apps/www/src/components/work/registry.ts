@@ -16,7 +16,6 @@ export type WorkItem = {
   notes?: readonly string[];
 };
 
-// Summaries mark links as [text](href).
 export const SUMMARY_LINK = /\[([^\]]+)\]\(([^)]+)\)/g;
 
 export function plainSummary(item: WorkItem) {

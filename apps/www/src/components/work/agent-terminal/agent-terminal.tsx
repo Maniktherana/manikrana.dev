@@ -151,7 +151,6 @@ export function AgentTerminal({
           className="min-h-0 touch-none overflow-hidden [scrollbar-width:none] data-[scrolled=true]:[mask-image:linear-gradient(to_bottom,transparent,black_24px)]"
         >
           <div className="flex min-w-0 flex-col gap-2 px-3 pb-2.5 *:first:mb-0.5">
-            {/* Rows are only appended, so an index is a stable key. */}
             {rows.map((row, index) =>
               row.kind === "prompt" ? (
                 <PromptRow key={index} instant={instant} text={row.text} />

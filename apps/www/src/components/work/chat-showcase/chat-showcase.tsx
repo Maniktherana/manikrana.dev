@@ -22,7 +22,7 @@ export type ChatShowcaseProps = Omit<ComponentProps<"div">, "children"> & {
   gradient?: readonly GradientStop[];
 };
 
-// tan(atan2(a, b)) is the unitless ratio a / b. 288px is the phone's width and the height of it that must show.
+// tan(atan2(a, b)) is the unitless ratio a / b.
 const FIT =
   "max(0.1, min(tan(atan2(100cqw - 48px, 288px)), tan(atan2(100cqh - 56px, 288px)), 1.5))";
 

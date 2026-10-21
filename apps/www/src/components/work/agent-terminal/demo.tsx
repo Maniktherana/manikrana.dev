@@ -55,7 +55,7 @@ export function useDemoTerminal(ref: RefObject<Element | null>) {
   };
 }
 
-// tan(atan2(a, b)) is the unitless ratio a/b in plain CSS.
+// tan(atan2(a, b)) is the unitless ratio a / b in plain CSS.
 export function FittedTerminal({
   ref,
   margin,

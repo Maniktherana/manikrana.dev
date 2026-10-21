@@ -4,25 +4,20 @@ import type { ComponentProps, ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@manikrana/ui/lib/utils";
 
-/* ANIMATION STORYBOARD
- *   0ms   State changes; both icons crossfade, blur, and scale together.
- * 250ms   Selected icon is sharp at full scale; the other is hidden.
- * Reduced motion switches directly to the selected state.
- */
 const TIMING = {
-  swapDuration: 250, // Time for both icon layers to reach their next state.
+  swapDuration: 250,
 };
 
 const ICON = {
-  states: ["a", "b"] as const, // Persistent layers share one grid cell.
-  hidden: { opacity: 0, filter: "blur(2px)", scale: 0.25 }, // Departing icon.
-  visible: { opacity: 1, filter: "blur(0px)", scale: 1 }, // Selected icon.
+  states: ["a", "b"] as const,
+  hidden: { opacity: 0, filter: "blur(2px)", scale: 0.25 },
+  visible: { opacity: 1, filter: "blur(0px)", scale: 1 },
   transition: {
-    type: "tween" as const, // Preserve the supplied crossfade curve.
+    type: "tween" as const,
     duration: TIMING.swapDuration / 1000,
-    ease: [0.42, 0, 0.58, 1] as const, // Symmetric ease-in-out.
+    ease: [0.42, 0, 0.58, 1] as const,
   },
-  reducedTransition: { duration: 0 }, // Swap immediately without motion.
+  reducedTransition: { duration: 0 },
 };
 
 type IconSwapProps = Omit<ComponentProps<"span">, "children"> & {

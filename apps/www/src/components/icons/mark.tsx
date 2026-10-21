@@ -31,7 +31,7 @@ export function Mark({
   );
 }
 
-/** Turns the element once per hover. `to` must look identical to `from`: the turn has no fill and finishes after hover ends. */
+/** `to` must look identical to `from`: the turn has no fill and finishes after hover ends. */
 export function useTurn<T extends SVGElement>(hovered: boolean, from: string, to: string) {
   const ref = useRef<T>(null);
   const turn = useRef<Animation>(undefined);

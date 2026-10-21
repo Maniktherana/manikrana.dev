@@ -157,7 +157,6 @@ export const FOLD_STATES = {
   },
 } satisfies Record<FoldOrbState, FoldTuning>;
 
-// The pose that `hold` glides the body into and keeps it at; the beat pulse runs on.
 const HOLD_POSE = {
   swayPhase: 0.4646,
   searchSwayPhase: 2.575,
@@ -168,7 +167,6 @@ const HOLD_POSE = {
 
 const TAU = Math.PI * 2;
 
-// Where the old shared clock started, so the first frame matches.
 const START_PHASE = {
   swayPhase: 0.68,
   searchSwayPhase: 0.97,
@@ -228,7 +226,6 @@ function FoldOrb({
       if (current.hold === 0) return;
       for (const key of Object.keys(HOLD_POSE) as (keyof typeof HOLD_POSE)[]) {
         const from = phase.current[key];
-        // The nearest turn of the pose, so the body never travels more than half a cycle.
         const to = from + ((((HOLD_POSE[key] - from) % TAU) + TAU * 1.5) % TAU) - Math.PI;
         phase.current[key] += (to - from) * blend * current.hold;
       }

@@ -8,15 +8,11 @@ import { Button } from "@manikrana/ui/components/ui/button";
 import { Input } from "@manikrana/ui/components/ui/input";
 import { Textarea } from "@manikrana/ui/components/ui/textarea";
 
-// The group is the surface (transitions.dev's "Search ⌘K" pill); the control
-// inside is transparent. A textarea or a block addon turns the pill into a
-// stage-radius rectangle. Disabled dims the whole group once, so the control
-// inside resets its own opacity.
+// Disabled dims the whole group once, so the control inside resets its own opacity.
 const inputGroupVariants = cva(
   "flex h-9 w-full min-w-0 items-center rounded-full bg-control transition-[background-color] duration-150 ease-out hover:bg-control-hover has-[[data-slot=input-group-control]:disabled]:pointer-events-none has-[[data-slot=input-group-control]:disabled]:opacity-50 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-end]]:rounded-stage has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>[data-align=block-start]]:rounded-stage has-[>textarea]:h-auto has-[>textarea]:rounded-stage has-[>[data-align=inline-end]]:[&>input]:pr-2 has-[>[data-align=inline-start]]:[&>input]:pl-2",
   {
     variants: {
-      // The shared edge, off by default like the input's.
       bordered: {
         true: "shadow-control",
         false: "",
@@ -45,8 +41,6 @@ function InputGroup({
   );
 }
 
-// Inline addons sit 12px from the pill's edge; a 20px kbd sits 8px in and a
-// 24px button 6px in, the same as their gap to the top and bottom.
 const inputGroupAddonVariants = cva(
   "flex cursor-text items-center justify-center gap-2 text-sm font-medium text-muted-foreground select-none [&>kbd]:rounded-full [&>svg:not([class*='size-'])]:size-4",
   {
@@ -73,7 +67,6 @@ function InputGroupAddon({
     // The click only forwards pointer focus to the control; keyboard users tab to it directly.
     // oxlint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
     <div
-      // Same as InputGroup: a <fieldset> would add form semantics to a decorative addon.
       // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role
       role="group"
       data-slot="input-group-addon"
@@ -92,8 +85,6 @@ function InputGroupAddon({
   );
 }
 
-// Inline sizes fit inside the 36px pill (24px, 6px from each edge); block sizes
-// are Button's own small sizes, for a toolbar under a textarea.
 const inputGroupButtonSizes = {
   xs: {
     size: "sm",

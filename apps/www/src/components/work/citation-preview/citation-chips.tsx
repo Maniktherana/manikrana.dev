@@ -21,7 +21,6 @@ export type CitationChipProps = Omit<ComponentProps<"a">, "href" | "children"> &
   source: CitationSource;
 };
 
-// A click follows the link; a tap opens the card instead, since a touch screen can't hover.
 export function CitationChip({ source, className, ...props }: CitationChipProps) {
   const name = sourceName(source);
   const touch = useRef(false);

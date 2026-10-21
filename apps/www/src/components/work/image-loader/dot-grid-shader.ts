@@ -159,8 +159,7 @@ void main() {
 
   float squareness = clamp(1.0 - uRadius, 0.0, 1.0);
   float outerSdf = dotSdf(local, uCell * 0.5, squareness);
-  // 1 - smoothstep(-0.7, 0.7, d) rather than smoothstep(0.7, -0.7, d): GLSL
-  // leaves smoothstep undefined when the first edge is the larger.
+  // GLSL leaves smoothstep undefined when the first edge is the larger.
   float outerMask = clamp(1.0 - smoothstep(-0.7, 0.7, outerSdf), 0.0, 1.0);
   float dotA = 0.0;
 

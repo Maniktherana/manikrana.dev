@@ -288,8 +288,7 @@ function usePreload(previous: string, next: string) {
 
 const TILE_INTO_VIEW = { block: "center", behavior: "instant" } as const;
 
-// Closing lands on the work page at the item's tile so it can morph back: history.back() when that
-// is where it was opened, keeping its scroll, so previous and next must replace, not push.
+// history.back() keeps the work page's scroll, so previous and next must replace, not push.
 function useClose(item: WorkItem, grid: WorkList | undefined) {
   const router = useRouter();
   return () => {

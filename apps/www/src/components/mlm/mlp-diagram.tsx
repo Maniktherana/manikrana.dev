@@ -2,14 +2,9 @@ import { SceneDiagram } from "@/components/mlm/scene-diagram";
 import { noise, type Item } from "@/components/mlm/scene";
 import { bottom, matrix, middle, text, wire, type Matrix } from "@/components/mlm/build";
 
-// FeedForward: nn.Linear(768, 3072), GELU, nn.Linear(3072, 768), run on each token on its own.
-// Every input feeds every hidden neuron, every hidden neuron applies GELU, and every hidden neuron
-// feeds every output. Three of 768, five of 3072 and three of 768 are drawn.
 type Neuron = Extract<Item, { kind: "neuron" }>;
 const MLP_ZOOM = 1.18;
 const COLUMNS = { input: 40, hidden: 170, output: 300 };
-// The top neuron of each column is drawn larger with its function inside: x and out are linear, the
-// hidden layer applies GELU.
 const neurons = (
   step: number,
   x: number,
@@ -29,7 +24,6 @@ const neurons = (
 const INPUT = neurons(-1, COLUMNS.input, [78, 108, 164], 7, "linear");
 const HIDDEN = neurons(0, COLUMNS.hidden, [50, 80, 108, 136, 192], 7.5, "gelu");
 const OUTPUT = neurons(1, COLUMNS.output, [78, 108, 164], 7, "linear");
-// Each Linear adds its bias: 3072 values into the hidden layer, 768 into out.
 const hiddenBias = matrix(0, COLUMNS.hidden, 16, 117, {
   cols: 6,
   group: 6,
@@ -43,7 +37,6 @@ const outputBias = matrix(1, COLUMNS.output, 44, 118, {
   role: "weight",
 });
 
-/** Every neuron of `from` to every neuron of `to`, edge to edge, so a signal arrives before its neuron lights. */
 function connect(from: Neuron[], to: Neuron[]): Item[] {
   return from.flatMap((a, i) =>
     to.map((b, j): Item => {
@@ -64,11 +57,9 @@ function connect(from: Neuron[], to: Neuron[]): Item[] {
   );
 }
 
-/** Three dots between two neurons of a column, for the ones not drawn. */
 const ellipsis = (x: number, y: number): Item[] =>
   [-6, 0, 6].map((dy) => ({ kind: "join", step: -1, x, z: -(y + dy) }));
 
-/** A bias block's wire into the top neuron below it, and its name and size to its left. */
 function bias(m: Matrix, into: Neuron, size: string): Item[] {
   return [
     wire(m.step, [middle(m), bottom(m) + 1], [middle(m), -into.z - into.r - 1]),
@@ -100,7 +91,6 @@ const MLP_SCENE: Item[] = [
   ...ellipsis(COLUMNS.hidden, 164),
   ...ellipsis(COLUMNS.output, 136),
   text(0, COLUMNS.hidden + 14, 38, "GELU", "start"),
-  // Each column is named for what it holds, just under its last neuron.
   ...[
     { column: INPUT, name: "x", size: "(768)", step: -1 },
     { column: HIDDEN, name: "hidden", size: "(3072)", step: 0 },

@@ -30,7 +30,6 @@ export type ImageTrayProps = Omit<ComponentProps<"div">, "children"> & {
   onCopy?: (image: WebImage) => void;
 };
 
-// Reanimated's withSpring({ duration: 300, dampingRatio: 0.86 }), solved for stiffness and damping.
 const SPRING = { type: "spring", stiffness: 4039.55, damping: 218.64, mass: 4 } as const;
 const FADE = {
   in: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] },

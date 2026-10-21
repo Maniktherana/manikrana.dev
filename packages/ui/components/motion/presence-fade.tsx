@@ -13,7 +13,6 @@ type PresenceFadeProps<T extends Tag = "div"> = { as?: T } & Omit<
   "initial" | "animate" | "exit"
 >;
 
-// A keyed child of AnimatePresence that fades in and out where it stands.
 function PresenceFade<T extends Tag = "div">({ as, transition, ...props }: PresenceFadeProps<T>) {
   const Component = tags[as ?? "div"] as ComponentType<HTMLMotionProps<Tag>>;
   return (

@@ -26,7 +26,6 @@ import {
 } from "@/components/page-header";
 import { posts } from "@/content/library";
 
-/** What a post's MDX renders with: its links and code blocks, and the components it can drop in by name. */
 const mdxComponents: MDXComponents = {
   a: ({ href, children }) => (
     <Link href={href} target="_blank" rel="noreferrer">
@@ -62,7 +61,6 @@ export function PostPage({ id }: { id: string }) {
         </span>
       </PageHeader>
 
-      {/* The section rail starts level with the title, beside the text, and sticks as the post scrolls. */}
       <div className="relative mt-8">
         <div className="relative mx-auto max-w-reading">
           <ChapterNavigation article={article} />

@@ -7,7 +7,6 @@ const POINTER = {
   fade: { duration: 0.12 },
 };
 
-// The origin is the tip, inset 3.58 units in the 24-unit artwork.
 export function DemoCursor({ target, visible }: { target: CursorPoint; visible: boolean }) {
   return (
     <motion.div

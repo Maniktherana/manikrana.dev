@@ -54,7 +54,6 @@ article .katex-display {
   stroke: var(--background);
 }
 
-/* Center of the 48px avatar at the reading column's start, below the page's top padding. */
 .backdrop-dots--lit,
 .backdrop-glow {
   --portrait-x: calc((100% - min(100% - 40px, var(--container-reading))) / 2 + 24px);
@@ -84,8 +83,7 @@ article .katex-display {
   background: radial-gradient(closest-side, oklch(1 0 0 / 3%), transparent);
 }
 
-/* Up to four 17rem+ columns, no more than there are tiles, each as wide as a full row's.
-   tan(atan2(a, b)) is a / b. */
+/* tan(atan2(a, b)) is a / b. */
 .work-grid {
   --grid-width: min(100cqw - 40px, var(--container-work));
   --grid-fit: clamp(
@@ -103,7 +101,6 @@ article .katex-display {
   grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
 }
 
-/* A tile spans enough 1-spacing rows for its height and the 3-spacing gap below it. */
 .work-grid > li {
   grid-row: span
     round(
@@ -190,7 +187,6 @@ article .katex-display {
   animation-duration: 150ms;
   animation-delay: 50ms;
 }
-/* Tiles and stages morph only on open and close; every other navigation just fades the page. */
 :root:not(:active-view-transition-type(open, close)) [data-morph] {
   view-transition-name: none;
 }

@@ -81,7 +81,6 @@ function SelectContent({
         <SelectPrimitive.Popup
           data-slot="select-content"
           className={cn(
-            // Keep agentsims' anchored fade/scale, tuned for a gentler entry and faster exit.
             "relative max-h-[min(22.5rem,var(--available-height))] min-w-(--anchor-width) origin-(--transform-origin) overflow-hidden rounded-card bg-popover p-1.5 text-sm leading-5 font-normal text-foreground shadow-raised outline-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-97 data-open:duration-250 data-open:ease-[cubic-bezier(0.16,1,0.3,1)] data-open:data-[side=bottom]:slide-in-from-top-2 data-open:data-[side=top]:slide-in-from-bottom-2 data-open:data-[side=left]:slide-in-from-right-2 data-open:data-[side=right]:slide-in-from-left-2 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-99 data-closed:duration-150 data-closed:ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:data-open:animate-none motion-reduce:data-closed:animate-none",
             matchTriggerWidth ? "w-(--anchor-width)" : "w-max",
             className,

@@ -8,7 +8,6 @@ import { toggleVariants } from "@manikrana/ui/components/ui/toggle";
 
 type ToggleVariantProps = VariantProps<typeof toggleVariants>;
 
-// Items take the group's size, edge and press feedback unless they set their own.
 const ToggleGroupContext = React.createContext<ToggleVariantProps>({});
 
 function ToggleGroup({

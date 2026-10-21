@@ -49,8 +49,6 @@ export function BreadcrumbSeparator() {
   );
 }
 
-// Back keeps the scroll of the page that linked here with `back` state; anywhere else, close goes
-// to `fallback`.
 export function useClose(fallback: NavigateOptions) {
   const router = useRouter();
   const [back] = useState(useLocation({ select: (location) => location.state.back }));

@@ -39,12 +39,9 @@ function usePdf(url: string) {
 const MAX_WIDTH = 4096;
 const OVERSAMPLE = 2;
 
-/** Device pixels to draw for a page `width` device pixels wide: denser than the screen, and denser still while pinch-zoomed. */
 const density = (width: number) =>
   Math.min(MAX_WIDTH, Math.round(width * Math.max(OVERSAMPLE, window.visualViewport?.scale ?? 1)));
 
-// Pages draw as they near the viewport, redraw whenever their size in device pixels or the pinch-zoom
-// changes, and are released once well past it.
 function PdfPage({
   pdf,
   number,

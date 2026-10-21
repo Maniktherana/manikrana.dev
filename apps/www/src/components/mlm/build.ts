@@ -1,4 +1,3 @@
-// Helpers for the diagrams laid out by hand, in view box units.
 import { DOT, MARGIN, widthOf, type Item } from "@/components/mlm/scene";
 
 export const heightOf = (rows: number) => 2 * MARGIN + rows * DOT;
@@ -6,7 +5,7 @@ export const heightOf = (rows: number) => 2 * MARGIN + rows * DOT;
 export type Matrix = Extract<Item, { kind: "matrix" }>;
 export type Point = [number, number];
 
-/** These diagrams are laid out in view box units: x right, y down. The shared scene uses z up. */
+/** View box units with y down; the shared scene uses z up. */
 export function matrix(
   step: number,
   x: number,
@@ -53,7 +52,6 @@ export const text = (
   anchor: "start" | "middle" | "end" = "middle",
 ): Item => ({ kind: "text", step, x, z: -y, value, anchor, tone: "dim" });
 
-/** A matrix's tensor shape, just under its bottom-right corner. */
 export const shape = (
   step: number,
   m: Matrix,
@@ -69,7 +67,6 @@ export const shape = (
   tone: "shape",
 });
 
-/** A flat token chip with its word, centred on (x, y). */
 export function chip(step: number, x: number, y: number, word: string, width = 22): Item[] {
   return [
     { kind: "chip", step, x0: x - width / 2, x1: x + width / 2, z0: -y - 4.5, z1: -y + 4.5 },

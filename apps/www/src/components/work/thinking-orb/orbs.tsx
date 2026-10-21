@@ -7,7 +7,6 @@ import type { NoteAudio } from "./use-note-audio";
 export type LookName = "idle" | "listening" | "thinking";
 export type OrbId = "diffusion" | "gemini" | "fold";
 
-// Gemini has no idle state; it rests as the user look with no voice.
 export type GeminiLook = Exclude<LookName, "idle">;
 
 export const geminiLook = (look: LookName): GeminiLook => (look === "idle" ? "listening" : look);

@@ -25,7 +25,7 @@ const HIDDEN = { opacity: 0, scale: 1.5 } as const;
 const REST = { opacity: 1, scale: 1 } as const;
 const ENTRANCE = { duration: 2, ease: [0.25, 0.1, 0.25, 1] } as const;
 
-// The box's 80% radius and 20% centre as shares of the 130% layer; its transform origin repeats the centre.
+// The box's 80% radius and 20% centre as shares of the 130% layer; its transform origin must repeat the centre.
 const SHAPE = "61.538% 61.538% at 50% 26.923%";
 
 const BREATHING: Keyframe[] = [

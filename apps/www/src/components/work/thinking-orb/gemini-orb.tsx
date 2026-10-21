@@ -153,7 +153,6 @@ const GEMINI_TUNING = {
   colorLayerMix: 1,
   voiceAmplitude: 1,
   voiceHarmonic: 1,
-  // Motion with no audio; 0 keeps the orb still until a voice moves it.
   restingWave: 0,
   restingSway: 0,
 };

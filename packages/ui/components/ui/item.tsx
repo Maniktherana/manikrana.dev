@@ -29,8 +29,6 @@ function ItemSeparator({ className, ...props }: React.ComponentProps<typeof Sepa
   );
 }
 
-// The site's talk rows: a padded row that fills on hover and focus. Rows are
-// large, so they get no press scale.
 const itemVariants = cva(
   "group/item flex w-full flex-wrap items-center rounded-2xl text-sm transition-[background-color] duration-150 ease-out outline-none focus-visible:bg-control-hover focus-visible:ring-3 focus-visible:ring-ring/50 [a]:hover:bg-control-hover",
   {
@@ -69,8 +67,6 @@ function Item({
   });
 }
 
-// Glyphs sit on the title's first line when a description follows; images
-// stay centered against the text, as the talk thumbnails do.
 const itemMediaVariants = cva(
   "flex shrink-0 items-center justify-center gap-2 [&_svg]:pointer-events-none",
   {

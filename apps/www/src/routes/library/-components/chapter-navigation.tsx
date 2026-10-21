@@ -12,6 +12,8 @@ import {
 import {
   animate,
   AnimatePresence,
+  cancelFrame,
+  frame,
   motion,
   useMotionValue,
   useTransform,
@@ -55,6 +57,7 @@ export function ChapterNavigation({ article }: { article: RefObject<HTMLElement 
   const [current, setCurrent] = useState(0);
   const position = useMotionValue(0);
   const glide = useRef<AnimationPlaybackControls | null>(null);
+  const measure = useRef(() => {});
   const hoveredIndex = hovered ? chapters.findIndex((chapter) => chapter.id === hovered.id) : -1;
   const hoveredChapter = hoveredIndex >= 0 ? chapters[hoveredIndex] : undefined;
 
@@ -76,39 +79,38 @@ export function ChapterNavigation({ article }: { article: RefObject<HTMLElement 
     [article],
   );
 
+  // Measured in Motion's frame loop: a separate requestAnimationFrame races Motion's render and
+  // lands a frame late at random, which judders on 120Hz screens.
   useEffect(() => {
     const root = article.current;
     if (!root || chapters.length === 0) return;
-    let frame = 0;
-    const update = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const end = root.getBoundingClientRect().bottom;
-        const tops = chapters.map(
-          (chapter) => startOf(chapter)?.getBoundingClientRect().top ?? end,
-        );
-        const next = new Set<string>();
-        chapters.forEach((chapter, index) => {
-          const top = tops[index]!;
-          const bottom = tops[index + 1] ?? end;
-          if (bottom > 0 && top < window.innerHeight) next.add(chapter.id);
-        });
-        setVisible((current) => (sameSet(current, next) ? current : next));
-        const mark = window.innerHeight / 3;
-        const index = tops.reduce((last, top, at) => (top <= mark ? at : last), 0);
-        const start = tops[index]!;
-        const span = (tops[index + 1] ?? end) - start;
-        setCurrent(index);
-        position.set(index + Math.min(1, Math.max(0, (mark - start) / span)));
+    const read = () => {
+      const end = root.getBoundingClientRect().bottom;
+      const tops = chapters.map((chapter) => startOf(chapter)?.getBoundingClientRect().top ?? end);
+      const next = new Set<string>();
+      chapters.forEach((chapter, index) => {
+        const top = tops[index]!;
+        const bottom = tops[index + 1] ?? end;
+        if (bottom > 0 && top < window.innerHeight) next.add(chapter.id);
       });
+      setVisible((current) => (sameSet(current, next) ? current : next));
+      const mark = window.innerHeight / 3;
+      const index = tops.reduce((last, top, at) => (top <= mark ? at : last), 0);
+      const start = tops[index]!;
+      const span = (tops[index + 1] ?? end) - start;
+      setCurrent(index);
+      position.set(index + Math.min(1, Math.max(0, (mark - start) / span)));
     };
-    update();
+    const update = () => frame.read(read);
+    measure.current = read;
+    read();
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
     const observer = new ResizeObserver(update);
     observer.observe(root);
     return () => {
-      cancelAnimationFrame(frame);
+      cancelFrame(read);
+      measure.current = () => {};
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
       observer.disconnect();
@@ -132,7 +134,10 @@ export function ChapterNavigation({ article }: { article: RefObject<HTMLElement 
       glide.current = animate(window.scrollY, top, {
         duration: 0.18,
         ease: [0.23, 1, 0.32, 1],
-        onUpdate: (value) => window.scrollTo({ top: value, behavior: "instant" }),
+        onUpdate: (value) => {
+          window.scrollTo({ top: value, behavior: "instant" });
+          measure.current();
+        },
       });
     },
     [startOf],

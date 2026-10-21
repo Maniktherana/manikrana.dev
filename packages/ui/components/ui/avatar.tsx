@@ -5,7 +5,6 @@ import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@manikrana/ui/lib/utils";
 
-// shadcn's sizes plus xl, the site portrait (48px).
 const avatarVariants = cva("group/avatar relative flex shrink-0 rounded-full select-none", {
   variants: {
     size: {
@@ -78,9 +77,7 @@ function AvatarBadge({ className, ...props }: React.ComponentProps<"span">) {
   );
 }
 
-// Avatars overlap in a group, so each gets an opaque page-color base and the
-// translucent fallback fill cannot show the avatar beneath it. The 2px ring in
-// the page color cuts each avatar out of the one it overlaps.
+// Opaque bases, or the translucent fallback shows the avatar it overlaps.
 function AvatarGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -94,8 +91,6 @@ function AvatarGroup({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-// Opaque for the same reason: popover is the opaque step closest to a control
-// fill on the page.
 function AvatarGroupCount({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div

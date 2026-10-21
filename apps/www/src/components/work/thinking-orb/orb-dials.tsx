@@ -4,8 +4,6 @@ import { FOLD_STATES } from "./fold-orb";
 import { GEMINI_STATES } from "./gemini-orb";
 import { GEMINI_LOOKS, type OrbDials } from "./orbs";
 
-// Temporary: every orb prop and per-state tuning value on the dev DialKit panel.
-
 const ANGLE = [-180, 180, 1] as const;
 
 const RANGES: Record<string, readonly [number, number, number]> = {

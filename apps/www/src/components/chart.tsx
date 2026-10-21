@@ -12,7 +12,7 @@ export function toPercent(value: number, [from, to]: Domain) {
   return ((value - from) / (to - from)) * 100;
 }
 
-/** One path point, rounded so server and browser math agree to the digit. */
+/** Rounded so server and browser output match. */
 export const point = (x: number, y: number) => `${x.toFixed(3)},${y.toFixed(3)}`;
 
 export function plotPath(fn: (x: number) => number, x: Domain, y: Domain, steps = 240) {
@@ -22,7 +22,6 @@ export function plotPath(fn: (x: number) => number, x: Domain, y: Domain, steps 
   }).join("");
 }
 
-/** Where an axis sits: through zero when zero is in range, otherwise along the near edge. */
 const axisAt = (domain: Domain) => Math.min(Math.max(toPercent(0, domain), 0), 100);
 
 export function Panel({ caption, children }: { caption: string; children: ReactNode }) {
@@ -62,9 +61,7 @@ export function Plot({
   legend?: readonly { label: string; dashed?: boolean }[];
   legendAt?: "start" | "end";
   tall?: boolean;
-  /** The domain runs to the frame's edges, so the edges are the limits; same size as a padded frame. */
   bleed?: boolean;
-  /** What the axes measure, for charts of real data. */
   xLabel?: string;
   yLabel?: string;
   children: ReactNode;

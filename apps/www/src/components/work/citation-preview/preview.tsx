@@ -145,7 +145,6 @@ export function Preview() {
             </motion.div>
           )}
         </AnimatePresence>
-        {/* The viewBox puts the arrow's tip at the box's top-left corner. */}
         <motion.div
           initial={false}
           animate={{ left: cursor.x, top: cursor.y, opacity: shot.visible ? 1 : 0 }}

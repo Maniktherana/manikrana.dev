@@ -18,7 +18,7 @@ export type PendingAttachmentStripProps = {
   transition: Transition;
 };
 
-// Grows from zero height, so the composer around it grows with it. scroll-fade-x needs "shadcn/tailwind.css".
+// scroll-fade-x needs "shadcn/tailwind.css".
 export function PendingAttachmentStrip({
   attachments,
   onRemove,

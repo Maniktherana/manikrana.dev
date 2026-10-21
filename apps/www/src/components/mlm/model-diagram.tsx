@@ -2,9 +2,6 @@ import { SceneDiagram } from "@/components/mlm/scene-diagram";
 import { DOT, MARGIN, type Item } from "@/components/mlm/scene";
 import { bottom, chip, matrix, middle, text, top, wire, type Matrix } from "@/components/mlm/build";
 
-// GPT.forward: each id's row of tok_emb plus its position's row of pos_emb, the twelve trf_blocks in
-// turn, final_norm, then out_head, which shares its weights with tok_emb. generate keeps only the last
-// token's logits. Each block is Transformer.forward: x + attn(norm1(x)), then x + ff(norm2(x)).
 const LINE = 80;
 const table = matrix(0, 48, LINE, 201, {
   cols: 3,
@@ -17,8 +14,6 @@ const table = matrix(0, 48, LINE, 201, {
 const rowOf = (m: Matrix, r: number) => top(m) + MARGIN + (r + 0.5) * DOT;
 const PROMPT = ["<bos>", "The", "cat", "is"];
 
-// The stack of twelve blocks recedes into depth: [0] in front, [1] behind it, dots for [2] to [10],
-// and [11] at the back. The front plate shows what each block does.
 const PLATE = { x0: 74, x1: 226, y0: LINE - 28, y1: LINE + 28 };
 const plate = (offset: number): Item => ({
   kind: "shell",
@@ -67,7 +62,6 @@ const OVERVIEW_SCENE: Item[] = [
   wire(0, [table.x1 + 1, LINE], [PLATE.x0 - 1, LINE]),
 
   plate(BACK),
-  // Blocks 3 to 11, between the second plate and the last, along the middle of the right edge.
   ...[8, 11, 14].map((o): Item => ({ kind: "join", step: 1, x: PLATE.x1 + o, z: -(LINE - o) })),
   plate(SECOND),
   {
@@ -80,7 +74,6 @@ const OVERVIEW_SCENE: Item[] = [
     z0: -PLATE.y1,
     z1: -PLATE.y0,
   },
-  // x branches before each sublayer and is added back after it: the two skip connections.
   wire(1, [PLATE.x0 + 1, LINE], [85, LINE]),
   wire(1, [80, LINE], [80, ARC], [ADD_ATTN, ARC], [ADD_ATTN, LINE - 3.5]),
   sublayer(86, "norm1 · attn"),
@@ -95,7 +88,6 @@ const OVERVIEW_SCENE: Item[] = [
   join(152),
   wire(1, [ADD_FF + 3.5, LINE], [PLATE.x1 - 1, LINE]),
 
-  // What leaves the stack is the last block's output, so the wire starts at plate 12.
   wire(
     2,
     [PLATE.x1 + BACK + 1, LINE - BACK],
@@ -109,12 +101,10 @@ const OVERVIEW_SCENE: Item[] = [
   wire(3, [middle(outHead), bottom(outHead) + 1], [middle(outHead), top(logits) - 1]),
   outHead,
   logits,
-  // generate reads only the last position's logits: logits[:, -1, :].
   { ...wire(4, [logits.x1 + 1, LINE], [361, LINE]), take: [3] } as Item,
   ...chip(4, 372, LINE, "a", 20),
 
   text(0, middle(table), bottom(table) + 9, "embedding"),
-  // A brace along the stack's depth, from the front plate's top-left corner to the last one's.
   {
     kind: "brace",
     step: 1,
@@ -127,7 +117,6 @@ const OVERVIEW_SCENE: Item[] = [
     { n: "2", o: SECOND },
     { n: "12", o: BACK },
   ].map(({ n, o }) => text(1, PLATE.x1 + o + 3, PLATE.y1 - o + 7, n, "start")),
-  // The front plate's number sits just left of its corner, clear of the plate behind it.
   text(1, PLATE.x1 - 2, PLATE.y1 + 9, "1", "end"),
   text(2, (normScale.x0 + normShift.x1) / 2, top(normScale) - 6, "final_norm"),
   text(3, middle(outHead), top(outHead) - 5, "out_head"),

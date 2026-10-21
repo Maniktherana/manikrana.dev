@@ -1,7 +1,6 @@
 import * as React from "react";
 import { cn } from "@manikrana/ui/lib/utils";
 
-// A single raised surface; sections keep text 20px from its edge.
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -68,7 +67,6 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-// An action row at the bottom of the card.
 function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div

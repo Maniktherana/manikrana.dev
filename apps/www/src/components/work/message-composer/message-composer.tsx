@@ -80,10 +80,9 @@ export function MessageComposer({
   const canSend =
     !sending && !uploadInProgress && (draft.trim().length > 0 || attachments.length > 0);
   const transition = prefersReducedMotion ? { duration: 0 } : { duration: 0.22, ease: EASE };
-  // Stacking animates; a line added to the stacked textarea snaps so typing never lags.
   const layoutTransition = textLayout.animate ? transition : { duration: 0 };
 
-  // One measurement sets the stacking and the height together, so each change is a single layout animation.
+  // One measurement sets stacking and height together, so each change is a single layout animation.
   const measureText = useCallback(() => {
     const grid = gridRef.current;
     const inlineMirror = inlineMirrorRef.current;
@@ -176,7 +175,7 @@ export function MessageComposer({
     >
       <div className="relative">
         <InputGroup className="group/composer relative isolate h-auto flex-col items-stretch rounded-3xl bg-transparent p-1 hover:bg-transparent has-[[data-slot=input-group-control]:focus-visible]:ring-0">
-          {/* Only this empty surface scales, so no content needs correcting; a motion style radius keeps its corners round. */}
+          {/* Only this empty surface scales; a motion style radius keeps its corners round. */}
           <motion.div
             aria-hidden="true"
             layout

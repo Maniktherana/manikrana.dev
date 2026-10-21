@@ -125,7 +125,6 @@ export const DIFFUSION_STATES = {
   idle: { ...DIFFUSION_LISTENING, waveAmplitude: 0 },
 } satisfies Record<DiffusionOrbState, DiffusionTuning>;
 
-// Where the old shared clock started, so the first frame matches.
 const START_PHASE = {
   wavePhase: 4.44,
   secondaryWavePhase: 2.87,

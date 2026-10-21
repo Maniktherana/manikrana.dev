@@ -1,10 +1,7 @@
 import type { ComponentProps } from "react";
 import { cn } from "@manikrana/ui/lib/utils";
 
-// Independent of the content: a 2px lit ring and a 3px page-color gap.
-// Set the outer dimensions with className and let the child fill its inset.
-// Round by default; set --ring-radius for a rounded square, and give the child
-// a radius of calc(var(--ring-radius) - 5px) so the three shapes stay concentric.
+// For a rounded square, set --ring-radius and give the child calc(var(--ring-radius) - 5px).
 function AnimatedRing({ className, children, ...props }: ComponentProps<"div">) {
   return (
     <div

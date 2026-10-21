@@ -32,7 +32,6 @@ export function stateBlend(dt: number, transition: number, motionReduced: boolea
   return motionReduced ? 1 : 1 - Math.exp((-dt * 7) / Math.max(0.05, transition));
 }
 
-// Eases every value toward the target state's, so a state change morphs instead of jumping.
 export function settleToward<Values extends Record<string, number>>(
   current: Values,
   target: Values,

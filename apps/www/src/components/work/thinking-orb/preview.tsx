@@ -29,7 +29,6 @@ const TIMING = {
 
 const ORDER: OrbId[] = ["diffusion", "gemini", "fold"];
 
-// How each orb looks while it waits off to the side.
 const ASIDE: Record<OrbId, LookName> = {
   diffusion: "thinking",
   gemini: "idle",

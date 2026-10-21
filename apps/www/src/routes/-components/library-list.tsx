@@ -59,7 +59,6 @@ export function LibraryList() {
   );
 }
 
-// The tag stays on the line with the title's last word, so it never wraps onto a line by itself.
 function WithWatch({ title }: { title: string }) {
   const words = title.split(" ");
   const last = words.pop();
