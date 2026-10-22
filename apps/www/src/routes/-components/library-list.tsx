@@ -3,15 +3,17 @@ import { PlayIcon } from "@/components/icons/play";
 import { papers, posts, talks } from "@/content/library";
 
 const entries = [
-  ...talks.map((talk) => ({
-    key: `talk-${talk.id}`,
-    title: talk.title,
-    kind: "Talk",
-    video: Boolean(talk.video),
-    date: talk.events[0].date,
-    dateTime: talk.events[0].dateTime,
-    link: linkOptions({ to: "/library/$id", params: { id: talk.id } }),
-  })),
+  ...talks
+    .filter((talk) => !posts.some((post) => post.talk === talk))
+    .map((talk) => ({
+      key: `talk-${talk.id}`,
+      title: talk.title,
+      kind: "Talk",
+      video: Boolean(talk.video),
+      date: talk.events[0].date,
+      dateTime: talk.events[0].dateTime,
+      link: linkOptions({ to: "/library/$id", params: { id: talk.id } }),
+    })),
   ...papers.map((paper) => ({
     key: `paper-${paper.id}`,
     title: paper.title,
@@ -25,7 +27,7 @@ const entries = [
     key: `post-${post.id}`,
     title: post.title,
     kind: "Writing",
-    video: false,
+    video: Boolean(post.talk?.video),
     date: post.month,
     dateTime: post.date,
     link: linkOptions({ to: "/library/$id", params: { id: post.id } }),

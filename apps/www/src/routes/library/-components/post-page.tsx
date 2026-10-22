@@ -7,6 +7,8 @@ import { cn } from "@manikrana/ui/lib/utils";
 import { ChapterNavigation, slugOf } from "@/routes/library/-components/chapter-navigation";
 import { CodeBlock } from "@/components/code-block";
 import { GithubIcon } from "@/components/icons/github";
+import { Issue, Person, PullRequest } from "@/components/github-link";
+import { Recording, Screenshot } from "@/components/media";
 import { AttentionDiagram } from "@/components/mlm/attention-diagram";
 import { InputEmbeddingDiagram } from "@/components/mlm/input-embedding-diagram";
 import { LayerNormDiagram } from "@/components/mlm/layer-norm-diagram";
@@ -25,6 +27,8 @@ import {
   useClose,
 } from "@/components/page-header";
 import { posts } from "@/content/library";
+import { SlidesDialog } from "@/routes/library/-components/slides-dialog";
+import { TalkVideo } from "@/routes/library/-components/talk-video";
 
 const mdxComponents: MDXComponents = {
   a: ({ href, children }) => (
@@ -34,6 +38,11 @@ const mdxComponents: MDXComponents = {
   ),
   h2: ({ children }) => <h2 id={slugOf(children)}>{children}</h2>,
   pre: CodeBlock,
+  Issue,
+  Person,
+  PullRequest,
+  Recording,
+  Screenshot,
   AttentionDiagram,
   InputEmbeddingDiagram,
   LayerNormDiagram,
@@ -70,20 +79,29 @@ export function PostPage({ id }: { id: string }) {
               {post.month}
             </time>
           </div>
-          <a
-            href={post.github}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={`${post.title} on GitHub`}
-            title="GitHub"
-            className={cn(
-              buttonVariants({ variant: "secondary", size: "icon" }),
-              "rounded-xl text-control-foreground hover:text-foreground",
+          <div className="flex items-center gap-2">
+            {post.talk && (
+              <SlidesDialog url={`/talks/${post.talk.id}.pdf`} slides={post.talk.slides} />
             )}
-          >
-            <GithubIcon />
-          </a>
+            {post.github && (
+              <a
+                href={post.github}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${post.title} on GitHub`}
+                title="GitHub"
+                className={cn(
+                  buttonVariants({ variant: "secondary", size: "icon" }),
+                  "rounded-xl text-control-foreground hover:text-foreground",
+                )}
+              >
+                <GithubIcon />
+              </a>
+            )}
+          </div>
         </div>
+
+        {post.talk?.video && <TalkVideo talk={post.talk} video={post.talk.video} />}
 
         <article
           ref={article}

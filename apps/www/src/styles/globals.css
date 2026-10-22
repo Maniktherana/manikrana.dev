@@ -43,6 +43,21 @@ article .katex-display {
 .mark--gsoc {
   color: oklch(0.83 0.16 85);
 }
+.mark--pr-open,
+.mark--issue-open {
+  color: #3fb950;
+}
+.mark--pr-merged,
+.mark--issue-completed {
+  color: #a371f7;
+}
+.mark--pr-closed {
+  color: #f85149;
+}
+.mark--pr-draft,
+.mark--issue-not-planned {
+  color: #9198a1;
+}
 .turbo-rotor {
   transform-box: fill-box;
   transform-origin: center;

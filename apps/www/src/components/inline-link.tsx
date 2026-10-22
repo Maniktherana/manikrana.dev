@@ -1,16 +1,19 @@
 import { Link } from "@manikrana/ui/components/ui/link";
 import { cn } from "@manikrana/ui/lib/utils";
 import { useState, type ReactNode } from "react";
+import type { MarkProps } from "@/components/icons/mark";
 import { marks, type MarkName } from "@/components/icons/marks";
 
 export function InlineLink({
   href,
   mark,
+  icon,
   tone,
   children,
 }: {
   href: string;
   mark?: MarkName;
+  icon?: (props: MarkProps) => ReactNode;
   tone?: "memory";
   children: ReactNode;
 }) {
@@ -28,7 +31,7 @@ export function InlineLink({
       onPointerEnter={(event) => setHovered(event.pointerType === "mouse")}
       onPointerLeave={() => setHovered(false)}
     >
-      {Mark && <Mark hovered={hovered} />}
+      {icon ? icon({ hovered }) : Mark && <Mark hovered={hovered} />}
       {children}
     </Link>
   );

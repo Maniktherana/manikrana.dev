@@ -1,0 +1,209 @@
+---
+title: Breaking and optimizing the Prometheus parser
+description: Adding created timestamp support to Prometheus's OpenMetrics parser, the memory problem it caused, and how we fixed it.
+date: "2024-09"
+talk: prometheus
+github: https://github.com/prometheus/prometheus/pulls?q=is%3Apr+author%3AManiktherana+is%3Amerged
+---
+
+This is a writeup based on my lightning talk at [PromCon 2024](https://promcon.io/2024-berlin/) in Berlin. The talk was only five minutes long. This post goes into more detail about the work behind it.
+
+I started contributing to Prometheus at the start of 2024, mostly on the web UI. That summer, I worked on Prometheus through GSoC, with Bartek, Arthur, and Daniel as my mentors. My project was adding support for created timestamps to the OpenMetrics parser.
+
+## Native histograms in the UI
+
+I started with the query table in the web UI. With a classic Prometheus histogram, you have to define the bucket boundaries yourself before you start collecting the metric. A **native histogram** works them out automatically, with boundaries that grow exponentially. A single native histogram often has dozens of buckets.
+
+Before my PR, the table showed a native histogram as one long line of text, with every bucket's range and count written out. A small histogram with eight buckets looked something like this:
+
+```text
+{ count:478 sum:0.07806529593216291 [-0.00001,0.00001]:15 (0.00001,0.0000152587890625]:12 (0.0000152587890625,0.000030517578125]:27 (0.000030517578125,0.00006103515625]:52 (0.00006103515625,0.0001220703125]:106 (0.0001220703125,0.000244140625]:152 (0.000244140625,0.00048828125]:110 (0.00048828125,0.0009765625]:4 }
+```
+
+With dozens of buckets, this was really hard to read. In <PullRequest number={13658} />, I replaced it with a chart. Julius helped me out with some starter code, and we decided to draw the chart with HTML, CSS, and JS.
+
+To build a histogram, you draw one bar per bucket. The bar's position and width on the x-axis come from the bucket's range, and its height comes from its count. On a normal, linear x-axis, that's straightforward. The trouble is that native histogram buckets grow exponentially. On a linear axis, the buckets near zero end up so thin that they disappear. We added an exponential x-axis, where every bucket gets the same width. That's where the math got harder. A native histogram can also have buckets for negative values, and a **zero bucket** in the middle for values very close to zero. Every bar's position, width, and height had to work out for all of these combinations, on both scales.
+
+Most of <PullRequest number={13680} />, and a lot of long Slack messages with Björn, was getting that math right. Björn kept trying new edge cases, and I kept fixing them. At one point, some negative buckets were drawn on the wrong side of zero:
+
+<Screenshot
+  src="/writing/prometheus/negative-buckets.png"
+  alt="A native histogram chart where buckets with negative ranges are drawn to the right of zero"
+  caption="Negative buckets drawn on the positive side of the chart"
+  width={1272}
+  height={964}
+  notes={[
+    { x: 14, y: 12, width: 38, height: 38, label: "Should be here", labelAt: "below" },
+    { x: 57, y: 10, width: 41, height: 42, label: "Drawn here instead", labelAt: "below" },
+  ]}
+/>
+
+A histogram with only positive buckets plus a zero bucket rendered nothing at all on the exponential scale:
+
+<Screenshot
+  src="/writing/prometheus/empty-chart.png"
+  alt="An empty native histogram chart above a table of eight buckets"
+  caption="Positive buckets plus a zero bucket, with nothing drawn"
+  width={1032}
+  height={894}
+  notes={[
+    { x: 9, y: 5, width: 86, height: 30, label: "Nothing drawn", labelAt: "below" },
+    { x: 1, y: 57.5, width: 30, height: 7, label: "Zero bucket", labelAt: "end" },
+  ]}
+/>
+
+It took about four months to get every case right. Later, I ported the chart to the new UI in <PullRequest number={14431} />:
+
+<Recording
+  src="/writing/prometheus/histogram-chart.mp4"
+  poster="/writing/prometheus/histogram-chart.jpg"
+  caption="The native histogram chart in the new Prometheus UI"
+  width={1600}
+  height={1236}
+/>
+
+## Created timestamps
+
+Prometheus collects metrics by scraping them from applications over HTTP. Each application exposes its metrics as text, and one of the formats Prometheus can read is **OpenMetrics**. Prometheus reads that text with a parser, one line at a time, and stores each line as a sample.
+
+A counter is a metric that only goes up, like the number of requests a server has handled. If Prometheus scrapes a counter and sees 1027, it doesn't know when that counter started from zero. The application could have been running for a year, or it could have restarted a minute ago. A **created timestamp**, or CT, tells Prometheus when the counter started.
+
+In OpenMetrics, the CT isn't part of the sample itself. Counters, summaries, and histograms expose it on a separate line ending in `_created`. That line usually comes after the other lines for the metric. Here's a histogram with three buckets, a sum, a count, and its CT on the last line:
+
+```text
+# TYPE request_duration_seconds histogram
+request_duration_seconds_bucket{le="0.1"} 2
+request_duration_seconds_bucket{le="1"} 4
+request_duration_seconds_bucket{le="+Inf"} 5
+request_duration_seconds_sum 1.2
+request_duration_seconds_count 5
+request_duration_seconds_created 1726000000.123
+```
+
+To support this, the parser needs a `CreatedTimestamp()` method that returns the CT for the line it's currently on, and Prometheus calls it for each sample while scraping. When the parser is on the first bucket line, the CT is five lines below it. The parser has to read past every bucket, the sum, and the count to find the `_created` line. Then it has to go back to where it was before the scrape can carry on.
+
+## Peeking with a copy
+
+The parser only moves forward. If it reads ahead, it loses its place. Our solution in <PullRequest number={14356} /> was to make an ephemeral **deep copy** of the parser and let the copy read ahead. The copy keeps going until it finds a `_created` line or reaches another metric family. It then compares labels, ignoring `le` and `quantile`, to check that the timestamp belongs to the same series. The original parser never moves. It took several syncs and pair programming sessions to get here, and it merged in August.
+
+```go file="model/textparse/openmetricsparse.go"
+peek := deepCopy(p)
+for {
+	eType, err := peek.Next()
+	if err != nil {
+		return nil
+	}
+	if eType != EntrySeries {
+		return nil
+	}
+
+	var peekedLset labels.Labels
+	peek.Metric(&peekedLset)
+	peekedName := peekedLset.Get(model.MetricNameLabel)
+	if !strings.HasSuffix(peekedName, "_created") {
+		continue
+	}
+
+	peekWithoutNameLsetHash, _ = peekedLset.HashWithoutLabels(buf, labels.MetricName, "le", "quantile")
+	if peekWithoutNameLsetHash != currFamilyLsetHash {
+		return nil
+	}
+	ct := int64(peek.val)
+	return &ct
+}
+```
+
+There's also a bug in the last two lines. OpenMetrics timestamps are in seconds, and Prometheus uses milliseconds. I fixed that conversion later in <PullRequest number={14738} />.
+
+## Breaking it
+
+Making a deep copy of the parser for every line that needs a CT, on every scrape, uses a lot of memory. Less than a month after my PR was merged, Bryan opened <Issue number={14808} state="completed" />. His Prometheus normally used **15–20 GB** of memory, and with my change, it ran out of memory at its **32 GB** limit. Going back to the commit before my PR fixed it.
+
+<Screenshot
+  src="/writing/prometheus/memory-spike.png"
+  alt="Grafana panels where CPU usage jumps from around 3 to 6 cores and memory climbs from about 18 GiB to the 32 GiB limit"
+  caption="CPU and memory for Bryan's Prometheus, from the issue"
+  width={2242}
+  height={919}
+  notes={[
+    { x: 44.5, y: 16, width: 54, height: 27, label: "CPU usage jumps" },
+    { x: 47, y: 68, width: 32, height: 9, label: "Up against the 32 GiB limit" },
+  ]}
+/>
+
+The heap profile he attached showed where the memory was going:
+
+<Screenshot
+  src="/writing/prometheus/heap-profile.png"
+  alt="A pprof flame graph where CreatedTimestamp calling deepCopy is the widest stack under the scrape loop"
+  caption="Heap profile from the issue, with the largest share under deepCopy"
+  width={1675}
+  height={705}
+  notes={[
+    {
+      x: 0,
+      y: 30,
+      width: 39.5,
+      height: 11,
+      label: "CreatedTimestamp → deepCopy",
+      labelAt: "below",
+    },
+  ]}
+/>
+
+The same day, <PullRequest number={14809} /> made Prometheus only call `CreatedTimestamp()` when CT ingestion is turned on. CT ingestion is behind a feature flag that's off by default. Most people were no longer affected, but anyone who had turned it on still was.
+
+## Optimizing it
+
+To fix this properly, I first had to understand how the parser actually worked. This is where I learned how to properly step through a debugger. I stepped through the parser line by line, watching how it moved through the input and where it was allocating memory. That took me through quite a bit of the parser's code, and along the way I found a number of things that could be optimized. I added microbenchmarks for OpenMetrics parsing with CTs in <PullRequest number={14933} /> to measure every change, and I tested a lot as I went.
+
+The most important thing I found was that the parser's position lives in its **lexer**. We didn't need to copy the whole parser. We could save the lexer's state, let the parser itself read ahead to find the CT, and then put the saved lexer back. We also cache the CT. The next line of the same histogram reuses it instead of searching again. This replaced the deep copy in <PullRequest number={14965} />. On the CT benchmark, a parse went from **351 ns** to **106 ns**, and from **668 bytes** of memory to **60**.
+
+Most of what was left came from building a full set of labels for every line we read ahead, just to compare them. In <PullRequest number={15097} />, I replaced that with a **hash** of the label bytes the parser already had. <PullRequest number={15150} /> applied the same idea to another check the parser runs on every line. That cut memory use for all OpenMetrics parsing by about **20%**.
+
+This is the code we ended up with:
+
+```go file="model/textparse/openmetricsparse.go"
+resetLexer := &openMetricsLexer{
+	b:     p.l.b,
+	i:     p.l.i,
+	start: p.l.start,
+	err:   p.l.err,
+	state: p.l.state,
+}
+
+p.skipCTSeries = false
+
+for {
+	eType, err := p.Next()
+	if err != nil {
+		p.resetCTParseValues(resetLexer)
+		return nil
+	}
+	if eType != EntrySeries {
+		p.resetCTParseValues(resetLexer)
+		return nil
+	}
+
+	peekedName := p.series[p.offsets[0]-p.start : p.offsets[1]-p.start]
+	if len(peekedName) < 8 || string(peekedName[len(peekedName)-8:]) != "_created" {
+		continue
+	}
+
+	peekedHash := p.seriesHash(&buf, peekedName[:len(peekedName)-8])
+	if peekedHash != currHash {
+		p.resetCTParseValues(resetLexer)
+		return nil
+	}
+
+	ct := int64(p.val * 1000.0)
+	p.setCTParseValues(ct, currHash, currName, true, resetLexer)
+	return &ct
+}
+```
+
+## Closing Thoughts
+
+The parser still has to read ahead because of where OpenMetrics puts the CT. I've since written a <PullRequest repo="prometheus/proposals" number={43} state="open">proposal</PullRequest> to change the OpenMetrics syntax and put the CT on the same line as its sample. That would remove the need to read ahead at all.
+
+I learned a lot during GSoC, especially from debugging my own mistake. Thank you to <Person github="bwplotka">Bartek</Person>, <Person github="ArthurSens">Arthur</Person>, <Person github="TheSpiritXIII">Daniel</Person>, <Person github="beorn7">Björn</Person>, <Person github="juliusv">Julius</Person>, and the rest of the Prometheus team.
