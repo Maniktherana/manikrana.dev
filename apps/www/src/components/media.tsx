@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { cn } from "@manikrana/ui/lib/utils";
 import { Panel } from "@/components/chart";
 
-type MediaProps = { src: string; caption: string; width: number; height: number };
+type MediaProps = { caption: string; width: number; height: number };
 
 /** Percentages of the image, so a note stays on its spot at any size. */
 type Note = {
@@ -14,12 +14,17 @@ type Note = {
   labelAt?: "above" | "below" | "end";
 };
 
-export function Screenshot({ alt, notes, ...media }: MediaProps & { alt: string; notes?: Note[] }) {
+export function Screenshot({
+  src,
+  alt,
+  notes,
+  ...media
+}: MediaProps & { src: string; alt: string; notes?: Note[] }) {
   return (
     <Panel caption={media.caption}>
       <div className="relative">
         <img
-          src={media.src}
+          src={src}
           alt={alt}
           width={media.width}
           height={media.height}
@@ -59,8 +64,13 @@ export function Screenshot({ alt, notes, ...media }: MediaProps & { alt: string;
   );
 }
 
-// Plays only while on screen, and never on its own when reduced motion is preferred.
-export function Recording({ poster, ...media }: MediaProps & { poster: string }) {
+// Plays only while on screen, and never on its own when reduced motion is preferred. Sources are
+// listed in order of preference, typed by their extension.
+export function Recording({
+  sources,
+  poster,
+  ...media
+}: MediaProps & { sources: string[]; poster: string }) {
   const video = useRef<HTMLVideoElement>(null);
   const [still, setStill] = useState(false);
   useEffect(() => {
@@ -78,7 +88,6 @@ export function Recording({ poster, ...media }: MediaProps & { poster: string })
     <Panel caption={media.caption}>
       <video
         ref={video}
-        src={media.src}
         poster={poster}
         aria-label={media.caption}
         width={media.width}
@@ -89,7 +98,11 @@ export function Recording({ poster, ...media }: MediaProps & { poster: string })
         preload="metadata"
         controls={still}
         className="h-auto w-full rounded-xl bg-card outline-1 -outline-offset-1 outline-white/10 max-sm:rounded-none"
-      />
+      >
+        {sources.map((source) => (
+          <source key={source} src={source} type={`video/${source.split(".").pop()}`} />
+        ))}
+      </video>
     </Panel>
   );
 }

@@ -27,7 +27,7 @@ To build a histogram, you draw one bar per bucket. The bar's position and width 
 Most of <PullRequest number={13680} />, and a lot of long Slack messages with Björn, was getting that math right. Björn kept trying new edge cases, and I kept fixing them. At one point, some negative buckets were drawn on the wrong side of zero:
 
 <Screenshot
-  src="/writing/prometheus/negative-buckets.png"
+  src="/writing/prometheus/negative-buckets.webp"
   alt="A native histogram chart where buckets with negative ranges are drawn to the right of zero"
   caption="Negative buckets drawn on the positive side of the chart"
   width={1272}
@@ -41,7 +41,7 @@ Most of <PullRequest number={13680} />, and a lot of long Slack messages with Bj
 A histogram with only positive buckets plus a zero bucket rendered nothing at all on the exponential scale:
 
 <Screenshot
-  src="/writing/prometheus/empty-chart.png"
+  src="/writing/prometheus/empty-chart.webp"
   alt="An empty native histogram chart above a table of eight buckets"
   caption="Positive buckets plus a zero bucket, with nothing drawn"
   width={1032}
@@ -55,8 +55,8 @@ A histogram with only positive buckets plus a zero bucket rendered nothing at al
 It took about four months to get every case right. Later, I ported the chart to the new UI in <PullRequest number={14431} />:
 
 <Recording
-  src="/writing/prometheus/histogram-chart.mp4"
-  poster="/writing/prometheus/histogram-chart.jpg"
+  sources={["/writing/prometheus/histogram-chart.webm", "/writing/prometheus/histogram-chart.mp4"]}
+  poster="/writing/prometheus/histogram-chart.webp"
   caption="The native histogram chart in the new Prometheus UI"
   width={1600}
   height={1236}
@@ -120,7 +120,7 @@ There's also a bug in the last two lines. OpenMetrics timestamps are in seconds,
 Making a deep copy of the parser for every line that needs a CT, on every scrape, uses a lot of memory. Less than a month after my PR was merged, Bryan opened <Issue number={14808} state="completed" />. His Prometheus normally used **15–20 GB** of memory, and with my change, it ran out of memory at its **32 GB** limit. Going back to the commit before my PR fixed it.
 
 <Screenshot
-  src="/writing/prometheus/memory-spike.png"
+  src="/writing/prometheus/memory-spike.webp"
   alt="Grafana panels where CPU usage jumps from around 3 to 6 cores and memory climbs from about 18 GiB to the 32 GiB limit"
   caption="CPU and memory for Bryan's Prometheus, from the issue"
   width={2242}
@@ -134,7 +134,7 @@ Making a deep copy of the parser for every line that needs a CT, on every scrape
 The heap profile he attached showed where the memory was going:
 
 <Screenshot
-  src="/writing/prometheus/heap-profile.png"
+  src="/writing/prometheus/heap-profile.webp"
   alt="A pprof flame graph where CreatedTimestamp calling deepCopy is the widest stack under the scrape loop"
   caption="Heap profile from the issue, with the largest share under deepCopy"
   width={1675}
