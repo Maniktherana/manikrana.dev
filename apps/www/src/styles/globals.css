@@ -115,6 +115,25 @@ article .katex-display {
     );
 }
 
+/* Eased stops lose most of the fade's weight in its first third. */
+@utility bg-scroll-fade {
+  background-image: linear-gradient(
+    var(--background),
+    color-mix(in oklab, var(--background) 73.7%, transparent) 19%,
+    color-mix(in oklab, var(--background) 54%, transparent) 34%,
+    color-mix(in oklab, var(--background) 38%, transparent) 47%,
+    color-mix(in oklab, var(--background) 28%, transparent) 56.5%,
+    color-mix(in oklab, var(--background) 19.2%, transparent) 65%,
+    color-mix(in oklab, var(--background) 12.5%, transparent) 73%,
+    color-mix(in oklab, var(--background) 7.5%, transparent) 80.2%,
+    color-mix(in oklab, var(--background) 4.3%, transparent) 86.1%,
+    color-mix(in oklab, var(--background) 2%, transparent) 91%,
+    color-mix(in oklab, var(--background) 0.8%, transparent) 95.2%,
+    color-mix(in oklab, var(--background) 0.4%, transparent) 98.2%,
+    transparent
+  );
+}
+
 /* Styling ::-webkit-scrollbar opts out of macOS overlay scrollbars, so it stays visible. */
 @utility scrollbar-visible {
   &::-webkit-scrollbar {

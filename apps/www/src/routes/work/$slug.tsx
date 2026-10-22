@@ -85,12 +85,7 @@ function WorkPage() {
           Work
         </BreadcrumbLink>
         <BreadcrumbSeparator />
-        <Gust
-          value={item.title}
-          {...quietGust}
-          aria-current="page"
-          className="truncate text-foreground"
-        />
+        <Gust value={item.title} {...quietGust} aria-current="page" className="truncate" />
       </PageHeader>
 
       <div

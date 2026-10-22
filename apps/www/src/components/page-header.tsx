@@ -1,27 +1,66 @@
-import { useEffect, useState, type ComponentProps, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ComponentProps, type ReactNode } from "react";
 import { createLink, useLocation, useRouter, type NavigateOptions } from "@tanstack/react-router";
 import { Button } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
 import { CloseIcon } from "@/components/icons/close";
 import { play } from "@/lib/sounds";
 
-export function PageHeader({ children, onClose }: { children: ReactNode; onClose: () => void }) {
+export function PageHeader({
+  children,
+  onClose,
+  className,
+}: {
+  children: ReactNode;
+  onClose: () => void;
+  className?: string;
+}) {
   return (
-    <header className="flex h-16 items-center justify-between gap-4">
-      <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-2 text-sm">
+    <header className={cn("flex h-16 items-center justify-between gap-4", className)}>
+      <ScrollFade />
+      <nav
+        aria-label="Breadcrumb"
+        className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground"
+      >
         {children}
       </nav>
-      <Button
-        variant="secondary"
-        size="icon"
-        aria-label="Close"
-        aria-keyshortcuts="Escape"
-        className="rounded-xl text-control-foreground hover:text-foreground"
-        onClick={onClose}
-      >
-        <CloseIcon />
-      </Button>
+      <CloseButton onClick={onClose} />
     </header>
+  );
+}
+
+export function CloseButton(props: ComponentProps<typeof Button>) {
+  return (
+    <Button
+      variant="secondary"
+      size="icon"
+      aria-label="Close"
+      aria-keyshortcuts="Escape"
+      className="rounded-xl bg-background bg-linear-to-b from-control to-control text-control-foreground hover:bg-background hover:from-control-hover hover:to-control-hover hover:text-foreground"
+      {...props}
+    >
+      <CloseIcon />
+    </Button>
+  );
+}
+
+// Shows once the header has scrolled out of view.
+function ScrollFade() {
+  const fade = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const header = fade.current?.parentElement;
+    if (!header) return;
+    const observer = new IntersectionObserver(([entry]) => setShown(!entry!.isIntersecting));
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, []);
+  return (
+    <div
+      ref={fade}
+      aria-hidden="true"
+      data-shown={shown || undefined}
+      className="pointer-events-none fixed inset-x-0 top-0 z-40 h-32 bg-scroll-fade opacity-0 transition-opacity duration-200 data-shown:opacity-100"
+    />
   );
 }
 
@@ -29,7 +68,7 @@ function BreadcrumbAnchor({ className, children, ...props }: ComponentProps<"a">
   return (
     <a
       className={cn(
-        "shrink-0 text-control-foreground transition-[color] duration-150 ease-out hover:text-foreground",
+        "shrink-0 transition-[color] duration-150 ease-out hover:text-foreground",
         className,
       )}
       {...props}
@@ -42,11 +81,7 @@ function BreadcrumbAnchor({ className, children, ...props }: ComponentProps<"a">
 export const BreadcrumbLink = createLink(BreadcrumbAnchor);
 
 export function BreadcrumbSeparator() {
-  return (
-    <span aria-hidden="true" className="text-muted-foreground">
-      /
-    </span>
-  );
+  return <span aria-hidden="true">/</span>;
 }
 
 export function useClose(fallback: NavigateOptions) {

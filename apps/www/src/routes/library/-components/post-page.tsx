@@ -52,47 +52,45 @@ export function PostPage({ id }: { id: string }) {
   const close = useClose({ to: "/" });
   const article = useRef<HTMLElement>(null);
   return (
-    <main id="main-content" className="mx-auto w-[calc(100%-40px)] max-w-stage pb-24">
+    <main id="main-content" className="mx-auto w-[calc(100%-40px)] max-w-reading pb-24">
       <PageHeader onClose={close}>
         <BreadcrumbLink to="/">Manik Rana</BreadcrumbLink>
         <BreadcrumbSeparator />
-        <span aria-current="page" className="truncate text-foreground">
+        <span aria-current="page" className="truncate">
           {post.title}
         </span>
       </PageHeader>
 
       <div className="relative mt-8">
-        <div className="relative mx-auto max-w-reading">
-          <ChapterNavigation article={article} />
-          <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
-            <div className="min-w-0 flex-1 basis-64">
-              <h1 className="text-base leading-5.5 font-medium">{post.title}</h1>
-              <time dateTime={post.date} className="mt-1 block leading-5.5 text-muted-foreground">
-                {post.month}
-              </time>
-            </div>
-            <a
-              href={post.github}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`${post.title} on GitHub`}
-              title="GitHub"
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "icon" }),
-                "rounded-xl text-control-foreground hover:text-foreground",
-              )}
-            >
-              <GithubIcon />
-            </a>
+        <ChapterNavigation article={article} />
+        <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
+          <div className="min-w-0 flex-1 basis-64">
+            <h1 className="text-base leading-5.5 font-medium">{post.title}</h1>
+            <time dateTime={post.date} className="mt-1 block leading-5.5 text-muted-foreground">
+              {post.month}
+            </time>
           </div>
-
-          <article
-            ref={article}
-            className="mt-8 text-muted-foreground sm:text-pretty [&_:not(pre)>code]:rounded-md [&_:not(pre)>code]:bg-control [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-sm [&_:not(pre)>code]:text-control-foreground [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:leading-5.5 [&_h2]:font-medium [&_h2]:text-foreground [&_p]:mb-4 [&_strong]:font-medium [&_strong]:text-foreground"
+          <a
+            href={post.github}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${post.title} on GitHub`}
+            title="GitHub"
+            className={cn(
+              buttonVariants({ variant: "secondary", size: "icon" }),
+              "rounded-xl text-control-foreground hover:text-foreground",
+            )}
           >
-            <post.Content components={mdxComponents} />
-          </article>
+            <GithubIcon />
+          </a>
         </div>
+
+        <article
+          ref={article}
+          className="mt-8 text-muted-foreground sm:text-pretty [&_:not(pre)>code]:rounded-md [&_:not(pre)>code]:bg-control [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-sm [&_:not(pre)>code]:text-control-foreground [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:leading-5.5 [&_h2]:font-medium [&_h2]:text-foreground [&_p]:mb-4 [&_strong]:font-medium [&_strong]:text-foreground"
+        >
+          <post.Content components={mdxComponents} />
+        </article>
       </div>
     </main>
   );
