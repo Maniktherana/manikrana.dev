@@ -8,13 +8,7 @@ export const Route = createFileRoute("/library/$id")({
   loader: ({ params }) => {
     const post = posts.find(({ id }) => id === params.id);
     if (post)
-      return {
-        kind: "post",
-        id: post.id,
-        title: post.title,
-        subtitle: post.description,
-        cover: post.talk?.id,
-      } as const;
+      return { kind: "post", id: post.id, title: post.title, subtitle: post.description } as const;
     const talk = talks.find(({ id }) => id === params.id);
     if (talk) return { kind: "talk", talk } as const;
     const paper = papers.find(({ id }) => id === params.id);
@@ -26,17 +20,12 @@ export const Route = createFileRoute("/library/$id")({
     const { title, subtitle } =
       entry.kind === "talk" ? entry.talk : entry.kind === "post" ? entry : entry.paper;
     const description = subtitle ?? title;
-    const cover =
-      entry.kind === "talk" ? entry.talk.id : entry.kind === "post" ? entry.cover : undefined;
     return {
       meta: [
         { title: `${title} · Manik Rana` },
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
-        ...(cover
-          ? [{ property: "og:image", content: `https://manikrana.dev/talks/${cover}-cover.png` }]
-          : []),
       ],
     };
   },
