@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { marks } from "@/components/icons/marks";
+import { PlayIcon } from "@/components/icons/play";
 import type { Talk } from "@/content/library";
 
 export function TalkVideo({ talk, video }: { talk: Talk; video: string }) {
   const [playing, setPlaying] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const Mark = talk.mark && marks[talk.mark];
   return (
     <div className="@container relative mt-8 aspect-video overflow-hidden rounded-xl bg-card outline-1 -outline-offset-1 outline-white/10">
@@ -20,11 +22,13 @@ export function TalkVideo({ talk, video }: { talk: Talk; video: string }) {
           type="button"
           aria-label={`Play ${talk.title}`}
           onClick={() => setPlaying(true)}
-          className="group absolute inset-0 flex flex-col items-start justify-end rounded-[inherit] p-[7.5cqw] text-start outline-none focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset"
+          onPointerEnter={(event) => setHovered(event.pointerType === "mouse")}
+          onPointerLeave={() => setHovered(false)}
+          className="group absolute inset-0 flex cursor-pointer flex-col items-start justify-end rounded-[inherit] p-[7.5cqw] text-start outline-none focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset"
         >
           {Mark && (
             <Mark
-              hovered={false}
+              hovered={hovered}
               className="mb-auto size-[7cqw] self-start opacity-100 grayscale-0"
             />
           )}
@@ -36,7 +40,8 @@ export function TalkVideo({ talk, video }: { talk: Talk; video: string }) {
               Manik Rana, {talk.events[0].venue}
             </span>
           </span>
-          <span className="absolute top-1/2 left-1/2 -translate-1/2 @max-xl:top-[7.5cqw] @max-xl:right-[7.5cqw] @max-xl:left-auto @max-xl:translate-0 rounded-full bg-control px-3.5 py-2 text-sm leading-4.5 font-medium whitespace-nowrap text-control-foreground transition-[background-color,color] duration-150 ease-out group-hover:bg-foreground group-hover:text-background motion-reduce:transition-none">
+          <span className="absolute top-1/2 left-1/2 flex -translate-1/2 transform-gpu items-center gap-2 rounded-full bg-control py-2 ps-3 pe-3.5 text-sm leading-4.5 font-medium whitespace-nowrap text-control-foreground transition-[background-color,color,scale] duration-200 ease-out motion-safe:group-hover:scale-105 group-hover:bg-foreground group-hover:text-background motion-safe:group-active:scale-[0.97] @max-xl:top-[7.5cqw] @max-xl:right-[7.5cqw] @max-xl:left-auto @max-xl:translate-0 motion-reduce:transition-[background-color,color]">
+            <PlayIcon className="size-3 transform-gpu transition-transform duration-200 ease-out motion-safe:group-hover:translate-x-0.5" />
             Click to Play
           </span>
         </button>
