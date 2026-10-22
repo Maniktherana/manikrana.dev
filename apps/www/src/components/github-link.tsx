@@ -34,7 +34,7 @@ export function PullRequest({
   return (
     <InlineLink
       href={`https://github.com/${repo}/pull/${number}`}
-      icon={(props) => <PullRequestMark state={state} {...props} />}
+      icon={() => <PullRequestMark state={state} />}
     >
       <span className="sr-only">{pullRequestLabels[state]} </span>
       {children ?? <span className="tabular-nums">#{number}</span>}
@@ -76,7 +76,7 @@ export function Issue({
   return (
     <InlineLink
       href={`https://github.com/${repo}/issues/${number}`}
-      icon={(props) => <IssueMark state={state} {...props} />}
+      icon={() => <IssueMark state={state} />}
     >
       <span className="sr-only">{issueLabels[state]} </span>
       {children ?? <span className="tabular-nums">#{number}</span>}
