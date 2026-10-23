@@ -1,5 +1,11 @@
 import { useEffect } from "react";
-import { DialRoot, useDialKit, type DialConfig, type TransitionConfig } from "dialkit";
+import {
+  DialRoot,
+  DialTimeline,
+  useDialKit,
+  type DialConfig,
+  type TransitionConfig,
+} from "dialkit";
 import "dialkit/styles.css";
 
 const CONFIG = {
@@ -51,5 +57,10 @@ function useTransitionDials() {
 
 export default function TransitionDials() {
   useTransitionDials();
-  return <DialRoot position="bottom-right" theme="dark" defaultOpen={false} />;
+  return (
+    <>
+      <DialRoot position="bottom-right" theme="dark" defaultOpen={false} />
+      <DialTimeline theme="dark" defaultVisible={false} />
+    </>
+  );
 }

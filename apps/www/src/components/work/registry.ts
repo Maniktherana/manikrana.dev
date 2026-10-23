@@ -88,19 +88,37 @@ export const work = [
       "The skeleton bars standing in for threads, messages, sources and the thinking trace, and the scripted tour.",
   },
   {
-    slug: "agent-terminal",
-    title: "Agent terminal",
+    slug: "bot-avatar",
+    title: "Bot avatars",
     kind: "component",
     summary:
-      "The Claude Code terminal from the agentsims.dev landing page, running an agent through two requests on its own. Prompts type into the composer, answers stream in word by word, and tool calls scroll past under a shimmering status line.",
+      "A recreation of the bot avatars from [Grok Bot](https://x.ai/bot). An SVG head with two eyes that looks around, blinks and shows what the agent is doing: working, waiting, blocked, thinking or done.",
     tile: "lg",
-    uses: ["motion", "Web Animations API"],
-    files: ["agent-terminal.tsx", "use-terminal-playback.ts"],
+    uses: ["SVG"],
+    files: [
+      "bot-avatar.tsx",
+      "rig.ts",
+      "tuning.ts",
+      "choreography.ts",
+      "curves.ts",
+      "shapes.ts",
+      "head.ts",
+      "eyes.ts",
+      "gaze.ts",
+      "blink.ts",
+      "expression.ts",
+      "tokens.ts",
+      "working.ts",
+      "done.ts",
+      "ribbons.ts",
+      "math.ts",
+      "ticker.ts",
+    ],
     usage: "usage.tsx",
     included:
-      "The terminal view, which renders the rows, status word and composer text you give it, and a playback hook that steps a timed script through it.",
+      "BotAvatar with twelve head shapes, six states, and angry, sad and happy eyes. It spins on hover and can follow the pointer. You can override its timings and sizes.",
     notIncluded:
-      "The Claude Code session it plays, the header text and logo, and the wrapper that scales it to fit. Write your own script, or feed it live rows from an agent.",
+      "The tile's cycle through states and shapes, the stage buttons, and the DialKit panel used to tune it.",
   },
   {
     slug: "message-composer",
@@ -142,6 +160,21 @@ export const work = [
       "DiffusionOrb, FoldOrb and GeminiOrb, the shared WebGL renderer and frame loop they draw through, and the voice follower that moves the Gemini orb with a level and four bands you feed it.",
     notIncluded:
       "The carousel, the recorded voice note and the analyser that plays it. Feed the Gemini orb from your own microphone or speech output.",
+  },
+  {
+    slug: "agent-terminal",
+    title: "Agent terminal",
+    kind: "component",
+    summary:
+      "The Claude Code terminal from the agentsims.dev landing page, running an agent through two requests on its own. Prompts type into the composer, answers stream in word by word, and tool calls scroll past under a shimmering status line.",
+    tile: "lg",
+    uses: ["motion", "Web Animations API"],
+    files: ["agent-terminal.tsx", "use-terminal-playback.ts"],
+    usage: "usage.tsx",
+    included:
+      "The terminal view, which renders the rows, status word and composer text you give it, and a playback hook that steps a timed script through it.",
+    notIncluded:
+      "The Claude Code session it plays, the header text and logo, and the wrapper that scales it to fit. Write your own script, or feed it live rows from an agent.",
   },
   {
     slug: "dot-matrix",
