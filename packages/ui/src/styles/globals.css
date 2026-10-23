@@ -13,10 +13,10 @@
 :root {
   color-scheme: dark;
 
-  --background: hsl(0 0% 0%);
-  --stage: hsl(0 0% 7.5%);
-  --card: hsl(0 0% 9.5%);
-  --popover: hsl(0 0% 12.5%);
+  --background: hsl(0 0% 6%);
+  --stage: hsl(0 0% 7%);
+  --card: hsl(0 0% 10%);
+  --popover: hsl(0 0% 13%);
 
   --foreground: hsl(0 0% 93%);
   --control-foreground: hsl(0 0% 80%);
