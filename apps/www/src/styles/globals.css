@@ -24,6 +24,29 @@ article .katex-display {
   color: var(--foreground);
   font-size: 0.95em;
 }
+article pre.shiki {
+  > code {
+    @apply grid w-max min-w-full;
+  }
+  .line {
+    @apply min-h-lh px-6;
+  }
+  .highlighted {
+    @apply bg-control;
+  }
+  .highlighted-word {
+    @apply rounded-xs bg-control-selected ring-2 ring-control-selected;
+  }
+  .diff {
+    @apply relative before:absolute before:left-2.5;
+  }
+  .diff.add {
+    @apply bg-green-surface before:text-green-foreground before:content-['+'];
+  }
+  .diff.remove {
+    @apply bg-red-surface before:text-red-foreground before:content-['-'];
+  }
+}
 @layer base {
   body {
     font-feature-settings: "cv11", "ss01";

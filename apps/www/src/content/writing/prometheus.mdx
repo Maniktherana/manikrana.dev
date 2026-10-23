@@ -70,7 +70,7 @@ A counter is a metric that only goes up, like the number of requests a server ha
 
 In OpenMetrics, the CT isn't part of the sample itself. Counters, summaries, and histograms expose it on a separate line ending in `_created`. That line usually comes after the other lines for the metric. Here's a histogram with three buckets, a sum, a count, and its CT on the last line:
 
-```text
+```text {7}
 # TYPE request_duration_seconds histogram
 request_duration_seconds_bucket{le="0.1"} 2
 request_duration_seconds_bucket{le="1"} 4

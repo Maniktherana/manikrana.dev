@@ -1,5 +1,10 @@
 import mdx from "@mdx-js/rollup";
 import rehypeShiki from "@shikijs/rehype";
+import {
+  transformerMetaHighlight,
+  transformerMetaWordHighlight,
+  transformerNotationDiff,
+} from "@shikijs/transformers";
 import rehypeKatex from "rehype-katex";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMath from "remark-math";
@@ -11,11 +16,15 @@ import { nitro } from "nitro/vite";
 import type { ShikiTransformer } from "shiki";
 import { defineConfig } from "vite";
 
-// A fence's file="..." becomes data-file on its <pre>, for the code block's header.
+// A fence's file="..." becomes data-file on its <pre>, for the code block's header. It comes out of
+// the raw meta so transformerMetaWordHighlight doesn't read the path's slashes as a /word/.
 const fileName: ShikiTransformer = {
-  pre(node) {
-    const file = /file="([^"]+)"/.exec(this.options.meta?.__raw ?? "")?.[1];
-    if (file) node.properties["data-file"] = file;
+  preprocess() {
+    const meta = this.options.meta;
+    const file = /file="([^"]+)"/.exec(meta?.__raw ?? "");
+    if (!meta?.__raw || !file) return;
+    meta["data-file"] = file[1];
+    meta.__raw = meta.__raw.replace(file[0], "");
   },
 };
 
@@ -43,7 +52,12 @@ export default defineConfig({
             rehypeShiki,
             {
               theme: "vesper",
-              transformers: [fileName],
+              transformers: [
+                fileName,
+                transformerMetaHighlight(),
+                transformerMetaWordHighlight(),
+                transformerNotationDiff(),
+              ],
             },
           ],
         ],
