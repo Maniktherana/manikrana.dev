@@ -53,18 +53,11 @@ export function Commit({
   children?: ReactNode;
 }) {
   return (
-    <InlineLink href={`https://github.com/${repo}/commit/${sha}`}>
-      <span>
-        {children}
-        <span className="sr-only">{children ? " — commit " : "Commit "}</span>
-        {children ? (
-          <span className="ms-1 inline-block rounded-full border border-border bg-control px-1.5 py-0.5 align-middle font-mono text-[10px] leading-none font-normal text-muted-foreground no-underline">
-            {sha.slice(0, 7)}
-          </span>
-        ) : (
-          <span className="font-mono">{sha.slice(0, 7)}</span>
-        )}
-      </span>
+    <InlineLink
+      href={`https://github.com/${repo}/commit/${sha}`}
+      icon={() => <GithubIcon className="self-center" />}
+    >
+      {children ?? <span className="font-mono">{sha.slice(0, 7)}</span>}
     </InlineLink>
   );
 }
