@@ -31,7 +31,7 @@ export const downloadNumberMotion: Motion = {
   stagger: 0,
 };
 
-const reducedMotionOverrides: Motion = {
+export const reducedMotionOverrides: Motion = {
   duration: 120,
   exitDuration: 80,
   stagger: 0,

@@ -7,21 +7,46 @@
   --container-stage: 75rem;
   --container-work: 90rem;
   --color-plot: hsl(0 0% 4%);
+  --color-success: hsl(145 72% 56%);
+  --color-detail: hsl(205 90% 74%);
   --animate-flow: flow 0.9s linear infinite;
+  --animate-shimmer: shimmer 1.8s linear infinite;
+  --animate-typing: typing 1s ease-in-out infinite;
 
   @keyframes flow {
     to {
       stroke-dashoffset: -6;
     }
   }
+  @keyframes shimmer {
+    from {
+      background-position: 100% 0;
+    }
+    to {
+      background-position: 0 0;
+    }
+  }
+  @keyframes typing {
+    0%,
+    100% {
+      opacity: 0.35;
+      translate: 0 0;
+    }
+    50% {
+      opacity: 1;
+      translate: 0 -2px;
+    }
+  }
 }
 
+article .katex {
+  color: var(--foreground);
+}
 article .katex-display {
   margin: 1.5rem 0;
   overflow-x: auto;
   overflow-y: hidden;
   padding-block: 0.5rem;
-  color: var(--foreground);
   font-size: 0.95em;
 }
 article pre.shiki {

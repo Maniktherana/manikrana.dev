@@ -1,0 +1,124 @@
+---
+title: How do agents handle a change of plans?
+description: What a support agent does when the customer asks for something new halfway through the chat.
+date: "2025-10-20"
+paper: agentchangebench
+github: https://github.com/Maniktherana/AgentChangeBench
+---
+
+How well do agents handle someone changing their request halfway through a conversation? We built **AgentChangeBench** to study this in customer support conversations, with tasks covering banking, airline and retail. 
+
+I wrote most of the simulation and evaluation code with <Person github="Ahanmr" href="https://www.linkedin.com/in/ahanmr/">Ahan M R</Person> as my mentor. Our paper was accepted at the NeurIPS 2025 [Workshop on Multi-Turn Interactions in Large Language Models](https://workshop-multi-turn-interaction.github.io/).
+
+tl;dr Agents often acknowledged the goal shift without completing it.
+
+## An example conversation
+
+Each run is a chat between two models. One plays a support agent with tools that read and update a test database. The other plays a customer with a list of requests that the agent cannot see.
+
+Here's an example with Claude 3.7 Sonnet playing both the customer and the agent in the banking domain. The customer asks for her account balances. The agent finds a single checking account:
+
+<Transcript caption="Maria's goal shift is in amber." />
+
+Maria questions the answer and asks for her statements in the same message. The agent now has to handle the new request while the first is still unresolved.
+
+## Setup
+
+We forked <Repository repo="sierra-research/tau2-bench">τ²-bench</Repository> and used its airline and retail environments. I added a banking domain with its own database, tools and policy. We rewrote tasks to include goal changes and added new ones across all three domains.
+
+There are 315 tasks: 50 for banking, 100 for airline and 165 for retail. Each task gives the customer model an ordered list of goals. This is part of Maria's task:
+
+```json file="data/tau2/domains/banking/tasks.json"
+"persona": "MEDIUM_1",
+"instructions": {
+  "known_info": "You are Maria Santos with phone number +15551234567, ...",
+  "task_instructions": "Check account balances, then request recent statements."
+},
+"goal_shifts": {
+  "required_shifts": 1,
+  "goals": ["account_info", "statements"]
+}
+```
+
+Each task also specifies the tools that can complete a step. τ²-bench expected a fixed tool name and arguments, which could reject a valid alternative. I added **action sets** so a customer lookup could accept either `get_customer_by_phone` or `get_customer_by_id`.
+
+I tightened the customer model’s prompt after some conversations ran out of turns before the second goal came up. The customer would keep answering verification questions instead of moving on. To combat this we added instructions for when to introduce the next request:
+
+- Move on after four messages on one goal, even if it isn't complete.
+- Move on earlier if the agent offers a transfer, says it can't help, or asks whether there's anything else.
+- Never mention the goal list.
+
+Maria asks for her statements after the agent asks whether she needs anything else.
+
+Each task also has one of five customer personas: polite, distracted, impatient, curious or suspicious. This lets us test whether agents handle the same goal change differently depending on how the customer phrases it.
+
+<PersonaShifts caption="Five customers asking for their statements." />
+
+## How do you measure goal shifts?
+
+We scored the conversations on task success, tool use, and the time taken to respond to a goal change.
+
+τ²-bench scored each task on tool calls, required information, and behavior. Each category was pass/fail, and the results were multiplied together. If the agent failed any category the entire task scored zero.
+
+For AgentChangeBench, I changed this to give partial credit within each category and combine them into a weighted score. In the banking example above, the agent made two of the three expected tool calls and provided the balance but omitted the statement ID. τ²-bench’s scoring gave that run zero despite it passing both behavior checks. Our scoring gives it 0.725.
+
+We call the resulting metric <PullRequest repo="Maniktherana/AgentChangeBench" number={11}>task success rate (TSR)</PullRequest>:
+
+$$
+\mathrm{TSR} = 0.25C + 0.45A + 0.30N
+$$
+
+- $$C$$ is the fraction of required information the agent gave the customer.
+- $$A$$ is the fraction of expected actions it took.
+- $$N$$ is the fraction of behavior checks it passed.
+
+Each action gets 0.5 points for an accepted tool and 0.5 for matching its expected arguments.
+
+Only 256 of the 2,643 runs with the three API models passed every check. Under τ²-bench’s scoring, roughly nine in ten runs would therefore have received zero, regardless of how much of the task they completed.
+
+We track tool use with two other metrics. **Tool use efficiency (TUE)** combines the fraction of calls that ran without errors with the fraction that had valid parameters. Parameters were valid in almost every run, so TUE mostly reflected execution errors.
+
+**Tool call redundancy rate (TCRR)** measures repeated calls. A call counts as redundant if an identical call appeared in the agent's previous three turns, or if the same call appears more than twice within one turn.
+
+**Goal-shift recovery time (GSRT)** counts messages from the customer's new request to three points in the conversation:
+
+- The agent acknowledges the request (**ack**).
+- The agent calls a relevant tool (**tool**).
+- The agent completes the request (**outcome**).
+
+A separate judge model reads each completed transcript alongside the goal list to identify goal shifts and the agent's responses. We use its annotations to calculate GSRT and a **recovery rate**: 
+$$
+  \mathrm{Recovery\ rate} =
+  \frac{\text{Goal shifts acknowledged without a handoff}}
+  {\text{Total goal shifts}}
+$$ 
+
+An earlier version counted transfer offers as recovery. We now count them as misses.
+
+<ConversationPlayer caption="How TSR, TUE and GSRT score James's conversation." />
+
+Initially, the customer tagged its goal shifts and the support agent tagged when it recognized them. This leaked the evaluation criteria as it prompted the support agent to look for changes when we wanted to see it notice them on its own. In <PullRequest repo="Maniktherana/AgentChangeBench" number={8} />, I replaced those tags with the separate judge. Its annotations are saved with the transcripts so we can recalculate scores without rerunning the conversations.
+
+## Findings
+
+We ran GPT-4o, Claude 3.7 Sonnet and Gemini 2.5 Flash three times per task. Each model played both the customer and the agent. I also served Qwen2.5-14B on rented A100s using <Repository repo="vllm-project/vllm">vLLM</Repository>. Our budget covered one evaluation pass per domain for Qwen.
+
+<ResultsTable caption="Higher is better for TSR, TUE and Recovery. Lower is better for Transfer." />
+
+On airline tasks, GPT-4o had a recovery rate of 92% against Claude's 79%. Claude had the higher task success rate. The most common failure was transferring the customer to a human too early. In banking, Claude and Gemini each did this for about 40% of goal changes.
+
+In retail, agents often made the expected tool calls but failed to give the customer the required information. GPT-4o scored 63% on the action component vs 11% on the information component. GPT-4o also repeated tool calls frequently (89% were redundant).
+
+Qwen2.5-14B matched GPT-4o's airline task-success score in its single evaluation pass. We would need more runs to know whether that result holds.
+
+## Closing thoughts
+
+The goal changes in these tasks are explicit. The customer introduces another request with wording such as “while you're at it.” We didn't test indirect changes, where a customer hints at a different goal or revises an earlier detail without announcing it.
+
+Each model also played both sides. Comparing Claude with GPT-4o changes the customer as well as the agent, so the results don't isolate agent performance.
+
+Maria's final message asks about the cutoff time for mobile check deposits. That request isn't in her task. Although the goals are scripted, the customer model can depart from them.
+
+One retail task expected the agent to modify a delivered order, which the domain's own policy forbids. I <Commit repo="Maniktherana/AgentChangeBench" sha="4145dcbf4c286be6b5b4f41580364736f250bb5b">fixed that task</Commit> and checked the others for invalid IDs and tool calls.
+
+The conversations, judge outputs and evaluation code are in the <Repository repo="Maniktherana/AgentChangeBench">AgentChangeBench</Repository> repository.

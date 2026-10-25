@@ -14,15 +14,17 @@ const entries = [
       dateTime: talk.events[0].dateTime,
       link: linkOptions({ to: "/library/$id", params: { id: talk.id } }),
     })),
-  ...papers.map((paper) => ({
-    key: `paper-${paper.id}`,
-    title: paper.title,
-    kind: "Publication",
-    video: false,
-    date: paper.date,
-    dateTime: paper.dateTime,
-    link: linkOptions({ to: "/library/$id", params: { id: paper.id } }),
-  })),
+  ...papers
+    .filter((paper) => !posts.some((post) => post.paper === paper))
+    .map((paper) => ({
+      key: `paper-${paper.id}`,
+      title: paper.title,
+      kind: "Publication",
+      video: false,
+      date: paper.date,
+      dateTime: paper.dateTime,
+      link: linkOptions({ to: "/library/$id", params: { id: paper.id } }),
+    })),
   ...posts.map((post) => ({
     key: `post-${post.id}`,
     title: post.title,

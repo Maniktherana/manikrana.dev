@@ -99,6 +99,7 @@ type Frontmatter = {
   date: string;
   github?: string;
   talk?: string;
+  paper?: string;
 };
 
 const modules = import.meta.glob<{ default: MDXContent; frontmatter: Frontmatter }>(
@@ -113,6 +114,7 @@ export const posts = Object.entries(modules).map(([path, { default: Content, fro
   id: path.slice("./writing/".length, -".mdx".length),
   month: month.format(new Date(frontmatter.date)),
   talk: talks.find(({ id }) => id === frontmatter.talk),
+  paper: papers.find(({ id }) => id === frontmatter.paper),
   Content,
 }));
 

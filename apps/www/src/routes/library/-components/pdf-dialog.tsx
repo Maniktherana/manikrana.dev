@@ -6,7 +6,19 @@ import { CloseButton } from "@/components/page-header";
 import { PdfPages } from "@/components/pdf-pages";
 import { play } from "@/lib/sounds";
 
-export function SlidesDialog({ url, slides }: { url: string; slides: number }) {
+export function PdfDialog({
+  url,
+  pages,
+  title,
+  pageLabel,
+  pageClassName,
+}: {
+  url: string;
+  pages: number;
+  title: string;
+  pageLabel: string;
+  pageClassName: string;
+}) {
   const [open, setOpen] = useState(false);
   const change = (next: boolean) => {
     setOpen(next);
@@ -20,7 +32,7 @@ export function SlidesDialog({ url, slides }: { url: string; slides: number }) {
           "rounded-xl px-3 font-normal text-control-foreground hover:text-foreground",
         )}
       >
-        Slides
+        {title}
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 z-50 bg-background/90 backdrop-blur-sm transition-opacity duration-200 ease-out data-ending-style:opacity-0 data-starting-style:opacity-0" />
@@ -33,11 +45,11 @@ export function SlidesDialog({ url, slides }: { url: string; slides: number }) {
           <div className="mx-auto w-[calc(100%-40px)] max-w-5xl pb-16">
             <div className="flex h-16 items-center justify-between gap-4">
               <Dialog.Title className="flex gap-2 text-sm text-muted-foreground">
-                Slides <span>{slides}</span>
+                {title} <span>{pages}</span>
               </Dialog.Title>
               <Dialog.Close render={<CloseButton />} />
             </div>
-            <PdfPages url={url} pages={slides} label="Slide" pageClassName="aspect-video" />
+            <PdfPages url={url} pages={pages} label={pageLabel} pageClassName={pageClassName} />
           </div>
         </Dialog.Popup>
       </Dialog.Portal>

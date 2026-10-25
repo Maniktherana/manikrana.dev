@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { GithubIcon } from "@/components/icons/github";
 import {
   IssueMark,
   PullRequestMark,
@@ -42,10 +43,55 @@ export function PullRequest({
   );
 }
 
-export function Person({ github, children }: { github: string; children: ReactNode }) {
+export function Commit({
+  repo,
+  sha,
+  children,
+}: {
+  repo: string;
+  sha: string;
+  children?: ReactNode;
+}) {
+  return (
+    <InlineLink href={`https://github.com/${repo}/commit/${sha}`}>
+      <span>
+        {children}
+        <span className="sr-only">{children ? " — commit " : "Commit "}</span>
+        {children ? (
+          <span className="ms-1 inline-block rounded-full border border-border bg-control px-1.5 py-0.5 align-middle font-mono text-[10px] leading-none font-normal text-muted-foreground no-underline">
+            {sha.slice(0, 7)}
+          </span>
+        ) : (
+          <span className="font-mono">{sha.slice(0, 7)}</span>
+        )}
+      </span>
+    </InlineLink>
+  );
+}
+
+export function Repository({ repo, children }: { repo: string; children?: ReactNode }) {
   return (
     <InlineLink
-      href={`https://github.com/${github}`}
+      href={`https://github.com/${repo}`}
+      icon={() => <GithubIcon className="self-center" />}
+    >
+      {children ?? repo}
+    </InlineLink>
+  );
+}
+
+export function Person({
+  github,
+  href = `https://github.com/${github}`,
+  children,
+}: {
+  github: string;
+  href?: string;
+  children: ReactNode;
+}) {
+  return (
+    <InlineLink
+      href={href}
       icon={() => (
         <img
           src={`https://github.com/${github}.png?size=64`}

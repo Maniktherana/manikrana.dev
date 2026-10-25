@@ -7,8 +7,13 @@ import { cn } from "@manikrana/ui/lib/utils";
 import { ChapterNavigation, slugOf } from "@/routes/library/-components/chapter-navigation";
 import { CodeBlock } from "@/components/code-block";
 import { GithubIcon } from "@/components/icons/github";
-import { Issue, Person, PullRequest } from "@/components/github-link";
+import { ArxivLogo } from "@/components/icons/arxiv-logo";
+import { Commit, Issue, Person, PullRequest, Repository } from "@/components/github-link";
 import { Recording, Screenshot } from "@/components/media";
+import { ConversationPlayer } from "@/components/agentchangebench/conversation-player";
+import { PersonaShifts } from "@/components/agentchangebench/persona-shifts";
+import { ResultsTable } from "@/components/agentchangebench/results-table";
+import { Transcript } from "@/components/agentchangebench/transcript";
 import { AttentionDiagram } from "@/components/mlm/attention-diagram";
 import { InputEmbeddingDiagram } from "@/components/mlm/input-embedding-diagram";
 import { LayerNormDiagram } from "@/components/mlm/layer-norm-diagram";
@@ -27,7 +32,7 @@ import {
   useClose,
 } from "@/components/page-header";
 import { posts } from "@/content/library";
-import { SlidesDialog } from "@/routes/library/-components/slides-dialog";
+import { PdfDialog } from "@/routes/library/-components/pdf-dialog";
 import { TalkVideo } from "@/routes/library/-components/talk-video";
 
 const mdxComponents: MDXComponents = {
@@ -38,11 +43,17 @@ const mdxComponents: MDXComponents = {
   ),
   h2: ({ children }) => <h2 id={slugOf(children)}>{children}</h2>,
   pre: CodeBlock,
+  Commit,
   Issue,
   Person,
   PullRequest,
+  Repository,
   Recording,
   Screenshot,
+  ConversationPlayer,
+  PersonaShifts,
+  ResultsTable,
+  Transcript,
   AttentionDiagram,
   InputEmbeddingDiagram,
   LayerNormDiagram,
@@ -79,9 +90,39 @@ export function PostPage({ id }: { id: string }) {
               {post.month}
             </time>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {post.talk && (
-              <SlidesDialog url={`/talks/${post.talk.id}.pdf`} slides={post.talk.slides} />
+              <PdfDialog
+                url={`/talks/${post.talk.id}.pdf`}
+                pages={post.talk.slides}
+                title="Slides"
+                pageLabel="Slide"
+                pageClassName="aspect-video"
+              />
+            )}
+            {post.paper && (
+              <>
+                <PdfDialog
+                  url={`/papers/${post.paper.id}.pdf`}
+                  pages={post.paper.pages}
+                  title="Paper"
+                  pageLabel="Page"
+                  pageClassName="aspect-[17/22]"
+                />
+                <a
+                  href={post.paper.arxiv}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${post.title} on arXiv`}
+                  title="arXiv"
+                  className={cn(
+                    buttonVariants({ variant: "secondary" }),
+                    "rounded-xl px-3 text-control-foreground hover:text-foreground",
+                  )}
+                >
+                  <ArxivLogo />
+                </a>
+              </>
             )}
             {post.github && (
               <a
@@ -105,7 +146,7 @@ export function PostPage({ id }: { id: string }) {
 
         <article
           ref={article}
-          className="mt-8 text-muted-foreground sm:text-pretty [&_:not(pre)>code]:rounded-md [&_:not(pre)>code]:bg-control [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-sm [&_:not(pre)>code]:text-control-foreground [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:leading-5.5 [&_h2]:font-medium [&_h2]:text-foreground [&_p]:mb-4 [&_strong]:font-medium [&_strong]:text-foreground"
+          className="mt-8 text-muted-foreground sm:text-pretty [&_:not(pre)>code]:rounded-md [&_:not(pre)>code]:bg-control [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-sm [&_:not(pre)>code]:text-control-foreground [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:leading-5.5 [&_h2]:font-medium [&_h2]:text-foreground [&_li]:mt-1 [&_li]:ps-1 [&_li]:marker:text-foreground/30 [&_p]:mb-4 [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:ps-5 [&_strong]:font-medium [&_strong]:text-foreground"
         >
           <post.Content components={mdxComponents} />
         </article>
