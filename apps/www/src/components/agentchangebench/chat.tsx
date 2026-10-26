@@ -4,6 +4,7 @@ import { cn } from "@manikrana/ui/lib/utils";
 import type { Fields, ToolCall as Call, Turn } from "@/components/agentchangebench/conversation";
 import { CheckIcon } from "@/components/icons/check";
 import { CloseSmallIcon } from "@/components/icons/close-small";
+import { Ring } from "@/components/ring";
 import { STREAM } from "@/components/work/citation-preview/stream";
 
 const shown = { opacity: 1, y: 0, filter: "blur(0px)" };
@@ -236,27 +237,5 @@ function ToolCall({ call, result }: { call: Call; result?: ToolResult }) {
         </motion.dl>
       )}
     </div>
-  );
-}
-
-// The ring from loading.dev: a short arc turning over a faint track.
-function Ring() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      className="size-4 animate-spin stroke-current [animation-duration:800ms] motion-reduce:animate-none"
-    >
-      <circle cx="12" cy="12" r="10" strokeWidth="2.5" opacity="0.2" />
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-        strokeWidth="2.5"
-        strokeDasharray="16 46.8"
-        strokeLinecap="round"
-      />
-    </svg>
   );
 }

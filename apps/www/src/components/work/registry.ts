@@ -70,7 +70,7 @@ export const work = [
     included:
       "The VoiceEdge wrapper: a glow along one edge of whatever it wraps, driven by the microphone or an analyser you pass in, with a sweeping processing state and seven palettes.",
     notIncluded:
-      "The phone, its call controls and waveform, the transcript and the recorded voice note.",
+      "The phone, its call controls and waveform, the transcript, the recorded voice note and the microphone and palette buttons on the stage.",
   },
   {
     slug: "ai-chat",

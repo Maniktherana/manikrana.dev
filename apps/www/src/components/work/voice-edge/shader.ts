@@ -214,7 +214,7 @@ export function clamp(value: number, min: number, max: number) {
 }
 
 export function resolveAudioPalette(palette: VoiceEdgePaletteName | VoiceEdgePalette | undefined) {
-  if (!palette) return voiceEdgePalettes.prism;
+  if (!palette) return voiceEdgePalettes.spectrum;
   if (typeof palette === "string") return voiceEdgePalettes[palette];
 
   return palette;

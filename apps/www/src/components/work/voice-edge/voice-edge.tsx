@@ -8,6 +8,7 @@ import {
   MIC_MIN_PEAK,
   buildStaticAudioBins,
   defaultAudioResponseCurve,
+  trackAmbient,
   type VoiceEdgeResponseCurve,
 } from "./audio-response";
 import {
@@ -64,7 +65,7 @@ function VoiceEdge({
   onError,
   onStreamEnd,
   onStreamReady,
-  palette = "prism",
+  palette = "spectrum",
   processing = false,
   ref,
   responseCurve = defaultAudioResponseCurve,
@@ -76,6 +77,7 @@ function VoiceEdge({
   ...props
 }: VoiceEdgeProps) {
   const audioContextRef = React.useRef<AudioContext | null>(null);
+  const ambientRef = React.useRef<Float32Array | null>(null);
   const analyserRef = React.useRef<VoiceEdgeAnalyser | null>(null);
   const canvasHostRef = React.useRef<HTMLSpanElement | null>(null);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
@@ -84,6 +86,7 @@ function VoiceEdge({
   const peakRef = React.useRef(MIC_MIN_PEAK);
   const rafRef = React.useRef(0);
   const streamRef = React.useRef<MediaStream | null>(null);
+  const callbacksRef = React.useRef({ onError, onStreamEnd, onStreamReady });
   const audioParamsRef = React.useRef({
     noiseFloor,
     responseCurve,
@@ -119,6 +122,7 @@ function VoiceEdge({
     processing,
     side,
   };
+  callbacksRef.current = { onError, onStreamEnd, onStreamReady };
   audioParamsRef.current = {
     noiseFloor,
     responseCurve,
@@ -213,11 +217,12 @@ function VoiceEdge({
       }
 
       peakRef.current = MIC_MIN_PEAK;
+      ambientRef.current = null;
 
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop());
         streamRef.current = null;
-        onStreamEnd?.();
+        callbacksRef.current.onStreamEnd?.();
       }
 
       if (audioContextRef.current && audioContextRef.current.state !== "closed") {
@@ -243,12 +248,14 @@ function VoiceEdge({
         const audioParams = audioParamsRef.current;
 
         analyserNode.getByteFrequencyData(dataArray);
+        if (!analyser) ambientRef.current = trackAmbient(dataArray, ambientRef.current);
         const frame = buildStaticAudioBins(
           dataArray,
           audioParams.sensitivity,
           audioParams.noiseFloor,
           audioParams.responseCurve,
           peakRef.current,
+          ambientRef.current ?? undefined,
         );
 
         peakRef.current = frame.peak;
@@ -281,7 +288,7 @@ function VoiceEdge({
         }
 
         streamRef.current = stream;
-        onStreamReady?.(stream);
+        callbacksRef.current.onStreamReady?.(stream);
 
         const AudioContextConstructor =
           window.AudioContext ||
@@ -301,7 +308,7 @@ function VoiceEdge({
 
         rafRef.current = window.requestAnimationFrame(updateAudio);
       } catch (error) {
-        onError?.(error as Error);
+        callbacksRef.current.onError?.(error as Error);
       }
     };
 
@@ -322,11 +329,12 @@ function VoiceEdge({
       }
 
       peakRef.current = MIC_MIN_PEAK;
+      ambientRef.current = null;
 
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop());
         streamRef.current = null;
-        onStreamEnd?.();
+        callbacksRef.current.onStreamEnd?.();
       }
 
       if (audioContextRef.current && audioContextRef.current.state !== "closed") {
@@ -336,17 +344,7 @@ function VoiceEdge({
 
       analyserRef.current = null;
     };
-  }, [
-    analyser,
-    captureActive,
-    deviceId,
-    fftSize,
-    onError,
-    onStreamEnd,
-    onStreamReady,
-    smoothingTimeConstant,
-    updateRate,
-  ]);
+  }, [analyser, captureActive, deviceId, fftSize, smoothingTimeConstant, updateRate]);
 
   const setRefs = React.useCallback(
     (node: HTMLDivElement | null) => {
