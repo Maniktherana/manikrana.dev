@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { LoaderIcon } from "@/components/icons/loader";
 import { MicIcon } from "@/components/icons/mic";
 import { MicOffIcon } from "@/components/icons/mic-off";
 import { Ring } from "@/components/ring";
@@ -42,8 +43,9 @@ export function Stage() {
   const [microphone, setMicrophone] = useState(false);
   const [listening, setListening] = useState(false);
   const [blocked, setBlocked] = useState(false);
+  const [thinking, setThinking] = useState(false);
   const [palette, setPalette] = useState<VoiceEdgePaletteName>("spectrum");
-  const demo = useVoiceSequence(watching && !microphone);
+  const demo = useVoiceSequence(watching && !microphone && !thinking);
   const waiting = microphone && !listening;
 
   useEffect(() => {
@@ -54,26 +56,32 @@ export function Stage() {
 
   const toggleMicrophone = () => {
     setBlocked(false);
+    setThinking(false);
     setMicrophone((current) => !current);
+  };
+
+  const toggleThinking = () => {
+    setMicrophone(false);
+    setThinking((current) => !current);
   };
 
   return (
     <div ref={ref} className="@container relative size-full">
       <Phone
         className="bottom-18"
-        active={microphone || demo.active}
+        active={microphone || (!thinking && demo.active)}
         analyser={microphone ? undefined : demo.analyser}
         palette={palette}
-        processing={!microphone && demo.processing}
+        processing={thinking || (!microphone && demo.processing)}
         onStreamReady={() => setListening(true)}
         onStreamEnd={() => setListening(false)}
         onError={() => {
           setMicrophone(false);
           setBlocked(true);
         }}
-        speaking={microphone || demo.speaking}
+        speaking={microphone || (!thinking && demo.speaking)}
       >
-        <Words shown={microphone ? 0 : demo.heard} />
+        <Words shown={microphone || thinking ? 0 : demo.heard} />
       </Phone>
       <Toolbar aria-label="Voice edge">
         <ToolbarButton
@@ -85,6 +93,15 @@ export function Stage() {
           onClick={toggleMicrophone}
         >
           {waiting ? <Ring /> : blocked ? <MicOffIcon /> : <MicIcon />}
+        </ToolbarButton>
+        <ToolbarButton
+          iconOnly
+          className="[&_svg]:size-5"
+          aria-label="Show loading"
+          aria-pressed={thinking}
+          onClick={toggleThinking}
+        >
+          <LoaderIcon />
         </ToolbarButton>
         <ToolbarSeparator />
         <ToolbarGroup aria-label="Palette">
