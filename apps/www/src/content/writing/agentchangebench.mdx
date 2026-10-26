@@ -111,12 +111,10 @@ Qwen2.5-14B matched GPT-4o's airline task-success score in its single evaluation
 
 ## Closing thoughts
 
-The goal changes in these tasks are explicit. The customer introduces another request with wording such as “while you're at it.” We didn't test indirect changes, where a customer hints at a different goal or revises an earlier detail without announcing it.
+This was my first research project. I learned how to build evaluation sets, test models and serve them with vLLM. Working on the simulation and evaluation code taught me more about harness engineering than I'd learned on any youtube video. I read a lot of papers along the way and came out with a much better understanding of model evaluation.
 
-Each model also played both sides. Comparing Claude with GPT-4o changes the customer as well as the agent, so the results don't isolate agent performance.
+It was also hard and tiring. Doing this alongside my regular job took a lot of energy, and I don't think I could have finished it without the support I received.
 
-Maria's final message asks about the cutoff time for mobile check deposits. That request isn't in her task. Although the goals are scripted, the customer model can depart from them.
-
-One retail task expected the agent to modify a delivered order, which the domain's own policy forbids. I <Commit repo="Maniktherana/AgentChangeBench" sha="4145dcbf4c286be6b5b4f41580364736f250bb5b">fixed that task</Commit> and checked the others for invalid IDs and tool calls.
+Although the work was accepted at two workshops, I feel there's still much more to explore. AI is developing so quickly that the next model release could already make these findings outdated. That pace is part of what makes the field exciting to me, and I'd like to do more research.
 
 The conversations, judge outputs and evaluation code are in the <Repository repo="Maniktherana/AgentChangeBench">AgentChangeBench</Repository> repository.
