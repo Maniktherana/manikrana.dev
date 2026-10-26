@@ -39,7 +39,6 @@
     "shiki": "^4.2.0"
   },
   "devDependencies": {
-    "@manikrana/loupe": "workspace:*",
     "@tailwindcss/vite": "^4.3.0",
     "@types/mdx": "^2.0.14",
     "@types/node": "^25.9.2",

@@ -12,7 +12,6 @@ import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import tailwindcss from "@tailwindcss/vite";
 import viteReact from "@vitejs/plugin-react";
-import { loupe } from "@manikrana/loupe/vite";
 import { nitro } from "nitro/vite";
 import type { ShikiTransformer } from "shiki";
 import { defineConfig } from "vite";
@@ -77,6 +76,5 @@ export default defineConfig({
     }),
     nitro({ preset: "node" }),
     viteReact(),
-    loupe(),
   ],
 });
