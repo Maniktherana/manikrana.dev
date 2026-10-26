@@ -51,6 +51,7 @@ export function componentPrompt(item: WorkItem, sources: SourceFile[], deps: Dep
 
   return `${[
     `Add the ${item.title} component to my React project. ${plainSummary(item)}`,
+    `Source: ${site}/work/${item.slug}`,
     ...when(Boolean(item.included), `Included: ${item.included}`),
     ...when(
       Boolean(item.notIncluded),
