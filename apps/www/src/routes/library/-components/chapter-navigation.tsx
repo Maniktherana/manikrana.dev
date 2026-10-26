@@ -42,9 +42,10 @@ const SPRING = { type: "spring", bounce: 0.1, visualDuration: 0.15 } as const;
 /** Bounce on a close would undershoot the 40px circle into a wobble. */
 const CLOSE_SPRING = { type: "spring", bounce: 0.03, visualDuration: 0.15 } as const;
 /** Dynamic island's crossfade, with its y offsets mirrored for a bottom anchor. */
-const FADE_IN = { duration: 0.15, delay: 0.03, ease: [0.23, 1, 0.32, 1] } as const;
-const FADE_OUT = { duration: 0.12, ease: [0.23, 1, 0.32, 1] } as const;
-const CONTENT_HIDDEN = { scale: 0.9, opacity: 0, filter: "blur(5px)" };
+/** Fades ride the surface's springs so the content tracks the shape; the blur lingers a beat. */
+const FADE_IN = { ...SPRING, filter: { ...SPRING, visualDuration: 0.2 } };
+const FADE_OUT = { ...CLOSE_SPRING, filter: { ...CLOSE_SPRING, visualDuration: 0.2 } };
+const CONTENT_HIDDEN = { scale: 0.9, opacity: 0, filter: "blur(6px)" };
 const CONTENT_SHOWN = { scale: 1, opacity: 1, filter: "blur(0px)", transition: FADE_IN };
 
 /** Even sizes keep the centered content on whole pixels as the surface resizes. */
@@ -386,7 +387,10 @@ function ChapterDock({
 
   const rows = (
     <>
-      <p aria-hidden="true" className="pb-1.5 text-center text-xs leading-4 text-muted-foreground">
+      <p
+        aria-hidden="true"
+        className="pb-1.5 text-center text-xs leading-4 font-semibold tracking-wide text-muted-foreground"
+      >
         Chapters
       </p>
       {chapters.map((chapter, index) => (
@@ -398,7 +402,7 @@ function ChapterDock({
             setOpen(false);
             onJump(chapter);
           }}
-          className="flex min-h-8 shrink-0 transform-gpu items-center rounded-lg px-2 py-1.5 text-left text-sm leading-5 text-control-foreground outline-none transition-[background-color,color,scale] duration-150 ease-out select-none active:scale-[0.96] hover:bg-control hover:text-foreground active:bg-control active:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 aria-[current=location]:bg-control-selected aria-[current=location]:text-foreground"
+          className="flex min-h-8 shrink-0 transform-gpu items-center rounded-lg px-2.5 py-1.5 text-left text-sm leading-5 text-control-foreground outline-none transition-[background-color,color,scale] duration-150 ease-out select-none active:scale-[0.96] hover:bg-control hover:text-foreground active:bg-control active:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 aria-[current=location]:bg-control-selected aria-[current=location]:text-foreground"
         >
           {chapter.title}
         </button>
@@ -421,23 +425,23 @@ function ChapterDock({
             initial={false}
             animate={{
               scale: scrubbing ? 1.1 : pressed ? 0.96 : 1,
-              borderRadius: expanded ? 16 : 20,
+              "--corner": expanded ? 2 : 1,
             }}
-            transition={{ default: SPRING, borderRadius: expanded ? SPRING : CLOSE_SPRING }}
+            transition={{ ...SPRING, "--corner": expanded ? SPRING : CLOSE_SPRING }}
             style={{ width: surfaceWidth, height: surfaceHeight }}
             className={cn(
-              "relative bg-popover",
+              "relative rounded-[20px] bg-popover [corner-shape:superellipse(var(--corner))] supports-[corner-shape:squircle]:rounded-[36px]",
               expanded
                 ? "shadow-[var(--edge-raised),0_12px_32px_oklch(0_0_0/50%)]"
                 : "shadow-[var(--edge-raised),inset_0_0_0_1px_oklch(1_0_0/10%),0_2px_6px_oklch(0_0_0/60%),0_12px_40px_oklch(0_0_0/90%)]",
             )}
           >
-            <div className="absolute inset-0 overflow-hidden rounded-[inherit]">
+            <div className="absolute inset-0 overflow-hidden rounded-[inherit] [corner-shape:superellipse(var(--corner))]">
               <div
                 ref={measure}
                 aria-hidden="true"
                 inert
-                className="invisible absolute bottom-0 left-1/2 flex max-h-[60svh] w-72 max-w-[calc(100vw-40px)] -translate-x-1/2 flex-col p-2"
+                className="invisible absolute bottom-0 left-1/2 flex max-h-[60svh] w-72 max-w-[calc(100vw-40px)] -translate-x-1/2 flex-col px-3 pt-2 pb-3"
               >
                 {rows}
               </div>
@@ -453,10 +457,10 @@ function ChapterDock({
                       scale: 0.7,
                       y: 7.5,
                       opacity: [1, 0],
-                      filter: "blur(5px)",
+                      filter: "blur(6px)",
                       transition: FADE_OUT,
                     }}
-                    className="absolute bottom-0 left-1/2 flex origin-bottom max-h-[60svh] w-72 max-w-[calc(100vw-40px)] -translate-x-1/2 flex-col overflow-y-auto p-2"
+                    className="absolute bottom-0 left-1/2 flex origin-bottom max-h-[60svh] w-72 max-w-[calc(100vw-40px)] -translate-x-1/2 flex-col overflow-y-auto px-3 pt-2 pb-3"
                   >
                     {rows}
                   </motion.nav>
@@ -477,14 +481,14 @@ function ChapterDock({
                       scale: 1.4,
                       y: -7.5,
                       opacity: [1, 0],
-                      filter: "blur(5px)",
+                      filter: "blur(6px)",
                       transition: FADE_OUT,
                     }
                   : {
                       scale: [0.9, 1],
                       y: 0,
                       opacity: [0, 1],
-                      filter: ["blur(5px)", "blur(0px)"],
+                      filter: ["blur(6px)", "blur(0px)"],
                       transition: FADE_IN,
                     }
               }
