@@ -93,8 +93,6 @@ $$
   {\text{Total goal shifts}}
 $$ 
 
-An earlier version counted transfer offers as recovery. We now count them as misses.
-
 <ConversationPlayer caption="How TSR, TUE and GSRT score James's conversation." />
 
 Initially, the customer tagged its goal shifts and the support agent tagged when it recognized them. This leaked the evaluation criteria as it prompted the support agent to look for changes when we wanted to see it notice them on its own. In <PullRequest repo="Maniktherana/AgentChangeBench" number={8} />, I replaced those tags with the separate judge. Its annotations are saved with the transcripts so we can recalculate scores without rerunning the conversations.
