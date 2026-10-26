@@ -26,15 +26,6 @@ export type VoiceEdgeResponseCurve =
 const MIC_PEAK_DECAY_PER_FRAME = 0.995;
 export const MIC_MIN_PEAK = 0.25;
 const MIC_MIN_ACTIVE_MAGNITUDE = 0.05;
-// A live mic never reaches silence, so the room's level per bin is followed and the voice is read above it.
-const AMBIENT_FALL = 0.2;
-const AMBIENT_RISE = 0.001;
-const AMBIENT_MARGIN = 0.02;
-// A voice this far above the room fills the edge: 0.12 of the analyser's 70 dB is about 8 dB.
-const AMBIENT_FULL_SCALE = 0.12;
-// Speech sits around 300 Hz to 4 kHz, below the band the recorded note reads.
-const AMBIENT_BAND = [0.015, 0.17];
-const AMBIENT_LIFT = 0.5;
 export const defaultAudioResponseCurve = {
   type: "easing",
   duration: 0.3,
@@ -48,49 +39,26 @@ const fallbackAudioResponsePointCurve = [
   { level: 1, scale: 1.48 },
 ] satisfies VoiceEdgeResponsePointCurve;
 
-export function trackAmbient(dataArray: Uint8Array, ambient: Float32Array | null) {
-  if (!ambient || ambient.length !== dataArray.length) {
-    return Float32Array.from(dataArray, (value) => value / 255);
-  }
-
-  for (let i = 0; i < dataArray.length; i += 1) {
-    const level = (dataArray[i] ?? 0) / 255;
-    const previous = ambient[i] ?? level;
-
-    ambient[i] = previous + (level - previous) * (level < previous ? AMBIENT_FALL : AMBIENT_RISE);
-  }
-
-  return ambient;
-}
-
 export function buildStaticAudioBins(
   dataArray: Uint8Array,
   sensitivity: number,
   noiseFloor: number,
   responseCurve: VoiceEdgeResponseCurve,
   previousPeak: number,
-  ambient?: Float32Array,
 ) {
   const bins = new Float32Array(AUDIO_BIN_COUNT);
-  const [bandStart, bandEnd] = ambient ? AMBIENT_BAND : [0.05, 0.4];
-  const startFreq = Math.floor(dataArray.length * bandStart!);
-  const endFreq = Math.max(startFreq + 1, Math.floor(dataArray.length * bandEnd!));
+  const startFreq = Math.floor(dataArray.length * 0.05);
+  const endFreq = Math.max(startFreq + 1, Math.floor(dataArray.length * 0.4));
   const relevantLength = endFreq - startFreq;
   const floor = clamp(noiseFloor, 0, 0.95);
   const range = Math.max(0.05, 1 - floor);
-  const levelAt = (index: number) =>
-    ambient
-      ? Math.max(0, (dataArray[index] ?? 0) / 255 - (ambient[index] ?? 0) - AMBIENT_MARGIN)
-      : (dataArray[index] ?? 0) / 255;
   let frameMax = 0;
 
   for (let index = startFreq; index < endFreq; index += 1) {
-    frameMax = Math.max(frameMax, levelAt(index));
+    frameMax = Math.max(frameMax, dataArray[index] ?? 0);
   }
 
-  const peak = ambient
-    ? AMBIENT_FULL_SCALE
-    : Math.max(frameMax, previousPeak * MIC_PEAK_DECAY_PER_FRAME, MIC_MIN_PEAK);
+  const peak = Math.max(frameMax / 255, previousPeak * MIC_PEAK_DECAY_PER_FRAME, MIC_MIN_PEAK);
   const gain = 1 / peak;
 
   for (let i = 0; i < AUDIO_BIN_COUNT; i += 1) {
@@ -100,10 +68,9 @@ export function buildStaticAudioBins(
         relevantLength - 1,
         Math.floor((i / Math.max(1, AUDIO_BIN_COUNT - 1)) * relevantLength),
       );
-    const rawValue = Math.max(MIC_MIN_ACTIVE_MAGNITUDE, Math.min(1, levelAt(dataIndex) * gain));
+    const rawValue = Math.max(MIC_MIN_ACTIVE_MAGNITUDE, ((dataArray[dataIndex] ?? 0) / 255) * gain);
     const gatedValue = Math.max(0, rawValue - floor) / range;
-    const liftedValue = ambient ? Math.pow(gatedValue, AMBIENT_LIFT) : gatedValue;
-    const shapedValue = shapeAudioResponse(liftedValue, responseCurve);
+    const shapedValue = shapeAudioResponse(gatedValue, responseCurve);
 
     bins[i] = clamp(shapedValue * sensitivity, 0, 1);
   }

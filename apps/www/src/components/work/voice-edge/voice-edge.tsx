@@ -8,7 +8,6 @@ import {
   MIC_MIN_PEAK,
   buildStaticAudioBins,
   defaultAudioResponseCurve,
-  trackAmbient,
   type VoiceEdgeResponseCurve,
 } from "./audio-response";
 import {
@@ -77,7 +76,6 @@ function VoiceEdge({
   ...props
 }: VoiceEdgeProps) {
   const audioContextRef = React.useRef<AudioContext | null>(null);
-  const ambientRef = React.useRef<Float32Array | null>(null);
   const analyserRef = React.useRef<VoiceEdgeAnalyser | null>(null);
   const canvasHostRef = React.useRef<HTMLSpanElement | null>(null);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
@@ -217,7 +215,6 @@ function VoiceEdge({
       }
 
       peakRef.current = MIC_MIN_PEAK;
-      ambientRef.current = null;
 
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop());
@@ -248,14 +245,12 @@ function VoiceEdge({
         const audioParams = audioParamsRef.current;
 
         analyserNode.getByteFrequencyData(dataArray);
-        if (!analyser) ambientRef.current = trackAmbient(dataArray, ambientRef.current);
         const frame = buildStaticAudioBins(
           dataArray,
           audioParams.sensitivity,
           audioParams.noiseFloor,
           audioParams.responseCurve,
           peakRef.current,
-          ambientRef.current ?? undefined,
         );
 
         peakRef.current = frame.peak;
@@ -267,19 +262,9 @@ function VoiceEdge({
 
     const setupMicrophone = async () => {
       try {
+        // The browser's voice processing (gain control, noise suppression) is what the levels are tuned for.
         const stream = await navigator.mediaDevices.getUserMedia({
-          audio: deviceId
-            ? {
-                autoGainControl: false,
-                deviceId: { exact: deviceId },
-                echoCancellation: false,
-                noiseSuppression: false,
-              }
-            : {
-                autoGainControl: false,
-                echoCancellation: false,
-                noiseSuppression: false,
-              },
+          audio: deviceId ? { deviceId: { exact: deviceId } } : true,
         });
 
         if (cancelled) {
@@ -329,7 +314,6 @@ function VoiceEdge({
       }
 
       peakRef.current = MIC_MIN_PEAK;
-      ambientRef.current = null;
 
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop());
