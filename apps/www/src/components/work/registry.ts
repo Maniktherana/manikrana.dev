@@ -35,9 +35,9 @@ export const work = [
   {
     slug: "agentsims",
     title: "Agentsims",
-    tagline: "Tooling for mobile devs",
+    tagline: "iOS and Android workspace",
     kind: "project",
-    summary: "Rich tooling for iOS and Android simulators for mobile devs.",
+    summary: "A workspace for iOS and Android devices, with an API and CLI for coding agents.",
     tile: "square",
     uses: ["Bun", "Effect", "React"],
     links: [
@@ -62,7 +62,7 @@ export const work = [
     title: "Voice edge",
     kind: "component",
     summary:
-      "A WebGL glow that rises from one edge of a surface as you speak, and sweeps side to side while the reply is worked out.",
+      "An edge glow for voice interfaces. It responds to audio while listening and sweeps across the edge while processing.",
     tile: "xl",
     uses: ["WebGL", "Web Audio"],
     files: ["voice-edge.tsx", "shader.ts", "audio-response.ts", "palettes.ts"],
@@ -77,7 +77,7 @@ export const work = [
     title: "AI chat",
     kind: "component",
     summary:
-      "The layout shell of an AI chat app: a sidebar that folds to an icon rail, the chat as an inset card, and a side panel that docks beside it for sources or the thinking trace.",
+      "A chat layout with a collapsible sidebar and a side panel for sources or reasoning. The chat resizes as the panels open and close.",
     tile: "video",
     uses: ["motion"],
     files: ["ai-chat.tsx"],
@@ -92,7 +92,7 @@ export const work = [
     title: "Bot avatars",
     kind: "component",
     summary:
-      "A recreation of the bot avatars from [Grok Bot](https://x.ai/bot). An SVG head with two eyes that looks around, blinks and shows what the agent is doing: working, waiting, blocked, thinking or done.",
+      "My recreation of the avatars from [Grok Bot](https://x.ai/bot), with expressions and animations for different agent states.",
     tile: "lg",
     uses: ["SVG"],
     files: [
@@ -125,7 +125,7 @@ export const work = [
     title: "Message composer",
     kind: "component",
     summary:
-      "A chat composer that starts as a pill, stacks into a card when the text wraps, and carries attachments with an upload ring. Drop files on it to attach them; while a reply is working, send becomes stop.",
+      "A chat input with attachments and drag-and-drop uploads. It expands when the message wraps.",
     tile: "lg",
     uses: ["motion"],
     files: ["message-composer.tsx", "attachments.tsx"],
@@ -140,7 +140,7 @@ export const work = [
     title: "Thinking orbs",
     kind: "component",
     summary:
-      "Three WebGL orbs for AI interfaces: Diffusion, Fold and Gemini. They think and listen, and the Gemini orb moves with your voice.",
+      "Three WebGL orbs for thinking and listening states. The Gemini variant also responds to audio.",
     tile: "lg",
     uses: ["WebGL"],
     files: [
@@ -165,8 +165,7 @@ export const work = [
     slug: "agent-terminal",
     title: "Agent terminal",
     kind: "component",
-    summary:
-      "The Claude Code terminal from the agentsims.dev landing page, running an agent through two requests on its own. Prompts type into the composer, answers stream in word by word, and tool calls scroll past under a shimmering status line.",
+    summary: "A scripted Claude Code terminal demo I built for the Agentsims landing page.",
     tile: "lg",
     uses: ["motion", "Web Animations API"],
     files: ["agent-terminal.tsx", "use-terminal-playback.ts"],
@@ -181,7 +180,7 @@ export const work = [
     title: "Dot matrix",
     kind: "component",
     summary:
-      "A thinking loader drawn as a small grid of dots. Five patterns light it up, from a scan to a helix, plus a wave you shape yourself; each dot keeps its color and only the brightness moves.",
+      "A dot-matrix loader with scan, helix and wave patterns. The dots stay in place; changes in brightness create the motion.",
     tile: "sm",
     uses: ["Canvas"],
     files: ["dot-matrix.tsx", "patterns.ts", "hues.ts", "draw.ts"],
@@ -196,7 +195,7 @@ export const work = [
     title: "Sweep",
     kind: "component",
     summary:
-      "A version of [glimm](https://glimm.dev/) that's contained to a parent element. A band of color that sweeps across a surface as it passes. It works as a loading state, or as a highlight that runs over content.",
+      "A version of [glimm](https://glimm.dev/) confined to a single element, for loading states or highlighting content.",
     tile: "md",
     uses: ["WebGL"],
     files: ["sweep.tsx"],
@@ -210,7 +209,7 @@ export const work = [
     title: "Chat showcase",
     kind: "component",
     summary:
-      "A phone rises over a softly breathing gradient and plays one conversation after another, a message a second. A stepper along the top fills as each one plays, and jumps to any of them when you click it.",
+      "A phone mockup that plays chat conversations message by message. Use the stepper to switch between conversations.",
     tile: "md",
     uses: ["motion"],
     files: [
@@ -231,7 +230,7 @@ export const work = [
     slug: "slider",
     title: "Slider",
     kind: "component",
-    summary: "My attempt at recreating the slider from [dialkit.dev](https://dialkit.dev).",
+    summary: "My recreation of the slider from [DialKit](https://dialkit.dev).",
     tile: "sm",
     uses: ["motion"],
     files: ["@manikrana/ui/components/slider.tsx"],
@@ -245,7 +244,7 @@ export const work = [
     title: "Citation chips",
     kind: "component",
     summary:
-      "Source chips that sit inline in an AI answer for an AI chat app. Hover one, or tap it on a phone, and the cited page opens above it with its image, favicon and title; a chip for several sources opens a row of their cards, each naming its domain.",
+      "Inline citations with source previews on hover or tap. A chip can link to one source or a group of sources.",
     tile: "lg",
     uses: ["Base UI"],
     files: [
@@ -269,7 +268,7 @@ export const work = [
     title: "Image tray",
     kind: "component",
     summary:
-      "The web-search results for an AI chat: a strip of thumbnails under a reply, and a tray that springs up when you tap one. It shows the image under a progressive blur with its source, and lets you copy the link or visit the page.",
+      "An image-results strip for chat interfaces. Selecting a thumbnail opens a tray with the image and a link to its source.",
     tile: "xl",
     uses: ["motion"],
     files: ["image-tray.tsx", "image-strip.tsx", "@manikrana/ui/components/progressive-blur.tsx"],
@@ -284,7 +283,7 @@ export const work = [
     title: "Image loader",
     kind: "component",
     summary:
-      "The placeholder for AI image generation. a grid of tiny dots that flicker or weave, until the finished image fades in.",
+      "An animated dot grid that holds the image's place during generation, then fades into the finished image.",
     tile: "lg",
     uses: ["WebGL", "motion"],
     files: ["image-loader.tsx", "dot-grid.tsx", "dot-grid-shader.ts"],
@@ -299,7 +298,7 @@ export const work = [
     title: "Dynamic Island",
     kind: "component",
     summary:
-      "My attempt at recreating dynamic island from the [animations.dev](https://animations.dev) course.",
+      "My recreation of the Dynamic Island exercise from [animations.dev](https://animations.dev).",
     tile: "md",
     uses: ["motion"],
     files: ["dynamic-island.tsx"],
@@ -314,7 +313,7 @@ export const work = [
     title: "Family drawer",
     kind: "component",
     summary:
-      "My attempt at recreating the family drawer from the [animations.dev](https://animations.dev) course.",
+      "My recreation of the Family drawer exercise from [animations.dev](https://animations.dev).",
     tile: "lg",
     uses: ["motion"],
     files: ["family-drawer.tsx"],

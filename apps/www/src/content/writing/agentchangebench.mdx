@@ -6,7 +6,7 @@ paper: agentchangebench
 github: https://github.com/Maniktherana/AgentChangeBench
 ---
 
-How well do agents handle someone changing their request halfway through a conversation? We built **AgentChangeBench** to study this in customer support conversations, with tasks covering banking, airline and retail. 
+How well do agents handle someone changing their request halfway through a conversation? We built **AgentChangeBench** to study this in customer support conversations, with tasks covering banking, airline and retail.
 
 I wrote most of the simulation and evaluation code with <Person github="Ahanmr" href="https://www.linkedin.com/in/ahanmr/">Ahan M R</Person> as my mentor. Our paper was accepted at the NeurIPS 2025 [Workshop on Multi-Turn Interactions in Large Language Models](https://workshop-multi-turn-interaction.github.io/).
 
@@ -86,12 +86,13 @@ We track tool use with two other metrics. **Tool use efficiency (TUE)** combines
 - The agent calls a relevant tool (**tool**).
 - The agent completes the request (**outcome**).
 
-A separate judge model reads each completed transcript alongside the goal list to identify goal shifts and the agent's responses. We use its annotations to calculate GSRT and a **recovery rate**: 
+A separate judge model reads each completed transcript alongside the goal list to identify goal shifts and the agent's responses. We use its annotations to calculate GSRT and a **recovery rate**:
+
 $$
   \mathrm{Recovery\ rate} =
   \frac{\text{Goal shifts acknowledged without a handoff}}
   {\text{Total goal shifts}}
-$$ 
+$$
 
 <ConversationPlayer caption="How TSR, TUE and GSRT score James's conversation." />
 

@@ -6,13 +6,15 @@ export function Details() {
     <WorkSection title="About">
       <div className="grid max-w-reading gap-3 px-1 text-pretty text-muted-foreground">
         <p>
-          A React component that animates changing text one character at a time. Shared prefixes
-          stay still, old characters lift out, new ones settle in, and the width eases to fit.
+          I saw an animation on iOS that I really liked and tried to recreate it in React. The idea
+          was to combine torph with blurring characters. I ended up with something different, but I
+          liked it enough to keep working on it.
         </p>
         <p>
-          It is made for text that updates in place, like prices, counters, timers and status
-          labels. Every part of the motion can be tuned, down to the direction it travels, and it
-          runs on the Web Animations API with no animation library.
+          It was fairly easy to build the primitives for entry, exit, bounce and overshoot. Tuning
+          them into an animation I liked was much harder, and it still is. Different settings can
+          produce almost entirely different animations. The examples here are some of the
+          combinations I’ve tried.
         </p>
       </div>
       <div className="mt-6">

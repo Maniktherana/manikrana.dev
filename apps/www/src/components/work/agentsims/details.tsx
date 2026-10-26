@@ -5,21 +5,16 @@ export function Details() {
     <WorkSection title="About">
       <div className="grid max-w-reading gap-3 px-1 text-pretty text-muted-foreground">
         <p>
-          Mobile work means juggling simulators, emulators and a different set of tools for each.
-          Agentsims puts every iOS simulator and Android device you have running in one browser
-          workspace. Boot devices, flip settings like dark mode, location or network across them,
-          read the accessibility tree, follow the logs and, in React Native and Expo apps, jump from
-          what is on screen to the code behind it.
+          Before Agentsims, I was using Evan Bacon's serve-sim. I was doing a lot of Android work
+          too and wanted something similar for Android emulators. I built Agentsims so I could work
+          with multiple phones in one view and annotate the screen to show a coding agent what I
+          wanted changed. The agent could then use the CLI to control those devices.
         </p>
         <p>
-          It also lets coding agents work on a phone the way you would. A full CLI gives them the
-          screen and the controls, and the skill that ships with it teaches them to use both well:
-          with it, Pi on GPT-5.6 Sol completed{" "}
-          <span className="text-foreground">
-            113 of the 116 tasks in the AndroidWorld benchmark.
-          </span>
+          With Agentsims, Pi on GPT-5.6 Sol completed{" "}
+          <span className="text-foreground">113 of the 116 tasks in AndroidWorld.</span> More
+          importantly, it saw internal adoption at my workplace to build and test mobile apps.
         </p>
-        <p>At TurboML, it is part of how the team builds and tests mobile every day.</p>
       </div>
     </WorkSection>
   );
