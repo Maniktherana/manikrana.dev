@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState, type ComponentProps, type ReactNode } from "react";
 import { createLink, useLocation, useRouter, type NavigateOptions } from "@tanstack/react-router";
+import { motion, useScroll, useTransform } from "motion/react";
 import { Button } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
 import { CloseIcon } from "@/components/icons/close";
+import { ProgressiveBlur } from "@/components/progressive-blur";
 import { play } from "@/lib/sounds";
 
 export function PageHeader({
@@ -43,24 +45,36 @@ export function CloseButton(props: ComponentProps<typeof Button>) {
   );
 }
 
-// Shows once the header has scrolled out of view.
+// Grows with the scroll until the header is out of view.
 function ScrollFade() {
   const fade = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(false);
+  const [end, setEnd] = useState(1);
+  const { scrollY } = useScroll();
+  const scaleY = useTransform(scrollY, [0, end], [0, 1]);
   useEffect(() => {
     const header = fade.current?.parentElement;
     if (!header) return;
-    const observer = new IntersectionObserver(([entry]) => setShown(!entry!.isIntersecting));
+    const measure = () =>
+      setEnd(Math.max(1, header.getBoundingClientRect().bottom + window.scrollY));
+    const observer = new ResizeObserver(measure);
     observer.observe(header);
     return () => observer.disconnect();
   }, []);
   return (
-    <div
+    <motion.div
       ref={fade}
       aria-hidden="true"
-      data-shown={shown || undefined}
-      className="pointer-events-none fixed inset-x-0 top-0 z-40 h-32 bg-scroll-fade opacity-0 transition-opacity duration-200 data-shown:opacity-100"
-    />
+      style={{ scaleY }}
+      className="pointer-events-none fixed inset-x-0 top-0 z-40 h-22 origin-top"
+    >
+      <ProgressiveBlur
+        direction="top"
+        blurLayers={9}
+        blurIntensity={0.25}
+        className="absolute inset-0"
+      />
+      <div className="absolute inset-0 bg-scroll-fade" />
+    </motion.div>
   );
 }
 
