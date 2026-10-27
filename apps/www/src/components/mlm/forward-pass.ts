@@ -135,7 +135,7 @@ const picks = [1, 4, 7, 10];
 TOKENS.forEach((word, i) => {
   const x = tokX + dotX(picks[i]!, 12) - 7.5;
   scene.push({ step: 0, kind: "chip", x0: x + 1, x1: x + 14, z0: 0, z1: 11 });
-  text(0, x + 7.5, 3.6, word, "middle", "chip");
+  text(0, x + 7.5, 5.5, word, "middle", "chip");
 });
 text(0, tokX + dotX(picks[0]!, 12) - 9.5, 3.6, "prompt", "end", "name");
 
@@ -182,7 +182,7 @@ for (const w of W)
   );
 const small = widthOf(4, 4);
 const [q, k, v] = W.map((w) =>
-  heads(3, w.mid - small / 2, w.bottom - ROOM, 4, 3, { group: 4, per: "col" }),
+  heads(3, w.mid - small / 2, w.bottom - ROOM, 4, 4, { group: 4, per: "col" }),
 ) as [Placed, Placed, Placed];
 W.forEach((w, i) => wire(3, [w.mid, w.bottom - 1], [w.mid, [q, k, v][i]!.top + STACK + 1]));
 const beside = (step: number, at: Placed, value: string) =>
@@ -206,7 +206,7 @@ wire(4, [k.mid, k.bottom - 1], [k.mid, scores.top + STACK + 1]);
 text(4, scores.x0 - 3, scores.top - 6, "attn_weights", "end");
 right(4, scores, "(4, 4)");
 
-const ctx = heads(5, scores.mid - small / 2, scores.bottom - ROOM, 4, 3, {
+const ctx = heads(5, scores.mid - small / 2, scores.bottom - ROOM, 4, 4, {
   group: 4,
   per: "col",
 });
@@ -248,11 +248,12 @@ label(11, headTop - 28, "logits");
 
 tap(12, [9, 10, 11], [MID, logits.bottom - 1], [MID, logits.bottom - 15]);
 NEXT.forEach(([word, p], i) => {
-  const z = logits.bottom - 16 - i * 11;
-  text(12, -4, z - 6, word, "end", i === 0 ? "name" : "dim");
+  const z = logits.bottom - 16 - i * 12;
+  scene.push({ step: 12, kind: "chip", x0: -16, x1: -4, z0: z - 7.5, z1: z + 0.5 });
+  text(12, -10, z - 3.5, word, "middle", "chip");
   scene.push({ step: 12, kind: "bar", z0: z - 7, z1: z, p, i });
 });
-label(12, logits.bottom - 22, "next token");
+text(12, -19, logits.bottom - 16 - 3.5 - 1.9, "next token", "end", "name");
 
 export const parts = {
   embedding: [0, 1],

@@ -57,11 +57,12 @@ export const shape = (
   m: Matrix,
   value: string,
   side: "right" | "left" = "right",
+  gap = 6,
 ): Item => ({
   kind: "text",
   step,
   x: side === "right" ? m.x1 : m.x0,
-  z: -(bottom(m) + 6),
+  z: -(bottom(m) + gap),
   value,
   anchor: side === "right" ? "end" : "start",
   tone: "shape",
@@ -70,6 +71,6 @@ export const shape = (
 export function chip(step: number, x: number, y: number, word: string, width = 22): Item[] {
   return [
     { kind: "chip", step, x0: x - width / 2, x1: x + width / 2, z0: -y - 4.5, z1: -y + 4.5 },
-    { kind: "text", step, x, z: -y - 2, value: word, anchor: "middle", tone: "chip" },
+    { kind: "text", step, x, z: -y, value: word, anchor: "middle", tone: "chip" },
   ];
 }

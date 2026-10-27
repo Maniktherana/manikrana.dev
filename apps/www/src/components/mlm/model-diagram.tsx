@@ -20,7 +20,6 @@ const plate = (offset: number): Item => ({
   step: 1,
   level: 0,
   offset,
-  faint: true,
   x0: PLATE.x0,
   x1: PLATE.x1,
   z0: -PLATE.y1,

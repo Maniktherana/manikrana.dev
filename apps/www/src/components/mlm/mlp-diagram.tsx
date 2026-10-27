@@ -1,6 +1,6 @@
 import { SceneDiagram } from "@/components/mlm/scene-diagram";
 import { noise, type Item } from "@/components/mlm/scene";
-import { bottom, matrix, middle, text, wire, type Matrix } from "@/components/mlm/build";
+import { bottom, matrix, middle, shape, text, wire, type Matrix } from "@/components/mlm/build";
 
 type Neuron = Extract<Item, { kind: "neuron" }>;
 const MLP_ZOOM = 1.18;
@@ -64,15 +64,7 @@ function bias(m: Matrix, into: Neuron, size: string): Item[] {
   return [
     wire(m.step, [middle(m), bottom(m) + 1], [middle(m), -into.z - into.r - 1]),
     text(m.step, m.x0 - 3, -(m.z0 + m.z1) / 2 + 1, "bias", "end"),
-    {
-      kind: "text",
-      step: m.step,
-      x: m.x0 - 3,
-      z: -(bottom(m) + 6),
-      value: size,
-      anchor: "end",
-      tone: "shape",
-    },
+    shape(m.step, m, size),
   ];
 }
 

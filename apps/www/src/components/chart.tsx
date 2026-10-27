@@ -24,6 +24,43 @@ export function plotPath(fn: (x: number) => number, x: Domain, y: Domain, steps 
 
 const axisAt = (domain: Domain) => Math.min(Math.max(toPercent(0, domain), 0), 100);
 
+const stepOf = (ticks: number[]) =>
+  ticks.length > 1 ? ticks[1]! - ticks[0]! : Math.abs(ticks[0] ?? 1);
+
+function linesAt(step: number, domain: Domain) {
+  const span = domain[1] - domain[0];
+  const lines: number[] = [];
+  for (let n = Math.ceil((domain[0] - span) / step); n * step <= domain[1] + span; n++)
+    lines.push(toPercent(n * step, domain));
+  return lines;
+}
+
+function squareGrid(
+  x: Domain,
+  y: Domain,
+  xTicks: number[],
+  yTicks: number[],
+  width: number,
+  height: number,
+) {
+  const [xStep, yStep] = [stepOf(xTicks), stepOf(yTicks)];
+  const [xSpan, ySpan] = [x[1] - x[0], y[1] - y[0]];
+  const fits = [1, 2, 3, 4]
+    .flatMap((a) => [1, 2, 3, 4].map((b) => ({ a, b })))
+    .map(({ a, b }) => {
+      const aspect = yStep / b / ySpan / (xStep / a / xSpan);
+      return { a, b, aspect, miss: Math.abs(Math.log(width / aspect / height)) };
+    })
+    .sort((p, q) => p.a * p.b - q.a * q.b || p.miss - q.miss);
+  const { a, b, aspect } =
+    fits.find((fit) => fit.miss < Math.log(1.4)) ?? [...fits].sort((p, q) => p.miss - q.miss)[0]!;
+  return {
+    columns: linesAt(xStep / a, x),
+    rows: linesAt(yStep / b, y).map((at) => 100 - at),
+    aspect,
+  };
+}
+
 export function Panel({ caption, children }: { caption: string; children: ReactNode }) {
   return (
     <figure className="my-8 max-sm:-mx-5 lg:-mx-16">
@@ -68,49 +105,60 @@ export function Plot({
 }) {
   const across = 100 - axisAt(y);
   const up = axisAt(x);
+  const { columns, rows, aspect } = squareGrid(
+    x,
+    y,
+    xTicks,
+    yTicks,
+    bleed ? 772 : 700,
+    bleed ? 272 : tall ? 336 : 176,
+  );
   return (
     <>
       <span className="sr-only">{label}</span>
       <div
         aria-hidden="true"
         className={cn(
-          "relative overflow-hidden rounded-stage bg-plot shadow-stage",
+          "relative overflow-hidden rounded-3xl bg-plot shadow-stage",
           !bleed && "px-9 pt-10 pb-14",
         )}
       >
-        <div
-          className={cn(
-            "relative",
-            bleed ? "h-60 sm:h-68" : tall ? "h-60 sm:h-84" : "h-36 sm:h-44",
-          )}
-        >
+        <div className="pointer-events-none absolute inset-0 mask-[linear-gradient(to_right,transparent,black_3rem,black_calc(100%-3rem),transparent),linear-gradient(to_bottom,transparent,black_3rem,black_calc(100%-3rem),transparent)] [mask-composite:intersect]">
+          <div className={cn("absolute", bleed ? "inset-0" : "inset-[2.5rem_2.25rem_3.5rem]")}>
+            <svg
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              className="absolute inset-0 size-full overflow-visible stroke-neutral-900"
+            >
+              {columns.map((at) => (
+                <line
+                  key={`x${at}`}
+                  x1={at}
+                  x2={at}
+                  y1={-100}
+                  y2={200}
+                  vectorEffect="non-scaling-stroke"
+                />
+              ))}
+              {rows.map((at) => (
+                <line
+                  key={`y${at}`}
+                  x1={-100}
+                  x2={200}
+                  y1={at}
+                  y2={at}
+                  vectorEffect="non-scaling-stroke"
+                />
+              ))}
+            </svg>
+          </div>
+        </div>
+        <div style={{ "--aspect": aspect } as CSSProperties} className="relative aspect-(--aspect)">
           <svg
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
-            className="absolute inset-0 size-full overflow-visible stroke-foreground/25"
+            className="absolute inset-0 size-full overflow-visible stroke-neutral-700"
           >
-            {xTicks.map((tick) => (
-              <line
-                key={`x${tick}`}
-                x1={toPercent(tick, x)}
-                x2={toPercent(tick, x)}
-                y1={-100}
-                y2={200}
-                vectorEffect="non-scaling-stroke"
-                className="stroke-foreground/6"
-              />
-            ))}
-            {yTicks.map((tick) => (
-              <line
-                key={`y${tick}`}
-                x1={-100}
-                x2={200}
-                y1={100 - toPercent(tick, y)}
-                y2={100 - toPercent(tick, y)}
-                vectorEffect="non-scaling-stroke"
-                className="stroke-foreground/6"
-              />
-            ))}
             <line x1={-100} x2={200} y1={across} y2={across} vectorEffect="non-scaling-stroke" />
             <line x1={up} x2={up} y1={-100} y2={200} vectorEffect="non-scaling-stroke" />
           </svg>
@@ -162,7 +210,7 @@ export function Plot({
                   className={cn(
                     "h-0.5 w-4",
                     item.dashed
-                      ? "bg-[repeating-linear-gradient(90deg,var(--color-foreground)_0_4px,transparent_4px_6px)] opacity-60"
+                      ? "bg-[repeating-linear-gradient(90deg,var(--color-neutral-400)_0_4px,transparent_4px_6px)]"
                       : "rounded-full bg-foreground",
                   )}
                 />
@@ -197,7 +245,7 @@ export function Curve({ d, dashed }: { d: string; dashed?: boolean }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       vectorEffect="non-scaling-stroke"
-      className={cn("fill-none stroke-foreground", dashed && "opacity-60")}
+      className={dashed ? "fill-none stroke-neutral-400" : "fill-none stroke-foreground"}
     />
   );
 }
@@ -231,7 +279,7 @@ function Notch({ x, y, className }: { x: number; y: number; className: string })
     <span
       style={{ "--x": `${x}%`, "--y": `${y}%` } as CSSProperties}
       className={cn(
-        "pointer-events-none absolute top-(--y) left-(--x) -translate-x-1/2 -translate-y-1/2 bg-foreground/25",
+        "pointer-events-none absolute top-(--y) left-(--x) -translate-x-1/2 -translate-y-1/2 bg-neutral-700",
         className,
       )}
     />

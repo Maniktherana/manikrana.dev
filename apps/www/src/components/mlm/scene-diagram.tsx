@@ -28,6 +28,8 @@ const lengthOf = (points: Point[]) =>
   );
 const behind = (level: number, offset?: number) =>
   offset === undefined ? (-(2 - level) * STACK) / (2 * DEPTH) : -offset / DEPTH;
+const depthOf = (shell: { level: number; offset?: number }) => -behind(shell.level, shell.offset);
+const boundsOf = (box: { x0: number; z0: number; z1: number }) => `${box.x0},${box.z0},${box.z1}`;
 const FILL = 260;
 const HOLD = 2600;
 const LAST_HOLD = 3600;
@@ -364,17 +366,22 @@ export function SceneDiagram({
     cn(
       "transition-[stroke] duration-300 motion-reduce:transition-none",
       state === "on"
-        ? "stroke-foreground/75"
+        ? "stroke-neutral-400"
         : state === "off"
-          ? "stroke-muted-foreground/30"
-          : "stroke-muted-foreground/65",
+          ? "stroke-neutral-700"
+          : "stroke-neutral-500",
     );
+
+  const nearest = new Map<string, number>();
+  for (const item of items)
+    if (item.kind === "shell")
+      nearest.set(boundsOf(item), Math.min(nearest.get(boundsOf(item)) ?? Infinity, depthOf(item)));
 
   return (
     <figure className="my-8 max-sm:-mx-5 lg:-mx-16">
       <div
         ref={ref}
-        className="relative rounded-stage bg-plot shadow-stage"
+        className="relative rounded-3xl bg-plot shadow-stage"
         style={{ "--play-state": playing ? "running" : "paused" } as CSSProperties}
       >
         <svg
@@ -401,16 +408,20 @@ export function SceneDiagram({
                     item.kind === "chip"
                       ? cn(
                           "stroke-none transition-[fill] duration-300",
-                          state === "on" ? "fill-foreground/20" : "fill-foreground/10",
+                          state === "on" ? "fill-neutral-700" : "fill-neutral-800",
                         )
-                      : cn(
-                          "fill-plot transition-[stroke] duration-300",
-                          item.kind === "shell" && item.faint
-                            ? "stroke-muted-foreground/20"
-                            : item.kind === "shell" && state !== "off"
-                              ? "stroke-muted-foreground/40"
-                              : stroke(state),
-                        ),
+                      : item.kind === "shell"
+                        ? cn(
+                            "stroke-none transition-[fill] duration-300 motion-reduce:transition-none",
+                            depthOf(item) === nearest.get(boundsOf(item))
+                              ? state === "on"
+                                ? "fill-[color-mix(in_oklab,var(--color-neutral-800),var(--color-neutral-900))]"
+                                : "fill-neutral-900"
+                              : state === "on"
+                                ? "fill-neutral-800"
+                                : "fill-[color-mix(in_oklab,var(--color-neutral-800),var(--color-neutral-900))]",
+                          )
+                        : cn("[stroke-width:1]!", "fill-plot", stroke(state)),
                   )}
                 />
               );
@@ -471,13 +482,13 @@ export function SceneDiagram({
                     cx={cx}
                     cy={cy}
                     r={item.r * scale}
-                    className={cn("fill-plot", stroke(state))}
+                    className={cn("fill-plot [stroke-width:1]!", stroke(state))}
                   />
                   {item.glyph ? (
                     <path
                       d={glyphOf(item.glyph, cx, cy, (item.r - 1.6) * scale)}
                       style={{ opacity: Math.max(opacity, 0.35), transitionDelay: `${delay}ms` }}
-                      className="fill-none stroke-foreground transition-opacity duration-300 ease-out [stroke-width:0.8] motion-reduce:transition-none"
+                      className="fill-none stroke-foreground transition-opacity duration-300 ease-out motion-reduce:transition-none"
                     />
                   ) : (
                     <circle
@@ -508,13 +519,13 @@ export function SceneDiagram({
                       "fill-none transition-[stroke] duration-300",
                       item.solid
                         ? state === "on"
-                          ? "stroke-muted-foreground/40"
-                          : "stroke-muted-foreground/20"
+                          ? "stroke-neutral-700"
+                          : "stroke-neutral-800"
                         : state === "on"
-                          ? "animate-flow stroke-foreground/60 [stroke-dasharray:2_4] motion-reduce:animate-none"
+                          ? "animate-flow stroke-neutral-400 [stroke-dasharray:2_4] motion-reduce:animate-none"
                           : "[stroke-dasharray:1_3]",
-                      !item.solid && state === "off" && "stroke-muted-foreground/25",
-                      !item.solid && state === "done" && "stroke-muted-foreground/50",
+                      !item.solid && state === "off" && "stroke-neutral-800",
+                      !item.solid && state === "done" && "stroke-neutral-600",
                       "[animation-play-state:var(--play-state)]",
                     )}
                   />
@@ -547,8 +558,8 @@ export function SceneDiagram({
                         cy={cy}
                         r={0.55 * scale}
                         className={cn(
-                          "fill-plot transition-[stroke] duration-300",
-                          state === "on" ? "stroke-foreground/60" : "stroke-muted-foreground/40",
+                          "fill-plot transition-[stroke] duration-300 [stroke-width:0.35]!",
+                          state === "on" ? "stroke-neutral-400" : "stroke-neutral-700",
                         )}
                       />
                     ))}
@@ -561,7 +572,7 @@ export function SceneDiagram({
                 <g key={index}>
                   <path
                     d={rect(item.x0, item.x1, item.z0, item.z1, 0, 2)}
-                    className={cn("fill-plot transition-[stroke] duration-300", stroke(state))}
+                    className={cn("[stroke-width:1]!", "fill-plot", stroke(state))}
                   />
                   <text
                     x={cx}
@@ -610,10 +621,7 @@ export function SceneDiagram({
                     cx={cx}
                     cy={cy}
                     r={2.6 * scale}
-                    className={cn(
-                      "fill-plot [stroke-width:0.6] [vector-effect:non-scaling-stroke]",
-                      stroke(state),
-                    )}
+                    className={cn("[stroke-width:1]!", "fill-plot", stroke(state))}
                   />
                   <path
                     d={`M${cx - k},${cy}H${cx + k}M${cx},${cy - k}V${cy + k}`}
@@ -644,7 +652,7 @@ export function SceneDiagram({
               <text
                 key={index}
                 x={tx}
-                y={ty}
+                y={item.tone === "chip" ? ty + TEXT_SIZE.chip * 0.32 : ty}
                 textAnchor={item.anchor}
                 className={cn(
                   "transition-[fill,opacity] duration-300",
@@ -738,7 +746,7 @@ function Bar({
         d={d}
         className={cn(
           "scale-x-(--grow) stroke-none transition-[scale,fill] duration-400 ease-out [transform-box:view-box] [transform-origin:inherit] motion-reduce:transition-none",
-          chosen && fraction === 1 ? "fill-foreground" : "fill-foreground/20",
+          chosen && fraction === 1 ? "fill-foreground" : "fill-neutral-700",
         )}
       />
       <text

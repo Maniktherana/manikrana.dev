@@ -2,7 +2,7 @@ export const DOT = 5;
 export const MARGIN = 1.5;
 export const LABEL = 90;
 export const BAR = 130;
-export const STACK = 3.5;
+export const STACK = 5;
 const GAP = 2.5;
 
 export type Role = "out" | "weight" | "pick" | "scores";
@@ -36,7 +36,6 @@ export type Item =
       kind: "shell";
       level: number;
       offset?: number;
-      faint?: boolean;
     })
   | {
       step: number;

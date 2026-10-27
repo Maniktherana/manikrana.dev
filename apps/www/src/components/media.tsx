@@ -29,7 +29,7 @@ export function Screenshot({
           width={media.width}
           height={media.height}
           loading="lazy"
-          className="h-auto w-full rounded-xl outline-1 -outline-offset-1 outline-white/10 max-sm:rounded-none"
+          className="h-auto w-full rounded-3xl outline-1 -outline-offset-1 outline-white/10 max-sm:rounded-none"
         />
         {notes?.map((note) => (
           <div
@@ -97,7 +97,7 @@ export function Recording({
         playsInline
         preload="metadata"
         controls={still}
-        className="h-auto w-full rounded-xl bg-card outline-1 -outline-offset-1 outline-white/10 max-sm:rounded-none"
+        className="h-auto w-full rounded-3xl bg-card outline-1 -outline-offset-1 outline-white/10 max-sm:rounded-none"
       >
         {sources.map((source) => (
           <source key={source} src={source} type={`video/${source.split(".").pop()}`} />

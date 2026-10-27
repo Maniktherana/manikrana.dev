@@ -3,14 +3,15 @@ import { type Item } from "@/components/mlm/scene";
 import { bottom, matrix, middle, shape, text, top, wire } from "@/components/mlm/build";
 
 const NORM_Y = 70;
-const NORM_ZOOM = 1.35;
-const normX = matrix(-1, 32, NORM_Y, 101, { rows: 6 });
-const mean = matrix(0, 94, 22, 102, { cols: 4, group: 1, rows: 1 });
-const variance = matrix(0, 94, 38, 103, { cols: 4, group: 1, rows: 1 });
-const normalized = matrix(1, 152, NORM_Y, 104, { rows: 6 });
-const scale = matrix(-1, 240, 26, 105, { cols: 1, group: 1, rows: 6, role: "weight" });
-const shift = matrix(-1, 262, 26, 106, { cols: 1, group: 1, rows: 6, role: "weight" });
-const normOut = matrix(2, 251, NORM_Y, 107, { rows: 6 });
+const NORM_ZOOM = 1.6;
+const normX = matrix(-1, 33.75, NORM_Y, 101, { rows: 6 });
+const normalized = matrix(1, 131.75, NORM_Y, 104, { rows: 6 });
+const STATS_X = (normX.x1 + normalized.x0) / 2;
+const mean = matrix(0, STATS_X, 22, 102, { cols: 4, group: 1, rows: 1 });
+const variance = matrix(0, STATS_X, 38, 103, { cols: 4, group: 1, rows: 1 });
+const scale = matrix(-1, 201.75, 26, 105, { cols: 1, group: 1, rows: 6, role: "weight" });
+const shift = matrix(-1, 223.75, 26, 106, { cols: 1, group: 1, rows: 6, role: "weight" });
+const normOut = matrix(2, 212.75, NORM_Y, 107, { rows: 6 });
 const NORM_STEPS = [0, 1, 2];
 const NORM_SCENE: Item[] = [
   wire(0, [middle(normX) - 8, top(normX) - 1], [middle(normX) - 8, 22], [mean.x0 - 1, 22]),
@@ -38,10 +39,10 @@ const NORM_SCENE: Item[] = [
   scale,
   shift,
   normOut,
-  text(0, mean.x0, top(mean) - 3, "mean", "start"),
-  shape(0, mean, "(4, 1)"),
-  text(0, variance.x0, bottom(variance) + 6, "var", "start"),
-  shape(0, variance, "(4, 1)"),
+  text(0, mean.x0, bottom(mean) + 4.75, "mean", "start"),
+  shape(0, mean, "(4, 1)", "right", 4.75),
+  text(0, variance.x0, bottom(variance) + 4.75, "var", "start"),
+  shape(0, variance, "(4, 1)", "right", 4.75),
   text(-1, scale.x0 - 2.5, 24, "scale", "end"),
   {
     kind: "text",
@@ -67,7 +68,7 @@ const NORM_SCENE: Item[] = [
     { m: normalized, name: "norm_x", step: 1 },
     { m: normOut, name: "out", step: 2 },
   ].flatMap(({ m, name, step }) => [
-    text(step, m.x0, bottom(m) + 7, name, "start"),
+    text(step, m.x0, bottom(m) + 6, name, "start"),
     shape(step, m, "(4, 768)"),
   ]),
 ];
