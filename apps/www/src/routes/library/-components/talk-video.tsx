@@ -5,7 +5,6 @@ import type { Talk } from "@/content/library";
 
 export function TalkVideo({ talk, video }: { talk: Talk; video: string }) {
   const [playing, setPlaying] = useState(false);
-  const [hovered, setHovered] = useState(false);
   const Mark = talk.mark && marks[talk.mark];
   return (
     <div className="@container relative mt-8 aspect-video overflow-hidden rounded-xl bg-card outline-1 -outline-offset-1 outline-white/10">
@@ -22,16 +21,9 @@ export function TalkVideo({ talk, video }: { talk: Talk; video: string }) {
           type="button"
           aria-label={`Play ${talk.title}`}
           onClick={() => setPlaying(true)}
-          onPointerEnter={(event) => setHovered(event.pointerType === "mouse")}
-          onPointerLeave={() => setHovered(false)}
           className="group absolute inset-0 flex cursor-pointer flex-col items-start justify-end rounded-[inherit] p-[7.5cqw] text-start outline-none focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset"
         >
-          {Mark && (
-            <Mark
-              hovered={hovered}
-              className="mb-auto size-[7cqw] self-start opacity-100 grayscale-0"
-            />
-          )}
+          {Mark && <Mark className="mb-auto size-[7cqw] self-start" />}
           <span className="max-w-[80cqw]">
             <span className="block text-[4.5cqw] leading-tight font-medium tracking-tight text-balance">
               {talk.subtitle ?? talk.title}

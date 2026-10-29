@@ -26,7 +26,7 @@ export function TalkPage({ talk }: { talk: Talk }) {
 
       <div className="mt-8 flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
         <div className="min-w-0 flex-1 basis-64">
-          <h1 className="text-base leading-5.5 font-medium">{talk.title}</h1>
+          <h1 className="text-base leading-5.5 font-semibold">{talk.title}</h1>
           <time
             dateTime={talk.events[0].dateTime}
             className="mt-1 block leading-5.5 text-muted-foreground"
@@ -67,7 +67,7 @@ export function TalkPage({ talk }: { talk: Talk }) {
 
       <section aria-labelledby="slides-title" className="mt-12">
         <div className="mb-3 flex items-center justify-between border-b border-border pb-6 leading-5.5">
-          <h2 id="slides-title" className="font-medium">
+          <h2 id="slides-title" className="font-semibold">
             Slides
           </h2>
           <span className="text-muted-foreground">{talk.slides}</span>

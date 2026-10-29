@@ -85,7 +85,7 @@ export function PostPage({ id }: { id: string }) {
         <ChapterNavigation article={article} />
         <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
           <div className="min-w-0 flex-1 basis-64">
-            <h1 className="text-base leading-5.5 font-medium">{post.title}</h1>
+            <h1 className="text-base leading-6.5 font-semibold">{post.title}</h1>
             <time dateTime={post.date} className="mt-1 block leading-5.5 text-muted-foreground">
               {post.month}
             </time>
@@ -146,7 +146,7 @@ export function PostPage({ id }: { id: string }) {
 
         <article
           ref={article}
-          className="mt-8 text-muted-foreground sm:text-pretty [&_:not(pre)>code]:rounded-md [&_:not(pre)>code]:bg-control [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-sm [&_:not(pre)>code]:text-control-foreground [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:leading-5.5 [&_h2]:font-medium [&_h2]:text-foreground [&_li]:mt-1 [&_li]:ps-1 [&_li]:marker:text-foreground/30 [&_p]:mb-4 [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:ps-5 [&_strong]:font-medium [&_strong]:text-foreground"
+          className="mt-8 text-muted-foreground sm:text-pretty [&_:not(pre)>code]:rounded-md [&_:not(pre)>code]:bg-control [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-sm [&_:not(pre)>code]:text-control-foreground [&_h2]:mt-18 [&_h2]:mb-4 [&_h2]:leading-6.5 [&_h2]:font-semibold [&_h2]:text-foreground [&_li]:mt-1 [&_li]:ps-1 [&_li]:marker:text-foreground/30 [&_p]:mb-4 [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:ps-5 [&_strong]:font-medium [&_strong]:text-foreground"
         >
           <post.Content components={mdxComponents} />
         </article>

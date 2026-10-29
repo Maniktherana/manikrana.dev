@@ -28,7 +28,7 @@ function Rail({ x }: { x: number }) {
 
 export function PullRequestMark({ state }: { state: PullRequestState }) {
   return (
-    <Mark name={`pr-${state}`} viewBox="0 0 16 16" className="opacity-100 grayscale-0">
+    <Mark name={`pr-${state}`} viewBox="0 0 16 16">
       {state === "open" && (
         <>
           <Rail x={3.75} />
@@ -65,7 +65,7 @@ export function PullRequestMark({ state }: { state: PullRequestState }) {
 
 export function IssueMark({ state }: { state: IssueState }) {
   return (
-    <Mark name={`issue-${state}`} viewBox="0 0 16 16" className="opacity-100 grayscale-0">
+    <Mark name={`issue-${state}`} viewBox="0 0 16 16">
       <circle {...stroke} cx="8" cy="8" r="7.25" />
       {state === "open" && <circle cx="8" cy="8" r="1.5" />}
       {state === "completed" && <path {...stroke} d="M5.25 7.75 7.25 9.75 10.75 6.25" />}

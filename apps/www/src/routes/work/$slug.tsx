@@ -188,7 +188,7 @@ function WorkPage() {
         <h1
           key={item.slug}
           className={cn(
-            "text-xl leading-snug font-medium text-balance sm:col-start-1 sm:row-start-1",
+            "text-xl leading-snug font-semibold text-balance sm:col-start-1 sm:row-start-1",
             fadeIn,
           )}
         >

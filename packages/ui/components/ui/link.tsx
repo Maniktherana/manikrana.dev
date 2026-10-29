@@ -8,7 +8,7 @@ function Link({ className, render, ...props }: useRender.ComponentProps<"a">) {
     props: mergeProps<"a">(
       {
         className: cn(
-          "rounded-sm font-medium text-foreground underline decoration-underline underline-offset-3 transition-[text-decoration-color] duration-150 ease-out outline-none hover:decoration-muted-foreground focus-visible:ring-3 focus-visible:ring-ring/50",
+          "rounded-sm font-medium text-foreground underline decoration-muted-foreground/50 underline-offset-3 transition-[text-decoration-color] duration-150 ease-out outline-none hover:decoration-muted-foreground focus-visible:ring-3 focus-visible:ring-ring/50",
           className,
         ),
       },

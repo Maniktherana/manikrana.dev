@@ -1,5 +1,7 @@
 import { createFileRoute, Link as RouterLink, redirect } from "@tanstack/react-router";
 import { InlineLink } from "@/components/inline-link";
+import { GithubIcon } from "@/components/icons/github";
+import { MailIcon } from "@/components/icons/mail";
 import { Avatar, AvatarImage, AvatarFallback } from "@manikrana/ui/components/ui/avatar";
 import { Link } from "@manikrana/ui/components/ui/link";
 import { TextReveal } from "@manikrana/ui/components/motion/text-reveal";
@@ -49,7 +51,7 @@ function Home() {
               <AvatarFallback className="rounded-[inherit]">MR</AvatarFallback>
             </Avatar>
             <div>
-              <h1 id="intro-title" className="text-base leading-5.5 font-medium">
+              <h1 id="intro-title" className="text-base leading-5.5 font-semibold">
                 Manik Rana
               </h1>
               <p className="text-muted-foreground font-[450] leading-5.5">Engineer at TurboML</p>
@@ -114,20 +116,19 @@ function Home() {
             </Link>
             , by{" "}
             <Link
-              className="font-[450] motion-safe:duration-200 motion-safe:ease-[ease] motion-reduce:transition-none"
+              className="inline-flex items-baseline gap-1 whitespace-nowrap font-[450] motion-safe:duration-200 motion-safe:ease-[ease] motion-reduce:transition-none"
               href="mailto:hello@manikrana.dev"
             >
+              <MailIcon className="self-center" />
               email
-            </Link>{" "}
-            or see my code on{" "}
-            <Link
-              className="font-[450] motion-safe:duration-200 motion-safe:ease-[ease] motion-reduce:transition-none"
+            </Link>
+            , or on{" "}
+            <InlineLink
               href="https://github.com/Maniktherana"
-              target="_blank"
-              rel="noreferrer"
+              icon={() => <GithubIcon className="self-center" />}
             >
               GitHub
-            </Link>
+            </InlineLink>
             .
           </TextReveal>
         </div>
@@ -135,7 +136,10 @@ function Home() {
 
       <TextReveal as="section" index={4} play={first} aria-labelledby="work-title">
         <div className="mx-auto w-[calc(100%-40px)] max-w-reading">
-          <h2 id="work-title" className="mb-6 border-b border-border pb-6 leading-5.5 font-medium">
+          <h2
+            id="work-title"
+            className="mb-6 border-b border-border pb-6 leading-5.5 font-semibold"
+          >
             <RouterLink
               to="/work"
               state={{ back: true }}
@@ -159,7 +163,10 @@ function Home() {
         aria-labelledby="library-title"
         className="mx-auto w-[calc(100%-40px)] max-w-reading"
       >
-        <h2 id="library-title" className="mb-3 border-b border-border pb-6 leading-5.5 font-medium">
+        <h2
+          id="library-title"
+          className="mb-3 border-b border-border pb-6 leading-5.5 font-semibold"
+        >
           Library
         </h2>
         <LibraryList />

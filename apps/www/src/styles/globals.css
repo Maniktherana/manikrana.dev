@@ -81,12 +81,6 @@ article pre.shiki {
   }
 }
 
-.mark--prometheus {
-  color: #e6522c;
-}
-.mark--gsoc {
-  color: oklch(0.83 0.16 85);
-}
 .mark--pr-open,
 .mark--issue-open {
   color: #3fb950;
@@ -101,13 +95,6 @@ article pre.shiki {
 .mark--pr-draft,
 .mark--issue-not-planned {
   color: #9198a1;
-}
-.turbo-rotor {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-.gsoc-sun {
-  transform-origin: 12px 12px;
 }
 .gsoc-code {
   stroke: var(--background);
@@ -215,23 +202,12 @@ article pre.shiki {
   }
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .inline-link:hover .animated-mark {
-    filter: none;
-    opacity: 1;
-  }
-}
 @media (prefers-reduced-motion: no-preference) {
   .entering .backdrop-glow {
     animation: glow-grow 1200ms cubic-bezier(0.22, 1, 0.36, 1) 150ms backwards;
   }
   .entering .backdrop-dots--lit {
     animation: dots-light 1200ms cubic-bezier(0.22, 1, 0.36, 1) 150ms backwards;
-  }
-  .animated-mark {
-    transition:
-      filter 300ms ease,
-      opacity 300ms ease;
   }
 }
 ::view-transition-group(.work) {

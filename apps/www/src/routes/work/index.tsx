@@ -29,13 +29,13 @@ function WorkPage() {
 
       <div className="mx-auto mt-8 w-[calc(100%-40px)] max-w-reading">
         <h1 className="sr-only">Work</h1>
-        <h2 className="mb-6 flex gap-2 border-b border-border pb-6 leading-5.5 font-medium">
+        <h2 className="mb-6 flex gap-2 border-b border-border pb-6 leading-5.5 font-semibold">
           Projects <span className="text-muted-foreground">{projects.length}</span>
         </h2>
         <ProjectGrid list="work" />
         <h2
           id="selected-work"
-          className="mt-18 mb-6 flex scroll-mt-16 gap-2 border-b border-border pb-6 leading-5.5 font-medium min-[641px]:mt-20"
+          className="mt-18 mb-6 flex scroll-mt-16 gap-2 border-b border-border pb-6 leading-5.5 font-semibold min-[641px]:mt-20"
         >
           Selected work <span className="text-muted-foreground">{components.length}</span>
         </h2>
