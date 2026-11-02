@@ -1,12 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  PageHeader,
-  useClose,
-} from "@/components/page-header";
-import { ProjectGrid, WorkGrid } from "@/components/work/grid";
-import { components, projects } from "@/components/work/registry";
+import { HomeBreadcrumb, BreadcrumbSeparator, PageHeader } from "@/components/page-header";
+import { WorkGrid } from "@/components/work/grid";
+import { work } from "@/components/work/registry";
 
 export const Route = createFileRoute("/work/")({
   head: () => ({
@@ -16,11 +11,10 @@ export const Route = createFileRoute("/work/")({
 });
 
 function WorkPage() {
-  const close = useClose({ to: "/" });
   return (
     <main id="main-content" className="@container">
-      <PageHeader onClose={close} className="mx-auto w-[calc(100%-40px)] max-w-stage">
-        <BreadcrumbLink to="/">Manik Rana</BreadcrumbLink>
+      <PageHeader className="mx-auto w-[calc(100%-40px)] max-w-stage">
+        <HomeBreadcrumb />
         <BreadcrumbSeparator />
         <span aria-current="page" className="truncate">
           Work
@@ -29,15 +23,12 @@ function WorkPage() {
 
       <div className="mx-auto mt-8 w-[calc(100%-40px)] max-w-reading">
         <h1 className="sr-only">Work</h1>
-        <h2 className="mb-6 flex gap-2 border-b border-border pb-6 leading-5.5 font-semibold">
-          Projects <span className="text-muted-foreground">{projects.length}</span>
-        </h2>
-        <ProjectGrid list="work" />
         <h2
           id="selected-work"
-          className="mt-18 mb-6 flex scroll-mt-16 gap-2 border-b border-border pb-6 leading-5.5 font-semibold min-[641px]:mt-20"
+          className="mb-6 flex scroll-mt-16 items-baseline gap-2 border-b border-separator pb-6 text-lg leading-tight font-semibold"
         >
-          Selected work <span className="text-muted-foreground">{components.length}</span>
+          Lab{" "}
+          <span className="text-base font-normal text-muted-foreground">{work.length}</span>
         </h2>
       </div>
       <WorkGrid list="work" />

@@ -1,10 +1,8 @@
-import { useEffect, useRef, useState, type ComponentProps, type ReactNode } from "react";
+import { useEffect, useState, type ComponentProps, type ReactNode } from "react";
 import { createLink, useLocation, useRouter, type NavigateOptions } from "@tanstack/react-router";
-import { motion, useScroll, useTransform } from "motion/react";
 import { Button } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
 import { CloseIcon } from "@/components/icons/close";
-import { ProgressiveBlur } from "@/components/progressive-blur";
 import { play } from "@/lib/sounds";
 
 export function PageHeader({
@@ -13,19 +11,18 @@ export function PageHeader({
   className,
 }: {
   children: ReactNode;
-  onClose: () => void;
+  onClose?: () => void;
   className?: string;
 }) {
   return (
     <header className={cn("flex h-16 items-center justify-between gap-4", className)}>
-      <ScrollFade />
       <nav
         aria-label="Breadcrumb"
         className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground"
       >
         {children}
       </nav>
-      <CloseButton onClick={onClose} />
+      {onClose && <CloseButton onClick={onClose} />}
     </header>
   );
 }
@@ -37,7 +34,7 @@ export function CloseButton(props: ComponentProps<typeof Button>) {
       size="icon"
       aria-label="Close"
       aria-keyshortcuts="Escape"
-      className="rounded-xl bg-background bg-linear-to-b from-control to-control text-control-foreground hover:bg-background hover:from-control-hover hover:to-control-hover hover:text-foreground"
+      className="rounded-xl text-control-foreground hover:text-foreground"
       {...props}
     >
       <CloseIcon />
@@ -45,44 +42,11 @@ export function CloseButton(props: ComponentProps<typeof Button>) {
   );
 }
 
-// Grows with the scroll until the header is out of view.
-function ScrollFade() {
-  const fade = useRef<HTMLDivElement>(null);
-  const [end, setEnd] = useState(1);
-  const { scrollY } = useScroll();
-  const scaleY = useTransform(scrollY, [0, end], [0, 1]);
-  useEffect(() => {
-    const header = fade.current?.parentElement;
-    if (!header) return;
-    const measure = () =>
-      setEnd(Math.max(1, header.getBoundingClientRect().bottom + window.scrollY));
-    const observer = new ResizeObserver(measure);
-    observer.observe(header);
-    return () => observer.disconnect();
-  }, []);
-  return (
-    <motion.div
-      ref={fade}
-      aria-hidden="true"
-      style={{ scaleY }}
-      className="pointer-events-none fixed inset-x-0 top-0 z-40 h-22 origin-top"
-    >
-      <ProgressiveBlur
-        direction="top"
-        blurLayers={9}
-        blurIntensity={0.25}
-        className="absolute inset-0"
-      />
-      <div className="absolute inset-0 bg-scroll-fade" />
-    </motion.div>
-  );
-}
-
 function BreadcrumbAnchor({ className, children, ...props }: ComponentProps<"a">) {
   return (
     <a
       className={cn(
-        "shrink-0 transition-[color] duration-150 ease-out hover:text-foreground",
+        "shrink-0 transition-[color] duration-150 ease-out outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
         className,
       )}
       {...props}
@@ -93,6 +57,24 @@ function BreadcrumbAnchor({ className, children, ...props }: ComponentProps<"a">
 }
 
 export const BreadcrumbLink = createLink(BreadcrumbAnchor);
+
+export function HomeBreadcrumb() {
+  const close = useClose({ to: "/" });
+  return (
+    <BreadcrumbLink
+      to="/"
+      aria-keyshortcuts="Escape"
+      onClick={(event) => {
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+          return;
+        event.preventDefault();
+        close();
+      }}
+    >
+      Manik Rana
+    </BreadcrumbLink>
+  );
+}
 
 export function BreadcrumbSeparator() {
   return <span aria-hidden="true">/</span>;

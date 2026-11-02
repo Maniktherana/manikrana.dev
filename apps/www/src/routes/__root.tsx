@@ -6,6 +6,7 @@ import { MotionConfig } from "motion/react";
 
 import Footer from "@/components/footer";
 import NotFound from "@/components/not-found";
+import { ScrollFade } from "@/components/scroll-fade";
 import { useSounds } from "@/hooks/use-sounds";
 
 import appCss from "@/styles/globals.css?url";
@@ -122,12 +123,13 @@ function RootDocument() {
         <MotionConfig reducedMotion="user">
           <div className="relative isolate min-h-dvh">
             <a
-              className="fixed top-3 left-3 z-10 -translate-y-[200%] bg-foreground p-3 text-background focus:translate-y-0"
+              className="fixed top-3 left-3 z-50 -translate-y-[200%] bg-foreground p-3 text-background outline-none focus:translate-y-0 focus-visible:ring-2 focus-visible:ring-ring"
               href="#main-content"
             >
               Skip to content
             </a>
             <Outlet />
+            <ScrollFade />
             <Analytics />
             <SpeedInsights />
             <Footer />

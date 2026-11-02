@@ -17,7 +17,7 @@ function ScrollArea({
       <ScrollAreaPrimitive.Viewport
         data-slot="scroll-area-viewport"
         className={cn(
-          "size-full rounded-[inherit] overscroll-contain outline-none focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset",
+          "size-full rounded-[inherit] overscroll-contain outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
           fade &&
             "[--fade-size:--spacing(6)] mask-t-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-start)))] mask-r-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-end)))] mask-b-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-y-end)))] mask-l-from-[calc(100%-min(var(--fade-size),var(--scroll-area-overflow-x-start)))]",
           viewportClassName,

@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@manikrana/ui/lib/utils";
 
 const toggleVariants = cva(
-  "inline-flex shrink-0 items-center justify-center rounded-full bg-control text-sm font-medium whitespace-nowrap text-control-foreground transition-[scale,background-color,color] duration-150 ease-out outline-none select-none hover:bg-control-hover hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 data-disabled:pointer-events-none data-disabled:opacity-50 data-pressed:bg-control-selected data-pressed:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "inline-flex shrink-0 items-center justify-center rounded-full bg-control text-sm font-medium whitespace-nowrap text-control-foreground transition-[scale,background-color,color] duration-150 ease-out outline-none select-none hover:bg-control-hover hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring data-disabled:pointer-events-none data-disabled:opacity-50 data-pressed:bg-control-selected data-pressed:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       size: {

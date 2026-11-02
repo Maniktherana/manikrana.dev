@@ -4,6 +4,11 @@
   "outputDirectory": ".output/public",
   "redirects": [
     {
+      "source": "/library",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/agentsims",
       "destination": "/work/agentsims",
       "permanent": true
@@ -66,11 +71,6 @@
     {
       "source": "/image-tray",
       "destination": "/work/image-tray",
-      "permanent": true
-    },
-    {
-      "source": "/image-loader",
-      "destination": "/work/image-loader",
       "permanent": true
     },
     {

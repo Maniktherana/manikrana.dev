@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as R404RouteImport } from './routes/404'
+import { Route as LibraryIndexRouteImport } from './routes/library/index'
 import { Route as LibraryIdRouteImport } from './routes/library/$id'
 import { Route as WorkIndexRouteImport } from './routes/work/index'
 import { Route as WorkSlugRouteImport } from './routes/work/$slug'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const R404Route = R404RouteImport.update({
   id: '/404',
   path: '/404',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LibraryIndexRoute = LibraryIndexRouteImport.update({
+  id: '/library/',
+  path: '/library/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LibraryIdRoute = LibraryIdRouteImport.update({
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/404': typeof R404Route
   '/library/$id': typeof LibraryIdRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/library/': typeof LibraryIndexRoute
   '/work/': typeof WorkIndexRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/404': typeof R404Route
   '/library/$id': typeof LibraryIdRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/library': typeof LibraryIndexRoute
   '/work': typeof WorkIndexRoute
 }
 export interface FileRoutesById {
@@ -61,14 +69,23 @@ export interface FileRoutesById {
   '/404': typeof R404Route
   '/library/$id': typeof LibraryIdRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/library/': typeof LibraryIndexRoute
   '/work/': typeof WorkIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/404' | '/library/$id' | '/work/$slug' | '/work/'
+  fullPaths:
+    '/' | '/404' | '/library/$id' | '/work/$slug' | '/library/' | '/work/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/404' | '/library/$id' | '/work/$slug' | '/work'
-  id: '__root__' | '/' | '/404' | '/library/$id' | '/work/$slug' | '/work/'
+  to: '/' | '/404' | '/library/$id' | '/work/$slug' | '/library' | '/work'
+  id:
+    | '__root__'
+    | '/'
+    | '/404'
+    | '/library/$id'
+    | '/work/$slug'
+    | '/library/'
+    | '/work/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +93,7 @@ export interface RootRouteChildren {
   R404Route: typeof R404Route
   LibraryIdRoute: typeof LibraryIdRoute
   WorkSlugRoute: typeof WorkSlugRoute
+  LibraryIndexRoute: typeof LibraryIndexRoute
   WorkIndexRoute: typeof WorkIndexRoute
 }
 
@@ -93,6 +111,13 @@ declare module '@tanstack/react-router' {
       path: '/404'
       fullPath: '/404'
       preLoaderRoute: typeof R404RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/library/': {
+      id: '/library/'
+      path: '/library'
+      fullPath: '/library/'
+      preLoaderRoute: typeof LibraryIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/library/$id': {
@@ -124,6 +149,7 @@ const rootRouteChildren: RootRouteChildren = {
   R404Route: R404Route,
   LibraryIdRoute: LibraryIdRoute,
   WorkSlugRoute: WorkSlugRoute,
+  LibraryIndexRoute: LibraryIndexRoute,
   WorkIndexRoute: WorkIndexRoute,
 }
 export const routeTree = rootRouteImport

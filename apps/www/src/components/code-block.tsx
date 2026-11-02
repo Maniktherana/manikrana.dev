@@ -22,7 +22,7 @@ export function CodeBlock({
               line.textContent.trimEnd(),
             ).join("\n")
           }
-          className="size-8 shrink-0 rounded-lg bg-transparent hover:bg-control"
+          className="size-8 shrink-0 rounded-lg bg-transparent hover:bg-button-secondary-hover"
         />
       </div>
       <pre
@@ -31,7 +31,7 @@ export function CodeBlock({
         tabIndex={0}
         {...props}
         className={cn(
-          "scrollbar-visible overflow-x-auto bg-transparent! pb-6 font-mono text-sm/6 outline-none focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset",
+          "scrollbar-visible overflow-x-auto bg-transparent! pb-6 font-mono text-sm/6 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
           className,
         )}
       />

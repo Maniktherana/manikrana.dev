@@ -26,7 +26,7 @@ const CONTENT = {
 };
 
 const PRESS =
-  "transform-gpu outline-none [backface-visibility:hidden] transition-[scale,background-color] duration-150 ease-out focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.96]";
+  "transform-gpu outline-none [backface-visibility:hidden] transition-[scale,background-color] duration-150 ease-out focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.96]";
 const PRESSABLE = cn("flex h-11 w-full items-center text-base leading-none font-semibold", PRESS);
 
 const OUTSIDE = "Family drawer parts must be rendered inside <FamilyDrawer>.";
@@ -202,7 +202,7 @@ export function FamilyDrawerTrigger({
         <motion.button
           animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
           className={cn(
-            "absolute inset-x-0 bottom-0 flex h-(--family-drawer-closed-height) items-center justify-center rounded-full px-5 text-sm font-semibold outline-none focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset",
+            "absolute inset-x-0 bottom-0 flex h-(--family-drawer-closed-height) items-center justify-center rounded-full px-5 text-sm font-semibold outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
             className,
           )}
           data-slot="family-drawer-trigger"

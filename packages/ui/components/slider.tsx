@@ -565,7 +565,7 @@ export function Slider({
           width: rubberBandWidth,
           x: rubberBandX,
         }}
-        className="absolute inset-y-0 left-0 cursor-pointer overflow-hidden rounded-lg bg-control shadow-control transition-[box-shadow,opacity] duration-150 ease-out group-focus-visible/slider:ring-3 group-focus-visible/slider:ring-ring/50 group-data-[disabled=true]/slider:cursor-not-allowed"
+        className="absolute inset-y-0 left-0 cursor-pointer overflow-hidden rounded-lg bg-control shadow-control transition-[box-shadow,opacity] duration-150 ease-out group-focus-visible/slider:ring-2 group-focus-visible/slider:ring-ring group-data-[disabled=true]/slider:cursor-not-allowed"
       >
         <div
           aria-hidden="true"

@@ -6,7 +6,7 @@ import {
   type IssueState,
   type PullRequestState,
 } from "@/components/icons/github-state-mark";
-import { InlineLink } from "@/components/inline-link";
+import { Link } from "@/components/link";
 
 const pullRequestLabels: Record<PullRequestState, string> = {
   open: "Open pull request",
@@ -33,13 +33,11 @@ export function PullRequest({
   children?: ReactNode;
 }) {
   return (
-    <InlineLink
-      href={`https://github.com/${repo}/pull/${number}`}
-      icon={() => <PullRequestMark state={state} />}
-    >
+    <Link href={`https://github.com/${repo}/pull/${number}`} target="_blank" rel="noreferrer">
+      <PullRequestMark state={state} />
       <span className="sr-only">{pullRequestLabels[state]} </span>
       {children ?? <span className="tabular-nums">#{number}</span>}
-    </InlineLink>
+    </Link>
   );
 }
 
@@ -53,23 +51,19 @@ export function Commit({
   children?: ReactNode;
 }) {
   return (
-    <InlineLink
-      href={`https://github.com/${repo}/commit/${sha}`}
-      icon={() => <GithubIcon className="self-center" />}
-    >
+    <Link href={`https://github.com/${repo}/commit/${sha}`} target="_blank" rel="noreferrer">
+      <GithubIcon className="self-center" />
       {children ?? <span className="font-mono">{sha.slice(0, 7)}</span>}
-    </InlineLink>
+    </Link>
   );
 }
 
 export function Repository({ repo, children }: { repo: string; children?: ReactNode }) {
   return (
-    <InlineLink
-      href={`https://github.com/${repo}`}
-      icon={() => <GithubIcon className="self-center" />}
-    >
+    <Link href={`https://github.com/${repo}`} target="_blank" rel="noreferrer">
+      <GithubIcon className="self-center" />
       {children ?? repo}
-    </InlineLink>
+    </Link>
   );
 }
 
@@ -83,21 +77,17 @@ export function Person({
   children: ReactNode;
 }) {
   return (
-    <InlineLink
-      href={href}
-      icon={() => (
-        <img
-          src={`https://github.com/${github}.png?size=64`}
-          alt=""
-          width={16}
-          height={16}
-          loading="lazy"
-          className="size-4 shrink-0 self-center rounded-full bg-control"
-        />
-      )}
-    >
+    <Link href={href} target="_blank" rel="noreferrer">
+      <img
+        src={`https://github.com/${github}.png?size=64`}
+        alt=""
+        width={16}
+        height={16}
+        loading="lazy"
+        className="size-4 shrink-0 self-center rounded-full bg-control"
+      />
       {children}
-    </InlineLink>
+    </Link>
   );
 }
 
@@ -113,12 +103,10 @@ export function Issue({
   children?: ReactNode;
 }) {
   return (
-    <InlineLink
-      href={`https://github.com/${repo}/issues/${number}`}
-      icon={() => <IssueMark state={state} />}
-    >
+    <Link href={`https://github.com/${repo}/issues/${number}`} target="_blank" rel="noreferrer">
+      <IssueMark state={state} />
       <span className="sr-only">{issueLabels[state]} </span>
       {children ?? <span className="tabular-nums">#{number}</span>}
-    </InlineLink>
+    </Link>
   );
 }

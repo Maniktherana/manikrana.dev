@@ -6,32 +6,12 @@ import { Link } from "@manikrana/ui/components/ui/link";
 import { cn } from "@manikrana/ui/lib/utils";
 import { ChapterNavigation, slugOf } from "@/routes/library/-components/chapter-navigation";
 import { CodeBlock } from "@/components/code-block";
+import { Link as TextLink } from "@/components/link";
 import { GithubIcon } from "@/components/icons/github";
 import { ArxivLogo } from "@/components/icons/arxiv-logo";
 import { Commit, Issue, Person, PullRequest, Repository } from "@/components/github-link";
-import { Recording, Screenshot } from "@/components/media";
-import { ConversationPlayer } from "@/components/agentchangebench/conversation-player";
-import { PersonaShifts } from "@/components/agentchangebench/persona-shifts";
-import { ResultsTable } from "@/components/agentchangebench/results-table";
-import { Transcript } from "@/components/agentchangebench/transcript";
-import { AttentionDiagram } from "@/components/mlm/attention-diagram";
-import { InputEmbeddingDiagram } from "@/components/mlm/input-embedding-diagram";
-import { LayerNormDiagram } from "@/components/mlm/layer-norm-diagram";
-import { MlpDiagram } from "@/components/mlm/mlp-diagram";
-import { ModelDiagram } from "@/components/mlm/model-diagram";
-import { OutputHeadDiagram } from "@/components/mlm/output-head-diagram";
-import { GeluGraph } from "@/components/mlm/gelu-graph";
-import { LinearGraph } from "@/components/mlm/linear-graph";
-import { LossGraph } from "@/components/mlm/loss-graph";
-import { SoftmaxGraph } from "@/components/mlm/softmax-graph";
-import { TrainingGraph } from "@/components/mlm/training-graph";
-import {
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  PageHeader,
-  useClose,
-} from "@/components/page-header";
-import { posts } from "@/content/library";
+import { HomeBreadcrumb, BreadcrumbSeparator, PageHeader } from "@/components/page-header";
+import { posts } from "@/routes/library/-data";
 import { PdfDialog } from "@/routes/library/-components/pdf-dialog";
 import { TalkVideo } from "@/routes/library/-components/talk-video";
 
@@ -41,51 +21,44 @@ const mdxComponents: MDXComponents = {
       {children}
     </Link>
   ),
-  h2: ({ children }) => <h2 id={slugOf(children)}>{children}</h2>,
+  h2: ({ children }) => (
+    <h2
+      id={slugOf(children)}
+      className="flex items-center gap-4 after:min-w-8 after:flex-1 after:border-t after:border-separator after:content-['']"
+    >
+      <span className="min-w-0">{children}</span>
+    </h2>
+  ),
   pre: CodeBlock,
+  Link: TextLink,
   Commit,
   Issue,
   Person,
   PullRequest,
   Repository,
-  Recording,
-  Screenshot,
-  ConversationPlayer,
-  PersonaShifts,
-  ResultsTable,
-  Transcript,
-  AttentionDiagram,
-  InputEmbeddingDiagram,
-  LayerNormDiagram,
-  MlpDiagram,
-  ModelDiagram,
-  OutputHeadDiagram,
-  GeluGraph,
-  LinearGraph,
-  LossGraph,
-  SoftmaxGraph,
-  TrainingGraph,
 };
 
 export function PostPage({ id }: { id: string }) {
   const post = posts.find((entry) => entry.id === id)!;
-  const close = useClose({ to: "/" });
   const article = useRef<HTMLElement>(null);
+  const heading = useRef<HTMLHeadingElement>(null);
   return (
     <main id="main-content" className="mx-auto w-[calc(100%-40px)] max-w-reading pb-24">
-      <PageHeader onClose={close}>
-        <BreadcrumbLink to="/">Manik Rana</BreadcrumbLink>
+      <PageHeader>
+        <HomeBreadcrumb />
         <BreadcrumbSeparator />
         <span aria-current="page" className="truncate">
           {post.title}
         </span>
       </PageHeader>
 
-      <div className="relative mt-8">
-        <ChapterNavigation article={article} />
+      <div className="relative mt-12 sm:mt-16">
+        <ChapterNavigation article={article} heading={heading} />
         <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
           <div className="min-w-0 flex-1 basis-64">
-            <h1 className="text-base leading-6.5 font-semibold">{post.title}</h1>
+            <h1 ref={heading} className="text-lg leading-6.5 font-normal">
+              {post.title}
+            </h1>
             <time dateTime={post.date} className="mt-1 block leading-5.5 text-muted-foreground">
               {post.month}
             </time>
@@ -146,7 +119,7 @@ export function PostPage({ id }: { id: string }) {
 
         <article
           ref={article}
-          className="mt-8 text-muted-foreground sm:text-pretty [&_:not(pre)>code]:rounded-md [&_:not(pre)>code]:bg-control [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-sm [&_:not(pre)>code]:text-control-foreground [&_h2]:mt-18 [&_h2]:mb-4 [&_h2]:leading-6.5 [&_h2]:font-semibold [&_h2]:text-foreground [&_li]:mt-1 [&_li]:ps-1 [&_li]:marker:text-foreground/30 [&_p]:mb-4 [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:ps-5 [&_strong]:font-medium [&_strong]:text-foreground"
+          className="mt-8 text-muted-foreground sm:text-pretty [&_:not(pre)>code]:rounded-md [&_:not(pre)>code]:bg-control [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-sm [&_:not(pre)>code]:text-control-foreground [&_h2]:mt-18 [&_h2]:mb-4 [&_h2]:text-lg [&_h2]:leading-6.5 [&_h2]:font-normal [&_h2]:text-foreground [&_li]:mt-1 [&_li]:ps-1 [&_li]:marker:text-foreground/30 [&_p]:mb-4 [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:ps-5 [&_strong]:font-medium [&_strong]:text-foreground"
         >
           <post.Content components={mdxComponents} />
         </article>

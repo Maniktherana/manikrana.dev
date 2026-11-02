@@ -193,7 +193,7 @@ export function DownloadExample({
       disabled={downloading}
       aria-label={state.phase === "idle" ? action : `${action}, ${percent}% downloaded`}
       title={action}
-      className="relative flex h-12 w-64 max-w-full items-center justify-between gap-3 overflow-visible rounded-xl bg-foreground/5 px-4 text-sm font-medium ring-1 ring-foreground/10 transition-[background-color,scale] duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] enabled:hover:bg-foreground/10 enabled:active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-foreground/50 disabled:cursor-default motion-reduce:transition-none motion-reduce:active:scale-100"
+      className="relative flex h-12 w-64 max-w-full items-center justify-between gap-3 overflow-visible rounded-xl bg-foreground/5 px-4 text-sm font-medium ring-1 ring-foreground/10 transition-[background-color,scale] duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] enabled:hover:bg-foreground/10 enabled:active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-ring disabled:cursor-default motion-reduce:transition-none motion-reduce:active:scale-100"
     >
       <span
         aria-hidden="true"

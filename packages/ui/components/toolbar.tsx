@@ -51,7 +51,7 @@ export function ToolbarButton({
     <button
       type="button"
       className={cn(
-        "relative isolate flex h-8 transform-gpu items-center gap-1.5 rounded-xl px-3 text-sm leading-none whitespace-nowrap text-control-foreground outline-none [backface-visibility:hidden] transition-[background-color,color,scale] duration-150 ease-out select-none hover:bg-control hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.96] disabled:pointer-events-none disabled:opacity-50 aria-pressed:text-foreground [&_svg]:size-4",
+        "relative isolate flex h-8 transform-gpu items-center gap-1.5 rounded-xl px-3 text-sm leading-none whitespace-nowrap text-control-foreground outline-none [backface-visibility:hidden] transition-[background-color,color,scale] duration-150 ease-out select-none hover:bg-control hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.96] disabled:pointer-events-none disabled:opacity-50 aria-pressed:text-foreground [&_svg]:size-4",
         iconOnly && "w-8 justify-center px-0",
         className,
       )}

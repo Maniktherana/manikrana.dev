@@ -3,21 +3,15 @@ import { Link } from "@manikrana/ui/components/ui/link";
 import { cn } from "@manikrana/ui/lib/utils";
 import { ArxivLogo } from "@/components/icons/arxiv-logo";
 import { GithubIcon } from "@/components/icons/github";
-import {
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  PageHeader,
-  useClose,
-} from "@/components/page-header";
+import { HomeBreadcrumb, BreadcrumbSeparator, PageHeader } from "@/components/page-header";
 import { PdfPages } from "@/components/pdf-pages";
-import type { Paper } from "@/content/library";
+import type { Paper } from "@/routes/library/-data";
 
 export function PaperPage({ paper }: { paper: Paper }) {
-  const close = useClose({ to: "/" });
   return (
     <main id="main-content" className="mx-auto w-[calc(100%-40px)] max-w-reading">
-      <PageHeader onClose={close}>
-        <BreadcrumbLink to="/">Manik Rana</BreadcrumbLink>
+      <PageHeader>
+        <HomeBreadcrumb />
         <BreadcrumbSeparator />
         <span aria-current="page" className="truncate">
           {paper.title}

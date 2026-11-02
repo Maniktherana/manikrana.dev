@@ -1,11 +1,9 @@
 import { Suspense, useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
 import { Link } from "@tanstack/react-router";
-import { cn } from "@manikrana/ui/lib/utils";
 import { preloadPreviews, previews } from "@/components/work/previews";
 import {
-  components,
   featured,
-  projects,
+  work,
   tileAspects,
   type WorkItem,
   type WorkList,
@@ -22,16 +20,6 @@ export function FeaturedGrid() {
   );
 }
 
-export function ProjectGrid({ list }: { list: WorkList }) {
-  return (
-    <ul className="grid gap-3 sm:grid-cols-2">
-      {projects.map((item) => (
-        <WorkTile key={item.slug} item={item} list={list} />
-      ))}
-    </ul>
-  );
-}
-
 export function WorkGrid({ list }: { list: WorkList }) {
   useEffect(() => {
     const id = window.setTimeout(preloadPreviews, 1000);
@@ -39,10 +27,10 @@ export function WorkGrid({ list }: { list: WorkList }) {
   }, []);
   return (
     <ul
-      style={{ "--tiles": components.length } as CSSProperties}
+      style={{ "--tiles": work.length } as CSSProperties}
       className="work-grid mx-auto grid grid-flow-row-dense auto-rows-[--spacing(1)] gap-x-3"
     >
-      {components.map((item) => (
+      {work.map((item) => (
         <WorkTile key={item.slug} item={item} list={list} />
       ))}
     </ul>
@@ -88,17 +76,13 @@ function WorkTile({
         state={{ grid: list }}
         onClick={() => setTransitionTarget(item.slug, list)}
         aria-label={`Open ${item.title}`}
-        className="absolute inset-0 z-10 rounded-3xl outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="absolute inset-0 z-10 rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-ring"
       />
       <span
         aria-hidden="true"
-        className={cn(
-          "pointer-events-none absolute start-3 bottom-3 z-20 flex h-6 translate-y-1 items-center rounded-xl bg-popover px-2.5 text-xs leading-none text-control-foreground opacity-0 shadow-raised transition-[opacity,translate] duration-200 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-has-focus-visible:translate-y-0 group-has-focus-visible:opacity-100",
-          item.kind === "project" && "translate-y-0 opacity-100",
-        )}
+        className="pointer-events-none absolute start-3 bottom-3 z-20 flex h-6 translate-y-1 items-center rounded-xl bg-popover px-2.5 text-xs leading-none text-control-foreground opacity-0 shadow-raised transition-[opacity,translate] duration-200 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-has-focus-visible:translate-y-0 group-has-focus-visible:opacity-100"
       >
         {item.title}
-        {item.tagline && <span className="ms-1 text-muted-foreground">- {item.tagline}</span>}
       </span>
     </li>
   );

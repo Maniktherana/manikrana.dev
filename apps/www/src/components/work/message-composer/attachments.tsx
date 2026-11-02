@@ -103,7 +103,7 @@ function PendingAttachmentTile({
       <button
         type="button"
         onClick={onRemove}
-        className="absolute top-1 right-1 flex size-6 transform-gpu items-center justify-center rounded-full bg-popover text-control-foreground shadow-control outline-none [backface-visibility:hidden] transition-[color,scale] duration-150 ease-out hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.96]"
+        className="absolute top-1 right-1 flex size-6 transform-gpu items-center justify-center rounded-full bg-popover text-control-foreground shadow-control outline-none [backface-visibility:hidden] transition-[color,scale] duration-150 ease-out hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.96]"
         aria-label={`Remove ${attachment.name}`}
       >
         <CloseIcon />

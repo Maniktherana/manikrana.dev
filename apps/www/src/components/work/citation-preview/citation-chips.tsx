@@ -10,7 +10,7 @@ import { sourceHref, sourceName, type CitationSource } from "./source";
 export type { CitationSource } from "./source";
 
 const CHIP =
-  "group inline-flex h-[18px] w-fit max-w-full shrink-0 cursor-pointer items-center justify-center gap-1 overflow-hidden rounded-full border-[0.5px] border-white/10 bg-foreground/10 py-0.5 pr-2 pl-0.5 align-middle text-[0.7rem] leading-[1.35] font-medium whitespace-nowrap text-[#d4d4d8] outline-ring/50 transition-colors select-none [--favicon-surface:color-mix(in_srgb,var(--background)_90%,var(--foreground))] hover:bg-foreground hover:text-background hover:[--favicon-surface:var(--foreground)] focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40";
+  "group inline-flex h-[18px] w-fit max-w-full shrink-0 cursor-pointer items-center justify-center gap-1 overflow-hidden rounded-full border-[0.5px] border-white/10 bg-foreground/10 py-0.5 pr-2 pl-0.5 align-middle text-[0.7rem] leading-[1.35] font-medium whitespace-nowrap text-[#d4d4d8] outline-ring transition-colors select-none [--favicon-surface:color-mix(in_srgb,var(--background)_90%,var(--foreground))] hover:bg-foreground hover:text-background hover:[--favicon-surface:var(--foreground)] focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring";
 
 const OPEN_DELAY_MS = 120;
 
@@ -61,7 +61,7 @@ export function CitationChip({ source, className, ...props }: CitationChipProps)
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Open source: ${name}`}
-              className="block rounded-xl outline-ring/50 focus-visible:outline-2"
+              className="block rounded-xl outline-ring focus-visible:outline-2"
             >
               <CitationPreview source={source} />
             </a>
@@ -118,7 +118,7 @@ export function CitationGroupChip({ sources, className, ...props }: CitationGrou
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Open source: ${sourceName(source)}`}
-              className="block rounded-lg outline-ring/50 focus-visible:outline-2"
+              className="block rounded-lg outline-ring focus-visible:outline-2"
             >
               <CitationPreview source={source} className="shadow-none" />
             </a>
@@ -151,4 +151,4 @@ export function CitationGroupChip({ sources, className, ...props }: CitationGrou
 }
 
 const STEP =
-  "flex size-7 items-center justify-center rounded-lg text-control-foreground outline-none transition-[background-color,color,scale] duration-150 ease-out hover:bg-control hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.96]";
+  "flex size-7 items-center justify-center rounded-lg text-control-foreground outline-none transition-[background-color,color,scale] duration-150 ease-out hover:bg-control hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.96]";

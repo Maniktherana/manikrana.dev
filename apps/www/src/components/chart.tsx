@@ -119,7 +119,7 @@ export function Plot({
       <div
         aria-hidden="true"
         className={cn(
-          "relative overflow-hidden rounded-3xl bg-plot shadow-stage",
+          "relative overflow-hidden rounded-3xl bg-plot shadow-canvas",
           !bleed && "px-9 pt-10 pb-14",
         )}
       >

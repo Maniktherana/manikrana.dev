@@ -104,7 +104,7 @@ export function ColorSwatchesExample({
           >
             <span
               aria-hidden="true"
-              className={`pointer-events-none block size-6 rounded-md bg-(--swatch) ${selected === index ? "outline-2 outline-offset-2 outline-(--swatch)" : "group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-foreground"}`}
+              className={`pointer-events-none block size-6 rounded-md bg-(--swatch) group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring ${selected === index ? "outline-2 outline-offset-2 outline-(--swatch)" : ""}`}
               style={{ "--swatch": color } as CSSProperties}
             />
           </button>

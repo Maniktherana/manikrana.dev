@@ -55,7 +55,7 @@ export function Stage() {
         <button
           type="button"
           aria-label="Spin the bot"
-          className="size-[min(80%,18rem)] rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+          className="size-[min(80%,18rem)] rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
           onClick={() => setSpins((count) => count + 1)}
         >
           <BotAvatar

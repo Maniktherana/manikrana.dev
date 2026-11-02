@@ -346,7 +346,7 @@ export function StageGrid({ slides }: { slides: StageSlide[] }) {
         aria-label="Back to all demos"
         onClick={() => show(-1)}
         className={cn(
-          "absolute top-4 left-4 z-10 grid size-10 cursor-pointer place-items-center rounded-full bg-(--surface-raised) text-muted-foreground transition-[opacity,scale,color,visibility] duration-200 ease-out hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[oklch(1_0_0/48%)] active:scale-96 sm:top-6 sm:left-6",
+          "absolute top-4 left-4 z-10 grid size-10 cursor-pointer place-items-center rounded-full bg-(--surface-raised) text-muted-foreground transition-[opacity,scale,color,visibility] duration-200 ease-out hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-96 sm:top-6 sm:left-6",
           focused < 0 && "invisible scale-90 opacity-0",
         )}
       >

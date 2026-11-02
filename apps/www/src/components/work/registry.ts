@@ -14,6 +14,7 @@ export type WorkItem = {
   included?: string;
   notIncluded?: string;
   notes?: readonly string[];
+  stage?: "tall";
 };
 
 export const SUMMARY_LINK = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -35,9 +36,10 @@ export const work = [
   {
     slug: "agentsims",
     title: "Agentsims",
-    tagline: "iOS and Android workspace",
+    tagline: "Mobile tooling for developers and agents",
     kind: "project",
-    summary: "A workspace for iOS and Android devices, with an API and CLI for coding agents.",
+    summary:
+      "Mobile tooling for developers and agents, with an API and CLI for iOS and Android devices.",
     tile: "square",
     uses: ["Bun", "Effect", "React"],
     links: [
@@ -205,6 +207,41 @@ export const work = [
     notIncluded: "The direction and palette buttons on the stage.",
   },
   {
+    slug: "liquid-glass",
+    title: "Liquid glass",
+    kind: "component",
+    stage: "tall",
+    summary: "Poor man's liquid glass",
+    tile: "square",
+    uses: ["motion", "Base UI", "SVG filters"],
+    files: [
+      "primitives/glass.tsx",
+      "primitives/glass-button.tsx",
+      "primitives/glass-toolbar.tsx",
+      "primitives/glass-switch.tsx",
+      "primitives/glass-slider.tsx",
+      "primitives/glass-segmented.tsx",
+      "primitives/glass-menu.tsx",
+      "primitives/glass-field.tsx",
+      "primitives/glass-toast.tsx",
+      "primitives/glass-actions.tsx",
+      "primitives/glass-stack.tsx",
+      "primitives/glass-motion.tsx",
+      "primitives/magnetic.ts",
+      "primitives/glass.css",
+      "glass-focus.tsx",
+      "glass-notifications.tsx",
+      "glass-composer.tsx",
+      "glass-now-playing.tsx",
+      "glow-pill.tsx",
+    ],
+    usage: "usage.tsx",
+    included:
+      "Primitives built on Base UI: Glass (the surface, with tint and a clear variant), GlassButton (glass, fill, tint and ghost variants that step up when pressed), GlassToolbar, GlassSwitch, GlassSlider (bar and tile), GlassSegmented, GlassMenu, GlassField, GlassToast parts, GlassActions (a button that unfolds into actions through an SVG goo filter) and GlassStack. Components composed from them: GlassFocus, GlassNotifications, GlassComposer, GlassNowPlaying and the release pill. Plus the useMagnetic hook, Swap, Crossfade, Marquee, and the tint, accent and light or dark tokens.",
+    notIncluded:
+      "The backdrops the picker switches between, the pill's loop on the tile, and the pause state on the stage. The glass needs color behind it to show.",
+  },
+  {
     slug: "chat-showcase",
     title: "Chat showcase",
     kind: "component",
@@ -279,21 +316,6 @@ export const work = [
       "The chat around the strip, the talk covers it shows, and the scripted send, stream and tap on the tile. There is no toast for a copied link; onCopy is where to show one.",
   },
   {
-    slug: "image-loader",
-    title: "Image loader",
-    kind: "component",
-    summary:
-      "An animated dot grid that holds the image's place during generation, then fades into the finished image.",
-    tile: "lg",
-    uses: ["WebGL", "motion"],
-    files: ["image-loader.tsx", "dot-grid.tsx", "dot-grid-shader.ts"],
-    usage: "usage.tsx",
-    included:
-      "ImageLoader, a frame at the image's aspect ratio that plays the dot grid while generating and fades the image in once it has decoded, and DotGrid, the WebGL shader on its own, with its organic and weave patterns, four wave shapes and every other setting from the original.",
-    notIncluded:
-      "The cycle through the patterns and the pattern buttons. Set the status and image from your own generation API.",
-  },
-  {
     slug: "dynamic-island",
     title: "Dynamic Island",
     kind: "component",
@@ -325,7 +347,6 @@ export const work = [
 ] as const satisfies readonly WorkItem[];
 
 export const projects = work.filter((item) => item.kind === "project");
-export const components = work.filter((item) => item.kind === "component");
 export const featured = [
   "agentsims",
   "gust",

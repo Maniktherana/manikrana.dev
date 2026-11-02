@@ -8,7 +8,7 @@ import { Button, buttonVariants } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
 import { CopyButton } from "@/components/copy-button";
 import { BreadcrumbLink, BreadcrumbSeparator, PageHeader } from "@/components/page-header";
-import { InlineLink } from "@/components/inline-link";
+import { Link as TextLink } from "@/components/link";
 import { quietGust } from "@/lib/gust";
 import { play } from "@/lib/sounds";
 import { ArrowUpRightIcon } from "@/components/icons/arrow-up-right";
@@ -56,7 +56,7 @@ export const Route = createFileRoute("/work/$slug")({
 const STEP = { types: ["step"] };
 
 const iconLink =
-  "flex size-7 items-center justify-center rounded-lg text-control-foreground transition-[background-color,color,scale] duration-150 ease-out outline-none hover:bg-control hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.96]";
+  "flex size-7 items-center justify-center rounded-lg text-control-foreground transition-[background-color,color,scale] duration-150 ease-out outline-none hover:bg-button-secondary-hover hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.96]";
 
 function WorkPage() {
   const { slug } = Route.useParams();
@@ -78,10 +78,27 @@ function WorkPage() {
 
   return (
     <main id="main-content" className="mx-auto min-h-svh w-[calc(100%-40px)] max-w-stage">
-      <PageHeader onClose={close}>
+      <PageHeader>
         <BreadcrumbLink to="/">Manik Rana</BreadcrumbLink>
         <BreadcrumbSeparator />
-        <BreadcrumbLink to="/work" hash={item.slug} hashScrollIntoView={TILE_INTO_VIEW}>
+        <BreadcrumbLink
+          to="/work"
+          hash={item.slug}
+          hashScrollIntoView={TILE_INTO_VIEW}
+          aria-keyshortcuts="Escape"
+          onClick={(event) => {
+            if (
+              event.button !== 0 ||
+              event.metaKey ||
+              event.ctrlKey ||
+              event.shiftKey ||
+              event.altKey
+            )
+              return;
+            event.preventDefault();
+            close();
+          }}
+        >
           Work
         </BreadcrumbLink>
         <BreadcrumbSeparator />
@@ -90,7 +107,10 @@ function WorkPage() {
 
       <div
         data-slot="stage"
-        className="@container-size grid h-[clamp(25rem,54svh,30rem)] place-items-center sm:h-[clamp(27.5rem,64svh,42.5rem)]"
+        className={cn(
+          "@container-size grid place-items-center sm:h-[clamp(27.5rem,64svh,42.5rem)]",
+          item.stage === "tall" ? "h-[clamp(38rem,80svh,44rem)]" : "h-[clamp(25rem,54svh,30rem)]",
+        )}
       >
         <div
           data-morph
@@ -156,7 +176,10 @@ function WorkPage() {
               );
             })}
           </AnimatePresence>
-          <nav aria-label="Work" className="flex items-center gap-1 rounded-xl bg-control p-1">
+          <nav
+            aria-label="Work"
+            className="flex items-center gap-1 rounded-xl bg-button-secondary p-1"
+          >
             <Link
               to="/work/$slug"
               params={{ slug: previous.slug }}
@@ -302,9 +325,9 @@ function Summary({ text }: { text: string }) {
   const parts = text.split(SUMMARY_LINK);
   return parts.map((part, index) =>
     index % 3 === 1 ? (
-      <InlineLink key={index} href={parts[index + 1]}>
+      <TextLink key={index} href={parts[index + 1]} target="_blank" rel="noreferrer">
         {part}
-      </InlineLink>
+      </TextLink>
     ) : index % 3 === 0 ? (
       part
     ) : null,

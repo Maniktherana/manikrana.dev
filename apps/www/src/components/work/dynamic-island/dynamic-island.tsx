@@ -233,7 +233,7 @@ function Timer({ onExit }: { onExit: () => void }) {
     <div className="flex w-71 items-center gap-2 p-3 pr-5">
       <motion.button
         aria-label={isPaused ? "Play timer" : "Pause timer"}
-        className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#5A3C07] text-[#FDB000] outline-none transition-colors hover:bg-[#694608] focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#5A3C07] text-[#FDB000] outline-none transition-colors hover:bg-[#694608] focus-visible:ring-2 focus-visible:ring-ring"
         onClick={() => setIsPaused((paused) => !paused)}
         type="button"
         whileTap={press}
@@ -254,7 +254,7 @@ function Timer({ onExit }: { onExit: () => void }) {
 
       <motion.button
         aria-label="Exit"
-        className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#3C3D3C] text-white outline-none transition-colors hover:bg-[#4A4B4A] focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#3C3D3C] text-white outline-none transition-colors hover:bg-[#4A4B4A] focus-visible:ring-2 focus-visible:ring-ring"
         onClick={onExit}
         type="button"
         whileTap={press}

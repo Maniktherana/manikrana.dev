@@ -23,7 +23,7 @@ export const guestsMotion: Omit<GustProps, "value"> = {
   scale: false,
 };
 const buttonClassName =
-  "grid size-11 shrink-0 place-items-center rounded-full bg-foreground/5 text-muted-foreground ring-1 ring-foreground/10 transition-[color,scale,opacity] duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:text-foreground active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-foreground/50 disabled:opacity-40 motion-reduce:transition-none motion-reduce:active:scale-100";
+  "grid size-11 shrink-0 place-items-center rounded-full bg-foreground/5 text-muted-foreground ring-1 ring-foreground/10 transition-[color,scale,opacity] duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:text-foreground active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-ring disabled:opacity-40 motion-reduce:transition-none motion-reduce:active:scale-100";
 
 type GuestState = { count: number; falling: boolean; touched: boolean };
 

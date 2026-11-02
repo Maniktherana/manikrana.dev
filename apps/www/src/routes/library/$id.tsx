@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { papers, posts, talks } from "@/content/library";
+import { papers, posts, talks } from "@/routes/library/-data";
 import { PaperPage } from "@/routes/library/-components/paper-page";
 import { PostPage } from "@/routes/library/-components/post-page";
 import { TalkPage } from "@/routes/library/-components/talk-page";

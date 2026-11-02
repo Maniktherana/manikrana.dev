@@ -78,7 +78,7 @@ export function Stepper({
           aria-label={label}
           aria-current={index === step ? "step" : undefined}
           onClick={() => onStepChange(index)}
-          className="group relative flex h-5 max-w-12 min-w-4 flex-1 items-center rounded-full outline-none transition-[scale] duration-150 ease-out before:absolute before:inset-x-0 before:-inset-y-3 focus-visible:ring-2 focus-visible:ring-current active:scale-[0.96] motion-reduce:transition-none"
+          className="group relative flex h-5 max-w-12 min-w-4 flex-1 items-center rounded-full outline-none transition-[scale] duration-150 ease-out before:absolute before:inset-x-0 before:-inset-y-3 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.96] motion-reduce:transition-none"
         >
           <span className="h-1 w-full overflow-hidden rounded-full bg-current/20 transition-[height] duration-150 ease-out group-hover:h-2 group-aria-[current=step]:h-2 motion-reduce:transition-none">
             {index === step ? (

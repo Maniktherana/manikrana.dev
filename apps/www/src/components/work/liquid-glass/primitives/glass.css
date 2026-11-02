@@ -1,0 +1,825 @@
+/* Liquid glass primitives.
+   1. Base: the dark glass every surface starts from.
+   2. Light: the same tokens for light glass, switched with data-glass="light".
+   3. Tint: data-tint re-derives the surface tokens from one color.
+   4. Derived: values built from the tokens above, recomputed wherever they change.
+   5. Motion: springs, keyframes and the properties they animate. */
+
+@property --glass-color {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgb(80 80 80 / 0.4);
+}
+
+@property --glass-ink {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: white;
+}
+
+@property --glass-hover {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgb(255 255 255 / 0.12);
+}
+
+@property --glass-lens {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgb(255 255 255 / 0.18);
+}
+
+@property --glass-dim {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.46;
+}
+
+@property --glass-contrast {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.8;
+}
+
+@property --glass-rim-strength {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+@property --glass-saturate {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 2.9;
+}
+
+/* 1. Base */
+
+:root {
+  --glass-color: rgb(80 80 80 / 0.4);
+  --glass-sheen: rgb(255 255 255 / 0.08);
+  --glass-ink: white;
+  --glass-rim: white;
+  --glass-rim-strength: 1;
+  --glass-hover: rgb(255 255 255 / 0.12);
+  --glass-lens: rgb(255 255 255 / 0.18);
+  --glass-lens-blend: plus-lighter;
+  --glass-dim: 0.46;
+  --glass-contrast: 0.8;
+  --glass-saturate: 2.9;
+  --glass-contact: 0 1px 2px rgb(0 0 0 / 0.2);
+  --glass-shade: rgb(0 0 0 / 0.2);
+  --glass-ring: transparent;
+  --glass-lift-shade: rgb(0 0 0 / 0.18);
+  --glass-lift: 0 2px 4px rgb(0 0 0 / 0.06), 0 10px 32px -8px rgb(0 0 0 / 0.18);
+  --glass-track: rgb(255 255 255 / 0.2);
+  --glass-solid: rgb(255 255 255 / 0.92);
+  --glass-solid-ink: #0a84ff;
+  --accent: #0a84ff;
+  --accent-ink: white;
+  --accent-text-mix: 100%;
+  --accent-wash-mix: 20%;
+  --accent-hover-mix: 32%;
+}
+
+/* 2. Light */
+
+[data-glass="light"] {
+  --glass-color: rgb(232 232 236 / 0.6);
+  --glass-sheen: rgb(255 255 255 / 0.14);
+  --glass-rim-strength: 0;
+  --glass-ink: #1c1c1e;
+  --glass-hover: rgb(0 0 0 / 0.06);
+  --glass-lens: rgb(0 0 0 / 0.08);
+  --glass-lens-blend: normal;
+  --glass-dim: 1.4;
+  --glass-contrast: 0.9;
+  --glass-saturate: 1.8;
+  --glass-contact: 0 0 0 1px rgb(0 0 0 / 0.08);
+  --glass-shade: transparent;
+  --glass-ring: rgb(0 0 0 / 0.08);
+  --glass-lift-shade: rgb(0 0 0 / 0.1);
+  --glass-lift: 0 1px 2px rgb(0 0 0 / 0.03), 0 6px 20px -8px rgb(0 0 0 / 0.1);
+  --glass-track: rgb(0 0 0 / 0.1);
+  --accent-text-mix: 55%;
+  --accent-wash-mix: 22%;
+  --accent-hover-mix: 34%;
+}
+
+/* 3. Tint */
+
+[data-tint] {
+  --glass-color: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--tint) 26%, rgb(10 10 12)) 75%,
+    transparent
+  );
+  --glass-sheen: rgb(255 255 255 / 0.05);
+  --glass-ink: var(--tint);
+  --glass-rim: color-mix(in oklab, var(--tint) 60%, white);
+  --accent: var(--tint);
+}
+
+[data-glass="light"] [data-tint] {
+  --glass-color: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--tint) 28%, rgb(240 240 243)) 60%,
+    transparent
+  );
+  --glass-sheen: rgb(255 255 255 / 0.08);
+  --glass-ink: color-mix(in oklab, var(--tint) 55%, black);
+  --glass-rim: white;
+}
+
+/* 4. Derived */
+
+:root,
+[data-glass],
+[data-tint],
+[data-accent] {
+  --glass-fill:
+    linear-gradient(var(--glass-sheen), rgb(255 255 255 / 0)),
+    linear-gradient(var(--glass-color), var(--glass-color));
+  --glass-backdrop: blur(16px) brightness(var(--glass-dim)) contrast(var(--glass-contrast))
+    saturate(var(--glass-saturate));
+  --accent-text: color-mix(in oklab, var(--accent) var(--accent-text-mix), black);
+  --accent-wash: color-mix(in oklab, var(--accent) var(--accent-wash-mix), transparent);
+  --accent-wash-hover: color-mix(in oklab, var(--accent) var(--accent-hover-mix), transparent);
+}
+
+[data-glass],
+[data-tint] {
+  transition:
+    --glass-color 250ms ease-out,
+    --glass-ink 250ms ease-out,
+    --glass-hover 250ms ease-out,
+    --glass-lens 250ms ease-out,
+    --glass-rim-strength 250ms ease-out,
+    --glass-dim 250ms ease-out,
+    --glass-contrast 250ms ease-out,
+    --glass-saturate 250ms ease-out;
+}
+
+/* 5. Motion */
+
+@property --switch-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --lens {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+:root {
+  --stack-open: 350ms;
+  --stack-close: 250ms;
+  --stack-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  --spring-reveal: linear(
+    0,
+    0.047,
+    0.154,
+    0.294,
+    0.444,
+    0.588,
+    0.713,
+    0.822,
+    0.909,
+    0.974,
+    1.019,
+    1.047,
+    1.062,
+    1.067,
+    1.065,
+    1.058,
+    1.049,
+    1.039,
+    1.03,
+    1.021,
+    1.013,
+    1.007,
+    1.002,
+    0.999,
+    0.997,
+    0.996,
+    0.996,
+    0.996,
+    0.996,
+    0.997,
+    0.997,
+    0.998,
+    1
+  );
+  --spring-reveal-time: 575ms;
+  --spring-gather: linear(
+    0,
+    0.033,
+    0.108,
+    0.201,
+    0.307,
+    0.413,
+    0.513,
+    0.604,
+    0.684,
+    0.75,
+    0.808,
+    0.855,
+    0.894,
+    0.924,
+    0.947,
+    0.965,
+    0.979,
+    0.988,
+    0.995,
+    1,
+    1.003,
+    1.005,
+    1.006,
+    1.006,
+    1.006,
+    1.005,
+    1.005,
+    1.004,
+    1.003,
+    1.003,
+    1.002,
+    1.002,
+    1
+  );
+  --spring-gather-time: 398ms;
+  --spring-grow-open: linear(
+    0,
+    0.029,
+    0.1,
+    0.192,
+    0.3,
+    0.406,
+    0.508,
+    0.607,
+    0.693,
+    0.767,
+    0.832,
+    0.884,
+    0.927,
+    0.959,
+    0.983,
+    1.001,
+    1.014,
+    1.021,
+    1.026,
+    1.027,
+    1.027,
+    1.026,
+    1.023,
+    1.021,
+    1.018,
+    1.015,
+    1.012,
+    1.009,
+    1.007,
+    1.005,
+    1.004,
+    1.002,
+    1
+  );
+  --spring-grow-open-time: 375ms;
+  --spring-drift-open: linear(
+    0,
+    0.034,
+    0.106,
+    0.206,
+    0.31,
+    0.42,
+    0.52,
+    0.616,
+    0.7,
+    0.769,
+    0.829,
+    0.877,
+    0.916,
+    0.945,
+    0.969,
+    0.985,
+    0.997,
+    1.005,
+    1.01,
+    1.013,
+    1.014,
+    1.014,
+    1.013,
+    1.012,
+    1.011,
+    1.009,
+    1.008,
+    1.006,
+    1.005,
+    1.004,
+    1.003,
+    1.002,
+    1
+  );
+  --spring-drift-open-time: 314ms;
+  --spring-rise-open: linear(
+    0,
+    0.029,
+    0.098,
+    0.191,
+    0.295,
+    0.403,
+    0.507,
+    0.604,
+    0.693,
+    0.768,
+    0.832,
+    0.884,
+    0.926,
+    0.959,
+    0.983,
+    1.001,
+    1.014,
+    1.021,
+    1.026,
+    1.028,
+    1.027,
+    1.026,
+    1.023,
+    1.021,
+    1.018,
+    1.015,
+    1.012,
+    1.009,
+    1.007,
+    1.005,
+    1.004,
+    1.002,
+    1
+  );
+  --spring-rise-open-time: 450ms;
+  --spring-grow-close: linear(
+    0,
+    0.021,
+    0.067,
+    0.13,
+    0.207,
+    0.284,
+    0.362,
+    0.436,
+    0.507,
+    0.573,
+    0.633,
+    0.686,
+    0.737,
+    0.779,
+    0.816,
+    0.847,
+    0.874,
+    0.897,
+    0.917,
+    0.933,
+    0.947,
+    0.959,
+    0.968,
+    0.975,
+    0.981,
+    0.986,
+    0.99,
+    0.993,
+    0.995,
+    0.997,
+    0.998,
+    0.999,
+    1
+  );
+  --spring-grow-close-time: 243ms;
+  --spring-drift-close: linear(
+    0,
+    0.047,
+    0.154,
+    0.292,
+    0.441,
+    0.585,
+    0.717,
+    0.825,
+    0.91,
+    0.974,
+    1.019,
+    1.047,
+    1.062,
+    1.067,
+    1.065,
+    1.058,
+    1.049,
+    1.039,
+    1.029,
+    1.021,
+    1.013,
+    1.007,
+    1.002,
+    0.999,
+    0.997,
+    0.996,
+    0.996,
+    0.996,
+    0.996,
+    0.997,
+    0.997,
+    0.998,
+    1
+  );
+  --spring-drift-close-time: 498ms;
+  --spring-rise-close: linear(
+    0,
+    0.048,
+    0.157,
+    0.298,
+    0.447,
+    0.586,
+    0.715,
+    0.823,
+    0.91,
+    0.974,
+    1.019,
+    1.047,
+    1.062,
+    1.067,
+    1.065,
+    1.058,
+    1.049,
+    1.039,
+    1.029,
+    1.021,
+    1.013,
+    1.007,
+    1.003,
+    0.999,
+    0.997,
+    0.996,
+    0.996,
+    0.996,
+    0.996,
+    0.997,
+    0.997,
+    0.998,
+    1
+  );
+  --spring-rise-close-time: 383ms;
+  --spring-resize: linear(
+    0,
+    0.031,
+    0.106,
+    0.201,
+    0.31,
+    0.416,
+    0.521,
+    0.613,
+    0.698,
+    0.768,
+    0.829,
+    0.876,
+    0.916,
+    0.946,
+    0.969,
+    0.985,
+    0.998,
+    1.005,
+    1.01,
+    1.013,
+    1.014,
+    1.014,
+    1.014,
+    1.012,
+    1.011,
+    1.009,
+    1.008,
+    1.006,
+    1.005,
+    1.004,
+    1.003,
+    1.002,
+    1
+  );
+  --spring-resize-time: 392ms;
+  --spring-open: linear(
+    0,
+    0.031,
+    0.105,
+    0.201,
+    0.307,
+    0.414,
+    0.52,
+    0.613,
+    0.695,
+    0.768,
+    0.828,
+    0.876,
+    0.915,
+    0.946,
+    0.969,
+    0.985,
+    0.998,
+    1.006,
+    1.011,
+    1.013,
+    1.015,
+    1.014,
+    1.014,
+    1.012,
+    1.011,
+    1.009,
+    1.008,
+    1.006,
+    1.005,
+    1.004,
+    1.003,
+    1.002,
+    1
+  );
+  --spring-open-time: 549ms;
+  --spring-focus-open: linear(
+    0,
+    0.034,
+    0.11,
+    0.202,
+    0.308,
+    0.414,
+    0.514,
+    0.605,
+    0.684,
+    0.749,
+    0.807,
+    0.855,
+    0.893,
+    0.924,
+    0.946,
+    0.964,
+    0.978,
+    0.988,
+    0.995,
+    0.999,
+    1.003,
+    1.004,
+    1.005,
+    1.006,
+    1.006,
+    1.005,
+    1.005,
+    1.004,
+    1.003,
+    1.003,
+    1.002,
+    1.002,
+    1
+  );
+  --spring-focus-open-time: 302ms;
+  --spring-focus-close: linear(
+    0,
+    0.04,
+    0.122,
+    0.221,
+    0.317,
+    0.418,
+    0.51,
+    0.591,
+    0.662,
+    0.723,
+    0.771,
+    0.814,
+    0.85,
+    0.879,
+    0.903,
+    0.922,
+    0.938,
+    0.95,
+    0.96,
+    0.968,
+    0.975,
+    0.98,
+    0.984,
+    0.987,
+    0.99,
+    0.992,
+    0.994,
+    0.995,
+    0.996,
+    0.997,
+    0.998,
+    0.998,
+    1
+  );
+  --spring-focus-close-time: 222ms;
+  --spring-np-open: linear(
+    0,
+    0.034,
+    0.109,
+    0.201,
+    0.307,
+    0.413,
+    0.513,
+    0.604,
+    0.684,
+    0.75,
+    0.807,
+    0.855,
+    0.893,
+    0.924,
+    0.946,
+    0.965,
+    0.978,
+    0.988,
+    0.995,
+    1,
+    1.003,
+    1.004,
+    1.005,
+    1.006,
+    1.006,
+    1.005,
+    1.005,
+    1.004,
+    1.003,
+    1.003,
+    1.002,
+    1.002,
+    1
+  );
+  --spring-np-open-time: 334ms;
+  --spring-np-close: linear(
+    0,
+    0.039,
+    0.12,
+    0.219,
+    0.322,
+    0.421,
+    0.507,
+    0.588,
+    0.659,
+    0.72,
+    0.772,
+    0.814,
+    0.85,
+    0.879,
+    0.903,
+    0.922,
+    0.938,
+    0.95,
+    0.96,
+    0.968,
+    0.975,
+    0.98,
+    0.984,
+    0.987,
+    0.99,
+    0.992,
+    0.994,
+    0.995,
+    0.996,
+    0.997,
+    0.998,
+    0.998,
+    1
+  );
+  --spring-np-close-time: 239ms;
+  --spring-settle: linear(
+    0,
+    0.032,
+    0.103,
+    0.199,
+    0.306,
+    0.416,
+    0.521,
+    0.618,
+    0.709,
+    0.783,
+    0.845,
+    0.895,
+    0.935,
+    0.966,
+    0.989,
+    1.005,
+    1.016,
+    1.023,
+    1.026,
+    1.027,
+    1.026,
+    1.025,
+    1.022,
+    1.019,
+    1.016,
+    1.013,
+    1.01,
+    1.008,
+    1.006,
+    1.004,
+    1.003,
+    1.002,
+    1
+  );
+  --spring-settle-time: 306ms;
+  --crossfade: 200ms ease-out;
+  --tint: 150ms ease-out;
+}
+
+@property --cx {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --cy {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --w {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --h {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --r {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --corner {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 2;
+}
+
+@property --lift {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
+@keyframes glass-split {
+  33.333% {
+    scale: 0.94 1.08;
+  }
+  66.667% {
+    scale: 1.03 0.98;
+  }
+}
+
+@keyframes glass-merge {
+  33.333% {
+    scale: 1.06 0.94;
+  }
+  66.667% {
+    scale: 0.98 1.02;
+  }
+}
+
+@keyframes glass-recoil {
+  30% {
+    translate: 5px 0;
+  }
+}
+
+[data-sway="split"] {
+  animation: glass-split 350ms ease-in-out;
+}
+
+[data-sway="merge"] {
+  animation: glass-merge 350ms ease-in-out;
+}
+
+[data-sway="recoil"] {
+  animation: glass-recoil 700ms cubic-bezier(0.22, 1, 0.36, 1) 80ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-sway] {
+    animation: none;
+  }
+}
+
+@keyframes glass-wave {
+  0%,
+  100% {
+    height: 35%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
+.magnetic {
+  transform: translate(var(--mx, 0px), var(--my, 0px))
+    scale(calc(var(--ms, 1) * var(--msx, 1)), calc(var(--ms, 1) * var(--msy, 1)));
+}

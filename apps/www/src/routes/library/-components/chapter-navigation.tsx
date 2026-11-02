@@ -65,8 +65,15 @@ export function slugOf(children: ReactNode): string {
     .replace(/^-|-$/g, "");
 }
 
-export function ChapterNavigation({ article }: { article: RefObject<HTMLElement | null> }) {
+export function ChapterNavigation({
+  article,
+  heading,
+}: {
+  article: RefObject<HTMLElement | null>;
+  heading: RefObject<HTMLHeadingElement | null>;
+}) {
   const rail = useRef<HTMLDivElement>(null);
+  const [railTop, setRailTop] = useState(0);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [hovered, setHovered] = useState<{ id: string; top: number } | null>(null);
   const [visible, setVisible] = useState<ReadonlySet<string>>(() => new Set());
@@ -77,6 +84,20 @@ export function ChapterNavigation({ article }: { article: RefObject<HTMLElement 
   const measure = useRef(() => {});
   const hoveredIndex = hovered ? chapters.findIndex((chapter) => chapter.id === hovered.id) : -1;
   const hoveredChapter = hoveredIndex >= 0 ? chapters[hoveredIndex] : undefined;
+
+  useEffect(() => {
+    const title = heading.current;
+    if (!title) return;
+    const measure = () => setRailTop(title.getBoundingClientRect().top + window.scrollY);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(title);
+    window.addEventListener("resize", measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [heading]);
 
   useEffect(() => {
     const root = article.current;
@@ -177,8 +198,11 @@ export function ChapterNavigation({ article }: { article: RefObject<HTMLElement 
         aim={aim}
         onJump={jump}
       />
-      <div className="pointer-events-none absolute inset-y-0 right-full z-50 me-24 hidden lg:block">
-        <nav aria-label="Sections" className="sticky top-24">
+      <div
+        style={{ top: railTop }}
+        className="pointer-events-none fixed inset-x-0 z-50 mx-auto hidden max-w-reading lg:block"
+      >
+        <nav aria-label="Sections" className="absolute right-full me-24">
           <div
             ref={rail}
             className="pointer-events-auto flex w-6 flex-col py-1"
@@ -402,7 +426,7 @@ function ChapterDock({
             setOpen(false);
             onJump(chapter);
           }}
-          className="flex min-h-8 shrink-0 transform-gpu items-center rounded-lg px-2.5 py-1.5 text-left text-sm leading-5 text-control-foreground outline-none transition-[background-color,color,scale] duration-150 ease-out select-none active:scale-[0.96] hover:bg-control hover:text-foreground active:bg-control active:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 aria-[current=location]:bg-control-selected aria-[current=location]:text-foreground"
+          className="flex min-h-8 shrink-0 transform-gpu items-center rounded-lg px-2.5 py-1.5 text-left text-sm leading-5 text-control-foreground outline-none transition-[background-color,color,scale] duration-150 ease-out select-none active:scale-[0.96] hover:bg-button-secondary-hover hover:text-foreground active:bg-button-secondary-hover active:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-[current=location]:bg-button-secondary-hover aria-[current=location]:text-foreground"
         >
           {chapter.title}
         </button>
@@ -502,7 +526,7 @@ function ChapterDock({
                 setOpen(true);
               }}
               className={cn(
-                "absolute inset-x-0 bottom-0 mx-auto flex size-10 touch-none items-center justify-center rounded-full text-foreground outline-none select-none [-webkit-touch-callout:none] focus-visible:ring-3 focus-visible:ring-ring/50 before:absolute before:-inset-3",
+                "absolute inset-x-0 bottom-0 mx-auto flex size-10 touch-none items-center justify-center rounded-full text-foreground outline-none select-none [-webkit-touch-callout:none] focus-visible:ring-2 focus-visible:ring-ring before:absolute before:-inset-3",
                 open && "pointer-events-none",
               )}
             >

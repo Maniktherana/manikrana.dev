@@ -3,14 +3,14 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@manikrana/ui/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center rounded-full text-sm font-medium whitespace-nowrap transition-[scale,background-color,color] duration-150 ease-out outline-none select-none focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:ring-3 aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "inline-flex shrink-0 items-center justify-center rounded-full text-sm font-medium whitespace-nowrap transition-[scale,background-color,color] duration-150 ease-out outline-none select-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 aria-invalid:ring-3 aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary-hover",
-        secondary: "bg-control text-foreground hover:bg-control-hover",
+        secondary: "bg-button-secondary text-foreground hover:bg-button-secondary-hover",
         ghost:
-          "text-control-foreground hover:bg-control hover:text-foreground aria-expanded:bg-control aria-expanded:text-foreground",
+          "text-control-foreground hover:bg-button-secondary-hover hover:text-foreground aria-expanded:bg-button-secondary-hover aria-expanded:text-foreground",
         green: "bg-green-surface text-green-foreground hover:bg-green-surface-hover",
         amber: "bg-amber-surface text-amber-foreground hover:bg-amber-surface-hover",
         red: "bg-red-surface text-red-foreground hover:bg-red-surface-hover",

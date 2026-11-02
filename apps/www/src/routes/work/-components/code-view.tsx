@@ -20,7 +20,7 @@ export function CodeView({ files }: { files: SourceFile[] }) {
           iconOnly
           label={`Copy ${file.name}`}
           value={file.code}
-          className="size-8 shrink-0 rounded-lg bg-transparent hover:bg-control"
+          className="size-8 shrink-0 rounded-lg bg-transparent hover:bg-button-secondary-hover"
         />
       </div>
       <div
@@ -31,7 +31,7 @@ export function CodeView({ files }: { files: SourceFile[] }) {
         tabIndex={0}
         // oxlint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: file.html }}
-        className="scrollbar-visible scroll-fade-t min-h-0 flex-1 overflow-auto outline-none focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset [&_pre]:w-fit [&_pre]:min-w-full [&_pre]:bg-transparent! [&_pre]:p-6 [&_pre]:font-mono [&_pre]:text-xs/5"
+        className="scrollbar-visible scroll-fade-t min-h-0 flex-1 overflow-auto outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset [&_pre]:w-fit [&_pre]:min-w-full [&_pre]:bg-transparent! [&_pre]:p-6 [&_pre]:font-mono [&_pre]:text-xs/5"
       />
     </div>
   );
@@ -93,7 +93,7 @@ function FileTabs({
           tabIndex={index === active ? 0 : -1}
           onClick={() => onChange(index)}
           onKeyDown={onKeyDown}
-          className="h-8 shrink-0 rounded-lg px-2.5 font-mono text-xs text-muted-foreground outline-none transition-[background-color,color] duration-150 ease-out hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 aria-selected:bg-control aria-selected:text-foreground"
+          className="h-8 shrink-0 rounded-lg px-2.5 font-mono text-xs text-muted-foreground outline-none transition-[background-color,color] duration-150 ease-out hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-selected:bg-control aria-selected:text-foreground"
         >
           {entry.name}
         </button>

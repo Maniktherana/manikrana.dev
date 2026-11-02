@@ -15,7 +15,7 @@ export const getSource = createServerFn({ method: "GET" })
     const item = findWork(slug);
     const files = [...(item?.usage ? [item.usage] : []), ...(item?.files ?? [])];
     if (!item || !files.length) return null;
-    const sources = import.meta.glob<string>(["./*/*.{ts,tsx}", "./*.tsx"], {
+    const sources = import.meta.glob<string>(["./*/**/*.{ts,tsx,css}", "./*.tsx"], {
       query: "?raw",
       import: "default",
     });
@@ -35,7 +35,7 @@ export const getSource = createServerFn({ method: "GET" })
           : sources[entry.startsWith("../") ? `./${entry.slice(3)}` : `./${slug}/${entry}`];
         if (!load) throw new Error(`No source file for ${entry} in ${slug}`);
         const code = await load();
-        const lang = name.endsWith(".tsx") ? "tsx" : "ts";
+        const lang = name.endsWith(".tsx") ? "tsx" : name.endsWith(".css") ? "css" : "ts";
         return { name, code, html: await codeToHtml(code, { lang, theme: "vesper" }) };
       }),
     );

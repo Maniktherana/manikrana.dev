@@ -49,7 +49,7 @@ export function Conversation({ reply }: { reply: ChatReply }) {
               aria-label="Show thinking"
               aria-expanded={panel === "thinking"}
               onClick={() => toggle("thinking")}
-              className="-ml-2 flex min-h-7 w-fit transform-gpu items-center gap-2 rounded-lg py-1 pr-3 pl-2 outline-none [backface-visibility:hidden] transition-[background-color,scale] duration-150 ease-out hover:bg-control focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.96] disabled:pointer-events-none aria-expanded:bg-control"
+              className="-ml-2 flex min-h-7 w-fit transform-gpu items-center gap-2 rounded-lg py-1 pr-3 pl-2 outline-none [backface-visibility:hidden] transition-[background-color,scale] duration-150 ease-out hover:bg-control focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.96] disabled:pointer-events-none aria-expanded:bg-control"
             >
               <Blob className="size-5" />
               <Bar className={cn("w-24", !answered && "motion-safe:animate-pulse")} />

@@ -1,4 +1,4 @@
-import { talks } from "@/content/library";
+import { talks } from "@/routes/library/-data";
 import type { WebImage } from "@/components/work/image-tray/image-tray";
 
 export const images: WebImage[] = talks.map((talk) => ({

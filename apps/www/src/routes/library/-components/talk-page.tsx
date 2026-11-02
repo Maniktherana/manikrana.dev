@@ -2,22 +2,16 @@ import { buttonVariants } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
 import { ArrowUpRightIcon } from "@/components/icons/arrow-up-right";
 import { GithubIcon } from "@/components/icons/github";
-import {
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  PageHeader,
-  useClose,
-} from "@/components/page-header";
+import { HomeBreadcrumb, BreadcrumbSeparator, PageHeader } from "@/components/page-header";
 import { PdfPages } from "@/components/pdf-pages";
-import type { Talk } from "@/content/library";
+import type { Talk } from "@/routes/library/-data";
 import { TalkVideo } from "@/routes/library/-components/talk-video";
 
 export function TalkPage({ talk }: { talk: Talk }) {
-  const close = useClose({ to: "/" });
   return (
     <main id="main-content" className="mx-auto w-[calc(100%-40px)] max-w-reading">
-      <PageHeader onClose={close}>
-        <BreadcrumbLink to="/">Manik Rana</BreadcrumbLink>
+      <PageHeader>
+        <HomeBreadcrumb />
         <BreadcrumbSeparator />
         <span aria-current="page" className="truncate">
           {talk.title}
@@ -66,7 +60,7 @@ export function TalkPage({ talk }: { talk: Talk }) {
       {talk.video && <TalkVideo talk={talk} video={talk.video} />}
 
       <section aria-labelledby="slides-title" className="mt-12">
-        <div className="mb-3 flex items-center justify-between border-b border-border pb-6 leading-5.5">
+        <div className="mb-3 flex items-center justify-between border-b border-separator pb-6 leading-5.5">
           <h2 id="slides-title" className="font-semibold">
             Slides
           </h2>

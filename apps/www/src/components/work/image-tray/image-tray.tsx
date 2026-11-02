@@ -40,7 +40,7 @@ const BACKDROP_OPACITY = 0.55;
 const PAN = { activate: 8, cancel: 24, dismissBelow: 0.5 };
 
 const PRESS =
-  "transform-gpu outline-none [backface-visibility:hidden] transition-[scale,opacity] duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-97 active:opacity-78 active:duration-50 disabled:pointer-events-none aria-disabled:pointer-events-none motion-reduce:active:scale-100";
+  "transform-gpu outline-none [backface-visibility:hidden] transition-[scale,opacity] duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] focus-visible:ring-2 focus-visible:ring-ring active:scale-97 active:opacity-78 active:duration-50 disabled:pointer-events-none aria-disabled:pointer-events-none motion-reduce:active:scale-100";
 
 const SHADOW = "text-shadow-[0_1px_3px_#000]";
 
