@@ -17,7 +17,7 @@ export function ProjectList() {
               href={project.links[0].href}
               target="_blank"
               rel="noreferrer"
-              className="group/project flex items-center gap-3 rounded-xl py-2 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="group/project flex items-start gap-3 rounded-xl py-2 outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <div
                 aria-hidden="true"
