@@ -109,6 +109,9 @@ function GlassStack<T extends { id: string }>({
   const [sweeping, setSweeping] = useState(false);
   const [parting, setParting] = useState<"clear" | "close" | null>(null);
   const [span, setSpan] = useState(WIDTH);
+  // Safari draws SVG filters on the CPU, so there the gooey swipe layer can't keep up with a drag:
+  // the card keeps its own glass and Clear is a plain glass pill instead.
+  const [plain, setPlain] = useState(false);
   if (!active && parting) setParting(null);
 
   if (known.length !== items.length || known.some((item, index) => item.id !== items[index]?.id)) {
@@ -156,6 +159,8 @@ function GlassStack<T extends { id: string }>({
   }, [order, leaving]);
 
   useLayoutEffect(() => setReady(true), []);
+
+  useEffect(() => setPlain(/^((?!chrome|android).)*safari/i.test(navigator.userAgent)), []);
 
   // The swipe geometry follows the stack's real width, so a narrower stack still lines up.
   useLayoutEffect(() => {
@@ -404,6 +409,7 @@ function GlassStack<T extends { id: string }>({
             vanish={vanish}
             parting={parting}
             span={span}
+            plain={plain}
             reveal={reveal}
             y={lane.y}
             height={lane.height}
@@ -433,7 +439,7 @@ function GlassStack<T extends { id: string }>({
               tabIndex={open || front ? 0 : -1}
               data-phase={spot.phase}
               data-flat={!open && depth < Math.min(items.length, DEPTH) - 1 ? "" : undefined}
-              data-swiping={swiping ? "" : undefined}
+              data-swiping={swiping && !plain ? "" : undefined}
               onPointerDown={(event) => press(event, note.id)}
               onKeyDown={(event) => {
                 if (event.key === "Delete" || event.key === "Backspace")
@@ -493,6 +499,7 @@ function SwipeBody({
   layer,
   onClear,
   parting,
+  plain,
   reveal,
   span,
   vanish,
@@ -505,6 +512,7 @@ function SwipeBody({
   layer: number;
   onClear: () => void;
   parting: "clear" | "close" | null;
+  plain: boolean;
   span: number;
   reveal: MotionValue<number>;
   vanish: MotionValue<number>;
@@ -550,94 +558,101 @@ function SwipeBody({
       }
       className="pointer-events-none absolute inset-x-0 top-0 z-(--z) h-(--h) translate-y-(--y)"
     >
-      <div className="absolute inset-y-0 -left-full w-[calc(200%+--spacing(16))]">
-        <motion.svg
-          aria-hidden="true"
-          style={{ maskImage: trail }}
-          className="absolute inset-0 size-full overflow-visible"
-        >
-          <defs>
-            <filter id={`${id}-goo`} colorInterpolationFilters="sRGB">
-              <feGaussianBlur in="SourceGraphic" stdDeviation={GOO} result="blur" />
-              <feColorMatrix
-                in="blur"
-                values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 20 -9.5"
-                result="goo"
-              />
-              <feMerge>
-                <feMergeNode in="goo" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-            <filter
-              id={`${id}-shade`}
-              x="-10%"
-              y="-40%"
-              width="120%"
-              height="220%"
-              colorInterpolationFilters="sRGB"
-            >
-              <feGaussianBlur in="SourceGraphic" stdDeviation={GOO} result="blur" />
-              <feColorMatrix
-                in="blur"
-                values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 20 -9.5"
-                result="goo"
-              />
-              <feMerge result="shape">
-                <feMergeNode in="goo" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-              <feFlood style={{ floodColor: "var(--glass-shade)" }} result="shade-tone" />
-              <feComposite in="shade-tone" in2="shape" operator="in" result="shade-shape" />
-              <feOffset in="shade-shape" dy="1" result="shade-drop" />
-              <feGaussianBlur in="shade-drop" stdDeviation="1" result="shade-blur" />
-              <feFlood style={{ floodColor: "var(--glass-ring)" }} result="ring-tone" />
-              <feMorphology in="shape" operator="dilate" radius="1" result="ring-wide" />
-              <feComposite in="ring-tone" in2="ring-wide" operator="in" result="ring" />
-              <feFlood style={{ floodColor: "var(--glass-lift-shade)" }} result="lift-tone" />
-              <feMorphology in="shape" operator="erode" radius="8" result="lift-core" />
-              <feOffset in="lift-core" dy="10" result="lift-drop" />
-              <feComposite in="lift-tone" in2="lift-drop" operator="in" result="lift-shape" />
-              <feGaussianBlur in="lift-shape" stdDeviation="16" result="lift" />
-              <feMerge result="shadows">
-                <feMergeNode in="lift" />
-                <feMergeNode in="shade-blur" />
-                <feMergeNode in="ring" />
-              </feMerge>
-              <feComposite in="shadows" in2="shape" operator="out" />
-            </filter>
-            <mask id={`${id}-mask`} maskUnits="userSpaceOnUse">
-              <g filter={`url(#${id}-goo)`}>{shapes}</g>
-              {parting && <motion.g style={{ opacity: vanish }}>{pillShape}</motion.g>}
-            </mask>
-          </defs>
-          <g filter={`url(#${id}-shade)`}>{shapes}</g>
-          {parting && (
-            <motion.g filter={`url(#${id}-shade)`} style={{ opacity: vanish }}>
-              {pillShape}
-            </motion.g>
-          )}
-        </motion.svg>
-        <motion.div
-          aria-hidden="true"
-          style={{ maskImage: fill, maskComposite: "intersect" }}
-          className="absolute inset-0 bg-(image:--glass-fill) [backdrop-filter:var(--glass-backdrop)]"
-        >
-          <motion.span
-            style={{ x: pillX, width, clipPath: rimClip }}
-            className="absolute inset-y-0 left-0 rounded-[18px]"
+      {!plain && (
+        <div className="absolute inset-y-0 -left-full w-[calc(200%+--spacing(16))]">
+          <motion.svg
+            aria-hidden="true"
+            style={{ maskImage: trail }}
+            className="absolute inset-0 size-full overflow-visible"
           >
-            <GlassRim />
-          </motion.span>
-        </motion.div>
-      </div>
+            <defs>
+              <filter id={`${id}-goo`} colorInterpolationFilters="sRGB">
+                <feGaussianBlur in="SourceGraphic" stdDeviation={GOO} result="blur" />
+                <feColorMatrix
+                  in="blur"
+                  values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 20 -9.5"
+                  result="goo"
+                />
+                <feMerge>
+                  <feMergeNode in="goo" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <filter
+                id={`${id}-shade`}
+                x="-10%"
+                y="-40%"
+                width="120%"
+                height="220%"
+                colorInterpolationFilters="sRGB"
+              >
+                <feGaussianBlur in="SourceGraphic" stdDeviation={GOO} result="blur" />
+                <feColorMatrix
+                  in="blur"
+                  values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 20 -9.5"
+                  result="goo"
+                />
+                <feMerge result="shape">
+                  <feMergeNode in="goo" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+                <feFlood style={{ floodColor: "var(--glass-shade)" }} result="shade-tone" />
+                <feComposite in="shade-tone" in2="shape" operator="in" result="shade-shape" />
+                <feOffset in="shade-shape" dy="1" result="shade-drop" />
+                <feGaussianBlur in="shade-drop" stdDeviation="1" result="shade-blur" />
+                <feFlood style={{ floodColor: "var(--glass-ring)" }} result="ring-tone" />
+                <feMorphology in="shape" operator="dilate" radius="1" result="ring-wide" />
+                <feComposite in="ring-tone" in2="ring-wide" operator="in" result="ring" />
+                <feFlood style={{ floodColor: "var(--glass-lift-shade)" }} result="lift-tone" />
+                <feMorphology in="shape" operator="erode" radius="8" result="lift-core" />
+                <feOffset in="lift-core" dy="10" result="lift-drop" />
+                <feComposite in="lift-tone" in2="lift-drop" operator="in" result="lift-shape" />
+                <feGaussianBlur in="lift-shape" stdDeviation="16" result="lift" />
+                <feMerge result="shadows">
+                  <feMergeNode in="lift" />
+                  <feMergeNode in="shade-blur" />
+                  <feMergeNode in="ring" />
+                </feMerge>
+                <feComposite in="shadows" in2="shape" operator="out" />
+              </filter>
+              <mask id={`${id}-mask`} maskUnits="userSpaceOnUse">
+                <g filter={`url(#${id}-goo)`}>{shapes}</g>
+                {parting && <motion.g style={{ opacity: vanish }}>{pillShape}</motion.g>}
+              </mask>
+            </defs>
+            <g filter={`url(#${id}-shade)`}>{shapes}</g>
+            {parting && (
+              <motion.g filter={`url(#${id}-shade)`} style={{ opacity: vanish }}>
+                {pillShape}
+              </motion.g>
+            )}
+          </motion.svg>
+          <motion.div
+            aria-hidden="true"
+            style={{ maskImage: fill, maskComposite: "intersect" }}
+            className="absolute inset-0 bg-(image:--glass-fill) [backdrop-filter:var(--glass-backdrop)]"
+          >
+            <motion.span
+              style={{ x: pillX, width, clipPath: rimClip }}
+              className="absolute inset-y-0 left-0 rounded-[18px]"
+            >
+              <GlassRim />
+            </motion.span>
+          </motion.div>
+        </div>
+      )}
       <motion.button
         type="button"
         inert={!interactive}
         onClick={onClear}
-        style={{ x: pill, width, opacity: vanish }}
-        className="pointer-events-auto absolute inset-y-0 left-0 grid cursor-pointer place-items-center rounded-[18px] text-[13px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        style={{ x: pill, width, opacity: vanish, clipPath: plain ? rimClip : undefined }}
+        className={cn(
+          "pointer-events-auto absolute inset-y-0 left-0 grid cursor-pointer place-items-center rounded-[18px] text-[13px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+          plain &&
+            "bg-(image:--glass-fill) shadow-[var(--glass-contact),var(--glass-lift)] [backdrop-filter:var(--glass-backdrop)]",
+        )}
       >
+        {plain && <GlassRim />}
         <motion.span style={{ opacity: fade }}>{label}</motion.span>
       </motion.button>
     </div>

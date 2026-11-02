@@ -237,7 +237,7 @@ function GlassMenuPopup({
 }
 
 const ROW_CLASS =
-  "flex h-10 cursor-pointer items-center gap-2.5 rounded-(--inner) px-3 text-sm font-medium outline-none [corner-shape:squircle] data-highlighted:bg-(--glass-hover) [&>svg]:opacity-80";
+  "flex h-10 cursor-pointer items-center gap-2.5 rounded-[calc(var(--inner)*0.6)] px-3 text-sm font-medium outline-none [corner-shape:squircle] supports-[corner-shape:squircle]:rounded-(--inner) data-highlighted:bg-(--glass-hover) [&>svg]:opacity-80";
 
 function GlassMenuItem({ className, ...props }: Menu.Item.Props) {
   return <Menu.Item {...props} className={cn(ROW_CLASS, className as string)} />;
@@ -388,7 +388,7 @@ function Surface({
       }
       {...magnet.handlers}
       className={cn(
-        "magnetic group absolute top-[calc(var(--cy)-var(--h)/2)] left-[calc(var(--cx)-var(--w)/2)] isolate h-(--h) w-(--w) touch-none overflow-hidden rounded-(--r) bg-[linear-gradient(color-mix(in_srgb,var(--glass-sheen)_calc(100%_-_var(--depth)_*_50%),transparent),rgb(255_255_255/0)_calc(100%_+_var(--depth)_*_6.67%)),linear-gradient(var(--glass-color),var(--glass-color))] font-[family-name:system-ui] text-(--glass-ink) subpixel-antialiased shadow-[var(--glass-contact),var(--glass-lift),0_calc(var(--depth)_*_7px)_calc(var(--depth)_*_8px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),0_calc(var(--depth)_*_11px)_calc(var(--depth)_*_28px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),inset_0_0_0_0.5px_rgb(255_255_255/calc(var(--depth)_*_0.16)),inset_0_0_5.5px_rgb(255_255_255/calc(var(--depth)_*_0.1)),inset_0_0.5px_0_rgb(255_255_255/calc(var(--depth)_*_0.3))] [--depth:clamp(0,var(--lift),1)] [backdrop-filter:var(--glass-backdrop)] select-none [corner-shape:superellipse(var(--corner))]",
+        "magnetic group absolute top-[calc(var(--cy)-var(--h)/2)] left-[calc(var(--cx)-var(--w)/2)] isolate h-(--h) w-(--w) touch-none overflow-hidden rounded-[calc(var(--r)*(1.4_-_0.4*var(--corner)))] supports-[corner-shape:squircle]:rounded-(--r) bg-[linear-gradient(color-mix(in_srgb,var(--glass-sheen)_calc(100%_-_var(--depth)_*_50%),transparent),rgb(255_255_255/0)_calc(100%_+_var(--depth)_*_6.67%)),linear-gradient(var(--glass-color),var(--glass-color))] font-[family-name:system-ui] text-(--glass-ink) subpixel-antialiased shadow-[var(--glass-contact),var(--glass-lift),0_calc(var(--depth)_*_7px)_calc(var(--depth)_*_8px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),0_calc(var(--depth)_*_11px)_calc(var(--depth)_*_28px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),inset_0_0_0_0.5px_rgb(255_255_255/calc(var(--depth)_*_0.16)),inset_0_0_5.5px_rgb(255_255_255/calc(var(--depth)_*_0.1)),inset_0_0.5px_0_rgb(255_255_255/calc(var(--depth)_*_0.3))] [--depth:clamp(0,var(--lift),1)] [backdrop-filter:var(--glass-backdrop)] select-none [corner-shape:superellipse(var(--corner))]",
         !placed && "opacity-0",
         placed &&
           !reduceMotion &&

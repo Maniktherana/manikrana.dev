@@ -60,16 +60,19 @@ function Home() {
               <p className="text-muted-foreground font-[450] leading-5.5">Engineer at TurboML</p>
             </div>
           </header>
-          <p className="mb-3 text-pretty text-muted-foreground last:mb-0">
+          <p className="mb-3 text-muted-foreground last:mb-0">
             I'm an engineer at{" "}
-            <Link href="https://turboml.com/" target="_blank" rel="noreferrer">
-              <TurbomlMark />
-              TurboML
-            </Link>
-            . I build ambitious software end to end, from the systems that make it fast to the
+            <span className="whitespace-nowrap">
+              <Link href="https://turboml.com/" target="_blank" rel="noreferrer">
+                <TurbomlMark />
+                TurboML
+              </Link>
+              .
+            </span>{" "}
+            I build ambitious software end to end, from the systems that make it fast to the
             interfaces that make it feel good.
           </p>
-          <p className="mb-3 text-pretty text-muted-foreground last:mb-0">
+          <p className="mb-3 text-muted-foreground last:mb-0">
             Previously, I worked on{" "}
             <Link
               href="https://github.com/prometheus/prometheus/issues/14217"
@@ -80,41 +83,54 @@ function Home() {
               Prometheus
             </Link>{" "}
             through{" "}
-            <Link
-              href="https://summerofcode.withgoogle.com/archive/2024/organizations/cncf/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <GsocMark />
-              GSoC
-            </Link>
-            , where I worked on its OpenMetrics parser and cut memory use by up to{" "}
-            <Link
-              href="https://github.com/prometheus/prometheus/pull/15097#issuecomment-2404777959"
-              target="_blank"
-              rel="noreferrer"
-              className="tabular-nums"
-            >
-              10x
-            </Link>
-            .
+            <span className="whitespace-nowrap">
+              <Link
+                href="https://summerofcode.withgoogle.com/archive/2024/organizations/cncf/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <GsocMark />
+                GSoC
+              </Link>
+              ,
+            </span>{" "}
+            where I worked on its OpenMetrics parser and cut memory use by up to{" "}
+            <span className="whitespace-nowrap">
+              <Link
+                href="https://github.com/prometheus/prometheus/pull/15097#issuecomment-2404777959"
+                target="_blank"
+                rel="noreferrer"
+                className="tabular-nums"
+              >
+                10x
+              </Link>
+              .
+            </span>
           </p>
-          <p className="mb-3 text-pretty text-muted-foreground last:mb-0">
+          <p className="mb-3 text-muted-foreground last:mb-0">
             You can reach me on{" "}
-            <Link href="https://x.com/ManikMkr" target="_blank" rel="noreferrer">
-              <XIcon className="size-3.5 self-center" />x
-            </Link>
-            , by{" "}
-            <Link href="mailto:hello@manikrana.dev">
-              <MailIcon className="self-center" />
-              email
-            </Link>
-            , or on{" "}
-            <Link href="https://github.com/Maniktherana" target="_blank" rel="noreferrer">
-              <GithubIcon className="self-center" />
-              GitHub
-            </Link>
-            .
+            <span className="whitespace-nowrap">
+              <Link href="https://x.com/ManikMkr" target="_blank" rel="noreferrer">
+                <XIcon className="size-3.5 self-center" />x
+              </Link>
+              ,
+            </span>{" "}
+            by{" "}
+            <span className="whitespace-nowrap">
+              <Link href="mailto:hello@manikrana.dev">
+                <MailIcon className="self-center" />
+                email
+              </Link>
+              ,
+            </span>{" "}
+            or on{" "}
+            <span className="whitespace-nowrap">
+              <Link href="https://github.com/Maniktherana" target="_blank" rel="noreferrer">
+                <GithubIcon className="self-center" />
+                GitHub
+              </Link>
+              .
+            </span>
           </p>
         </div>
       </section>
