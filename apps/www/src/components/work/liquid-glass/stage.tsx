@@ -276,7 +276,14 @@ export function Stage() {
           {/* Auto margins center the column while it fits and pin it to the top once it doesn't. */}
           <div className="flex w-full flex-col items-center gap-5 *:shrink-0 *:first:mt-auto *:last:mb-auto @min-[1184px]:hidden [@container(max-height:599px)]:gap-3">
             <div className="[@container(max-height:599px)]:hidden">{controlCenter}</div>
-            <div className="hidden [@container(max-height:599px)]:block">{brightnessSlider}</div>
+            <div className="hidden items-center gap-4 [@container(max-height:599px)]:flex">
+              {brightnessSlider}
+              <GlassSwitch
+                aria-label="Share status"
+                checked={sharing}
+                onCheckedChange={setSharing}
+              />
+            </div>
             <div className="flex items-center gap-4">
               {focusPicker}
               {more}
