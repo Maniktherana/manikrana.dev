@@ -135,6 +135,17 @@ export function Stage() {
   const root = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLDivElement>(null);
 
+  const brightnessSlider = (
+    <GlassSlider
+      aria-label="Display brightness"
+      value={brightness}
+      onValueChange={setBrightness}
+      start={<SunBoldIcon className="size-3.5" />}
+      end={<SunBoldIcon className="size-4.5" />}
+      accent="#0a84ff"
+      className="w-48 [--glass-ink:var(--backdrop-ink)] [--glass-track:color-mix(in_oklab,var(--backdrop-ink)_20%,transparent)]"
+    />
+  );
   const controlCenter = (
     <div className="flex flex-col gap-3">
       <div className="flex gap-3">
@@ -170,15 +181,7 @@ export function Stage() {
           )}
         />
       </div>
-      <GlassSlider
-        aria-label="Display brightness"
-        value={brightness}
-        onValueChange={setBrightness}
-        start={<SunBoldIcon className="size-3.5" />}
-        end={<SunBoldIcon className="size-4.5" />}
-        accent="#0a84ff"
-        className="w-48 [--glass-ink:var(--backdrop-ink)] [--glass-track:color-mix(in_oklab,var(--backdrop-ink)_20%,transparent)]"
-      />
+      {brightnessSlider}
     </div>
   );
   const nowPlaying = (
@@ -270,8 +273,10 @@ export function Stage() {
       />
       <div ref={canvas} className="absolute inset-0">
         <div className="flex size-full justify-center gap-4 p-4 font-[family-name:system-ui]">
-          <div className="flex w-full flex-col items-center justify-center gap-5 *:shrink-0 @min-[1184px]:hidden [@container(max-height:599px)]:gap-3">
-            {controlCenter}
+          {/* Auto margins center the column while it fits and pin it to the top once it doesn't. */}
+          <div className="flex w-full flex-col items-center gap-5 *:shrink-0 *:first:mt-auto *:last:mb-auto @min-[1184px]:hidden [@container(max-height:599px)]:gap-3">
+            <div className="[@container(max-height:599px)]:hidden">{controlCenter}</div>
+            <div className="hidden [@container(max-height:599px)]:block">{brightnessSlider}</div>
             <div className="flex items-center gap-4">
               {focusPicker}
               {more}

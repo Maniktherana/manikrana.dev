@@ -9,7 +9,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@manikrana/ui/lib/utils";
-import { GlassGoo, GlassLight } from "./glass";
+import { GlassGoo, GlassLight, GlassRim } from "./glass";
 import { Crossfade } from "./glass-motion";
 import { useMagnetic } from "./magnetic";
 
@@ -180,6 +180,8 @@ function Bubble({
           onClick={(event) => onClick(event.detail === 0)}
           className="magnetic group relative isolate grid size-full cursor-pointer touch-none place-items-center rounded-full text-(--glass-ink) select-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
         >
+          {/* The same rim as every glass button; the goo filter only draws the fill and shadow. */}
+          <GlassRim />
           <GlassLight />
           <span className="col-start-1 row-start-1 grid">
             <Crossfade value={label} shrink>

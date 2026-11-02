@@ -110,29 +110,6 @@ function GlassGoo({
         <feMergeNode in="sheen" />
       </feMerge>
       <feComposite in="tone" in2="shape" operator="in" result="fill" />
-      <feGaussianBlur in="shape" stdDeviation="3.5" result="soft" />
-      <feComposite in="shape" in2="soft" operator="out" result="rim" />
-      <feColorMatrix
-        in="rim"
-        values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.14 0"
-        result="glow"
-      />
-      <feOffset in="shape" dy="1.4" result="lower" />
-      <feComposite in="shape" in2="lower" operator="out" result="crest" />
-      <feGaussianBlur in="crest" stdDeviation="0.7" result="soft-crest" />
-      <feColorMatrix
-        in="soft-crest"
-        values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.18 0"
-        result="edge"
-      />
-      <feOffset in="shape" dy="-1" result="higher" />
-      <feComposite in="shape" in2="higher" operator="out" result="trough" />
-      <feGaussianBlur in="trough" stdDeviation="0.75" result="soft-trough" />
-      <feColorMatrix
-        in="soft-trough"
-        values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.2 0"
-        result="base"
-      />
       <feColorMatrix
         in="shape"
         values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.2 0"
@@ -144,9 +121,6 @@ function GlassGoo({
       <feMerge>
         <feMergeNode in="shadow" />
         <feMergeNode in="fill" />
-        <feMergeNode in="glow" />
-        <feMergeNode in="edge" />
-        <feMergeNode in="base" />
       </feMerge>
     </filter>
   );

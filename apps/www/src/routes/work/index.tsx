@@ -27,8 +27,7 @@ function WorkPage() {
           id="selected-work"
           className="mb-6 flex scroll-mt-16 items-baseline gap-2 border-b border-separator pb-6 text-lg leading-tight font-semibold"
         >
-          Lab{" "}
-          <span className="text-base font-normal text-muted-foreground">{work.length}</span>
+          Lab <span className="text-base font-normal text-muted-foreground">{work.length}</span>
         </h2>
       </div>
       <WorkGrid list="work" />

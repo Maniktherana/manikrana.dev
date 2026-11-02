@@ -107,10 +107,7 @@ function WorkPage() {
 
       <div
         data-slot="stage"
-        className={cn(
-          "@container-size grid place-items-center sm:h-[clamp(27.5rem,64svh,42.5rem)]",
-          item.stage === "tall" ? "h-[clamp(38rem,80svh,44rem)]" : "h-[clamp(25rem,54svh,30rem)]",
-        )}
+        className="@container-size grid h-[clamp(25rem,54svh,30rem)] place-items-center sm:h-[clamp(27.5rem,64svh,42.5rem)]"
       >
         <div
           data-morph

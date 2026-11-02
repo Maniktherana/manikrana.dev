@@ -14,7 +14,6 @@ export type WorkItem = {
   included?: string;
   notIncluded?: string;
   notes?: readonly string[];
-  stage?: "tall";
 };
 
 export const SUMMARY_LINK = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -210,7 +209,6 @@ export const work = [
     slug: "liquid-glass",
     title: "Liquid glass",
     kind: "component",
-    stage: "tall",
     summary: "Poor man's liquid glass",
     tile: "square",
     uses: ["motion", "Base UI", "SVG filters"],
