@@ -21,7 +21,7 @@ export function ProjectList() {
             >
               <div
                 aria-hidden="true"
-                className="h-12 w-10 shrink-0 rounded-lg bg-plot p-1 shadow-canvas"
+                className="h-12 w-12 shrink-0 rounded-lg bg-plot p-1 shadow-canvas"
               >
                 <Preview />
               </div>

@@ -25,7 +25,7 @@ function WorkPage() {
         <h1 className="sr-only">Work</h1>
         <h2
           id="selected-work"
-          className="mb-6 flex scroll-mt-16 items-baseline gap-2 border-b border-separator pb-6 text-lg leading-tight font-semibold"
+          className="flex scroll-mt-16 items-baseline gap-2 mb-6 text-lg leading-tight font-semibold"
         >
           Lab <span className="text-base font-normal text-muted-foreground">{work.length}</span>
         </h2>

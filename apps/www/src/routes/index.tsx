@@ -141,7 +141,7 @@ function Home() {
       >
         <h2
           id="projects-title"
-          className="mb-3 border-b border-border pb-6 text-lg leading-tight font-semibold"
+          className="mb-6 text-lg leading-tight font-semibold"
         >
           Projects
         </h2>
@@ -152,7 +152,7 @@ function Home() {
         <div className="mx-auto w-[calc(100%-40px)] max-w-reading">
           <h2
             id="work-title"
-            className="mb-6 border-b border-border pb-6 text-lg leading-tight font-semibold"
+            className="mb-6 text-lg leading-tight font-semibold"
           >
             <RouterLink
               to="/work"
@@ -178,7 +178,7 @@ function Home() {
       >
         <h2
           id="library-title"
-          className="mb-3 border-b border-border pb-6 text-lg leading-tight font-semibold"
+          className="mb-6 text-lg leading-tight font-semibold"
         >
           Library
         </h2>
