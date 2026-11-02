@@ -35,7 +35,7 @@ export const work = [
   {
     slug: "agentsims",
     title: "Agentsims",
-    tagline: "Mobile tooling for developers and agents",
+    tagline: "Mobile tooling for devs and agents",
     kind: "project",
     summary:
       "Mobile tooling for developers and agents, with an API and CLI for iOS and Android devices.",
