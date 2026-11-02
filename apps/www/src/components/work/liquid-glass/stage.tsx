@@ -270,7 +270,7 @@ export function Stage() {
       />
       <div ref={canvas} className="absolute inset-0">
         <div className="flex size-full justify-center gap-4 p-4 font-[family-name:system-ui]">
-          <div className="flex w-full flex-col items-center justify-center gap-5 @min-[1184px]:hidden [@container(max-height:599px)]:gap-3">
+          <div className="flex w-full flex-col items-center justify-center gap-5 *:shrink-0 @min-[1184px]:hidden [@container(max-height:599px)]:gap-3">
             {controlCenter}
             <div className="flex items-center gap-4">
               {focusPicker}
@@ -278,7 +278,8 @@ export function Stage() {
             </div>
             <UpdateToast title="Update available" />
             {appearance}
-            <div className="h-60 [@container(max-height:599px)]:h-50">
+            {/* Opening the stack overflows this slot instead of growing it and moving the rest. */}
+            <div className="h-60 min-h-0 [@container(max-height:599px)]:h-50">
               <Notifications className="w-74" />
             </div>
           </div>

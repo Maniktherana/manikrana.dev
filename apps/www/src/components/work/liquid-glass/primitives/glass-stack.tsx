@@ -64,8 +64,8 @@ function clamp(value: number) {
 }
 
 // Fades whatever passes half a card width left of the lane, gone by three quarters.
-function exitMask(lane: number) {
-  return `linear-gradient(to right, transparent ${lane - WIDTH * 0.75}px, black ${lane - WIDTH * 0.5}px)`;
+function exitMask(lane: number, span: number) {
+  return `linear-gradient(to right, transparent ${lane - span * 0.75}px, black ${lane - span * 0.5}px)`;
 }
 
 function wait(name: string) {
@@ -108,6 +108,7 @@ function GlassStack<T extends { id: string }>({
   const [shown, setShown] = useState(false);
   const [sweeping, setSweeping] = useState(false);
   const [parting, setParting] = useState<"clear" | "close" | null>(null);
+  const [span, setSpan] = useState(WIDTH);
   if (!active && parting) setParting(null);
 
   if (known.length !== items.length || known.some((item, index) => item.id !== items[index]?.id)) {
@@ -155,6 +156,17 @@ function GlassStack<T extends { id: string }>({
   }, [order, leaving]);
 
   useLayoutEffect(() => setReady(true), []);
+
+  // The swipe geometry follows the stack's real width, so a narrower stack still lines up.
+  useLayoutEffect(() => {
+    const node = stack.current;
+    if (!node) return;
+    const measure = () => setSpan(node.offsetWidth);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setAnimated(true));
@@ -223,10 +235,10 @@ function GlassStack<T extends { id: string }>({
   ];
   const cardMask = useTransform(() => {
     if (!active) return "none";
-    return exitMask(-offset(active.id ?? STACK).get());
+    return exitMask(-offset(active.id ?? STACK).get(), span);
   });
 
-  const full = () => (stack.current?.offsetWidth ?? WIDTH) + GAP;
+  const full = () => span + GAP;
 
   function clear(key: string | null) {
     const leavingIds = key === null ? items.map((note) => note.id) : [key];
@@ -391,6 +403,7 @@ function GlassStack<T extends { id: string }>({
             card={offset(active.id ?? STACK)}
             vanish={vanish}
             parting={parting}
+            span={span}
             reveal={reveal}
             y={lane.y}
             height={lane.height}
@@ -481,6 +494,7 @@ function SwipeBody({
   onClear,
   parting,
   reveal,
+  span,
   vanish,
   y,
 }: {
@@ -491,25 +505,26 @@ function SwipeBody({
   layer: number;
   onClear: () => void;
   parting: "clear" | "close" | null;
+  span: number;
   reveal: MotionValue<number>;
   vanish: MotionValue<number>;
   y: number;
 }) {
   const id = useId().replace(/[^\w-]/g, "");
   const width = useTransform(reveal, (value) => Math.max(PILL, -value - GAP));
-  const pill = useTransform(width, (wide) => WIDTH - wide);
-  const cardX = useTransform(card, (value) => value + WIDTH);
-  const pillX = useTransform(pill, (value) => value + WIDTH);
+  const pill = useTransform(width, (wide) => span - wide);
+  const cardX = useTransform(card, (value) => value + span);
+  const pillX = useTransform(pill, (value) => value + span);
   // Clear keeps its own rim, cut where the card still covers it so the joined edge stays one surface.
   const covered = useTransform([card, pill], ([value, left]: number[]) =>
-    Math.max(0, value! + WIDTH + GAP - left!),
+    Math.max(0, value! + span + GAP - left!),
   );
   const rimClip = useMotionTemplate`inset(0 0 0 ${covered}px)`;
-  const trail = exitMask(WIDTH);
+  const trail = exitMask(span, span);
   const fill = useMotionTemplate`url(#${id}-mask), ${trail}`;
   const fade = useTransform(reveal, (value) => clamp((-value - 24) / (PILL - 24)));
   const cardShape = (
-    <motion.rect x={cardX} y={0} width={WIDTH} height={height} rx={RADIUS} fill="white" />
+    <motion.rect x={cardX} y={0} width={span} height={height} rx={RADIUS} fill="white" />
   );
   const pillShape = (
     <motion.rect x={pillX} y={0} width={width} height={height} rx={RADIUS} fill="white" />
@@ -535,7 +550,7 @@ function SwipeBody({
       }
       className="pointer-events-none absolute inset-x-0 top-0 z-(--z) h-(--h) translate-y-(--y)"
     >
-      <div className="absolute inset-y-0 -left-full w-[calc(300%+--spacing(16))]">
+      <div className="absolute inset-y-0 -left-full w-[calc(200%+--spacing(16))]">
         <motion.svg
           aria-hidden="true"
           style={{ maskImage: trail }}

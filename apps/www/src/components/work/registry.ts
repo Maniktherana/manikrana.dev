@@ -353,7 +353,7 @@ export const featured = [
   "voice-edge",
   "citation-preview",
   "thinking-orb",
-  "message-composer",
+  "liquid-glass",
 ].map((slug) => work.find((item) => item.slug === slug)!);
 
 export type WorkList = "home" | "work";
