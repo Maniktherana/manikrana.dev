@@ -12,7 +12,8 @@ import {
 } from "react";
 import { Menu } from "@base-ui/react/menu";
 import { cn } from "@manikrana/ui/lib/utils";
-import { GlassLight } from "./glass";
+import { cssTime } from "./css-time";
+import { GlassLight, GlassRim } from "./glass";
 import { GlassButton } from "./glass-button";
 import { Crossfade } from "./glass-motion";
 import { useMagnetic, useReducedMotion } from "./magnetic";
@@ -121,9 +122,6 @@ function GlassMenu({
 function GlassMenuTrigger({ children, className, value, ...props }: GlassMenuTriggerProps) {
   const menu = useMenu();
   const { covered, natural, open, reduceMotion, setOpen, trigger, triggerRef } = menu;
-  const hidden = useRef(covered);
-  hidden.current = covered;
-
   trigger.current = children;
 
   useLayoutEffect(() => {
@@ -134,11 +132,12 @@ function GlassMenuTrigger({ children, className, value, ...props }: GlassMenuTri
     const observer = new ResizeObserver(() => {
       if (node.offsetWidth === width) return;
       width = node.offsetWidth;
-      if (reduceMotion || hidden.current) return;
-      const style = getComputedStyle(button);
+      // Springs even while the menu covers it: the menu is anchored to the trigger, so a snap
+      // here would jump the closing menu sideways.
+      if (reduceMotion) return;
       button.animate([{ width: `${button.offsetWidth}px` }, { width: `${width}px` }], {
-        duration: parseFloat(style.getPropertyValue("--spring-resize-time")),
-        easing: style.getPropertyValue("--spring-resize"),
+        duration: cssTime(button, "--spring-resize-time"),
+        easing: getComputedStyle(button).getPropertyValue("--spring-resize"),
       });
     });
     observer.observe(node);
@@ -203,10 +202,12 @@ function GlassMenuPopup({
 
   return (
     <Menu.Portal container={container}>
+      {/* The surface morphs out of the trigger on `side`, so a flipped popup would land elsewhere. */}
       <Menu.Positioner
         side={side}
         align={align}
         sideOffset={-TALL}
+        collisionAvoidance={{ side: "none" }}
         collisionPadding={8}
         className="z-50 outline-none"
       >
@@ -343,10 +344,10 @@ function Surface({
   }, [anchor, magnet.ref, side]);
 
   useEffect(() => {
-    if (!placed || reduceMotion) return;
+    if (!placed || open || reduceMotion) return;
     flash.current?.animate(
-      { opacity: [0, open ? 0.6 : 0.45, 0], offset: [0, 0.3, 1] },
-      { duration: open ? 350 : 250, easing: "ease-out" },
+      { opacity: [0, 0.45, 0], offset: [0, 0.3, 1] },
+      { duration: 250, easing: "ease-out" },
     );
   }, [placed, open, reduceMotion]);
 
@@ -387,7 +388,7 @@ function Surface({
       }
       {...magnet.handlers}
       className={cn(
-        "magnetic group absolute top-[calc(var(--cy)-var(--h)/2)] left-[calc(var(--cx)-var(--w)/2)] isolate h-(--h) w-(--w) touch-none overflow-hidden rounded-(--r) bg-[linear-gradient(rgb(255_255_255/calc(0.08_-_var(--depth)_*_0.04)),rgb(255_255_255/0)_calc(100%_+_var(--depth)_*_6.67%)),linear-gradient(var(--glass-color),var(--glass-color))] font-[family-name:system-ui] text-(--glass-ink) subpixel-antialiased shadow-[var(--glass-contact),var(--glass-lift),0_calc(var(--depth)_*_7px)_calc(var(--depth)_*_8px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),0_calc(var(--depth)_*_11px)_calc(var(--depth)_*_28px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),inset_0_0_0_0.5px_rgb(255_255_255/calc(var(--depth)_*_0.16)),inset_0_0_5.5px_rgb(255_255_255/calc(0.2_-_var(--depth)_*_0.1)),inset_0_calc(1.4px_-_var(--depth)_*_0.9px)_calc(1.4px_-_var(--depth)_*_1.4px)_rgb(255_255_255/calc(0.14_+_var(--depth)_*_0.16))] [--depth:clamp(0,var(--lift),1)] [backdrop-filter:var(--glass-backdrop)] select-none [corner-shape:superellipse(var(--corner))]",
+        "magnetic group absolute top-[calc(var(--cy)-var(--h)/2)] left-[calc(var(--cx)-var(--w)/2)] isolate h-(--h) w-(--w) touch-none overflow-hidden rounded-(--r) bg-[linear-gradient(color-mix(in_srgb,var(--glass-sheen)_calc(100%_-_var(--depth)_*_50%),transparent),rgb(255_255_255/0)_calc(100%_+_var(--depth)_*_6.67%)),linear-gradient(var(--glass-color),var(--glass-color))] font-[family-name:system-ui] text-(--glass-ink) subpixel-antialiased shadow-[var(--glass-contact),var(--glass-lift),0_calc(var(--depth)_*_7px)_calc(var(--depth)_*_8px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),0_calc(var(--depth)_*_11px)_calc(var(--depth)_*_28px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),inset_0_0_0_0.5px_rgb(255_255_255/calc(var(--depth)_*_0.16)),inset_0_0_5.5px_rgb(255_255_255/calc(var(--depth)_*_0.1)),inset_0_0.5px_0_rgb(255_255_255/calc(var(--depth)_*_0.3))] [--depth:clamp(0,var(--lift),1)] [backdrop-filter:var(--glass-backdrop)] select-none [corner-shape:superellipse(var(--corner))]",
         !placed && "opacity-0",
         placed &&
           !reduceMotion &&
@@ -396,10 +397,17 @@ function Surface({
             : "[transition:--cx_var(--spring-drift-close-time)_var(--spring-drift-close),--cy_var(--spring-rise-close-time)_var(--spring-rise-close),--w_var(--spring-grow-close-time)_var(--spring-grow-close),--h_var(--spring-grow-close-time)_var(--spring-grow-close),--r_var(--spring-grow-close-time)_var(--spring-grow-close),--corner_var(--spring-grow-close-time)_var(--spring-grow-close),--lift_var(--spring-grow-close-time)_var(--spring-grow-close)]"),
       )}
     >
+      {/* Closed, the surface wears the trigger's own rim so handing back to the button doesn't pop. */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 rounded-[inherit] shadow-[inset_0_1px_1.5px_rgb(255_255_255/0.22),inset_0_-1px_1.5px_rgb(255_255_255/0.12)] [corner-shape:inherit] mask-x-from-70% mask-x-to-100%"
+        className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-(--depth) shadow-[inset_0_1px_1.5px_rgb(255_255_255/0.22),inset_0_-1px_1.5px_rgb(255_255_255/0.12)] [corner-shape:inherit] mask-x-from-70% mask-x-to-100%"
       />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-[calc(1-var(--depth))]"
+      >
+        <GlassRim />
+      </span>
       <GlassLight />
       {!reduceMotion && (
         <span
@@ -411,8 +419,8 @@ function Surface({
       <span
         aria-hidden="true"
         className={cn(
-          "pointer-events-none absolute inset-0 grid place-items-center whitespace-nowrap transition-[opacity,filter] duration-250 ease-out",
-          placed && open && "opacity-0 blur-[5px]",
+          "pointer-events-none absolute inset-0 grid place-items-center text-[13px] leading-4 whitespace-nowrap transition-[opacity,filter] duration-250 ease-out",
+          placed && open && "opacity-0 blur-[10px]",
         )}
       >
         <span>{trigger}</span>
@@ -422,7 +430,7 @@ function Surface({
         className={cn(
           "absolute top-1/2 left-1/2 w-50 -translate-1/2 p-2.5 transition-[opacity,filter,scale] duration-250 ease-[ease-out,ease-out,ease-in-out]",
           !placed && "opacity-0 blur-[5px] motion-safe:scale-140",
-          placed && !open && "opacity-0 blur-[5px] motion-safe:scale-115",
+          placed && !open && "opacity-0 blur-[12px] motion-safe:scale-115",
         )}
       >
         <div ref={list}>{children}</div>

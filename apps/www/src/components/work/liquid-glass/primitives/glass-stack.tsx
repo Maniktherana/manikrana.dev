@@ -13,12 +13,14 @@ import {
   animate,
   motion,
   motionValue,
+  useMotionTemplate,
   useMotionValue,
   useTransform,
   type MotionStyle,
   type MotionValue,
 } from "motion/react";
 import { cn } from "@manikrana/ui/lib/utils";
+import { cssTime } from "./css-time";
 import { GlassRim } from "./glass";
 import { GlassButton } from "./glass-button";
 import { useReducedMotion } from "./magnetic";
@@ -54,13 +56,20 @@ const GOO = 3.5;
 const STACK = "stack";
 const FADE = [1, 0.6, 0.36];
 const SNAP = { type: "spring", duration: 0.45, bounce: 0 } as const;
+const VANISH = { duration: 0.12, ease: [0, 0, 0.58, 1] } as const;
+const AWAY = { type: "spring", visualDuration: 0.4, bounce: 0 } as const;
 
 function clamp(value: number) {
   return Math.min(1, Math.max(0, value));
 }
 
+// Fades whatever passes half a card width left of the lane, gone by three quarters.
+function exitMask(lane: number) {
+  return `linear-gradient(to right, transparent ${lane - WIDTH * 0.75}px, black ${lane - WIDTH * 0.5}px)`;
+}
+
 function wait(name: string) {
-  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)) || 250;
+  return cssTime(document.documentElement, name) || 250;
 }
 
 function GlassStack<T extends { id: string }>({
@@ -82,7 +91,7 @@ function GlassStack<T extends { id: string }>({
   const contents = useRef(new Map<string, HTMLSpanElement>());
   const stack = useRef<HTMLDivElement>(null);
   const reveal = useMotionValue(0);
-  const sweepX = useMotionValue(0);
+  const vanish = useMotionValue(1);
   const [localOpen, setLocalOpen] = useState(defaultOpen);
   const open = openProp ?? localOpen;
   const items = list.slice(0, DEPTH);
@@ -98,6 +107,8 @@ function GlassStack<T extends { id: string }>({
   const [active, setActive] = useState<{ id: string | null } | null>(null);
   const [shown, setShown] = useState(false);
   const [sweeping, setSweeping] = useState(false);
+  const [parting, setParting] = useState<"clear" | "close" | null>(null);
+  if (!active && parting) setParting(null);
 
   if (known.length !== items.length || known.some((item, index) => item.id !== items[index]?.id)) {
     const ids = new Set(items.map((item) => item.id));
@@ -170,7 +181,6 @@ function GlassStack<T extends { id: string }>({
     }
     offset(STACK).set(0);
     reveal.set(0);
-    sweepX.set(0);
     onDismiss?.(clearing);
     setClearing([]);
     setSweeping(false);
@@ -181,7 +191,7 @@ function GlassStack<T extends { id: string }>({
 
   useEffect(() => {
     if (clearing.length === 0) return;
-    const id = window.setTimeout(finish, wait("--stack-close") + 40);
+    const id = window.setTimeout(finish, AWAY.visualDuration * 1000);
     return () => window.clearTimeout(id);
   }, [clearing]);
 
@@ -204,21 +214,37 @@ function GlassStack<T extends { id: string }>({
       });
   }
 
+  // A collapsed stack swipes as one: the cards under the top one are scaled down, so their
+  // offset is divided by that scale to cover the same distance.
+  const follow = [
+    offset(STACK),
+    useTransform(offset(STACK), (value) => value / (1 - 0.06)),
+    useTransform(offset(STACK), (value) => value / (1 - 0.12)),
+  ];
+  const cardMask = useTransform(() => {
+    if (!active) return "none";
+    return exitMask(-offset(active.id ?? STACK).get());
+  });
+
   const full = () => (stack.current?.offsetWidth ?? WIDTH) + GAP;
 
   function clear(key: string | null) {
     const leavingIds = key === null ? items.map((note) => note.id) : [key];
-    const away = { duration: wait("--stack-close") / 1000, ease: [0.22, 1, 0.36, 1] } as const;
-    animate(offset(key ?? STACK), -(full() + 40), away);
-    if (active) {
-      setSweeping(true);
-      animate(sweepX, -(full() + 40), away);
-    }
+    const value = offset(key ?? STACK);
+    // The card carries the swipe's speed out of the lane while Clear fades where it stands.
+    animate(value, -2 * full(), { ...AWAY, velocity: value.getVelocity() });
+    if (active) setSweeping(true);
+    setParting("clear");
+    animate(vanish, 0, VANISH);
     setClearing((current) => [...current, ...leavingIds]);
   }
 
   function close() {
-    if (active) settle(active.id, 0);
+    if (active) {
+      setParting("close");
+      animate(vanish, 0, VANISH);
+      settle(active.id, 0);
+    }
     setOpen(false);
   }
 
@@ -244,13 +270,18 @@ function GlassStack<T extends { id: string }>({
     const follow = (next: globalThis.PointerEvent) => {
       const dx = next.clientX - start;
       if (!moved.current && Math.abs(dx) < SLOP) return;
-      if (!moved.current) setActive({ id: key });
+      if (!moved.current) {
+        vanish.set(1);
+        setParting(null);
+        setActive({ id: key });
+      }
       moved.current = true;
       const reach = from + dx;
       if (opened && reach <= -edge) {
         stop();
         value.set(-edge);
         reveal.set(-edge);
+        setSweeping(true);
         return clear(key);
       }
       const x =
@@ -294,11 +325,12 @@ function GlassStack<T extends { id: string }>({
       };
     }
     if (clearing.includes(note.id)) {
+      const swiped = active && (active.id === note.id || (active.id === null && depth === 0));
       return {
         y,
         scale: open ? 1 : 1 - 0.06 * depth,
-        fade: 0,
-        blur: 2,
+        fade: swiped ? 1 : 0,
+        blur: swiped ? 0 : 2,
         clip: "-16px",
         card: open || depth === 0 ? size(note.id) : top,
         phase: "clear",
@@ -350,27 +382,31 @@ function GlassStack<T extends { id: string }>({
         {collapseLabel}
       </GlassButton>
       <motion.div
-        style={{ x: offset(STACK), "--rest": `${(items.length - 1) * PEEK}px` } as MotionStyle}
-        className="relative h-(--height) touch-pan-y group-data-pending/stack:grid group-data-pending/stack:h-auto group-data-pending/stack:pb-(--rest) will-change-transform [transition:height_var(--stack-open)_var(--stack-ease)] motion-reduce:transition-none"
+        style={{ "--rest": `${(items.length - 1) * PEEK}px` } as MotionStyle}
+        className="relative h-(--height) touch-pan-y group-data-pending/stack:grid group-data-pending/stack:h-auto group-data-pending/stack:pb-(--rest) [transition:height_var(--stack-open)_var(--stack-ease)] motion-reduce:transition-none"
       >
         {lane && active && (
           <SwipeBody
             key={`${active.id ?? STACK} ${lane.height}`}
-            card={offset(active.id ?? items[0]?.id ?? STACK)}
-            stack={offset(STACK)}
-            sweep={sweepX}
+            card={offset(active.id ?? STACK)}
+            vanish={vanish}
+            parting={parting}
             reveal={reveal}
             y={lane.y}
             height={lane.height}
             layer={DEPTH - Math.max(row, 0)}
             label={clearLabel}
-            interactive={shown && !sweeping}
+            interactive={shown && !sweeping && !parting}
             onClear={() => clear(active.id)}
           />
         )}
         {cards.map(({ note, depth }) => {
           const spot = place(note, depth);
           const front = depth === 0;
+          const swiping =
+            active &&
+            parting !== "close" &&
+            (active.id === note.id || (active.id === null && front));
           return (
             <motion.button
               key={note.id}
@@ -384,9 +420,7 @@ function GlassStack<T extends { id: string }>({
               tabIndex={open || front ? 0 : -1}
               data-phase={spot.phase}
               data-flat={!open && depth < Math.min(items.length, DEPTH) - 1 ? "" : undefined}
-              data-swiping={
-                active && (active.id === note.id || (active.id === null && front)) ? "" : undefined
-              }
+              data-swiping={swiping ? "" : undefined}
               onPointerDown={(event) => press(event, note.id)}
               onKeyDown={(event) => {
                 if (event.key === "Delete" || event.key === "Backspace")
@@ -399,7 +433,7 @@ function GlassStack<T extends { id: string }>({
               }}
               style={
                 {
-                  x: offset(note.id),
+                  x: open ? offset(note.id) : (follow[depth] ?? 0),
                   "--z": DEPTH - depth,
                   "--y": `${spot.y}px`,
                   "--scale": spot.scale,
@@ -407,6 +441,7 @@ function GlassStack<T extends { id: string }>({
                   "--blur": `${spot.blur}px`,
                   "--clip": spot.clip,
                   "--card": `${spot.card}px`,
+                  maskImage: swiping ? cardMask : undefined,
                 } as MotionStyle
               }
               className={cn(
@@ -444,9 +479,9 @@ function SwipeBody({
   label,
   layer,
   onClear,
+  parting,
   reveal,
-  stack,
-  sweep,
+  vanish,
   y,
 }: {
   card: MotionValue<number>;
@@ -455,25 +490,37 @@ function SwipeBody({
   label: string;
   layer: number;
   onClear: () => void;
+  parting: "clear" | "close" | null;
   reveal: MotionValue<number>;
-  stack: MotionValue<number>;
-  sweep: MotionValue<number>;
+  vanish: MotionValue<number>;
   y: number;
 }) {
   const id = useId().replace(/[^\w-]/g, "");
   const width = useTransform(reveal, (value) => Math.max(PILL, -value - GAP));
-  const pill = useTransform(
-    [stack, sweep, width],
-    ([moved, swept, wide]: number[]) => WIDTH - wide! - moved! + swept!,
-  );
+  const pill = useTransform(width, (wide) => WIDTH - wide);
   const cardX = useTransform(card, (value) => value + WIDTH);
   const pillX = useTransform(pill, (value) => value + WIDTH);
-  const part = useTransform(reveal, (value) => clamp((-value - PILL) / GAP));
+  // Clear keeps its own rim, cut where the card still covers it so the joined edge stays one surface.
+  const covered = useTransform([card, pill], ([value, left]: number[]) =>
+    Math.max(0, value! + WIDTH + GAP - left!),
+  );
+  const rimClip = useMotionTemplate`inset(0 0 0 ${covered}px)`;
+  const trail = exitMask(WIDTH);
+  const fill = useMotionTemplate`url(#${id}-mask), ${trail}`;
   const fade = useTransform(reveal, (value) => clamp((-value - 24) / (PILL - 24)));
-  const shapes = (
+  const cardShape = (
+    <motion.rect x={cardX} y={0} width={WIDTH} height={height} rx={RADIUS} fill="white" />
+  );
+  const pillShape = (
+    <motion.rect x={pillX} y={0} width={width} height={height} rx={RADIUS} fill="white" />
+  );
+  // Once the swipe ends, Clear leaves the goo so it can fade on its own without taking the card.
+  const shapes = parting ? (
+    parting === "clear" && cardShape
+  ) : (
     <>
-      <motion.rect x={cardX} y={0} width={WIDTH} height={height} rx={RADIUS} fill="white" />
-      <motion.rect x={pillX} y={0} width={width} height={height} rx={RADIUS} fill="white" />
+      {cardShape}
+      {pillShape}
     </>
   );
 
@@ -488,8 +535,12 @@ function SwipeBody({
       }
       className="pointer-events-none absolute inset-x-0 top-0 z-(--z) h-(--h) translate-y-(--y)"
     >
-      <div className="absolute inset-y-0 -left-full w-[calc(200%+--spacing(16))]">
-        <svg aria-hidden="true" className="absolute inset-0 size-full overflow-visible">
+      <div className="absolute inset-y-0 -left-full w-[calc(300%+--spacing(16))]">
+        <motion.svg
+          aria-hidden="true"
+          style={{ maskImage: trail }}
+          className="absolute inset-0 size-full overflow-visible"
+        >
           <defs>
             <filter id={`${id}-goo`} colorInterpolationFilters="sRGB">
               <feGaussianBlur in="SourceGraphic" stdDeviation={GOO} result="blur" />
@@ -542,28 +593,34 @@ function SwipeBody({
             </filter>
             <mask id={`${id}-mask`} maskUnits="userSpaceOnUse">
               <g filter={`url(#${id}-goo)`}>{shapes}</g>
+              {parting && <motion.g style={{ opacity: vanish }}>{pillShape}</motion.g>}
             </mask>
           </defs>
           <g filter={`url(#${id}-shade)`}>{shapes}</g>
-        </svg>
-        <div
+          {parting && (
+            <motion.g filter={`url(#${id}-shade)`} style={{ opacity: vanish }}>
+              {pillShape}
+            </motion.g>
+          )}
+        </motion.svg>
+        <motion.div
           aria-hidden="true"
-          style={{ maskImage: `url(#${id}-mask)` }}
+          style={{ maskImage: fill, maskComposite: "intersect" }}
           className="absolute inset-0 bg-(image:--glass-fill) [backdrop-filter:var(--glass-backdrop)]"
         >
           <motion.span
-            style={{ x: pillX, width, opacity: part }}
+            style={{ x: pillX, width, clipPath: rimClip }}
             className="absolute inset-y-0 left-0 rounded-[18px]"
           >
             <GlassRim />
           </motion.span>
-        </div>
+        </motion.div>
       </div>
       <motion.button
         type="button"
         inert={!interactive}
         onClick={onClear}
-        style={{ x: pill, width }}
+        style={{ x: pill, width, opacity: vanish }}
         className="pointer-events-auto absolute inset-y-0 left-0 grid cursor-pointer place-items-center rounded-[18px] text-[13px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
       >
         <motion.span style={{ opacity: fade }}>{label}</motion.span>

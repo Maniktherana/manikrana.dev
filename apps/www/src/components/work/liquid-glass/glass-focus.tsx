@@ -11,6 +11,7 @@ import { Radio } from "@base-ui/react/radio";
 import { RadioGroup } from "@base-ui/react/radio-group";
 import { cn } from "@manikrana/ui/lib/utils";
 import { ChevronUpDownBoldIcon } from "@/components/icons/chevron-up-down-bold";
+import { cssTime } from "./primitives/css-time";
 import { Glass, GlassRim } from "./primitives/glass";
 
 type GlassFocusOption = {
@@ -35,10 +36,9 @@ const EDGE = 16;
 const NARROW = 600;
 
 function spring(name: string) {
-  const style = getComputedStyle(document.documentElement);
   return {
-    duration: parseFloat(style.getPropertyValue(`--spring-${name}-time`)),
-    easing: style.getPropertyValue(`--spring-${name}`),
+    duration: cssTime(document.documentElement, `--spring-${name}-time`),
+    easing: getComputedStyle(document.documentElement).getPropertyValue(`--spring-${name}`),
   };
 }
 

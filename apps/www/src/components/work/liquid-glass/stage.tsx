@@ -7,17 +7,15 @@ import { BagBoldIcon } from "@/components/icons/bag-bold";
 import { BedBoldIcon } from "@/components/icons/bed-bold";
 import { CameraBoldIcon } from "@/components/icons/camera-bold";
 import { ChevronDownBoldIcon } from "@/components/icons/chevron-down-bold";
+import { DotsHorizontalBoldIcon } from "@/components/icons/dots-horizontal-bold";
 import { DownloadBoldIcon } from "@/components/icons/download-bold";
 import { DisplayBoldIcon } from "@/components/icons/display-bold";
 import { LinkBoldIcon } from "@/components/icons/link-bold";
 import { MoonBoldIcon } from "@/components/icons/moon-bold";
-import { PauseBoldIcon } from "@/components/icons/pause-bold";
-import { PlayBoldIcon } from "@/components/icons/play-bold";
 import { RecordRingIcon } from "@/components/icons/record-ring";
 import { SelectionBoldIcon } from "@/components/icons/selection-bold";
 import { CellularBarsBoldIcon } from "@/components/icons/cellular-bars-bold";
 import { SparkleBoldIcon } from "@/components/icons/sparkle-bold";
-import { StopBoldIcon } from "@/components/icons/stop-bold";
 import { SunBoldIcon } from "@/components/icons/sun-bold";
 import { UploadBoldIcon } from "@/components/icons/upload-bold";
 import { UserBoldIcon } from "@/components/icons/user-bold";
@@ -123,7 +121,6 @@ const BACKDROPS = [
 type Backdrop = (typeof BACKDROPS)[number]["value"];
 
 export function Stage() {
-  const [paused, setPaused] = useState(false);
   const [source, setSource] = useState(SOURCES[1]!.label);
   const [backdrop, setBackdrop] = useState<Backdrop>("blue");
   const [glass, setGlass] = useState<"dark" | "light">("dark");
@@ -221,19 +218,16 @@ export function Stage() {
       />
     </div>
   );
-  const recorder = (
-    <GlassActions onOpenChange={() => setPaused(false)}>
-      <GlassActions.Trigger label="Record">
-        <RecordRingIcon className="size-6" />
+  const more = (
+    <GlassActions>
+      <GlassActions.Trigger label="More">
+        <DotsHorizontalBoldIcon className="size-5" />
       </GlassActions.Trigger>
-      <GlassActions.Action
-        label={paused ? "Resume" : "Pause"}
-        onClick={() => setPaused((current) => !current)}
-      >
-        {paused ? <PlayBoldIcon className="size-5" /> : <PauseBoldIcon className="size-5" />}
+      <GlassActions.Action label="Copy link" closeOnClick>
+        <LinkBoldIcon className="size-5" />
       </GlassActions.Action>
-      <GlassActions.Action label="Stop" closeOnClick>
-        <StopBoldIcon className="size-5" />
+      <GlassActions.Action label="Share" closeOnClick>
+        <UploadBoldIcon className="size-5" />
       </GlassActions.Action>
     </GlassActions>
   );
@@ -280,7 +274,7 @@ export function Stage() {
             {controlCenter}
             <div className="flex items-center gap-4">
               {focusPicker}
-              {recorder}
+              {more}
             </div>
             <UpdateToast title="Update available" />
             {appearance}
@@ -298,29 +292,9 @@ export function Stage() {
           </div>
 
           <div className="hidden w-96 shrink-0 flex-col gap-4 @min-[1184px]:flex">
-            <Tile className="min-h-24 flex-1">
-              <div className="flex w-full items-center justify-between">
-                <GlassMenu>
-                  <GlassMenu.Trigger value={source} aria-label={`Record: ${source}`}>
-                    <span className="flex items-center gap-1.5 ps-4 pe-3.5 text-[13px] font-semibold">
-                      {source}
-                      <ChevronDownBoldIcon className="size-2.5 opacity-70" />
-                    </span>
-                  </GlassMenu.Trigger>
-                  <GlassMenu.Popup container={canvas} aria-label="Record source">
-                    <GlassMenu.RadioGroup value={source} onValueChange={setSource}>
-                      {SOURCES.map((option) => (
-                        <GlassMenu.RadioItem key={option.label} value={option.label}>
-                          {option.icon}
-                          {option.label}
-                        </GlassMenu.RadioItem>
-                      ))}
-                    </GlassMenu.RadioGroup>
-                  </GlassMenu.Popup>
-                </GlassMenu>
-                {recorder}
-              </div>
-            </Tile>
+            <div className="relative min-h-36 flex-1">
+              <PhoneBottom>{appearance}</PhoneBottom>
+            </div>
             <Tile className="min-h-55 flex-[2.4]" align="end">
               <div className="flex w-full flex-col gap-3">
                 <div className="flex h-31 flex-col justify-end gap-1.5 overflow-hidden mask-t-from-70% mask-t-to-100%">
@@ -373,10 +347,10 @@ export function Stage() {
           </div>
 
           <div className="hidden w-92 shrink-0 flex-col gap-4 @min-[1184px]:flex">
-            <Tile className="min-h-58 flex-[1.6]" align="start">
+            <Tile className="min-h-48 flex-[1.2]" align="start">
               {nowPlaying}
             </Tile>
-            <Tile className="min-h-34 flex-1 [@container(max-height:599px)]:hidden">
+            <Tile className="min-h-30 flex-1 [@container(max-height:599px)]:hidden">
               <div className="flex flex-col items-center gap-3">
                 {focusPicker}
                 <div className="flex w-48 items-center justify-between ps-1 text-[13px] font-medium text-(--backdrop-ink)/80">
@@ -389,9 +363,29 @@ export function Stage() {
                 </div>
               </div>
             </Tile>
-            <Tile className="relative min-h-36 flex-1 overflow-hidden p-0">
-              <PhoneBottom>{appearance}</PhoneBottom>
-            </Tile>
+            <div className="relative min-h-66 flex-[1.8]">
+              <PhoneTop>
+                <GlassMenu>
+                  <GlassMenu.Trigger value={source} aria-label={`Source: ${source}`}>
+                    <span className="flex items-center gap-1.5 ps-4 pe-3.5 text-[13px] font-semibold">
+                      {source}
+                      <ChevronDownBoldIcon className="size-2.5 opacity-70" />
+                    </span>
+                  </GlassMenu.Trigger>
+                  <GlassMenu.Popup container={canvas} aria-label="Source">
+                    <GlassMenu.RadioGroup value={source} onValueChange={setSource}>
+                      {SOURCES.map((option) => (
+                        <GlassMenu.RadioItem key={option.label} value={option.label}>
+                          {option.icon}
+                          {option.label}
+                        </GlassMenu.RadioItem>
+                      ))}
+                    </GlassMenu.RadioGroup>
+                  </GlassMenu.Popup>
+                </GlassMenu>
+                {more}
+              </PhoneTop>
+            </div>
           </div>
         </div>
       </div>
@@ -411,7 +405,7 @@ function Tile({
   return (
     <div
       className={cn(
-        "flex justify-center rounded-[28px] bg-white/[0.04] p-5 shadow-[inset_0_0_0_1px_rgb(255_255_255/0.08)]",
+        "flex justify-center p-5",
         align === "start" ? "items-start" : align === "end" ? "items-end" : "items-center",
         className,
       )}
@@ -423,12 +417,26 @@ function Tile({
 
 function PhoneBottom({ children }: { children: ReactNode }) {
   return (
-    <IPhone className="absolute bottom-8 left-1/2 w-84 -translate-x-1/2">
+    <IPhone className="absolute bottom-0 left-1/2 w-84 -translate-x-1/2">
       <div className="absolute inset-x-0 bottom-0 flex justify-center pb-5.5">{children}</div>
       <span
         aria-hidden="true"
         className="absolute bottom-2 left-1/2 h-1 w-24 -translate-x-1/2 rounded-full bg-white/60"
       />
+    </IPhone>
+  );
+}
+
+function PhoneTop({ children }: { children: ReactNode }) {
+  return (
+    <IPhone className="absolute top-0 left-1/2 w-84 -translate-x-1/2">
+      <span
+        aria-hidden="true"
+        className="absolute top-[1.4%] left-1/2 h-[4.2%] w-[31%] -translate-x-1/2 rounded-full bg-black"
+      />
+      <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-14">
+        {children}
+      </div>
     </IPhone>
   );
 }
