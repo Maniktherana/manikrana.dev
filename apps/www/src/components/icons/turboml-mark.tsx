@@ -1,15 +1,23 @@
 import { useId } from "react";
 import { Mark, type MarkProps } from "@/components/icons/mark";
-import turbomlFill from "@/assets/turboml.webp?inline";
 
 export function TurbomlMark({ className }: MarkProps) {
   const id = useId();
   return (
     <Mark name="turboml" viewBox="0 0 456 400" className={className}>
       <defs>
-        <pattern id={`${id}-color`} patternUnits="userSpaceOnUse" width="456" height="400">
-          <image href={turbomlFill} width="456" height="400" />
-        </pattern>
+        <linearGradient
+          id={`${id}-color`}
+          gradientUnits="userSpaceOnUse"
+          x1="7"
+          y1="18"
+          x2="168"
+          y2="440"
+          colorInterpolation="sRGB"
+        >
+          <stop stopColor="oklch(0.745777 0.180639 56.90931)" />
+          <stop offset="1" stopColor="oklch(0.669342 0.214014 14.759164)" />
+        </linearGradient>
       </defs>
       <path
         fill={`url(#${id}-color)`}
