@@ -10,6 +10,8 @@ import { ScrollFade } from "@/components/scroll-fade";
 import { useSounds } from "@/hooks/use-sounds";
 
 import appCss from "@/styles/globals.css?url";
+import interFont from "@manikrana/ui/styles/fonts/inter-latin.woff2?url";
+import monoFont from "@manikrana/ui/styles/fonts/jetbrains-mono-latin.woff2?url";
 
 const TransitionDials = import.meta.env.DEV
   ? lazy(() => import("@/components/transition-dials"))
@@ -74,8 +76,20 @@ export const Route = createRootRoute({
       },
     ],
     links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "preload",
+        as: "font",
+        href: interFont,
+        type: "font/woff2",
+        crossOrigin: "anonymous",
+      },
+      {
+        rel: "preload",
+        as: "font",
+        href: monoFont,
+        type: "font/woff2",
+        crossOrigin: "anonymous",
+      },
       {
         rel: "stylesheet",
         href: appCss,

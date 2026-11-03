@@ -121,7 +121,7 @@ article pre.shiki {
 @property --dot {
   syntax: "<color>";
   inherits: true;
-  initial-value: oklch(1 0 0 / 13%);
+  initial-value: oklch(1 0 0 / 17%);
 }
 .backdrop-dots {
   background-image: radial-gradient(circle, var(--dot) 0.9px, transparent 1px);
@@ -136,8 +136,8 @@ article pre.shiki {
   );
 }
 .backdrop-glow {
-  top: calc(var(--light-y, var(--portrait-y)) - 160px);
-  left: calc(var(--light-x, var(--portrait-x)) - 160px);
+  top: calc(var(--light-y, var(--portrait-y)) - 128px);
+  left: calc(var(--light-x, var(--portrait-x)) - 128px);
   background: radial-gradient(closest-side, oklch(1 0 0 / 3%), transparent);
 }
 

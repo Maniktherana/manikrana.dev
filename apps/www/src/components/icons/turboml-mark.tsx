@@ -1,5 +1,6 @@
 import { useId } from "react";
 import { Mark, type MarkProps } from "@/components/icons/mark";
+import turbomlFill from "@/assets/turboml.webp?inline";
 
 export function TurbomlMark({ className }: MarkProps) {
   const id = useId();
@@ -7,7 +8,7 @@ export function TurbomlMark({ className }: MarkProps) {
     <Mark name="turboml" viewBox="0 0 456 400" className={className}>
       <defs>
         <pattern id={`${id}-color`} patternUnits="userSpaceOnUse" width="456" height="400">
-          <image href="/logos/turboml.webp" width="456" height="400" />
+          <image href={turbomlFill} width="456" height="400" />
         </pattern>
       </defs>
       <path

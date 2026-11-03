@@ -43,15 +43,18 @@ function Home() {
         <div>
           <header className="mb-5 flex items-center gap-3">
             <Avatar data-portrait size="xl" className="rounded-xl">
+              <AvatarFallback delay={200} className="absolute inset-0 rounded-[inherit]">
+                MR
+              </AvatarFallback>
               <AvatarImage
+                keepMounted
                 src="/avatar.webp"
                 alt="Manik Rana"
                 width={48}
                 height={48}
                 fetchPriority="high"
-                className="rounded-[inherit]"
+                className="absolute inset-0 rounded-[inherit] data-loading:invisible data-error:invisible"
               />
-              <AvatarFallback className="rounded-[inherit]">MR</AvatarFallback>
             </Avatar>
             <div>
               <h1 id="intro-title" className="text-base leading-5.5 font-semibold">
