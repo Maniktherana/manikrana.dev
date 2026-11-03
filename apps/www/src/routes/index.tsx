@@ -142,10 +142,7 @@ function Home() {
         aria-labelledby="projects-title"
         className="mx-auto w-[calc(100%-40px)] max-w-reading"
       >
-        <h2
-          id="projects-title"
-          className="mb-6 text-lg leading-tight font-semibold"
-        >
+        <h2 id="projects-title" className="heading-rule mb-3 text-lg leading-tight font-semibold">
           Projects
         </h2>
         <ProjectList />
@@ -153,10 +150,7 @@ function Home() {
 
       <section aria-labelledby="work-title">
         <div className="mx-auto w-[calc(100%-40px)] max-w-reading">
-          <h2
-            id="work-title"
-            className="mb-6 text-lg leading-tight font-semibold"
-          >
+          <h2 id="work-title" className="heading-rule mb-6 text-lg leading-tight font-semibold">
             <RouterLink
               to="/work"
               state={{ back: true }}
@@ -179,10 +173,7 @@ function Home() {
         aria-labelledby="library-title"
         className="mx-auto w-[calc(100%-40px)] max-w-reading"
       >
-        <h2
-          id="library-title"
-          className="mb-6 text-lg leading-tight font-semibold"
-        >
+        <h2 id="library-title" className="heading-rule mb-6 text-lg leading-tight font-semibold">
           Library
         </h2>
         <LibraryList />

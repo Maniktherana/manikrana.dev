@@ -34,8 +34,7 @@ export function TalkPage({ talk }: { talk: Talk }) {
             target="_blank"
             rel="noreferrer"
             className={cn(
-              buttonVariants({ variant: "secondary" }),
-              "gap-2 rounded-xl ps-3 pe-2.5 font-normal text-control-foreground hover:text-foreground",
+              buttonVariants({ variant: "resource", className: "gap-2 ps-3 pe-2.5 font-normal" }),
             )}
           >
             PDF
@@ -47,10 +46,7 @@ export function TalkPage({ talk }: { talk: Talk }) {
             rel="noreferrer"
             aria-label="Talks on GitHub"
             title="GitHub"
-            className={cn(
-              buttonVariants({ variant: "secondary", size: "icon" }),
-              "rounded-xl text-control-foreground hover:text-foreground",
-            )}
+            className={cn(buttonVariants({ variant: "resource", size: "icon" }))}
           >
             <GithubIcon />
           </a>

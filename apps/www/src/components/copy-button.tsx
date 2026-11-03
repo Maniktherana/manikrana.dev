@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { Gust } from "@maniktherana/gust";
 import { IconSwap } from "@manikrana/ui/components/motion/icon-swap";
 import { Button } from "@manikrana/ui/components/ui/button";
@@ -14,7 +14,6 @@ export function CopyButton({
   value,
   label,
   copiedLabel = "Copied",
-  icon = <CopyIcon />,
   iconOnly = false,
   sound = "copy",
   className,
@@ -22,7 +21,6 @@ export function CopyButton({
   value: string | (() => string);
   label: string;
   copiedLabel?: string;
-  icon?: ReactNode;
   iconOnly?: boolean;
   sound?: Sound;
   className?: string;
@@ -36,21 +34,17 @@ export function CopyButton({
 
   return (
     <Button
-      variant="secondary"
+      variant="resource"
       size={iconOnly ? "icon" : "default"}
       aria-label={iconOnly ? label : undefined}
       data-sound={sound}
-      className={cn(
-        "rounded-xl font-normal text-control-foreground hover:text-foreground",
-        !iconOnly && "gap-2 ps-2.5 pe-3",
-        className,
-      )}
+      className={cn("font-normal", !iconOnly && "gap-2 ps-2.5 pe-3", className)}
       onClick={async () => {
         await navigator.clipboard.writeText(typeof value === "function" ? value() : value);
         setCopied(true);
       }}
     >
-      <IconSwap state={copied ? "b" : "a"} a={icon} b={<CheckIcon />} className="size-4" />
+      <IconSwap state={copied ? "b" : "a"} a={<CopyIcon />} b={<CheckIcon />} className="size-4" />
       {!iconOnly && <Gust value={copied ? copiedLabel : label} {...quietGust} />}
       <span aria-live="polite" className="sr-only">
         {copied ? copiedLabel : ""}

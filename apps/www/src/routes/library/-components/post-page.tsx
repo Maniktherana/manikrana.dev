@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import type { MDXComponents } from "mdx/types";
 import "katex/dist/katex.min.css";
-import { buttonVariants } from "@manikrana/ui/components/ui/button";
 import { Link } from "@manikrana/ui/components/ui/link";
+import { buttonVariants } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
 import { ChapterNavigation, slugOf } from "@/routes/library/-components/chapter-navigation";
 import { CodeBlock } from "@/components/code-block";
@@ -22,10 +22,7 @@ const mdxComponents: MDXComponents = {
     </Link>
   ),
   h2: ({ children }) => (
-    <h2
-      id={slugOf(children)}
-      className="flex items-center gap-4 after:min-w-8 after:flex-1 after:border-t after:border-separator after:content-['']"
-    >
+    <h2 id={slugOf(children)} className="heading-rule">
       <span className="min-w-0">{children}</span>
     </h2>
   ),
@@ -88,10 +85,7 @@ export function PostPage({ id }: { id: string }) {
                   rel="noreferrer"
                   aria-label={`${post.title} on arXiv`}
                   title="arXiv"
-                  className={cn(
-                    buttonVariants({ variant: "secondary" }),
-                    "rounded-xl px-3 text-control-foreground hover:text-foreground",
-                  )}
+                  className={cn(buttonVariants({ variant: "resource", className: "px-3" }))}
                 >
                   <ArxivLogo />
                 </a>
@@ -104,10 +98,7 @@ export function PostPage({ id }: { id: string }) {
                 rel="noreferrer"
                 aria-label={`${post.title} on GitHub`}
                 title="GitHub"
-                className={cn(
-                  buttonVariants({ variant: "secondary", size: "icon" }),
-                  "rounded-xl text-control-foreground hover:text-foreground",
-                )}
+                className={cn(buttonVariants({ variant: "resource", size: "icon" }))}
               >
                 <GithubIcon />
               </a>
@@ -119,7 +110,7 @@ export function PostPage({ id }: { id: string }) {
 
         <article
           ref={article}
-          className="mt-8 text-muted-foreground sm:text-pretty [&_:not(pre)>code]:rounded-md [&_:not(pre)>code]:bg-control [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-sm [&_:not(pre)>code]:text-control-foreground [&_h2]:mt-18 [&_h2]:mb-4 [&_h2]:text-lg [&_h2]:leading-6.5 [&_h2]:font-normal [&_h2]:text-foreground [&_li]:mt-1 [&_li]:ps-1 [&_li]:marker:text-foreground/30 [&_p]:mb-4 [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:ps-5 [&_strong]:font-medium [&_strong]:text-foreground"
+          className="mt-8 text-muted-foreground [&_:not(pre)>code]:rounded-md [&_:not(pre)>code]:bg-control [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-sm [&_:not(pre)>code]:text-control-foreground [&_h2]:mt-18 [&_h2]:mb-4 [&_h2]:text-lg [&_h2]:leading-6.5 [&_h2]:font-normal [&_h2]:text-foreground [&_li]:mt-1 [&_li]:ps-1 [&_li]:marker:text-foreground/30 [&_p]:mb-4 [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:ps-5 [&_strong]:font-medium [&_strong]:text-foreground"
         >
           <post.Content components={mdxComponents} />
         </article>

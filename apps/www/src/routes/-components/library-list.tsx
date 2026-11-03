@@ -44,9 +44,9 @@ export function LibraryList() {
           <Link
             {...entry.link}
             state={{ back: true }}
-            className="relative isolate grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-2 gap-y-1 py-3 outline-none before:absolute before:-inset-x-4 before:inset-y-0 before:-z-1 before:scale-98 before:rounded-lg before:bg-card before:opacity-0 before:transition-[opacity,scale] before:duration-200 before:ease-out hover:before:scale-100 hover:before:opacity-100 focus-visible:before:scale-100 focus-visible:before:opacity-100 focus-visible:before:ring-2 focus-visible:before:ring-ring motion-reduce:before:transition-none sm:col-span-3 sm:grid-cols-subgrid sm:gap-x-6 sm:gap-y-0 sm:py-4 sm:before:-inset-x-6"
+            className="row-link grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-2 gap-y-1 py-3 sm:col-span-3 sm:grid-cols-subgrid sm:gap-x-6 sm:gap-y-0 sm:py-4"
           >
-            <span className="col-span-2 leading-6.5 text-pretty wrap-break-word sm:col-span-1">
+            <span className="col-span-2 leading-6.5 wrap-break-word sm:col-span-1">
               {entry.video ? <WithWatch title={entry.title} /> : entry.title}
             </span>
             <span className="leading-6.5 text-muted-foreground sm:text-end">{entry.kind}</span>

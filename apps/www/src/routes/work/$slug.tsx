@@ -156,8 +156,8 @@ function WorkPage() {
                   aria-label={github ? `${item.title} on GitHub` : undefined}
                   title={github ? "GitHub" : undefined}
                   className={cn(
-                    buttonVariants({ variant: "secondary", size: github ? "icon" : "default" }),
-                    "rounded-xl font-normal text-control-foreground hover:text-foreground",
+                    buttonVariants({ variant: "resource", size: github ? "icon" : "default" }),
+                    "font-normal",
                     !github && "gap-2 ps-3 pe-2.5",
                   )}
                 >
@@ -239,11 +239,10 @@ function WorkPage() {
 function ViewToggle({ code, onChange }: { code: boolean; onChange: (code: boolean) => void }) {
   return (
     <Button
-      variant="secondary"
+      variant="resource"
       size="icon"
       aria-label={code ? "Show preview" : "Show code"}
       title={code ? "Preview" : "Code"}
-      className="rounded-xl text-control-foreground hover:text-foreground"
       onClick={() => onChange(!code)}
     >
       <IconSwap state={code ? "b" : "a"} a={<CodeIcon />} b={<EyeIcon />} className="size-4" />

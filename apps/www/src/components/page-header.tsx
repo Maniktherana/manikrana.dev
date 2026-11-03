@@ -29,14 +29,7 @@ export function PageHeader({
 
 export function CloseButton(props: ComponentProps<typeof Button>) {
   return (
-    <Button
-      variant="secondary"
-      size="icon"
-      aria-label="Close"
-      aria-keyshortcuts="Escape"
-      className="rounded-xl text-control-foreground hover:text-foreground"
-      {...props}
-    >
+    <Button variant="resource" size="icon" aria-label="Close" aria-keyshortcuts="Escape" {...props}>
       <CloseIcon />
     </Button>
   );

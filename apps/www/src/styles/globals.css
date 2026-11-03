@@ -141,6 +141,19 @@ article pre.shiki {
   background: radial-gradient(closest-side, oklch(1 0 0 / 3%), transparent);
 }
 
+@utility row-link {
+  @apply -mx-4 cursor-pointer rounded-lg px-4 outline-none transition-colors duration-200 ease-out hover:bg-card focus-visible:bg-card focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none sm:-mx-6 sm:px-6;
+}
+
+@utility heading-rule {
+  @apply flex items-center gap-4;
+
+  &::after {
+    content: "";
+    @apply min-w-8 flex-1 border-t border-separator;
+  }
+}
+
 /* tan(atan2(a, b)) is a / b. */
 .work-grid {
   --grid-width: min(100cqw - 40px, var(--container-work));

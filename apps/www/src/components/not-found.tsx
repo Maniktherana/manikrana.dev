@@ -1,5 +1,5 @@
 import { Link as RouterLink } from "@tanstack/react-router";
-import { Link } from "@manikrana/ui/components/ui/link";
+import { Link } from "@/components/link";
 
 export default function NotFound() {
   return (
@@ -13,10 +13,7 @@ export default function NotFound() {
         </h1>
         <p className="text-pretty text-muted-foreground">
           This page doesn't exist.{" "}
-          <Link
-            render={<RouterLink to="/" />}
-            className="font-[450] motion-safe:duration-200 motion-reduce:transition-none"
-          >
+          <Link variant="prose" render={<RouterLink to="/" />}>
             Go home
           </Link>
           .

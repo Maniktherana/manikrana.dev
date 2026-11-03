@@ -1,5 +1,7 @@
-import { InstallCommand } from "@/components/work/install-command";
+import { CopyButton } from "@/components/copy-button";
 import { WorkSection } from "@/components/work/section";
+
+const INSTALL_COMMAND = "bun add @maniktherana/gust";
 
 export function Details() {
   return (
@@ -17,8 +19,14 @@ export function Details() {
           combinations I’ve tried.
         </p>
       </div>
-      <div className="mt-6">
-        <InstallCommand command="bun add @maniktherana/gust" />
+      <div className="mt-6 flex h-11 max-w-reading items-center gap-3 rounded-2xl bg-card ps-4 pe-1">
+        <code className="min-w-0 flex-1 truncate font-mono text-sm text-control-foreground">
+          <span aria-hidden="true" className="me-2 text-muted-foreground select-none">
+            $
+          </span>
+          {INSTALL_COMMAND}
+        </code>
+        <CopyButton iconOnly label="Copy command" value={INSTALL_COMMAND} />
       </div>
     </WorkSection>
   );

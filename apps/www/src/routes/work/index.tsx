@@ -25,9 +25,11 @@ function WorkPage() {
         <h1 className="sr-only">Work</h1>
         <h2
           id="selected-work"
-          className="flex scroll-mt-16 items-baseline gap-2 mb-6 text-lg leading-tight font-semibold"
+          className="heading-rule mb-6 scroll-mt-16 text-lg leading-tight font-semibold"
         >
-          Lab <span className="text-base font-normal text-muted-foreground">{work.length}</span>
+          <span className="flex items-baseline gap-2">
+            Lab <span className="text-base font-normal text-muted-foreground">{work.length}</span>
+          </span>
         </h2>
       </div>
       <WorkGrid list="work" />

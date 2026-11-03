@@ -1,5 +1,5 @@
+import { Link } from "@/components/link";
 import { buttonVariants } from "@manikrana/ui/components/ui/button";
-import { Link } from "@manikrana/ui/components/ui/link";
 import { cn } from "@manikrana/ui/lib/utils";
 import { ArxivLogo } from "@/components/icons/arxiv-logo";
 import { GithubIcon } from "@/components/icons/github";
@@ -30,10 +30,7 @@ export function PaperPage({ paper }: { paper: Paper }) {
             href={paper.openreview}
             target="_blank"
             rel="noreferrer"
-            className={cn(
-              buttonVariants({ variant: "secondary" }),
-              "rounded-xl px-3 font-normal text-control-foreground hover:text-foreground",
-            )}
+            className={cn(buttonVariants({ variant: "resource", className: "px-3 font-normal" }))}
           >
             OpenReview
           </a>
@@ -43,10 +40,7 @@ export function PaperPage({ paper }: { paper: Paper }) {
             rel="noreferrer"
             aria-label={`${paper.title} on arXiv`}
             title="arXiv"
-            className={cn(
-              buttonVariants({ variant: "secondary" }),
-              "rounded-xl px-3 text-control-foreground hover:text-foreground",
-            )}
+            className={cn(buttonVariants({ variant: "resource", className: "px-3" }))}
           >
             <ArxivLogo />
           </a>
@@ -56,10 +50,7 @@ export function PaperPage({ paper }: { paper: Paper }) {
             rel="noreferrer"
             aria-label={`${paper.title} on GitHub`}
             title="GitHub"
-            className={cn(
-              buttonVariants({ variant: "secondary", size: "icon" }),
-              "rounded-xl text-control-foreground hover:text-foreground",
-            )}
+            className={cn(buttonVariants({ variant: "resource", size: "icon" }))}
           >
             <GithubIcon />
           </a>
@@ -72,7 +63,7 @@ export function PaperPage({ paper }: { paper: Paper }) {
           href="https://workshop-multi-turn-interaction.github.io/"
           target="_blank"
           rel="noreferrer"
-          className="font-[450] motion-safe:duration-200 motion-safe:ease-[ease] motion-reduce:transition-none"
+          variant="prose"
         >
           Workshop on Multi-Turn Interactions in Large Language Models
         </Link>
