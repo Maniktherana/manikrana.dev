@@ -1,16 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Gust, type GustProps } from "@maniktherana/gust";
+import { DEFAULT_MOTION, Gust, type GustMotionOptions } from "@maniktherana/gust";
 import { Liveline, type LivelinePoint } from "liveline";
 import { usePrefersReducedMotion } from "@/components/work/gust/use-prefers-reduced-motion";
-
-export const tickerMotion = {
-  duration: 320,
-  entranceOvershoot: 8,
-  entranceHeight: 100,
-  exitDuration: 320,
-} satisfies Omit<GustProps, "value">;
 
 const tickerPrices = [
   // Keep the first ten prices as they are: they drive the digit and direction demo.
@@ -28,11 +21,11 @@ const tickerPrices = [
 ];
 
 export function TickerDemo({
-  motion = tickerMotion,
+  motion = DEFAULT_MOTION,
   paused = false,
   theme = "dark",
 }: {
-  motion?: Omit<GustProps, "value">;
+  motion?: GustMotionOptions;
   paused?: boolean;
   theme?: "dark" | "light";
 }) {
@@ -123,11 +116,12 @@ export function TickerDemo({
             />
           </svg>
           <Gust
-            value={`$${price.toFixed(2)}`}
-            {...motion}
-            down={motion.down ?? !up}
+            motion={motion}
+            direction={!up ? "down" : "up"}
             className="text-xl font-semibold tabular-nums"
-          />
+          >
+            {`$${price.toFixed(2)}`}
+          </Gust>
         </span>
       </div>
     </div>

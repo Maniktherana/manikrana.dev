@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
-import { Gust, type GustProps } from "@maniktherana/gust";
+import { DEFAULT_MOTION, Gust, type GustMotionOptions } from "@maniktherana/gust";
 import { MinusLargeIcon } from "@/components/icons/minus-large";
 import { PlusLargeIcon } from "@/components/icons/plus-large";
 import { usePrefersReducedMotion } from "@/components/work/gust/use-prefers-reduced-motion";
@@ -11,17 +11,6 @@ const max = 1000;
 const demoCounts = [
   7, 8, 9, 10, 11, 12, 47, 87, 97, 98, 99, 100, 101, 102, 347, 687, 987, 997, 998, 999, 1000,
 ];
-export const guestsMotion: Omit<GustProps, "value"> = {
-  duration: 320,
-  exitDuration: 220,
-  stagger: 0,
-  entranceOvershoot: 0,
-  entranceHeight: 100,
-  exitHeight: 100,
-  exitBlur: 4,
-  blur: true,
-  scale: false,
-};
 const buttonClassName =
   "grid size-11 shrink-0 place-items-center rounded-full bg-foreground/5 text-muted-foreground ring-1 ring-foreground/10 transition-[color,scale,opacity] duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] hover:text-foreground active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-ring disabled:opacity-40 motion-reduce:transition-none motion-reduce:active:scale-100";
 
@@ -35,21 +24,14 @@ function step(current: GuestState, delta: number, touched: boolean): GuestState 
 
 export function GuestsExample({
   paused = false,
-  motion = guestsMotion,
+  motion = DEFAULT_MOTION,
 }: {
   paused?: boolean;
-  motion?: Omit<GustProps, "value">;
+  motion?: GustMotionOptions;
 }) {
   const [state, setState] = useState<GuestState>({ count: 7, falling: false, touched: false });
   const reducedMotion = usePrefersReducedMotion();
   const countId = useId();
-  const resolvedMotion = { ...guestsMotion, ...motion };
-  const transitionWindow =
-    Math.max(
-      resolvedMotion.duration ?? guestsMotion.duration ?? 320,
-      resolvedMotion.exitDuration ?? guestsMotion.exitDuration ?? 220,
-    ) +
-    Math.max(0, resolvedMotion.stagger ?? 0) * 3;
   const change = (delta: number) => setState((current) => step(current, delta, true));
 
   useEffect(() => {
@@ -62,11 +44,11 @@ export function GuestsExample({
           const count = demoCounts[(index + 1) % demoCounts.length];
           return step(current, count - current.count, false);
         }),
-      Math.max(state.count === max ? 1300 : 400, transitionWindow + 80),
+      state.count === max ? 700 : 350,
     );
 
     return () => window.clearTimeout(timer);
-  }, [paused, reducedMotion, state.count, state.touched, transitionWindow]);
+  }, [paused, reducedMotion, state.count, state.touched]);
 
   return (
     <fieldset aria-label="Counter" className="flex items-center gap-4">
@@ -89,22 +71,28 @@ export function GuestsExample({
         <span className="sr-only">{state.count}</span>
         <span aria-hidden="true" className="inline-flex text-4xl font-medium tabular-nums">
           <Gust
-            value={String(state.count)}
-            {...resolvedMotion}
-            down={motion.down ?? state.falling}
-            {...(reducedMotion
-              ? {
-                  duration: 120,
-                  exitDuration: 80,
-                  stagger: 0,
-                  entranceOvershoot: 0,
-                  entranceHeight: 0,
-                  exitHeight: 0,
-                  blur: false,
-                  scale: false,
-                }
-              : {})}
-          />
+            direction={state.falling ? "down" : "up"}
+            motion={{
+              ...motion,
+              ...(reducedMotion
+                ? {
+                    duration: 120,
+                    exitDuration: 80,
+                    stagger: 0,
+                    staggerSpread: 0,
+                    enterStagger: 0,
+                    exitStagger: 0,
+                    entranceOvershoot: 0,
+                    entranceHeight: 0,
+                    exitHeight: 0,
+                    blur: false,
+                    scale: false,
+                  }
+                : {}),
+            }}
+          >
+            {String(state.count)}
+          </Gust>
         </span>
       </output>
       <button

@@ -1,4 +1,4 @@
-import { useEffect, useState, type ComponentProps, type ReactNode } from "react";
+import { useEffect, type ComponentProps, type ReactNode } from "react";
 import { createLink, useLocation, useRouter, type NavigateOptions } from "@tanstack/react-router";
 import { Button } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
@@ -75,7 +75,9 @@ export function BreadcrumbSeparator() {
 
 export function useClose(fallback: NavigateOptions) {
   const router = useRouter();
-  const [back] = useState(useLocation({ select: (location) => location.state.back }));
+  const back = useLocation({
+    select: (location) => location.pathname.startsWith("/work") && location.state.back,
+  });
   const close = () => {
     play("page-exit");
     if (back) return router.history.back();

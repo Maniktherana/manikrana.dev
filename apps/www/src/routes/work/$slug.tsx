@@ -9,7 +9,6 @@ import { cn } from "@manikrana/ui/lib/utils";
 import { CopyButton } from "@/components/copy-button";
 import { BreadcrumbLink, BreadcrumbSeparator, PageHeader } from "@/components/page-header";
 import { Link as TextLink } from "@/components/link";
-import { quietGust } from "@/lib/gust";
 import { play } from "@/lib/sounds";
 import { ArrowUpRightIcon } from "@/components/icons/arrow-up-right";
 import { ChevronLeftIcon } from "@/components/icons/chevron-left";
@@ -102,7 +101,9 @@ function WorkPage() {
           Work
         </BreadcrumbLink>
         <BreadcrumbSeparator />
-        <Gust value={item.title} {...quietGust} aria-current="page" className="truncate" />
+        <Gust motion={{ exitBlur: 2 }} aria-current="page" className="min-w-0">
+          {item.title}
+        </Gust>
       </PageHeader>
 
       <div

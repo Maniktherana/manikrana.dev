@@ -1,10 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Gust, type GustProps } from "@maniktherana/gust";
+import {
+  DEFAULT_MOTION,
+  Gust,
+  resolveMotionOptions,
+  resolveTransitionConfig,
+  type GustMotionOptions,
+} from "@maniktherana/gust";
 import { usePrefersReducedMotion } from "@/components/work/gust/use-prefers-reduced-motion";
-
-export const otpMotion = { entranceOvershoot: 8, stagger: 12 } satisfies Omit<GustProps, "value">;
 
 const steps = [
   { code: "1234", exit: "backspace" },
@@ -25,13 +29,17 @@ function sharedPrefixLength(a: string, b: string) {
   return index;
 }
 
-function delayFor({ code, phase }: State, motion: Omit<GustProps, "value">) {
+function delayFor({ code, phase }: State, motion: GustMotionOptions) {
   if (phase === "holding") return timing.hold;
   if (phase === "backspacing") return timing.backspace;
   if (phase === "wiping") {
     const digits = steps.find((step) => step.exit === "wipe")?.code.length ?? 0;
+    const resolved = resolveTransitionConfig(resolveMotionOptions(motion), 0, digits);
     return (
-      (motion.exitDuration ?? 400) + Math.max(0, digits - 1) * (motion.stagger ?? 20) + timing.wipe
+      resolved.exitDelay +
+      resolved.exitDuration +
+      Math.max(0, digits - 1) * resolved.exitStagger +
+      timing.wipe
     );
   }
 
@@ -67,38 +75,32 @@ function advance(current: State): State {
 }
 
 export function OtpDemo({
-  motion = otpMotion,
+  motion = DEFAULT_MOTION,
   paused = false,
 }: {
-  motion?: Omit<GustProps, "value">;
+  motion?: GustMotionOptions;
   paused?: boolean;
 }) {
   const [state, setState] = useState<State>({ code: "", phase: "typing", step: 0 });
   const reducedMotion = usePrefersReducedMotion();
-  const { exitDuration, stagger } = motion;
 
   useEffect(() => {
     if (paused || reducedMotion) return undefined;
-    const timer = window.setTimeout(
-      () => setState(advance),
-      delayFor(state, { exitDuration, stagger }),
-    );
+    const timer = window.setTimeout(() => setState(advance), delayFor(state, motion));
 
     return () => window.clearTimeout(timer);
-  }, [exitDuration, stagger, paused, reducedMotion, state]);
+  }, [motion, paused, reducedMotion, state]);
 
   return (
     <div className="absolute top-6 left-1/2 h-72 w-52 -translate-x-1/2 rounded-t-[2.5rem] border border-b-0 border-border">
       <div className="flex flex-col items-center pt-14">
         {/* items-start keeps Gust's top edge fixed while an emptied code collapses its height. */}
-        <div className="flex h-10 items-start font-mono text-3xl font-semibold tracking-widest tabular-nums">
-          <Gust
-            value={reducedMotion ? steps[0].code : state.code}
-            {...motion}
-            className="-mr-[0.1em]"
-          />
+        <div className="flex h-10 items-start font-sans text-3xl font-semibold tracking-widest tabular-nums">
+          <Gust motion={motion} className="-mr-[0.1em]">
+            {reducedMotion ? steps[0].code : state.code}
+          </Gust>
         </div>
-        <span className="mt-2 font-mono text-[10px] text-muted-foreground">enter code</span>
+        <span className="mt-2 font-sans text-[10px] text-muted-foreground">enter code</span>
       </div>
     </div>
   );

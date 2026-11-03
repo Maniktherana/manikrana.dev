@@ -1,5 +1,4 @@
 @import "@manikrana/ui/styles/globals.css";
-@import "@maniktherana/gust/styles.css";
 @source "../**/*.{ts,tsx}";
 
 @theme {

@@ -18,14 +18,14 @@ import {
   useReducedMotion,
   useTransform,
 } from "motion/react";
-import { Gust } from "@maniktherana/gust";
+import { Gust, type GustMotionOptions } from "@maniktherana/gust";
 import { cn } from "@manikrana/ui/lib/utils";
 import { ChatMessage } from "./chat";
 import { checks, james, shifts } from "./james";
 import { PauseIcon } from "@/components/icons/pause";
 import { PlayIcon } from "@/components/icons/play";
 import { STREAM, words } from "@/components/work/citation-preview/stream";
-import { downloadNumberMotion, reducedMotionOverrides } from "@/components/work/gust/download";
+import { reducedMotionOverrides } from "@/components/work/gust/download";
 
 const lanes = [
   { role: "customer", label: "James" },
@@ -450,13 +450,11 @@ function Grow({ children }: { children: ReactNode }) {
   );
 }
 
-// Gust's download counter without the entrance pop. The angles are cleared so `down` can steer.
 const counter = {
-  ...downloadNumberMotion,
-  enterAngle: undefined,
-  exitAngle: undefined,
+  entranceOvershoot: 0,
   entranceScale: 1,
-};
+  staggerSpread: 0,
+} satisfies GustMotionOptions;
 
 // Rolls the digits up when a score rises and down when it falls. The % sign stays put.
 function Value({ value }: { value: string }) {
@@ -471,11 +469,11 @@ function Value({ value }: { value: string }) {
   return (
     <>
       <Gust
-        value={unit ? value.slice(0, -1) : value}
-        down={falling}
-        {...counter}
-        {...(reducedMotion ? reducedMotionOverrides : undefined)}
-      />
+        direction={falling ? "down" : "up"}
+        motion={reducedMotion ? { ...counter, ...reducedMotionOverrides } : counter}
+      >
+        {unit ? value.slice(0, -1) : value}
+      </Gust>
       {unit}
     </>
   );

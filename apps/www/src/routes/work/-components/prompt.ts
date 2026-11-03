@@ -39,10 +39,6 @@ export function componentPrompt(item: WorkItem, sources: SourceFile[], deps: Dep
       'Imports from "@/components/work/<name>" point at the file of that name under "Files"; make them relative.',
     ),
     ...when(
-      code.includes("@maniktherana/gust"),
-      'Import "@maniktherana/gust/styles.css" once at the app root.',
-    ),
-    ...when(
       code.includes("scroll-fade"),
       'The scroll-fade utilities come from shadcn\'s stylesheet; import "shadcn/tailwind.css" in the global CSS if this project does not already.',
     ),

@@ -1,6 +1,6 @@
 import { Link, linkOptions } from "@tanstack/react-router";
 import { PlayIcon } from "@/components/icons/play";
-import { papers, posts, talks } from "@/routes/library/-data";
+import { posts, talks } from "@/routes/library/-data";
 
 const entries = [
   ...talks
@@ -13,17 +13,6 @@ const entries = [
       date: talk.events[0].date,
       dateTime: talk.events[0].dateTime,
       link: linkOptions({ to: "/library/$id", params: { id: talk.id } }),
-    })),
-  ...papers
-    .filter((paper) => !posts.some((post) => post.paper === paper))
-    .map((paper) => ({
-      key: `paper-${paper.id}`,
-      title: paper.title,
-      kind: "Publication",
-      video: false,
-      date: paper.date,
-      dateTime: paper.dateTime,
-      link: linkOptions({ to: "/library/$id", params: { id: paper.id } }),
     })),
   ...posts.map((post) => ({
     key: `post-${post.id}`,
@@ -43,7 +32,6 @@ export function LibraryList() {
         <li key={entry.key} className="sm:col-span-3 sm:grid sm:grid-cols-subgrid">
           <Link
             {...entry.link}
-            state={{ back: true }}
             className="row-link grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-2 gap-y-1 py-3 sm:col-span-3 sm:grid-cols-subgrid sm:gap-x-6 sm:gap-y-0 sm:py-4"
           >
             <span className="col-span-2 leading-6.5 wrap-break-word sm:col-span-1">

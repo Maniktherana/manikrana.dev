@@ -1,40 +1,18 @@
 "use client";
 
 import { useEffect, useId, useState, useSyncExternalStore, type CSSProperties } from "react";
-import { Gust, type GustProps } from "@maniktherana/gust";
+import { DEFAULT_MOTION, Gust, type GustMotionOptions } from "@maniktherana/gust";
 import { cn } from "@manikrana/ui/lib/utils";
 import { CheckIcon } from "@/components/icons/check";
 import { usePrefersReducedMotion } from "@/components/work/gust/use-prefers-reduced-motion";
 
-type Motion = Omit<GustProps, "value">;
-
-export const downloadMotion: Motion = {
-  duration: 320,
-  exitDuration: 320,
-  stagger: 20,
-  enterAngle: -90,
-  exitAngle: -90,
-  entranceOvershoot: 8,
-  entranceHeight: 100,
-  exitHeight: 90,
-  blur: true,
-  exitBlur: 4,
-  entranceScale: 1.1,
-  exitScale: 0.4,
-  scale: true,
-  preservePrefix: true,
-};
-
-export const downloadNumberMotion: Motion = {
-  ...downloadMotion,
-  entranceOvershoot: 0,
-  stagger: 0,
-};
-
-export const reducedMotionOverrides: Motion = {
+export const reducedMotionOverrides: GustMotionOptions = {
   duration: 120,
   exitDuration: 80,
   stagger: 0,
+  staggerSpread: 0,
+  enterStagger: 0,
+  exitStagger: 0,
   entranceOvershoot: 0,
   entranceHeight: 0,
   exitHeight: 0,
@@ -113,12 +91,12 @@ function DownloadStateIcon({
 
 export function DownloadExample({
   paused = false,
-  motion = downloadMotion,
-  numberMotion = downloadNumberMotion,
+  motion = DEFAULT_MOTION,
+  numberMotion = DEFAULT_MOTION,
 }: {
   paused?: boolean;
-  motion?: Motion;
-  numberMotion?: Motion;
+  motion?: GustMotionOptions;
+  numberMotion?: GustMotionOptions;
 }) {
   const reducedMotion = usePrefersReducedMotion();
   const hidden = useSyncExternalStore(
@@ -218,13 +196,13 @@ export function DownloadExample({
           running={downloading && !paused && !hidden && !reducedMotion}
         />
         <span className="inline-flex h-6 items-center">
-          <Gust value={label} {...labelMotion} />
+          <Gust motion={labelMotion}>{label}</Gust>
         </span>
       </span>
       {state.phase !== "idle" ? (
         <span className="relative flex shrink-0 items-center tabular-nums">
           <span className="inline-flex w-[3ch] justify-end">
-            <Gust value={String(percent)} {...progressMotion} />
+            <Gust motion={progressMotion}>{String(percent)}</Gust>
           </span>
           <span>%</span>
         </span>

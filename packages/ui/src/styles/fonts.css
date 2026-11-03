@@ -1,31 +1,31 @@
-/* Open Runde: unmodified upstream WOFF2 files, revision 3e7ed7f. */
+/* Open Runde: opt-in tabular figures from Gust v1.0.0; proportional glyphs are unchanged. */
 @font-face {
   font-family: "Open Runde";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("./fonts/open-runde-regular.woff2") format("woff2");
+  src: url("./fonts/open-runde-regular-tabular.woff2") format("woff2");
 }
 @font-face {
   font-family: "Open Runde";
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("./fonts/open-runde-medium.woff2") format("woff2");
+  src: url("./fonts/open-runde-medium-tabular.woff2") format("woff2");
 }
 @font-face {
   font-family: "Open Runde";
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url("./fonts/open-runde-semibold.woff2") format("woff2");
+  src: url("./fonts/open-runde-semibold-tabular.woff2") format("woff2");
 }
 @font-face {
   font-family: "Open Runde";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("./fonts/open-runde-bold.woff2") format("woff2");
+  src: url("./fonts/open-runde-bold-tabular.woff2") format("woff2");
 }
 
 /* JetBrains Mono v24: unmodified Google Fonts files. */

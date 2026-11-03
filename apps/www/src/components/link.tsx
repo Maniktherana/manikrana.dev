@@ -10,7 +10,7 @@ export function Link({
   return (
     <BaseLink
       className={cn(
-        "font-[450] motion-safe:duration-200 motion-safe:ease-[ease] motion-reduce:transition-none",
+        "motion-safe:duration-200 motion-safe:ease-[ease] motion-reduce:transition-none",
         variant === "prose"
           ? "inline whitespace-normal"
           : "inline-flex items-baseline gap-1 whitespace-nowrap",

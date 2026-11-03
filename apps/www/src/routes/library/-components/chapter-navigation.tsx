@@ -92,6 +92,8 @@ export function ChapterNavigation({
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(title);
+    const page = title.closest("main");
+    if (page) observer.observe(page);
     window.addEventListener("resize", measure);
     return () => {
       observer.disconnect();

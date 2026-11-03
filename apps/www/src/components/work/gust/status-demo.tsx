@@ -1,16 +1,10 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { Gust, type GustProps } from "@maniktherana/gust";
+import { motion as m } from "motion/react";
+import { DEFAULT_MOTION, Gust, type GustMotionOptions } from "@maniktherana/gust";
 import { CheckIcon } from "@/components/icons/check";
 import { usePrefersReducedMotion } from "@/components/work/gust/use-prefers-reduced-motion";
-
-export const statusMotion = {
-  entranceOvershoot: 10,
-  entranceScale: 1.15,
-  exitDuration: 440,
-  exitHeight: 120,
-} satisfies Omit<GustProps, "value">;
 
 const steps = [
   { color: "text-muted-foreground", key: "queued", label: "Queued" },
@@ -20,6 +14,12 @@ const steps = [
 ] as const;
 
 type StepKey = (typeof steps)[number]["key"];
+
+const layoutTransition = {
+  type: "tween",
+  duration: 0.25,
+  ease: [0.25, 1, 0.5, 1],
+} as const;
 
 const glyphTransition =
   "transition-[opacity,scale,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]";
@@ -82,10 +82,10 @@ function StatusIcon({ active, animating }: { active: StepKey; animating: boolean
 }
 
 export function StatusDemo({
-  motion = statusMotion,
+  motion = DEFAULT_MOTION,
   paused = false,
 }: {
-  motion?: Omit<GustProps, "value">;
+  motion?: GustMotionOptions;
   paused?: boolean;
 }) {
   const [index, setIndex] = useState(0);
@@ -103,13 +103,27 @@ export function StatusDemo({
   }, [paused, reducedMotion]);
 
   return (
-    <span className="flex items-center gap-2.5 rounded-full bg-foreground/5 px-4 py-1.5">
-      <span
-        className={`grid size-5 place-items-center transition-colors duration-500 ${step.color}`}
+    <m.span
+      layout={!reducedMotion}
+      initial={false}
+      transition={{ layout: layoutTransition }}
+      style={{ borderRadius: 9999 }}
+      className="flex items-center gap-2.5 rounded-full bg-foreground/5 px-4 py-1.5"
+    >
+      <m.span
+        layout={reducedMotion ? false : "position"}
+        transition={{ layout: layoutTransition }}
+        className="flex items-center gap-2.5"
       >
-        <StatusIcon active={step.key} animating={!paused && !reducedMotion} />
-      </span>
-      <Gust value={step.label} {...motion} className={`text-xl font-semibold ${step.color}`} />
-    </span>
+        <span
+          className={`grid size-5 place-items-center transition-colors duration-500 ${step.color}`}
+        >
+          <StatusIcon active={step.key} animating={!paused && !reducedMotion} />
+        </span>
+        <Gust motion={motion} className={`text-xl font-semibold ${step.color}`}>
+          {step.label}
+        </Gust>
+      </m.span>
+    </m.span>
   );
 }

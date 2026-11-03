@@ -60,7 +60,7 @@ function Home() {
               <h1 id="intro-title" className="text-base leading-5.5 font-semibold">
                 Manik Rana
               </h1>
-              <p className="text-muted-foreground font-[450] leading-5.5">Engineer at TurboML</p>
+              <p className="text-muted-foreground leading-5.5">Engineer at TurboML</p>
             </div>
           </header>
           <p className="mb-3 text-muted-foreground last:mb-0">

@@ -2,7 +2,7 @@ import { buttonVariants } from "@manikrana/ui/components/ui/button";
 import { cn } from "@manikrana/ui/lib/utils";
 import { ArrowUpRightIcon } from "@/components/icons/arrow-up-right";
 import { GithubIcon } from "@/components/icons/github";
-import { HomeBreadcrumb, BreadcrumbSeparator, PageHeader } from "@/components/page-header";
+import { LibraryHeader } from "@/routes/library/-components/library-header";
 import { PdfPages } from "@/components/pdf-pages";
 import type { Talk } from "@/routes/library/-data";
 import { TalkVideo } from "@/routes/library/-components/talk-video";
@@ -10,25 +10,19 @@ import { TalkVideo } from "@/routes/library/-components/talk-video";
 export function TalkPage({ talk }: { talk: Talk }) {
   return (
     <main id="main-content" className="mx-auto w-[calc(100%-40px)] max-w-reading">
-      <PageHeader>
-        <HomeBreadcrumb />
-        <BreadcrumbSeparator />
-        <span aria-current="page" className="truncate">
-          {talk.title}
-        </span>
-      </PageHeader>
+      <LibraryHeader />
 
-      <div className="mt-8 flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
-        <div className="min-w-0 flex-1 basis-64">
-          <h1 className="text-base leading-5.5 font-semibold">{talk.title}</h1>
+      <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
+        <div className="flex min-w-0 flex-1 basis-64 flex-col gap-2">
+          <h1 className="text-lg leading-6.5 font-normal text-pretty">{talk.title}</h1>
           <time
             dateTime={talk.events[0].dateTime}
-            className="mt-1 block leading-5.5 text-muted-foreground"
+            className="text-sm leading-5 text-muted-foreground"
           >
             {talk.events[0].date}
           </time>
         </div>
-        <div className="flex items-center gap-2">
+        <nav aria-label="Talk resources" className="flex flex-wrap items-center gap-2">
           <a
             href={`/talks/${talk.id}.pdf`}
             target="_blank"
@@ -50,8 +44,8 @@ export function TalkPage({ talk }: { talk: Talk }) {
           >
             <GithubIcon />
           </a>
-        </div>
-      </div>
+        </nav>
+      </header>
 
       {talk.video && <TalkVideo talk={talk} video={talk.video} />}
 

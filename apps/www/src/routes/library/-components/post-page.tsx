@@ -10,7 +10,7 @@ import { Link as TextLink } from "@/components/link";
 import { GithubIcon } from "@/components/icons/github";
 import { ArxivLogo } from "@/components/icons/arxiv-logo";
 import { Commit, Issue, Person, PullRequest, Repository } from "@/components/github-link";
-import { HomeBreadcrumb, BreadcrumbSeparator, PageHeader } from "@/components/page-header";
+import { LibraryHeader } from "@/routes/library/-components/library-header";
 import { posts } from "@/routes/library/-data";
 import { PdfDialog } from "@/routes/library/-components/pdf-dialog";
 import { TalkVideo } from "@/routes/library/-components/talk-video";
@@ -41,70 +41,66 @@ export function PostPage({ id }: { id: string }) {
   const heading = useRef<HTMLHeadingElement>(null);
   return (
     <main id="main-content" className="mx-auto w-[calc(100%-40px)] max-w-reading pb-24">
-      <PageHeader>
-        <HomeBreadcrumb />
-        <BreadcrumbSeparator />
-        <span aria-current="page" className="truncate">
-          {post.title}
-        </span>
-      </PageHeader>
+      <LibraryHeader />
 
-      <div className="relative mt-12 sm:mt-16">
+      <div className="relative">
         <ChapterNavigation article={article} heading={heading} />
-        <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
-          <div className="min-w-0 flex-1 basis-64">
-            <h1 ref={heading} className="text-lg leading-6.5 font-normal">
+        <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
+          <div className="flex min-w-0 flex-1 basis-64 flex-col gap-2">
+            <h1 ref={heading} className="text-lg leading-6.5 font-normal text-pretty">
               {post.title}
             </h1>
-            <time dateTime={post.date} className="mt-1 block leading-5.5 text-muted-foreground">
+            <time dateTime={post.date} className="text-sm leading-5 text-muted-foreground">
               {post.month}
             </time>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
-            {post.talk && (
-              <PdfDialog
-                url={`/talks/${post.talk.id}.pdf`}
-                pages={post.talk.slides}
-                title="Slides"
-                pageLabel="Slide"
-                pageClassName="aspect-video"
-              />
-            )}
-            {post.paper && (
-              <>
+          {(post.talk || post.paper || post.github) && (
+            <nav aria-label="Article resources" className="flex flex-wrap items-center gap-2">
+              {post.talk && (
                 <PdfDialog
-                  url={`/papers/${post.paper.id}.pdf`}
-                  pages={post.paper.pages}
-                  title="Paper"
-                  pageLabel="Page"
-                  pageClassName="aspect-[17/22]"
+                  url={`/talks/${post.talk.id}.pdf`}
+                  pages={post.talk.slides}
+                  title="Slides"
+                  pageLabel="Slide"
+                  pageClassName="aspect-video"
                 />
+              )}
+              {post.paper && (
+                <>
+                  <PdfDialog
+                    url={`/papers/${post.paper.id}.pdf`}
+                    pages={post.paper.pages}
+                    title="Paper"
+                    pageLabel="Page"
+                    pageClassName="aspect-[17/22]"
+                  />
+                  <a
+                    href={post.paper.arxiv}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`${post.title} on arXiv`}
+                    title="arXiv"
+                    className={cn(buttonVariants({ variant: "resource", className: "px-3" }))}
+                  >
+                    <ArxivLogo />
+                  </a>
+                </>
+              )}
+              {post.github && (
                 <a
-                  href={post.paper.arxiv}
+                  href={post.github}
                   target="_blank"
                   rel="noreferrer"
-                  aria-label={`${post.title} on arXiv`}
-                  title="arXiv"
-                  className={cn(buttonVariants({ variant: "resource", className: "px-3" }))}
+                  aria-label={`${post.title} on GitHub`}
+                  title="GitHub"
+                  className={cn(buttonVariants({ variant: "resource", size: "icon" }))}
                 >
-                  <ArxivLogo />
+                  <GithubIcon />
                 </a>
-              </>
-            )}
-            {post.github && (
-              <a
-                href={post.github}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`${post.title} on GitHub`}
-                title="GitHub"
-                className={cn(buttonVariants({ variant: "resource", size: "icon" }))}
-              >
-                <GithubIcon />
-              </a>
-            )}
-          </div>
-        </div>
+              )}
+            </nav>
+          )}
+        </header>
 
         {post.talk?.video && <TalkVideo talk={post.talk} video={post.talk.video} />}
 
