@@ -9,6 +9,8 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary-hover",
         secondary: "bg-button-secondary text-foreground hover:bg-button-secondary-hover",
+        resource:
+          "rounded-xl bg-button-secondary text-control-foreground hover:bg-button-secondary-hover hover:text-foreground",
         ghost:
           "text-control-foreground hover:bg-button-secondary-hover hover:text-foreground aria-expanded:bg-button-secondary-hover aria-expanded:text-foreground",
         green: "bg-green-surface text-green-foreground hover:bg-green-surface-hover",
