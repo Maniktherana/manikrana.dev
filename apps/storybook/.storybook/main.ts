@@ -7,7 +7,7 @@ const config: StorybookConfig = {
   framework: "@storybook/react-vite",
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(ts|tsx)"],
   addons: ["@storybook/addon-docs"],
-  staticDirs: ["../public"],
+  staticDirs: ["../public", { from: "../../../packages/ui/src/styles", to: "/ui-styles" }],
   core: {
     disableTelemetry: true,
     disableWhatsNewNotifications: true,

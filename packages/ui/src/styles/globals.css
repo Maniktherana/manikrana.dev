@@ -99,7 +99,7 @@
 }
 
 @theme inline {
-  --font-sans: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Open Runde", "Open Runde Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-mono:
     "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
