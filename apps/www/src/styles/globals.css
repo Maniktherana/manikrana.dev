@@ -3,6 +3,7 @@
 
 @theme {
   --container-reading: 644px;
+  --radius-surface: 1rem;
   --container-stage: 75rem;
   --container-work: 90rem;
   --color-plot: hsl(0 0% 4%);
@@ -338,5 +339,11 @@ article pre.shiki {
   100% {
     offset-distance: 100%;
     opacity: 0;
+  }
+}
+
+@media (width >= 40rem) {
+  :root {
+    --radius-surface: 1.5rem;
   }
 }

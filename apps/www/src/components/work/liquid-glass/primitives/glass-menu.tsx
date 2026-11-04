@@ -377,18 +377,18 @@ function Surface({
       data-held={magnet.held || undefined}
       style={
         {
-          "--cx": `${shape.x}px`,
-          "--cy": `${shape.y}px`,
-          "--w": `${shape.width}px`,
-          "--h": `${shape.height}px`,
-          "--r": `${shape.radius}px`,
-          "--corner": shape.corner,
-          "--lift": shape.lift,
+          "--glass-cx": `${shape.x}px`,
+          "--glass-cy": `${shape.y}px`,
+          "--glass-w": `${shape.width}px`,
+          "--glass-h": `${shape.height}px`,
+          "--glass-r": `${shape.radius}px`,
+          "--glass-corner": shape.corner,
+          "--glass-lift": shape.lift,
         } as CSSProperties
       }
       {...magnet.handlers}
       className={cn(
-        "magnetic group absolute top-[calc(var(--cy)-var(--h)/2)] left-[calc(var(--cx)-var(--w)/2)] isolate h-(--h) w-(--w) touch-none overflow-hidden rounded-[calc(var(--r)*(1.4_-_0.4*var(--corner)))] supports-[corner-shape:squircle]:rounded-(--r) bg-[linear-gradient(color-mix(in_srgb,var(--glass-sheen)_calc(100%_-_var(--depth)_*_50%),transparent),rgb(255_255_255/0)_calc(100%_+_var(--depth)_*_6.67%)),linear-gradient(var(--glass-color),var(--glass-color))] font-[family-name:system-ui] text-(--glass-ink) subpixel-antialiased shadow-[var(--glass-contact),var(--glass-lift),0_calc(var(--depth)_*_7px)_calc(var(--depth)_*_8px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),0_calc(var(--depth)_*_11px)_calc(var(--depth)_*_28px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),inset_0_0_0_0.5px_rgb(255_255_255/calc(var(--depth)_*_0.16)),inset_0_0_5.5px_rgb(255_255_255/calc(var(--depth)_*_0.1)),inset_0_0.5px_0_rgb(255_255_255/calc(var(--depth)_*_0.3))] [--depth:clamp(0,var(--lift),1)] [backdrop-filter:var(--glass-backdrop)] select-none [corner-shape:superellipse(var(--corner))]",
+        "magnetic group absolute top-[calc(var(--glass-cy)-var(--glass-h)/2)] left-[calc(var(--glass-cx)-var(--glass-w)/2)] isolate h-(--glass-h) w-(--glass-w) touch-none overflow-hidden rounded-[calc(var(--glass-r)*(1.4_-_0.4*var(--glass-corner)))] supports-[corner-shape:squircle]:rounded-(--glass-r) bg-[linear-gradient(color-mix(in_srgb,var(--glass-sheen)_calc(100%_-_var(--depth)_*_50%),transparent),rgb(255_255_255/0)_calc(100%_+_var(--depth)_*_6.67%)),linear-gradient(var(--glass-color),var(--glass-color))] font-[family-name:system-ui] text-(--glass-ink) subpixel-antialiased shadow-[var(--glass-contact),var(--glass-lift),0_calc(var(--depth)_*_7px)_calc(var(--depth)_*_8px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),0_calc(var(--depth)_*_11px)_calc(var(--depth)_*_28px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),inset_0_0_0_0.5px_rgb(255_255_255/calc(var(--depth)_*_0.16)),inset_0_0_5.5px_rgb(255_255_255/calc(var(--depth)_*_0.1)),inset_0_0.5px_0_rgb(255_255_255/calc(var(--depth)_*_0.3))] [--depth:clamp(0,var(--glass-lift),1)] [backdrop-filter:var(--glass-backdrop)] select-none [corner-shape:superellipse(var(--glass-corner))]",
         !placed && "opacity-0",
         placed &&
           !reduceMotion &&

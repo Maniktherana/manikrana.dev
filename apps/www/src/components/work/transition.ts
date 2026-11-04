@@ -12,7 +12,7 @@ export function setTransitionTarget(slug: string, list: WorkList) {
 }
 
 export function morphsInto(pathname: string) {
-  if (pathname === "/work") return target?.list === "work";
+  if (pathname === "/lab") return target?.list === "work";
   if (pathname === "/")
     return target?.list === "home" && featured.some((item) => item.slug === target?.slug);
   return false;

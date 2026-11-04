@@ -4,7 +4,7 @@ import { maria } from "./conversation";
 export function Transcript({ caption }: { caption: string }) {
   return (
     <figure className="my-8">
-      <div className="flex flex-col gap-4 rounded-3xl bg-card p-5 sm:p-6">
+      <div className="flex flex-col gap-4 rounded-surface bg-card p-5 sm:p-6">
         {maria.map((message, index) => (
           <ChatMessage
             key={index}

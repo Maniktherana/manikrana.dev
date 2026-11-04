@@ -61,11 +61,22 @@ function squareGrid(
   };
 }
 
-export function Panel({ caption, children }: { caption: string; children: ReactNode }) {
+/** Only landscape figures (16:10 or wider) break out of the text column on desktop. */
+export const isWide = (width: number, height: number) => width / height >= 1.6;
+
+export function Panel({
+  caption,
+  wide = false,
+  children,
+}: {
+  caption: string;
+  wide?: boolean;
+  children: ReactNode;
+}) {
   return (
-    <figure className="my-8 max-sm:-mx-5 lg:-mx-16">
+    <figure className={cn("my-8", wide && "lg:-mx-16")}>
       {children}
-      <figcaption className="mt-3 text-center text-xs text-pretty text-muted-foreground max-sm:px-5">
+      <figcaption className="mt-3 text-center text-xs text-pretty text-muted-foreground">
         {caption}
       </figcaption>
     </figure>
@@ -119,7 +130,7 @@ export function Plot({
       <div
         aria-hidden="true"
         className={cn(
-          "relative overflow-hidden rounded-3xl bg-plot shadow-canvas",
+          "relative overflow-hidden rounded-surface bg-plot shadow-canvas",
           !bleed && "px-9 pt-10 pb-14",
         )}
       >

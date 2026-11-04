@@ -6,7 +6,7 @@ export function LibraryHeader() {
   useClose({ to: "/" });
 
   return (
-    <header className="mb-5 py-20 min-[641px]:mb-10 min-[641px]:pt-24">
+    <header className="py-20 min-[641px]:pt-24">
       <Link
         to="/"
         aria-label="Manik Rana, home"
@@ -27,9 +27,11 @@ export function LibraryHeader() {
             className="absolute inset-0 rounded-[inherit] data-loading:invisible data-error:invisible"
           />
         </Avatar>
-        <div>
-          <p className="text-base leading-5.5 font-semibold">Manik Rana</p>
-          <p className="group-hover:text-foreground transition-colors duration-150 text-muted-foreground leading-5.5">Engineer at TurboML</p>
+        <div className="flex flex-col gap-0.5">
+          <p className="text-lg leading-tight font-medium">Manik Rana</p>
+          <p className="group-hover:text-foreground transition-colors duration-150 text-base font-medium text-muted-foreground leading-5.5">
+            Engineer at TurboML
+          </p>
         </div>
       </Link>
     </header>

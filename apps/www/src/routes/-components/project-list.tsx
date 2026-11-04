@@ -25,9 +25,9 @@ export function ProjectList() {
               >
                 <Preview />
               </div>
-              <span className="min-w-0">
+              <span className="flex min-w-0 flex-col gap-0.5">
                 <span className="block leading-5.5 font-medium">{project.title}</span>
-                <span className="mt-1 block leading-5.5 text-muted-foreground">
+                <span className="block leading-5.5 text-muted-foreground">
                   {project.tagline}
                 </span>
               </span>

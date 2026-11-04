@@ -76,7 +76,7 @@ export function BreadcrumbSeparator() {
 export function useClose(fallback: NavigateOptions) {
   const router = useRouter();
   const back = useLocation({
-    select: (location) => location.pathname.startsWith("/work") && location.state.back,
+    select: (location) => location.pathname.startsWith("/lab") && location.state.back,
   });
   const close = () => {
     play("page-exit");

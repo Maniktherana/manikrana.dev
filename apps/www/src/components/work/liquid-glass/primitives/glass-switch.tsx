@@ -88,8 +88,8 @@ function GlassSwitch({
       style={
         {
           "--accent": accent,
-          "--switch-x": `${on ? TRAVEL : 0}px`,
-          "--lens": active ? 1 : 0,
+          "--glass-switch-x": `${on ? TRAVEL : 0}px`,
+          "--glass-switch-lens": active ? 1 : 0,
           ...style,
         } as CSSProperties
       }
@@ -103,7 +103,7 @@ function GlassSwitch({
         aria-hidden="true"
         className="absolute inset-0 rounded-full bg-[rgb(120_120_128/0.36)] transition-[background-color] duration-200 ease-out group-data-checked:bg-(--accent)"
       />
-      <Switch.Thumb className="absolute top-0.5 left-0.5 h-6 w-9 translate-x-(--switch-x) scale-[calc(1+var(--lens)*0.6)] rounded-full bg-white shadow-[0_1px_3px_rgb(0_0_0/0.3)] transition-[background-color,box-shadow] duration-180 ease-out group-data-active:bg-white/8 group-data-active:shadow-[0_2px_8px_rgb(0_0_0/0.3)] group-data-active:[backdrop-filter:brightness(1.12)_saturate(1.15)] motion-reduce:transition-none">
+      <Switch.Thumb className="absolute top-0.5 left-0.5 h-6 w-9 translate-x-(--glass-switch-x) scale-[calc(1+var(--glass-switch-lens)*0.6)] rounded-full bg-white shadow-[0_1px_3px_rgb(0_0_0/0.3)] transition-[background-color,box-shadow] duration-180 ease-out group-data-active:bg-white/8 group-data-active:shadow-[0_2px_8px_rgb(0_0_0/0.3)] group-data-active:[backdrop-filter:brightness(1.12)_saturate(1.15)] motion-reduce:transition-none">
         <span className="absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-180 ease-out group-data-active:opacity-100">
           <GlassRim />
         </span>

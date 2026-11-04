@@ -162,13 +162,13 @@
 
 /* 5. Motion */
 
-@property --switch-x {
+@property --glass-switch-x {
   syntax: "<length>";
   inherits: true;
   initial-value: 0px;
 }
 
-@property --lens {
+@property --glass-switch-lens {
   syntax: "<number>";
   inherits: true;
   initial-value: 0;
@@ -725,43 +725,43 @@
   --tint: 150ms ease-out;
 }
 
-@property --cx {
+@property --glass-cx {
   syntax: "<length>";
   inherits: false;
   initial-value: 0px;
 }
 
-@property --cy {
+@property --glass-cy {
   syntax: "<length>";
   inherits: false;
   initial-value: 0px;
 }
 
-@property --w {
+@property --glass-w {
   syntax: "<length>";
   inherits: false;
   initial-value: 0px;
 }
 
-@property --h {
+@property --glass-h {
   syntax: "<length>";
   inherits: false;
   initial-value: 0px;
 }
 
-@property --r {
+@property --glass-r {
   syntax: "<length>";
   inherits: false;
   initial-value: 0px;
 }
 
-@property --corner {
+@property --glass-corner {
   syntax: "<number>";
   inherits: true;
   initial-value: 2;
 }
 
-@property --lift {
+@property --glass-lift {
   syntax: "<number>";
   inherits: false;
   initial-value: 1;

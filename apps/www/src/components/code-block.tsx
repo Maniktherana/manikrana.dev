@@ -9,7 +9,7 @@ export function CodeBlock({
 }: ComponentProps<"pre"> & { "data-file"?: string }) {
   const pre = useRef<HTMLPreElement>(null);
   return (
-    <div className="my-6 overflow-hidden rounded-3xl bg-card">
+    <div className="my-6 overflow-hidden rounded-surface bg-card">
       <div className="flex h-12 items-center gap-2 px-2">
         <span className="min-w-0 flex-1 truncate px-4 font-mono text-sm text-control-foreground">
           {file}

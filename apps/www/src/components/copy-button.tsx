@@ -50,7 +50,7 @@ export function CopyButton({
       size={iconOnly ? "icon" : "default"}
       aria-label={iconOnly ? label : undefined}
       data-sound={sound}
-      className={cn("font-normal", !iconOnly && "gap-2 ps-2.5 pe-3", className)}
+      className={cn(!iconOnly && "gap-2 ps-2.5 pe-3", className)}
       onClick={async () => {
         await navigator.clipboard.writeText(typeof value === "function" ? value() : value);
         setCopied(true);

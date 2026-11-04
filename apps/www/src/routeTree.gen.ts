@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as R404RouteImport } from './routes/404'
+import { Route as LabIndexRouteImport } from './routes/lab/index'
+import { Route as LabSlugRouteImport } from './routes/lab/$slug'
 import { Route as LibraryIndexRouteImport } from './routes/library/index'
 import { Route as LibraryIdRouteImport } from './routes/library/$id'
 import { Route as WorkIndexRouteImport } from './routes/work/index'
@@ -24,6 +26,16 @@ const IndexRoute = IndexRouteImport.update({
 const R404Route = R404RouteImport.update({
   id: '/404',
   path: '/404',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LabIndexRoute = LabIndexRouteImport.update({
+  id: '/lab/',
+  path: '/lab/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LabSlugRoute = LabSlugRouteImport.update({
+  id: '/lab/$slug',
+  path: '/lab/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LibraryIndexRoute = LibraryIndexRouteImport.update({
@@ -50,16 +62,20 @@ const WorkSlugRoute = WorkSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/404': typeof R404Route
+  '/lab/$slug': typeof LabSlugRoute
   '/library/$id': typeof LibraryIdRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/lab/': typeof LabIndexRoute
   '/library/': typeof LibraryIndexRoute
   '/work/': typeof WorkIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/404': typeof R404Route
+  '/lab/$slug': typeof LabSlugRoute
   '/library/$id': typeof LibraryIdRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/lab': typeof LabIndexRoute
   '/library': typeof LibraryIndexRoute
   '/work': typeof WorkIndexRoute
 }
@@ -67,23 +83,42 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/404': typeof R404Route
+  '/lab/$slug': typeof LabSlugRoute
   '/library/$id': typeof LibraryIdRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/lab/': typeof LabIndexRoute
   '/library/': typeof LibraryIndexRoute
   '/work/': typeof WorkIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/404' | '/library/$id' | '/work/$slug' | '/library/' | '/work/'
+    | '/'
+    | '/404'
+    | '/lab/$slug'
+    | '/library/$id'
+    | '/work/$slug'
+    | '/lab/'
+    | '/library/'
+    | '/work/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/404' | '/library/$id' | '/work/$slug' | '/library' | '/work'
+  to:
+    | '/'
+    | '/404'
+    | '/lab/$slug'
+    | '/library/$id'
+    | '/work/$slug'
+    | '/lab'
+    | '/library'
+    | '/work'
   id:
     | '__root__'
     | '/'
     | '/404'
+    | '/lab/$slug'
     | '/library/$id'
     | '/work/$slug'
+    | '/lab/'
     | '/library/'
     | '/work/'
   fileRoutesById: FileRoutesById
@@ -91,8 +126,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   R404Route: typeof R404Route
+  LabSlugRoute: typeof LabSlugRoute
   LibraryIdRoute: typeof LibraryIdRoute
   WorkSlugRoute: typeof WorkSlugRoute
+  LabIndexRoute: typeof LabIndexRoute
   LibraryIndexRoute: typeof LibraryIndexRoute
   WorkIndexRoute: typeof WorkIndexRoute
 }
@@ -111,6 +148,20 @@ declare module '@tanstack/react-router' {
       path: '/404'
       fullPath: '/404'
       preLoaderRoute: typeof R404RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lab/': {
+      id: '/lab/'
+      path: '/lab'
+      fullPath: '/lab/'
+      preLoaderRoute: typeof LabIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lab/$slug': {
+      id: '/lab/$slug'
+      path: '/lab/$slug'
+      fullPath: '/lab/$slug'
+      preLoaderRoute: typeof LabSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/library/': {
@@ -147,8 +198,10 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R404Route: R404Route,
+  LabSlugRoute: LabSlugRoute,
   LibraryIdRoute: LibraryIdRoute,
   WorkSlugRoute: WorkSlugRoute,
+  LabIndexRoute: LabIndexRoute,
   LibraryIndexRoute: LibraryIndexRoute,
   WorkIndexRoute: WorkIndexRoute,
 }

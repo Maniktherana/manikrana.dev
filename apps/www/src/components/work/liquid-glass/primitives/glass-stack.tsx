@@ -552,11 +552,11 @@ function SwipeBody({
       style={
         {
           "--y": `${y}px`,
-          "--h": `${height}px`,
+          "--glass-h": `${height}px`,
           "--z": layer,
         } as CSSProperties
       }
-      className="pointer-events-none absolute inset-x-0 top-0 z-(--z) h-(--h) translate-y-(--y)"
+      className="pointer-events-none absolute inset-x-0 top-0 z-(--z) h-(--glass-h) translate-y-(--y)"
     >
       {!plain && (
         <div className="absolute inset-y-0 -left-full w-[calc(200%+--spacing(16))]">

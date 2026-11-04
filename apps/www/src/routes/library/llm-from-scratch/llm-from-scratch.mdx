@@ -28,7 +28,7 @@ For the rest of this article, let's use the prompt “The cat is”. We feed it 
 
 Whatever token we select gets appended to the original prompt, and we repeat the process with that longer input. If the next token is “black”, the next prompt becomes “The cat is black”. This continues until we reach the token limit or the model produces an end-of-sequence token. That's the basic loop behind generating a response. The rest of the article follows what happens inside one pass through the model.
 
-## Step zero: the tokenizer
+## The tokenizer
 
 Although the model produces text, it doesn't work directly with words or characters. First, a **tokenizer** splits the prompt into smaller pieces called tokens. A token can be a whole word, part of a word, punctuation, or a piece of whitespace. The tokenizer has a vocabulary of known tokens, and each token has its own integer ID. These IDs tell the model which pieces of text are present, but their numerical values don't describe what those pieces mean.
 
@@ -36,7 +36,7 @@ The vocabulary also contains special tokens that mark the structure of the input
 
 For MLM, I used a byte-level **BPE**, or byte pair encoding, tokenizer through Hugging Face Transformers. BPE builds its vocabulary by repeatedly merging common neighboring pieces of text. I trained the tokenizer on samples from the same OpenWebText training data, producing a vocabulary of **50,257 tokens**. The tokenizer gives us the IDs; turning those IDs into vectors is the model's next job.
 
-## Step one: input embeddings
+## Input embeddings
 
 Now that we have a list of token IDs, we can feed them into the model. MLM has a learned **token embedding** table with 50,257 rows and 768 columns: one row per token, with 768 numbers in each row. Each ID performs a lookup and returns its row. For our four-token example, this produces a 4 × 768 matrix, with one vector per token. Training changes the numbers in the table so that these vectors become useful for predicting what comes next.
 
@@ -53,7 +53,7 @@ x = tok_embeds + pos_embeds
 x = self.drop_emb(x)
 ```
 
-## Step two: layer normalization
+## Layer normalization
 
 Before running attention, we apply **layer normalization** to keep each token's values on a consistent scale. This helps stabilize gradients and makes it easier for training to converge without values blowing up or collapsing.
 
@@ -96,7 +96,7 @@ class LayerNorm(nn.Module):
         return self.scale * norm_x + self.shift
 ```
 
-## Step three: causal self-attention
+## Causal self-attention
 
 This is where things get a bit dense.
 
@@ -133,7 +133,7 @@ context_vec = self.out_proj(context_vec)
 
 Finally, we add a **skip connection**, also called a residual connection. We saved the input from before layer normalization, and now add it to the attention output, after dropout. Attention therefore supplies an update to the existing representation. This also gives gradients a direct path through the block during training.
 
-## Step four: the MLP
+## The MLP
 
 After attention and its residual connection, we apply another layer normalization and pass the result through a **multilayer perceptron**, or MLP. This is the familiar feed-forward neural network: fully connected layers with an activation function between them. Attention combines information across token positions, while the MLP transforms the features within each token's representation. The same MLP processes every token independently, using shared weights across positions.
 
@@ -173,7 +173,7 @@ def forward(self, x):
     return x
 ```
 
-## Step five: logits and the next token
+## Logits and the next token
 
 After the 12th transformer block, we apply a final layer normalization, and its output goes into the **language model head** (or `out_head`). This linear layer maps each 768-number vector to **50,257 scores**, one for every token in the vocabulary. These scores are called **logits**. They can be positive or negative and don't have to add up to one, so they are not probabilities yet.
 

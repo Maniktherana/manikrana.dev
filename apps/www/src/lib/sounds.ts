@@ -99,7 +99,7 @@ export function play(sound: Sound) {
 }
 
 const isEntry = (pathname: string) =>
-  pathname.startsWith("/work/") || pathname.startsWith("/library/");
+  pathname.startsWith("/lab/") || pathname.startsWith("/library/");
 const depthOf = (pathname: string) => (pathname === "/" ? 0 : isEntry(pathname) ? 2 : 1);
 
 export function navigationSound(from: string, to: string): Sound | undefined {

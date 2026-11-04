@@ -71,7 +71,7 @@ function WorkTile({
         )}
       </div>
       <Link
-        to="/work/$slug"
+        to="/lab/$slug"
         params={{ slug: item.slug }}
         state={{ grid: list }}
         onClick={() => setTransitionTarget(item.slug, list)}

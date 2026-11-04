@@ -19,7 +19,7 @@ export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>): { show?: "component" } =>
     search.show === "component" ? { show: "component" } : {},
   beforeLoad: ({ search }) => {
-    if (search.show) throw redirect({ to: "/work", hash: "selected-work" });
+    if (search.show) throw redirect({ to: "/lab", hash: "selected-work" });
   },
   component: Home,
 });
@@ -56,85 +56,89 @@ function Home() {
                 className="absolute inset-0 rounded-[inherit] data-loading:invisible data-error:invisible"
               />
             </Avatar>
-            <div>
-              <h1 id="intro-title" className="text-base leading-5.5 font-semibold">
+            <div className="flex flex-col gap-0.5">
+              <h1 id="intro-title" className="text-lg leading-tight font-medium">
                 Manik Rana
               </h1>
-              <p className="text-muted-foreground leading-5.5">Engineer at TurboML</p>
+              <p className="text-base leading-5.5 font-medium text-muted-foreground">
+                Engineer at TurboML
+              </p>
             </div>
           </header>
-          <p className="mb-3 text-muted-foreground last:mb-0">
-            I'm an engineer at{" "}
-            <span className="whitespace-nowrap">
-              <Link href="https://turboml.com/" target="_blank" rel="noreferrer">
-                <TurbomlMark />
-                TurboML
-              </Link>
-              .
-            </span>{" "}
-            I build ambitious software end to end, from the systems that make it fast to the
-            interfaces that make it feel good.
-          </p>
-          <p className="mb-3 text-muted-foreground last:mb-0">
-            Previously, I worked on{" "}
-            <Link
-              href="https://github.com/prometheus/prometheus/issues/14217"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <PrometheusMark />
-              Prometheus
-            </Link>{" "}
-            through{" "}
-            <span className="whitespace-nowrap">
+          <div className="flex flex-col gap-3 text-muted-foreground">
+            <p>
+              I'm an engineer at{" "}
+              <span className="whitespace-nowrap">
+                <Link href="https://turboml.com/" target="_blank" rel="noreferrer">
+                  <TurbomlMark />
+                  TurboML
+                </Link>
+                .
+              </span>{" "}
+              I build ambitious software end to end, from the systems that make it fast to the
+              interfaces that make it feel good.
+            </p>
+            <p>
+              Previously, I worked on{" "}
               <Link
-                href="https://summerofcode.withgoogle.com/archive/2024/organizations/cncf/"
+                href="https://github.com/prometheus/prometheus/issues/14217"
                 target="_blank"
                 rel="noreferrer"
               >
-                <GsocMark />
-                GSoC
-              </Link>
-              ,
-            </span>{" "}
-            where I worked on its OpenMetrics parser and cut memory use by up to{" "}
-            <span className="whitespace-nowrap">
-              <Link
-                href="https://github.com/prometheus/prometheus/pull/15097#issuecomment-2404777959"
-                target="_blank"
-                rel="noreferrer"
-                className="tabular-nums"
-              >
-                10x
-              </Link>
-              .
-            </span>
-          </p>
-          <p className="mb-3 text-muted-foreground last:mb-0">
-            You can reach me on{" "}
-            <span className="whitespace-nowrap">
-              <Link href="https://x.com/ManikMkr" target="_blank" rel="noreferrer">
-                <XIcon className="size-3.5 self-center" />x
-              </Link>
-              ,
-            </span>{" "}
-            by{" "}
-            <span className="whitespace-nowrap">
-              <Link href="mailto:hello@manikrana.dev">
-                <MailIcon className="self-center" />
-                email
-              </Link>
-              ,
-            </span>{" "}
-            or on{" "}
-            <span className="whitespace-nowrap">
-              <Link href="https://github.com/Maniktherana" target="_blank" rel="noreferrer">
-                <GithubIcon className="self-center" />
-                GitHub
-              </Link>
-              .
-            </span>
-          </p>
+                <PrometheusMark />
+                Prometheus
+              </Link>{" "}
+              through{" "}
+              <span className="whitespace-nowrap">
+                <Link
+                  href="https://summerofcode.withgoogle.com/archive/2024/organizations/cncf/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <GsocMark />
+                  GSoC
+                </Link>
+                ,
+              </span>{" "}
+              where I worked on its OpenMetrics parser and cut memory use by up to{" "}
+              <span className="whitespace-nowrap">
+                <Link
+                  href="https://github.com/prometheus/prometheus/pull/15097#issuecomment-2404777959"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="tabular-nums"
+                >
+                  10x
+                </Link>
+                .
+              </span>
+            </p>
+            <p>
+              You can reach me on{" "}
+              <span className="whitespace-nowrap">
+                <Link href="https://x.com/ManikMkr" target="_blank" rel="noreferrer">
+                  <XIcon className="size-3.5 self-center" />x
+                </Link>
+                ,
+              </span>{" "}
+              by{" "}
+              <span className="whitespace-nowrap">
+                <Link href="mailto:hello@manikrana.dev">
+                  <MailIcon className="self-center" />
+                  email
+                </Link>
+                ,
+              </span>{" "}
+              or on{" "}
+              <span className="whitespace-nowrap">
+                <Link href="https://github.com/Maniktherana" target="_blank" rel="noreferrer">
+                  <GithubIcon className="self-center" />
+                  GitHub
+                </Link>
+                .
+              </span>
+            </p>
+          </div>
         </div>
       </section>
 
@@ -142,7 +146,7 @@ function Home() {
         aria-labelledby="projects-title"
         className="mx-auto w-[calc(100%-40px)] max-w-reading"
       >
-        <h2 id="projects-title" className="heading-rule mb-3 text-lg leading-tight font-semibold">
+        <h2 id="projects-title" className="heading-rule mb-3 text-lg leading-tight font-medium">
           Projects
         </h2>
         <ProjectList />
@@ -150,9 +154,9 @@ function Home() {
 
       <section aria-labelledby="work-title">
         <div className="mx-auto w-[calc(100%-40px)] max-w-reading">
-          <h2 id="work-title" className="heading-rule mb-6 text-lg leading-tight font-semibold">
+          <h2 id="work-title" className="heading-rule mb-6 text-lg leading-tight font-medium">
             <RouterLink
-              to="/work"
+              to="/lab"
               state={{ back: true }}
               className="relative isolate flex w-fit items-baseline gap-2 outline-none before:absolute before:-inset-x-1.5 before:-inset-y-1 before:-z-1 before:rounded-md before:bg-card before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 focus-visible:before:opacity-100 focus-visible:before:ring-2 focus-visible:before:ring-ring motion-reduce:before:transition-none"
             >
@@ -173,7 +177,7 @@ function Home() {
         aria-labelledby="library-title"
         className="mx-auto w-[calc(100%-40px)] max-w-reading"
       >
-        <h2 id="library-title" className="heading-rule mb-6 text-lg leading-tight font-semibold">
+        <h2 id="library-title" className="heading-rule mb-6 text-lg leading-tight font-medium">
           Library
         </h2>
         <LibraryList />

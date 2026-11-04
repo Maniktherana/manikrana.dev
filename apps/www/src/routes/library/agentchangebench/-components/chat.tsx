@@ -48,7 +48,7 @@ export function ChatMessage({
           <motion.div
             key="typing"
             exit={{ ...fadeOut, scale: 0.96 }}
-            className="w-fit origin-bottom-right rounded-2xl rounded-ee-md bg-control px-3.5 py-2"
+            className="w-fit origin-bottom-right rounded-xl rounded-ee-md sm:rounded-2xl sm:rounded-ee-md bg-control px-3.5 py-2"
           >
             <Dots />
           </motion.div>
@@ -59,7 +59,7 @@ export function ChatMessage({
             initial={{ opacity: 0, scale: 0.96, filter: "blur(4px)" }}
             animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
             transition={reduceMotion ? { duration: 0 } : STREAM.word}
-            className="w-fit max-w-4/5 origin-bottom-right rounded-2xl rounded-ee-md bg-control px-3.5 py-2 text-[15px] leading-6 text-pretty text-foreground"
+            className="w-fit max-w-4/5 origin-bottom-right rounded-xl rounded-ee-md sm:rounded-2xl sm:rounded-ee-md bg-control px-3.5 py-2 text-[15px] leading-6 text-pretty text-foreground"
           >
             <Text message={message} />
           </motion.div>

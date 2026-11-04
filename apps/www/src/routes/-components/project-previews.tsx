@@ -76,7 +76,11 @@ export function GustProjectPreview() {
   const id = useId();
 
   return (
-    <svg viewBox="2 2.125 26.25 26.25" fill="none" className="pointer-events-none size-9 select-none">
+    <svg
+      viewBox="2 2.125 26.25 26.25"
+      fill="none"
+      className="pointer-events-none size-9 select-none"
+    >
       <defs>
         <linearGradient id={`${id}-ink`} x1="0" y1="0" x2="0" y2="1">
           <stop stopColor="oklch(0.64 0 0)" />
@@ -93,15 +97,7 @@ export function GustProjectPreview() {
         </filter>
       </defs>
       <g fill={`url(#${id}-ink)`}>
-        <rect
-          x="5"
-          y="7"
-          width="3"
-          height="6"
-          rx="0.6"
-          opacity="0.28"
-          filter={`url(#${id}-far)`}
-        />
+        <rect x="5" y="7" width="3" height="6" rx="0.6" opacity="0.28" filter={`url(#${id}-far)`} />
         <rect
           x="9.25"
           y="9"

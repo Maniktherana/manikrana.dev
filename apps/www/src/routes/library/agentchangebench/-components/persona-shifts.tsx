@@ -53,7 +53,7 @@ export function PersonaShifts({ caption }: { caption: string }) {
         </Toolbar>
       </div>
       {/* Every quote sits in the same cell, so the card keeps the tallest one's height. */}
-      <div className="mt-3 grid rounded-3xl bg-card p-5 sm:p-6">
+      <div className="mt-3 grid rounded-surface bg-card p-5 sm:p-6">
         {personas.map((entry) => (
           <div key={entry.label} aria-hidden="true" className="invisible col-start-1 row-start-1">
             <ChatMessage

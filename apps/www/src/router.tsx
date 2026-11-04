@@ -4,7 +4,7 @@ import { morphsInto } from "@/components/work/transition";
 
 import { routeTree } from "./routeTree.gen";
 
-const lists = ["/", "/work"];
+const lists = ["/", "/lab"];
 
 export function getRouter() {
   return createRouter({

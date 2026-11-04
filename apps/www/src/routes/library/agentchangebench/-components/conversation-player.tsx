@@ -245,7 +245,7 @@ export function ConversationPlayer({ caption }: { caption: string }) {
   return (
     <MotionConfig reducedMotion="user">
       <figure ref={root} className="my-8">
-        <div className="overflow-hidden rounded-3xl bg-card">
+        <div className="overflow-hidden rounded-surface bg-card">
           <div className="relative h-88 overflow-hidden">
             <div className="absolute inset-x-0 bottom-0 flex flex-col px-5 pb-5 sm:px-6 sm:pb-6">
               <AnimatePresence initial={false}>
@@ -359,11 +359,20 @@ export function ConversationPlayer({ caption }: { caption: string }) {
                   </motion.span>
                 </AnimatePresence>
               </button>
-              <dl className="ms-auto flex flex-wrap justify-end gap-x-4 gap-y-3">
+              <dl className="ms-auto flex justify-end gap-x-2 sm:gap-x-4">
                 {stats.map((stat) => (
-                  <div key={stat.label} className="min-w-[5ch] text-end">
+                  <div
+                    key={stat.label}
+                    className="flex min-w-[4ch] flex-col justify-end text-end sm:min-w-[5ch]"
+                  >
                     <dt className="text-[13px] leading-5 whitespace-nowrap text-muted-foreground">
-                      {stat.label}
+                      {stat.label.startsWith("GSRT ") ? (
+                        <>
+                          <span className="max-sm:block">GSRT</span> {stat.label.slice(5)}
+                        </>
+                      ) : (
+                        stat.label
+                      )}
                     </dt>
                     <dd
                       className={cn(

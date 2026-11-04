@@ -26,9 +26,7 @@ export function PdfDialog({
   };
   return (
     <Dialog.Root open={open} onOpenChange={change}>
-      <Dialog.Trigger
-        className={cn(buttonVariants({ variant: "resource", className: "px-3 font-normal" }))}
-      >
+      <Dialog.Trigger className={cn(buttonVariants({ variant: "resource", className: "px-3" }))}>
         {title}
       </Dialog.Trigger>
       <Dialog.Portal>

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useInView, useReducedMotion } from "motion/react";
 import { cn } from "@manikrana/ui/lib/utils";
+import { isWide } from "@/components/chart";
 import { BAR, DOT, STACK, LABEL, MARGIN, dotX, noise, type Item } from "./scene";
 
 const WIDTH = 400;
@@ -378,10 +379,10 @@ export function SceneDiagram({
       nearest.set(boundsOf(item), Math.min(nearest.get(boundsOf(item)) ?? Infinity, depthOf(item)));
 
   return (
-    <figure className="my-8 max-sm:-mx-5 lg:-mx-16">
+    <figure className={cn("my-8", isWide(WIDTH, height) && "lg:-mx-16")}>
       <div
         ref={ref}
-        className="relative rounded-3xl bg-plot shadow-canvas"
+        className="relative rounded-surface bg-plot shadow-canvas"
         style={{ "--play-state": playing ? "running" : "paused" } as CSSProperties}
       >
         <svg
@@ -667,7 +668,7 @@ export function SceneDiagram({
         </svg>
         {labels}
       </div>
-      <figcaption className="mt-3 text-center text-xs text-pretty text-muted-foreground max-sm:px-5">
+      <figcaption className="mt-3 text-center text-xs text-pretty text-muted-foreground">
         {caption}
       </figcaption>
     </figure>
