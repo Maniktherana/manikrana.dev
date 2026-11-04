@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { cn } from "@manikrana/ui/lib/utils";
 
 type CrossfadeProps = {
@@ -69,77 +69,5 @@ function Swap({ className, items, shrink = false, value }: SwapProps) {
   );
 }
 
-const MARQUEE_GAP = 32;
-const MARQUEE_SPEED = 30;
-
-function Marquee({ children }: { children: ReactNode }) {
-  const frame = useRef<HTMLSpanElement>(null);
-  const strip = useRef<HTMLSpanElement>(null);
-  const [overflow, setOverflow] = useState(0);
-  const [moving, setMoving] = useState(false);
-
-  useEffect(() => {
-    const box = frame.current;
-    const text = strip.current?.firstElementChild as HTMLElement | null;
-    if (!box || !text) return;
-    const measure = () => setOverflow(Math.max(0, text.offsetWidth - box.offsetWidth));
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(box);
-    observer.observe(text);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const node = strip.current;
-    const text = node?.firstElementChild as HTMLElement | null;
-    if (!node || !text || !overflow) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let timer = 0;
-    let run: Animation | null = null;
-    const loop = () => {
-      timer = window.setTimeout(
-        () => {
-          const distance = text.offsetWidth + MARQUEE_GAP;
-          setMoving(true);
-          run = node.animate([{ translate: "0px 0px" }, { translate: `${-distance}px 0px` }], {
-            duration: (distance / MARQUEE_SPEED) * 1000,
-            easing: "linear",
-          });
-          run.onfinish = () => {
-            setMoving(false);
-            loop();
-          };
-        },
-        3000 + Math.random() * 3000,
-      );
-    };
-    loop();
-    return () => {
-      window.clearTimeout(timer);
-      run?.cancel();
-      setMoving(false);
-    };
-  }, [overflow]);
-
-  return (
-    <span
-      ref={frame}
-      data-overflow={overflow > 0 || undefined}
-      data-moving={moving || undefined}
-      className="block min-w-0 overflow-hidden data-overflow:[mask-image:linear-gradient(to_right,black_calc(100%-24px),transparent)] data-moving:[mask-image:linear-gradient(to_right,transparent,black_16px,black_calc(100%-24px),transparent)]"
-    >
-      <span ref={strip} className="flex w-max gap-8">
-        <span className="whitespace-nowrap">{children}</span>
-        {overflow > 0 && (
-          <span aria-hidden="true" className="whitespace-nowrap">
-            {children}
-          </span>
-        )}
-      </span>
-    </span>
-  );
-}
-
-export { Crossfade, Marquee, Swap };
+export { Crossfade, Swap };
 export type { CrossfadeProps, SwapProps };

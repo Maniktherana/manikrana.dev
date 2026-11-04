@@ -9,9 +9,11 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@manikrana/ui/lib/utils";
+import { motion, useReducedMotion, type Transition } from "motion/react";
 import { GlassGoo, GlassLight, GlassRim } from "./glass";
 import { Crossfade } from "./glass-motion";
 import { useMagnetic } from "./magnetic";
+import { gather, reveal } from "./springs";
 
 type GlassActionsProps = {
   children: ReactNode;
@@ -59,6 +61,7 @@ function GlassActions({
   const icon = trigger?.children;
   const label = trigger?.label ?? "";
   const root = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
   const liquid = `liquid${useId().replace(/[^\w-]/g, "")}`;
   const [body, setBody] = useState<SVGGElement | null>(null);
   const [frost, setFrost] = useState<HTMLDivElement | null>(null);
@@ -85,13 +88,7 @@ function GlassActions({
       ref={root}
       data-sway={moved && !open ? "recoil" : undefined}
       style={{ "--count": actions.length } as CSSProperties}
-      className={cn(
-        "relative h-11 w-[calc(var(--count)*--spacing(15)---spacing(4))] motion-reduce:[--spread-time:0s]",
-        open
-          ? "[--spread-time:var(--spring-reveal-time)] [--spread:var(--spring-reveal)]"
-          : "[--spread-time:var(--spring-gather-time)] [--spread:var(--spring-gather)]",
-        className,
-      )}
+      className={cn("relative h-11 w-[calc(var(--count)*--spacing(15)---spacing(4))]", className)}
     >
       <div ref={setFrost} aria-hidden="true" className="pointer-events-none absolute -inset-4">
         {!frost && (
@@ -120,6 +117,7 @@ function GlassActions({
             frost={frost}
             center={actions.length * STEP - 22}
             offset={open ? (index - anchor) * STEP : 0}
+            spread={reduceMotion ? { duration: 0 } : open ? reveal : gather}
             visible={index === anchor || open}
             sway={!moved ? undefined : open ? "split" : "merge"}
             onClick={(fromKeyboard) => {
@@ -142,6 +140,7 @@ function Bubble({
   label,
   offset,
   onClick,
+  spread,
   sway,
   visible,
 }: {
@@ -152,23 +151,25 @@ function Bubble({
   label: string;
   offset: number;
   onClick: (fromKeyboard: boolean) => void;
+  spread: Transition;
   sway?: "split" | "merge";
   visible: boolean;
 }) {
   const magnet = useMagnetic<HTMLButtonElement>({ grow: 1.1 });
-  const place = { "--offset": `${offset}px` } as CSSProperties;
 
   return (
     <>
-      <div
+      <motion.div
         inert={!visible}
         data-sway={sway}
-        style={place}
+        initial={false}
+        animate={{ x: offset }}
+        transition={spread}
         className={cn(
-          "absolute top-0 right-0 size-11 translate-x-(--offset)",
+          "absolute top-0 right-0 size-11",
           visible
-            ? "[transition:translate_var(--spread-time)_var(--spread),opacity_50ms_ease-out]"
-            : "pointer-events-none opacity-0 [transition:translate_var(--spread-time)_var(--spread),opacity_100ms_ease-out_200ms]",
+            ? "transition-opacity duration-50 ease-out"
+            : "pointer-events-none opacity-0 transition-opacity delay-200 duration-100 ease-out",
         )}
       >
         <button
@@ -180,7 +181,6 @@ function Bubble({
           onClick={(event) => onClick(event.detail === 0)}
           className="magnetic group relative isolate grid size-full cursor-pointer touch-none place-items-center rounded-full text-(--glass-ink) select-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
         >
-          {/* The same rim as every glass button; the goo filter only draws the fill and shadow. */}
           <GlassRim />
           <GlassLight />
           <span className="col-start-1 row-start-1 grid">
@@ -189,36 +189,36 @@ function Bubble({
             </Crossfade>
           </span>
         </button>
-      </div>
+      </motion.div>
       {frost &&
         createPortal(
-          <div
+          <motion.div
             data-sway={sway}
-            style={place}
+            initial={false}
+            animate={{ x: offset }}
+            transition={spread}
             className={cn(
-              "absolute top-4 right-4 size-11 translate-x-(--offset)",
-              visible
-                ? "[transition:translate_var(--spread-time)_var(--spread)]"
-                : "opacity-0 [transition:translate_var(--spread-time)_var(--spread),opacity_0s_350ms]",
+              "absolute top-4 right-4 size-11",
+              !visible && "opacity-0 transition-opacity delay-350 duration-0",
             )}
           >
             <span
               ref={magnet.follow}
               className="magnetic block size-full rounded-full shadow-[var(--glass-lift)] [backdrop-filter:var(--glass-backdrop)]"
             />
-          </div>,
+          </motion.div>,
           frost,
         )}
       {body &&
         createPortal(
-          <g
+          <motion.g
             data-sway={sway}
-            style={place}
+            initial={false}
+            animate={{ x: offset }}
+            transition={spread}
             className={cn(
-              "origin-center translate-x-(--offset) [transform-box:fill-box]",
-              visible
-                ? "[transition:translate_var(--spread-time)_var(--spread)]"
-                : "opacity-0 [transition:translate_var(--spread-time)_var(--spread),opacity_0s_350ms]",
+              "origin-center [transform-box:fill-box]",
+              !visible && "opacity-0 transition-opacity delay-350 duration-0",
             )}
           >
             <circle
@@ -229,7 +229,7 @@ function Bubble({
               fill="white"
               className="magnetic origin-center [transform-box:fill-box]"
             />
-          </g>,
+          </motion.g>,
           body,
         )}
     </>

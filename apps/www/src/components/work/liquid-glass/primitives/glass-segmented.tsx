@@ -1,8 +1,7 @@
 import {
   Children,
-  createContext,
   isValidElement,
-  use,
+  useEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -12,7 +11,9 @@ import {
 import { Radio } from "@base-ui/react/radio";
 import { RadioGroup } from "@base-ui/react/radio-group";
 import { cn } from "@manikrana/ui/lib/utils";
+import { animate, motion, useMotionValue, useReducedMotion } from "motion/react";
 import { Glass } from "./glass";
+import { settle } from "./springs";
 
 type GlassSegmentedProps = Omit<
   RadioGroup.Props,
@@ -38,8 +39,6 @@ const INSET = 4;
 const GIVE = 40;
 const PRESS = { grow: 1.02, pull: 0.025, stretch: 0.03 };
 
-const Stretch = createContext(false);
-
 function band(distance: number) {
   return distance / (1 + distance / GIVE);
 }
@@ -54,16 +53,31 @@ function GlassSegmented({
   ...props
 }: GlassSegmentedProps) {
   const root = useRef<HTMLDivElement>(null);
+  const stretch = useMotionValue(0);
+  const side = useRef(1);
+  const reduceMotion = useReducedMotion();
   const values = Children.toArray(children)
     .filter(isValidElement<GlassSegmentedItemProps>)
     .map((child) => child.props.value);
   const [local, setLocal] = useState(defaultValue ?? values[0]);
   const current = value ?? local;
   const [lens, setLens] = useState<{ x: number; jumping: boolean } | null>(null);
-  const [pull, setPull] = useState<number | null>(null);
-  const [from, setFrom] = useState<"left" | "right">("left");
   const end = (values.length - 1) * SEGMENT;
   const x = lens ? lens.x : Math.max(0, values.indexOf(current ?? "")) * SEGMENT;
+
+  useEffect(
+    () =>
+      stretch.on("change", (amount) => {
+        const node = root.current;
+        if (!node) return;
+        node.style.translate = `${side.current * amount * 50}% 0`;
+        node.style.scale = `${1 + amount} ${1 - amount * 0.5}`;
+        for (const item of node.querySelectorAll<HTMLElement>("[data-counter]")) {
+          item.style.scale = `${1 / (1 + amount)} ${1 / (1 - amount * 0.5)}`;
+        }
+      }),
+    [stretch],
+  );
 
   function select(next: string) {
     setLocal(next);
@@ -80,6 +94,7 @@ function GlassSegmented({
 
   function press(event: PointerEvent<HTMLDivElement>) {
     if (event.button !== 0) return;
+    stretch.stop();
     let at = place(event.clientX);
     setLens({ x: at, jumping: true });
     const box = event.currentTarget.getBoundingClientRect();
@@ -89,68 +104,61 @@ function GlassSegmented({
       setLens({ x: at, jumping: false });
       const over = box.left - next.clientX;
       const under = next.clientX - box.right;
-      if (over > 0) {
-        setFrom("right");
-        setPull((band(over) / box.width) * 0.4);
-      } else if (under > 0) {
-        setFrom("left");
-        setPull((band(under) / box.width) * 0.4);
-      } else setPull(0);
+      if (over > 0) side.current = -1;
+      else if (under > 0) side.current = 1;
+      stretch.set((band(Math.max(over, under, 0)) / box.width) * 0.4);
     };
-    const release = (next: globalThis.PointerEvent) => {
+    const drop = (next: globalThis.PointerEvent) => {
       window.removeEventListener("pointermove", follow);
-      window.removeEventListener("pointerup", release);
-      window.removeEventListener("pointercancel", release);
+      window.removeEventListener("pointerup", drop);
+      window.removeEventListener("pointercancel", drop);
       setLens(null);
-      setPull(null);
+      animate(
+        stretch,
+        0,
+        reduceMotion ? { duration: 0 } : { ...settle, velocity: stretch.getVelocity() },
+      );
       const nearest = values[Math.round(at / SEGMENT)];
       if (next.type === "pointerup" && nearest !== undefined && nearest !== current) {
         select(nearest);
       }
     };
     window.addEventListener("pointermove", follow);
-    window.addEventListener("pointerup", release);
-    window.addEventListener("pointercancel", release);
+    window.addEventListener("pointerup", drop);
+    window.addEventListener("pointercancel", drop);
   }
 
   return (
-    <Stretch value={pull !== null}>
-      <Glass
-        ref={root}
-        magnetic={PRESS}
-        light={false}
-        onPointerDown={press}
-        style={{ "--stretch": pull ?? 0, ...style } as CSSProperties}
-        className={cn(
-          "flex h-12 w-fit scale-x-[calc(1+var(--stretch))] scale-y-[calc(1-var(--stretch)*0.5)] rounded-full p-1",
-          from === "right" ? "origin-right" : "origin-left",
-          pull !== null
-            ? "transition-none"
-            : "[transition:scale_var(--spring-settle-time)_var(--spring-settle)] motion-reduce:transition-none",
-          className,
-        )}
-        render={
-          <RadioGroup {...props} value={current} onValueChange={(next) => select(next as string)} />
+    <Glass
+      ref={root}
+      magnetic={PRESS}
+      light={false}
+      onPointerDown={press}
+      style={style}
+      className={cn("flex h-12 w-fit rounded-full p-1", className)}
+      render={
+        <RadioGroup {...props} value={current} onValueChange={(next) => select(next as string)} />
+      }
+    >
+      <motion.span
+        aria-hidden="true"
+        initial={false}
+        animate={{ x }}
+        transition={
+          reduceMotion || (lens && !lens.jumping)
+            ? { duration: 0 }
+            : lens
+              ? { duration: 0.15, ease: "easeOut" }
+              : settle
         }
-      >
-        <span
-          aria-hidden="true"
-          style={{ "--x": `${x}px` } as CSSProperties}
-          className={cn(
-            "pointer-events-none absolute top-1 left-1 -z-10 h-10 w-14 translate-x-(--x) rounded-full bg-(--glass-lens) [mix-blend-mode:var(--glass-lens-blend)] motion-reduce:transition-none",
-            !lens && "[transition:translate_var(--spring-settle-time)_var(--spring-settle)]",
-            lens?.jumping && "transition-[translate] duration-150 ease-out",
-          )}
-        />
-        {children}
-      </Glass>
-    </Stretch>
+        className="pointer-events-none absolute top-1 left-1 -z-10 h-10 w-14 rounded-full bg-(--glass-lens) [mix-blend-mode:var(--glass-lens-blend)]"
+      />
+      {children}
+    </Glass>
   );
 }
 
 function GlassSegmentedItem({ children, className, ...props }: GlassSegmentedItemProps) {
-  const stretching = use(Stretch);
-
   return (
     <Radio.Root
       {...props}
@@ -159,14 +167,7 @@ function GlassSegmentedItem({ children, className, ...props }: GlassSegmentedIte
         className,
       )}
     >
-      <span
-        className={cn(
-          "grid scale-x-[calc(1/(1+var(--stretch)))] scale-y-[calc(1/(1-var(--stretch)*0.5))]",
-          stretching
-            ? "transition-none"
-            : "[transition:scale_var(--spring-settle-time)_var(--spring-settle)] motion-reduce:transition-none",
-        )}
-      >
+      <span data-counter className="grid">
         {children}
       </span>
     </Radio.Root>

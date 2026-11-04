@@ -27,9 +27,7 @@ export function ProjectList() {
               </div>
               <span className="flex min-w-0 flex-col gap-0.5">
                 <span className="block leading-5.5 font-medium">{project.title}</span>
-                <span className="block leading-5.5 text-muted-foreground">
-                  {project.tagline}
-                </span>
+                <span className="block leading-5.5 text-muted-foreground">{project.tagline}</span>
               </span>
             </a>
           </li>

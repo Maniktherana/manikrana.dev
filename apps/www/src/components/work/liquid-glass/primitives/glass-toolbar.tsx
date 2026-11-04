@@ -34,12 +34,12 @@ function GlassToolbarButton({
   );
 }
 
-function GlassToolbarSeparator({ className, ...props }: Toolbar.Separator.Props) {
+function GlassToolbarSeparator({
+  className,
+  ...props
+}: Omit<Toolbar.Separator.Props, "className"> & { className?: string }) {
   return (
-    <Toolbar.Separator
-      {...props}
-      className={cn("mx-0.5 h-5 w-px bg-current/15", className as string)}
-    />
+    <Toolbar.Separator {...props} className={cn("mx-0.5 h-5 w-px bg-current/15", className)} />
   );
 }
 

@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Slider } from "@base-ui/react/slider";
 import { cn } from "@manikrana/ui/lib/utils";
+import { animate, motion, useReducedMotion, type AnimationPlaybackControls } from "motion/react";
 import { AirpodsBoldIcon } from "@/components/icons/airpods-bold";
 import { FastForwardBoldIcon } from "@/components/icons/fast-forward-bold";
 import { PauseBoldIcon } from "@/components/icons/pause-bold";
@@ -9,8 +10,9 @@ import { RewindBoldIcon } from "@/components/icons/rewind-bold";
 import { StarBoldIcon } from "@/components/icons/star-bold";
 import { StarOutlineBoldIcon } from "@/components/icons/star-outline-bold";
 import { GlassLight, GlassRim } from "./primitives/glass";
-import { Marquee, Swap } from "./primitives/glass-motion";
+import { Swap } from "./primitives/glass-motion";
 import { useMagnetic } from "./primitives/magnetic";
+import { nowPlayingClose, nowPlayingOpen } from "./primitives/springs";
 
 type GlassNowPlayingProps = {
   artist: string;
@@ -25,10 +27,85 @@ function clock(seconds: number) {
   return `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, "0")}`;
 }
 
+const MARQUEE_GAP = 32;
+const MARQUEE_SPEED = 30;
+
+function Marquee({ children }: { children: ReactNode }) {
+  const frame = useRef<HTMLSpanElement>(null);
+  const strip = useRef<HTMLSpanElement>(null);
+  const [overflow, setOverflow] = useState(0);
+  const [moving, setMoving] = useState(false);
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    const box = frame.current;
+    const text = strip.current?.firstElementChild as HTMLElement | null;
+    if (!box || !text) return;
+    const measure = () => setOverflow(Math.max(0, text.offsetWidth - box.offsetWidth));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(box);
+    observer.observe(text);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const node = strip.current;
+    const text = node?.firstElementChild as HTMLElement | null;
+    if (!node || !text || !overflow || reduceMotion) return;
+    let timer = 0;
+    let run: AnimationPlaybackControls | null = null;
+    const loop = () => {
+      timer = window.setTimeout(
+        () => {
+          const distance = text.offsetWidth + MARQUEE_GAP;
+          setMoving(true);
+          run = animate(
+            node,
+            { x: [0, -distance] },
+            { duration: distance / MARQUEE_SPEED, ease: "linear" },
+          );
+          void run.finished.then(() => {
+            setMoving(false);
+            loop();
+          });
+        },
+        3000 + Math.random() * 3000,
+      );
+    };
+    loop();
+    return () => {
+      window.clearTimeout(timer);
+      run?.cancel();
+      setMoving(false);
+    };
+  }, [overflow, reduceMotion]);
+
+  return (
+    <span
+      ref={frame}
+      data-overflow={overflow > 0 || undefined}
+      data-moving={moving || undefined}
+      className="block min-w-0 overflow-hidden data-overflow:[mask-image:linear-gradient(to_right,black_calc(100%-24px),transparent)] data-moving:[mask-image:linear-gradient(to_right,transparent,black_16px,black_calc(100%-24px),transparent)]"
+    >
+      <span ref={strip} className="flex w-max gap-8">
+        <span className="whitespace-nowrap">{children}</span>
+        {overflow > 0 && (
+          <span aria-hidden="true" className="whitespace-nowrap">
+            {children}
+          </span>
+        )}
+      </span>
+    </span>
+  );
+}
+
 function GlassNowPlaying({ artist, artwork, className, src, title }: GlassNowPlayingProps) {
   const magnet = useMagnetic<HTMLDivElement>({ grow: 1.03, pull: 0.025, stretch: 0.02 });
+  const reduceMotion = useReducedMotion();
   const audio = useRef<HTMLAudioElement | null>(null);
   const [open, setOpen] = useState(false);
+  const spring = reduceMotion ? { duration: 0 } : open ? nowPlayingOpen : nowPlayingClose;
   const [playing, setPlaying] = useState(false);
   const [starred, setStarred] = useState(false);
   const [time, setTime] = useState({ current: 0, total: 0 });
@@ -107,20 +184,28 @@ function GlassNowPlaying({ artist, artwork, className, src, title }: GlassNowPla
 
   return (
     <div className={cn("relative z-20 h-14 w-82", className)}>
-      <div
+      <motion.div
         ref={magnet.ref}
         data-open={open || undefined}
+        initial={false}
+        animate={{ gridTemplateRows: open ? "auto 1fr" : "auto 0fr" }}
+        transition={spring}
         data-held={magnet.held || undefined}
         {...magnet.handlers}
         onPointerDown={(event) => {
           if (open && (event.target as Element).closest("[data-control]")) return;
           magnet.handlers.onPointerDown(event);
         }}
-        className="magnetic group absolute inset-x-0 top-0 isolate grid touch-none grid-rows-[auto_0fr] rounded-[28px] bg-(image:--glass-fill) font-[family-name:system-ui] text-(--glass-ink) subpixel-antialiased shadow-[var(--glass-contact),var(--glass-lift)] [backdrop-filter:var(--glass-backdrop)] select-none [transition:width_var(--spring-np-close-time)_var(--spring-np-close),grid-template-rows_var(--spring-np-close-time)_var(--spring-np-close)] data-open:grid-rows-[auto_1fr] data-open:[transition:width_var(--spring-np-open-time)_var(--spring-np-open),grid-template-rows_var(--spring-np-open-time)_var(--spring-np-open)] motion-reduce:transition-none"
+        className="magnetic group absolute inset-x-0 top-0 isolate grid touch-none rounded-[28px] bg-(image:--glass-fill) font-[family-name:system-ui] text-(--glass-ink) subpixel-antialiased shadow-[var(--glass-contact),var(--glass-lift)] [backdrop-filter:var(--glass-backdrop)] select-none"
       >
         <GlassRim />
         <GlassLight />
-        <div className="flex items-center gap-3 p-3 [transition:padding_var(--spring-np-close-time)_var(--spring-np-close),gap_var(--spring-np-close-time)_var(--spring-np-close)] group-data-open:pb-0 group-data-open:[transition:padding_var(--spring-np-open-time)_var(--spring-np-open),gap_var(--spring-np-open-time)_var(--spring-np-open)]">
+        <motion.div
+          initial={false}
+          animate={{ paddingBottom: open ? 0 : 12 }}
+          transition={spring}
+          className="flex items-center gap-3 p-3"
+        >
           <button
             type="button"
             aria-expanded={open}
@@ -128,9 +213,14 @@ function GlassNowPlaying({ artist, artwork, className, src, title }: GlassNowPla
             onClick={() => setOpen(!open)}
             className="flex min-w-0 flex-1 cursor-pointer items-center gap-[inherit] rounded-[18px] text-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
-            <span className="grid size-8 shrink-0 overflow-hidden rounded-md [transition:width_var(--spring-np-close-time)_var(--spring-np-close),height_var(--spring-np-close-time)_var(--spring-np-close),box-shadow_200ms_ease-out] group-data-open:size-14 group-data-open:shadow-[0_4px_14px_rgb(0_0_0/0.35)] group-data-open:[transition:width_var(--spring-np-open-time)_var(--spring-np-open),height_var(--spring-np-open-time)_var(--spring-np-open),box-shadow_250ms_ease-out]">
+            <motion.span
+              initial={false}
+              animate={{ width: open ? 56 : 32, height: open ? 56 : 32 }}
+              transition={spring}
+              className="grid shrink-0 overflow-hidden rounded-md transition-shadow duration-200 ease-out group-data-open:shadow-[0_4px_14px_rgb(0_0_0/0.35)] group-data-open:duration-250"
+            >
               <img src={artwork} alt="" draggable={false} className="size-full object-cover" />
-            </span>
+            </motion.span>
             <span className="grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)] gap-0.5 leading-4">
               <span className="text-[13px] font-semibold">
                 <Marquee>{title}</Marquee>
@@ -164,7 +254,7 @@ function GlassNowPlaying({ artist, artwork, className, src, title }: GlassNowPla
               ))}
             </span>
           </span>
-        </div>
+        </motion.div>
         <div className="min-h-0 overflow-hidden">
           <div inert={!open} data-control className="grid gap-1 px-3 pt-2.5 pb-3">
             {[
@@ -249,7 +339,7 @@ function GlassNowPlaying({ artist, artwork, className, src, title }: GlassNowPla
             ))}
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

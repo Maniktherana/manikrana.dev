@@ -1,7 +1,9 @@
 import { useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import { Switch } from "@base-ui/react/switch";
 import { cn } from "@manikrana/ui/lib/utils";
+import { motion, useReducedMotion } from "motion/react";
 import { GlassRim } from "./glass";
+import { settle } from "./springs";
 
 type GlassSwitchProps = Omit<Switch.Root.Props, "className" | "style"> & {
   accent?: string;
@@ -24,6 +26,7 @@ function GlassSwitch({
   style,
   ...props
 }: GlassSwitchProps) {
+  const reduceMotion = useReducedMotion();
   const timer = useRef(0);
   const moved = useRef(false);
   const [localChecked, setLocalChecked] = useState(defaultChecked);
@@ -85,17 +88,9 @@ function GlassSwitch({
       onBlur={() => setPointed(false)}
       data-active={active || undefined}
       data-pointed={pointed || undefined}
-      style={
-        {
-          "--accent": accent,
-          "--glass-switch-x": `${on ? TRAVEL : 0}px`,
-          "--glass-switch-lens": active ? 1 : 0,
-          ...style,
-        } as CSSProperties
-      }
+      style={{ "--accent": accent, ...style } as CSSProperties}
       className={cn(
-        "group relative h-7 w-15 shrink-0 cursor-pointer touch-none rounded-full select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring data-pointed:outline-none data-disabled:cursor-default data-disabled:opacity-50 motion-reduce:transition-none",
-        "[transition:--switch-x_var(--spring-settle-time)_var(--spring-settle),--lens_var(--spring-settle-time)_var(--spring-settle)]",
+        "group relative h-7 w-15 shrink-0 cursor-pointer touch-none rounded-full select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring data-pointed:outline-none data-disabled:cursor-default data-disabled:opacity-50",
         className,
       )}
     >
@@ -103,7 +98,16 @@ function GlassSwitch({
         aria-hidden="true"
         className="absolute inset-0 rounded-full bg-[rgb(120_120_128/0.36)] transition-[background-color] duration-200 ease-out group-data-checked:bg-(--accent)"
       />
-      <Switch.Thumb className="absolute top-0.5 left-0.5 h-6 w-9 translate-x-(--glass-switch-x) scale-[calc(1+var(--glass-switch-lens)*0.6)] rounded-full bg-white shadow-[0_1px_3px_rgb(0_0_0/0.3)] transition-[background-color,box-shadow] duration-180 ease-out group-data-active:bg-white/8 group-data-active:shadow-[0_2px_8px_rgb(0_0_0/0.3)] group-data-active:[backdrop-filter:brightness(1.12)_saturate(1.15)] motion-reduce:transition-none">
+      <Switch.Thumb
+        render={
+          <motion.span
+            initial={false}
+            animate={{ x: on ? TRAVEL : 0, scale: active ? 1.6 : 1 }}
+            transition={reduceMotion ? { duration: 0 } : settle}
+          />
+        }
+        className="absolute top-0.5 left-0.5 h-6 w-9 rounded-full bg-white shadow-[0_1px_3px_rgb(0_0_0/0.3)] transition-[background-color,box-shadow] duration-180 ease-out group-data-active:bg-white/8 group-data-active:shadow-[0_2px_8px_rgb(0_0_0/0.3)] group-data-active:[backdrop-filter:brightness(1.12)_saturate(1.15)] motion-reduce:transition-none"
+      >
         <span className="absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-180 ease-out group-data-active:opacity-100">
           <GlassRim />
         </span>

@@ -1,7 +1,9 @@
-import { useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Slider } from "@base-ui/react/slider";
 import { cn } from "@manikrana/ui/lib/utils";
+import { animate, motion, useMotionValue, useReducedMotion } from "motion/react";
 import { GlassRim } from "./glass";
+import { settle } from "./springs";
 
 type GlassSliderProps = Omit<
   Slider.Root.Props<number>,
@@ -112,35 +114,53 @@ function SliderTile({
   style,
 }: Parts & { filled: number; icon?: GlassSliderProps["icon"] }) {
   const control = useRef<HTMLDivElement>(null);
-  const [pull, setPull] = useState<number | null>(null);
-  const [from, setFrom] = useState<"top" | "bottom">("bottom");
+  const counter = useRef<HTMLSpanElement>(null);
+  const stretch = useMotionValue(0);
+  const side = useRef(1);
+  const reduceMotion = useReducedMotion();
+  const [dragging, setDragging] = useState(false);
   const covered = Math.min(ICON_SIZE, Math.max(0, filled * TILE - ICON_BOTTOM));
   const draw = (onFill: boolean) => (typeof icon === "function" ? icon(onFill) : icon);
 
-  function press() {
+  useEffect(
+    () =>
+      stretch.on("change", (amount) => {
+        if (control.current) {
+          control.current.style.translate = `0 ${side.current * amount * 50}%`;
+          control.current.style.scale = `${1 - amount * 0.5} ${1 + amount}`;
+        }
+        if (counter.current) {
+          counter.current.style.scale = `${1 / (1 - amount * 0.5)} ${1 / (1 + amount)}`;
+        }
+      }),
+    [stretch],
+  );
+
+  function press(node: HTMLElement) {
+    stretch.stop();
+    setDragging(true);
     const follow = (event: PointerEvent) => {
-      const node = control.current;
-      if (!node) return;
       const box = node.getBoundingClientRect();
       const over = box.top - event.clientY;
       const under = event.clientY - box.bottom;
-      if (over > 0) {
-        setFrom("bottom");
-        setPull((band(over) / box.height) * 0.4);
-      } else if (under > 0) {
-        setFrom("top");
-        setPull((band(under) / box.height) * 0.4);
-      } else setPull(0);
+      if (over > 0) side.current = -1;
+      else if (under > 0) side.current = 1;
+      stretch.set((band(Math.max(over, under, 0)) / box.height) * 0.4);
     };
-    const release = () => {
+    const drop = () => {
       window.removeEventListener("pointermove", follow);
-      window.removeEventListener("pointerup", release);
-      window.removeEventListener("pointercancel", release);
-      setPull(null);
+      window.removeEventListener("pointerup", drop);
+      window.removeEventListener("pointercancel", drop);
+      setDragging(false);
+      animate(
+        stretch,
+        0,
+        reduceMotion ? { duration: 0 } : { ...settle, velocity: stretch.getVelocity() },
+      );
     };
     window.addEventListener("pointermove", follow);
-    window.addEventListener("pointerup", release);
-    window.addEventListener("pointercancel", release);
+    window.addEventListener("pointerup", drop);
+    window.addEventListener("pointercancel", drop);
   }
 
   return (
@@ -153,15 +173,11 @@ function SliderTile({
       <Slider.Control
         ref={control}
         onPointerDown={(event) => {
-          if (event.button === 0) press();
+          if (event.button === 0) press(event.currentTarget);
         }}
-        style={{ "--stretch": pull ?? 0, "--covered": `${covered}px` } as CSSProperties}
+        style={{ "--covered": `${covered}px` } as CSSProperties}
         className={cn(
-          "relative block h-31 w-14 cursor-pointer scale-x-[calc(1-var(--stretch)*0.5)] scale-y-[calc(1+var(--stretch))] rounded-full bg-(image:--glass-fill) shadow-[var(--glass-contact),var(--glass-lift)] [backdrop-filter:var(--glass-backdrop)] has-focus-visible:outline-2 has-focus-visible:outline-ring focus-visible:outline-offset-2",
-          from === "top" ? "origin-top" : "origin-bottom",
-          pull !== null
-            ? "transition-none"
-            : "[transition:scale_var(--spring-settle-time)_var(--spring-settle)] motion-reduce:transition-none",
+          "relative block h-31 w-14 cursor-pointer rounded-full bg-(image:--glass-fill) shadow-[var(--glass-contact),var(--glass-lift)] [backdrop-filter:var(--glass-backdrop)] has-focus-visible:outline-2 has-focus-visible:outline-ring focus-visible:outline-offset-2",
         )}
       >
         <Slider.Track className="size-full overflow-hidden rounded-full">
@@ -169,7 +185,7 @@ function SliderTile({
           <Slider.Indicator
             className={cn(
               "w-full bg-(--accent)",
-              pull === null && "transition-[height] duration-150 ease-out",
+              !dragging && "transition-[height] duration-150 ease-out",
             )}
           />
         </Slider.Track>
@@ -177,12 +193,8 @@ function SliderTile({
         {icon && (
           <span
             aria-hidden="true"
-            className={cn(
-              "pointer-events-none absolute inset-x-0 bottom-3.5 grid h-7 place-items-center scale-x-[calc(1/(1-var(--stretch)*0.5))] scale-y-[calc(1/(1+var(--stretch)))]",
-              pull !== null
-                ? "transition-none"
-                : "[transition:scale_var(--spring-settle-time)_var(--spring-settle)] motion-reduce:transition-none",
-            )}
+            ref={counter}
+            className="pointer-events-none absolute inset-x-0 bottom-3.5 grid h-7 place-items-center"
           >
             <span className="col-start-1 row-start-1 grid text-(--glass-ink) [clip-path:inset(-6px_-6px_var(--covered)_-6px)]">
               {draw(false)}
@@ -205,6 +217,7 @@ function SliderBar({
   start,
   style,
 }: Parts & { end?: ReactNode; filled: number; start?: ReactNode }) {
+  const reduceMotion = useReducedMotion();
   const timer = useRef(0);
   const [active, setActive] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -252,11 +265,17 @@ function SliderBar({
             />
             <Slider.Thumb
               data-active={active || undefined}
+              render={
+                <motion.div
+                  initial={false}
+                  animate={{ scale: active ? 1.28 : 1 }}
+                  transition={reduceMotion ? { duration: 0 } : settle}
+                />
+              }
               className={cn(
-                "group/knob h-[18px] w-[27px] rounded-full bg-white [inset-inline-start:calc(var(--progress)*(100%-27px)+13.5px)]! shadow-[0_1px_3px_rgb(0_0_0/0.3)] has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-ring data-active:scale-[1.28] data-active:bg-white/8 data-active:shadow-[0_2px_8px_rgb(0_0_0/0.3)] data-active:[backdrop-filter:brightness(1.12)_saturate(1.15)] motion-reduce:transition-none",
-                dragging
-                  ? "[transition:scale_var(--spring-settle-time)_var(--spring-settle),background-color_180ms_ease-out,box-shadow_180ms_ease-out]"
-                  : "[transition:scale_var(--spring-settle-time)_var(--spring-settle),background-color_180ms_ease-out,box-shadow_180ms_ease-out,inset-inline-start_200ms_ease-out]",
+                "group/knob h-[18px] w-[27px] rounded-full bg-white [inset-inline-start:calc(var(--progress)*(100%-27px)+13.5px)]! shadow-[0_1px_3px_rgb(0_0_0/0.3)] transition-[background-color,box-shadow] duration-180 ease-out has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-ring data-active:bg-white/8 data-active:shadow-[0_2px_8px_rgb(0_0_0/0.3)] data-active:[backdrop-filter:brightness(1.12)_saturate(1.15)] motion-reduce:transition-none",
+                !dragging &&
+                  "transition-[background-color,box-shadow,inset-inline-start] [transition-duration:180ms,180ms,200ms]",
               )}
             >
               <span className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-180 ease-out group-data-active/knob:opacity-100">

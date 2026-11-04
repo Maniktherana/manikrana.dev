@@ -10,9 +10,10 @@ import { Dialog } from "@base-ui/react/dialog";
 import { Radio } from "@base-ui/react/radio";
 import { RadioGroup } from "@base-ui/react/radio-group";
 import { cn } from "@manikrana/ui/lib/utils";
+import { animate } from "motion/react";
 import { ChevronUpDownBoldIcon } from "@/components/icons/chevron-up-down-bold";
-import { cssTime } from "./primitives/css-time";
 import { Glass, GlassRim } from "./primitives/glass";
+import { focusClose, focusOpen } from "./primitives/springs";
 
 type GlassFocusOption = {
   color: string;
@@ -34,13 +35,6 @@ const TUCK = 160;
 const LEAD = 40;
 const EDGE = 16;
 const NARROW = 600;
-
-function spring(name: string) {
-  return {
-    duration: cssTime(document.documentElement, `--spring-${name}-time`),
-    easing: getComputedStyle(document.documentElement).getPropertyValue(`--spring-${name}`),
-  };
-}
 
 function calm() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -67,90 +61,111 @@ function place(trigger: HTMLElement | null, list: HTMLElement | null) {
   );
 }
 
+function unpin(nodes: HTMLElement[]) {
+  for (const node of nodes) {
+    for (const property of ["transform", "width", "height", "column-gap", "opacity", "filter"]) {
+      node.style.removeProperty(property);
+    }
+  }
+}
+
 function morph(trigger: HTMLElement | null, list: HTMLElement | null, back: boolean) {
   const row = list?.querySelector<HTMLElement>("[data-checked]");
   const shape = row?.querySelector<HTMLElement>("[data-shape]");
-  const fill = row?.querySelector<HTMLElement>("[data-fill]");
   const content = row?.querySelector<HTMLElement>("[data-content]");
   const dot = row?.querySelector<HTMLElement>("[data-dot]");
   const triggerDot = trigger?.querySelector<HTMLElement>("[data-dot]");
-  if (!trigger || !list || !row || !shape || !fill || !content || !dot || !triggerDot || calm()) {
+  if (!trigger || !list || !row || !shape || !content || !dot || !triggerDot || calm()) {
     return;
   }
-  for (const node of list.querySelectorAll<HTMLElement>("[data-row], [data-row] *")) {
-    for (const animation of node.getAnimations()) animation.cancel();
-  }
+  const others = [...list.querySelectorAll<HTMLElement>("[data-row]:not([data-checked])")];
+  if (!back) unpin([shape, content, dot, ...others]);
   const from = trigger.getBoundingClientRect();
   const to = row.getBoundingClientRect();
   const zoom = row.offsetWidth / to.width || 1;
   const dx = (from.left - to.left) * zoom;
   const dy = (from.top - to.top) * zoom;
   const lift = (from.height * zoom - row.offsetHeight) / 2;
-  const timing = {
-    ...spring(back ? "focus-close" : "focus-open"),
-    delay: back ? LEAD : 0,
-    fill: back ? ("both" as const) : ("none" as const),
-  };
-  const ends = [
-    {
-      translate: `${dx}px ${dy}px`,
+  const shift = (triggerDot.getBoundingClientRect().left - dot.getBoundingClientRect().left) * zoom;
+  const small = triggerDot.offsetWidth;
+  const large = dot.offsetWidth;
+  const gaps = [getComputedStyle(trigger).columnGap, getComputedStyle(content).columnGap] as const;
+  const ends = <T,>(closed: T, opened: T) => (back ? [opened, closed] : [closed, opened]);
+  const spring = { ...(back ? focusClose : focusOpen), delay: back ? LEAD / 1000 : 0 };
+
+  if (back) row.dataset.returning = "";
+  else {
+    // Motion starts on the next frame; pin the first one so the row never paints in place.
+    Object.assign(shape.style, {
+      transform: `translateX(${dx}px) translateY(${dy}px)`,
       width: `${from.width * zoom}px`,
       height: `${from.height * zoom}px`,
-    },
-    { translate: "0px 0px", width: `${row.offsetWidth}px`, height: `${row.offsetHeight}px` },
+    });
+    Object.assign(content.style, {
+      transform: `translateX(${shift}px) translateY(${dy + lift}px)`,
+      columnGap: gaps[0],
+    });
+    Object.assign(dot.style, { width: `${small}px`, height: `${small}px` });
+  }
+  const runs = [
+    animate(
+      shape,
+      {
+        x: ends(dx, 0),
+        y: ends(dy, 0),
+        width: ends(from.width * zoom, row.offsetWidth),
+        height: ends(from.height * zoom, row.offsetHeight),
+      },
+      spring,
+    ),
+    animate(
+      content,
+      {
+        x: ends(shift, 0),
+        y: ends(dy + lift, 0),
+        columnGap: ends(...gaps),
+      },
+      spring,
+    ),
+    animate(
+      dot,
+      {
+        width: ends(small, large),
+        height: ends(small, large),
+      },
+      spring,
+    ),
   ];
-  const small = `${triggerDot.offsetWidth}px`;
-  const large = `${dot.offsetWidth}px`;
-  const shift = (triggerDot.getBoundingClientRect().left - dot.getBoundingClientRect().left) * zoom;
-  const travel = [
-    { translate: `${shift}px ${dy + lift}px`, gap: getComputedStyle(trigger).columnGap },
-    { translate: "0px 0px", gap: getComputedStyle(content).columnGap },
-  ];
-  const grow = [
-    { width: small, height: small },
-    { width: large, height: large },
-  ];
-  const whiten = [{ opacity: 0 }, { opacity: 1 }];
-  if (back) row.dataset.returning = "";
-  shape.animate(back ? [...ends].reverse() : ends, timing);
-  content.animate(back ? [...travel].reverse() : travel, timing);
-  dot.animate(back ? [...grow].reverse() : grow, timing);
-  fill.animate(back ? [...whiten].reverse() : whiten, { ...timing, easing: "ease-out" });
 
   const center = to.top + to.height / 2;
-  for (const other of list.querySelectorAll<HTMLElement>("[data-row]:not([data-checked])")) {
+  for (const other of others) {
     const box = other.getBoundingClientRect();
-    const behind = {
-      translate: `0px ${(center - (box.top + box.height / 2)) * zoom}px`,
-      scale: "0.92",
-    };
-    const spread = { translate: "0px 0px", scale: "1" };
+    const behind = { y: (center - (box.top + box.height / 2)) * zoom, scale: 0.92 };
     if (back) {
-      other.animate([spread, behind], {
-        ...spring("focus-close"),
-        duration: TUCK,
-        fill: "forwards",
-      });
-      other.animate([{ opacity: 1 }, { opacity: 0 }], {
-        duration: TUCK,
-        easing: "ease-out",
-        fill: "forwards",
-      });
+      animate(other, behind, { ...focusClose, duration: TUCK / 1000 });
+      animate(other, { opacity: 0 }, { duration: TUCK / 1000, ease: "easeOut" });
     } else {
-      other.animate([behind, spread], {
-        ...spring("focus-open"),
-        delay: EMERGE,
-        fill: "backwards",
+      Object.assign(other.style, {
+        transform: `translateY(${behind.y}px) scale(0.92)`,
+        opacity: "0",
+        filter: "blur(4px)",
       });
-      other.animate(
-        [
-          { opacity: 0, filter: "blur(4px)" },
+      runs.push(
+        animate(other, { y: 0, scale: 1 }, { ...focusOpen, delay: EMERGE / 1000 }),
+        animate(
+          other,
           { opacity: 1, filter: "blur(0px)" },
-        ],
-        { duration: 220, delay: EMERGE, easing: "ease-out", fill: "backwards" },
+          { duration: 0.22, delay: EMERGE / 1000, ease: "easeOut" },
+        ),
       );
     }
   }
+
+  if (back) return;
+  // Hand the settled rows back to CSS, so data-checked styles the row picked next.
+  void Promise.all(runs.map((run) => run.finished)).then(() => {
+    if (row.dataset.returning === undefined) unpin([shape, content, dot, ...others]);
+  });
 }
 
 function FocusRows({
@@ -194,10 +209,7 @@ function FocusRows({
             aria-hidden="true"
             className="absolute top-0 left-0 -z-10 size-full rounded-full bg-(image:--glass-fill) shadow-[var(--glass-contact),var(--glass-lift)] [backdrop-filter:blur(8px)_saturate(1.6)]"
           >
-            <span
-              data-fill
-              className="absolute inset-0 rounded-full bg-white opacity-0 transition-opacity duration-250 ease-out group-data-checked/row:opacity-100"
-            />
+            <span className="absolute inset-0 rounded-full bg-white opacity-0 transition-opacity duration-250 ease-out group-data-checked/row:opacity-100 group-data-checked/row:starting:opacity-0 group-data-returning/row:opacity-0 group-data-returning/row:delay-40" />
             <GlassRim deep />
             <ChevronUpDownBoldIcon className="absolute top-1/2 right-4 size-2.5 -translate-y-1/2 text-(--glass-ink) opacity-0 transition-opacity duration-150 ease-out group-data-checked/row:starting:opacity-60 group-data-returning/row:opacity-60" />
           </span>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import { Toggle } from "@base-ui/react/toggle";
 import { IPhone } from "@manikrana/ui/components/iphone";
 import { cn } from "@manikrana/ui/lib/utils";
+import { motion } from "motion/react";
 import { AirplaneBoldIcon } from "@/components/icons/airplane-bold";
 import { BagBoldIcon } from "@/components/icons/bag-bold";
 import { BedBoldIcon } from "@/components/icons/bed-bold";
@@ -37,6 +38,7 @@ import { GlassSegmented } from "@/components/work/liquid-glass/primitives/glass-
 import { GlassSlider } from "@/components/work/liquid-glass/primitives/glass-slider";
 import { GlassSwitch } from "@/components/work/liquid-glass/primitives/glass-switch";
 import { GlassToast } from "@/components/work/liquid-glass/primitives/glass-toast";
+import { nowPlayingOpen } from "@/components/work/liquid-glass/primitives/springs";
 
 const SOURCES = [
   { label: "Entire screen", icon: <DisplayBoldIcon /> },
@@ -123,7 +125,6 @@ type Backdrop = (typeof BACKDROPS)[number]["value"];
 export function Stage() {
   const [source, setSource] = useState(SOURCES[1]!.label);
   const [backdrop, setBackdrop] = useState<Backdrop>("blue");
-  const [glass, setGlass] = useState<"dark" | "light">("dark");
   const [focus, setFocus] = useState(FOCUSES[2]!.label);
   const [volume, setVolume] = useState(60);
   const [brightness, setBrightness] = useState(70);
@@ -196,30 +197,24 @@ export function Stage() {
     <GlassFocus container={canvas} value={focus} onValueChange={setFocus} options={FOCUSES} />
   );
   const appearance = (
-    <div className="flex items-center gap-2">
-      <GlassSegmented
-        aria-label="Background"
-        value={backdrop}
-        onValueChange={(next) => setBackdrop(next as Backdrop)}
-      >
-        {BACKDROPS.map((option) => (
-          <GlassSegmented.Item
-            key={option.value}
-            value={option.value}
-            aria-label={`${option.label} background`}
-          >
-            <span
-              style={{ "--swatch": option.swatch } as CSSProperties}
-              className="size-7 rounded-full bg-(image:--swatch) shadow-[inset_0_0_0_1px_rgb(0_0_0/0.12)]"
-            />
-          </GlassSegmented.Item>
-        ))}
-      </GlassSegmented>
-      <ThemeButton
-        light={glass === "light"}
-        onToggle={() => setGlass(glass === "light" ? "dark" : "light")}
-      />
-    </div>
+    <GlassSegmented
+      aria-label="Background"
+      value={backdrop}
+      onValueChange={(next) => setBackdrop(next as Backdrop)}
+    >
+      {BACKDROPS.map((option) => (
+        <GlassSegmented.Item
+          key={option.value}
+          value={option.value}
+          aria-label={`${option.label} background`}
+        >
+          <span
+            style={{ "--swatch": option.swatch } as CSSProperties}
+            className="size-7 rounded-full bg-(image:--swatch) shadow-[inset_0_0_0_1px_rgb(0_0_0/0.12)]"
+          />
+        </GlassSegmented.Item>
+      ))}
+    </GlassSegmented>
   );
   const more = (
     <GlassActions>
@@ -239,7 +234,6 @@ export function Stage() {
   return (
     <div
       ref={root}
-      data-glass={glass}
       data-backdrop={backdrop}
       className="@container-size relative isolate size-full overflow-hidden [--backdrop-ink:white] data-[backdrop=light]:[--backdrop-ink:#1c1c1e]"
     >
@@ -315,17 +309,23 @@ export function Stage() {
                     Today 10:54
                   </p>
                   {messages.map((message) => (
-                    <p
+                    <motion.p
                       key={message.id}
+                      initial={{ y: 12, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{
+                        y: nowPlayingOpen,
+                        opacity: { duration: 0.2, ease: "easeOut" },
+                      }}
                       className={cn(
-                        "max-w-[75%] rounded-[15px] px-3 py-1.5 text-[13px] leading-[18px] [transition:translate_var(--spring-np-open-time)_var(--spring-np-open),opacity_200ms_ease-out] starting:translate-y-3 starting:opacity-0",
+                        "max-w-[75%] rounded-[15px] px-3 py-1.5 text-[13px] leading-[18px]",
                         message.mine
                           ? "self-end bg-[#0a84ff] text-white"
-                          : "self-start bg-[#3a3a3c] text-white in-data-[glass=light]:bg-[#e9e9eb] in-data-[glass=light]:text-[#1c1c1e]",
+                          : "self-start bg-[#3a3a3c] text-white",
                       )}
                     >
                       {message.text}
-                    </p>
+                    </motion.p>
                   ))}
                 </div>
                 <GlassComposer
@@ -451,27 +451,6 @@ function PhoneTop({ children }: { children: ReactNode }) {
         {children}
       </div>
     </IPhone>
-  );
-}
-
-function ThemeButton({ light, onToggle }: { light: boolean; onToggle: () => void }) {
-  return (
-    <GlassButton
-      magnetic
-      shape="circle"
-      aria-label={light ? "Dark glass" : "Light glass"}
-      onClick={onToggle}
-      className="size-12"
-    >
-      <Swap
-        shrink
-        value={light ? "sun" : "moon"}
-        items={{
-          moon: <MoonBoldIcon className="size-5.5" />,
-          sun: <SunBoldIcon className="size-5.5" />,
-        }}
-      />
-    </GlassButton>
   );
 }
 

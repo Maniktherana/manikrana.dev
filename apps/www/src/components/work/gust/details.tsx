@@ -28,7 +28,12 @@ export function Details() {
           </span>
           {INSTALL_COMMAND}
         </code>
-        <CopyButton iconOnly className="bg-transparent" label="Copy command" value={INSTALL_COMMAND} />
+        <CopyButton
+          iconOnly
+          className="bg-transparent"
+          label="Copy command"
+          value={INSTALL_COMMAND}
+        />
       </div>
     </WorkSection>
   );

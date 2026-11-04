@@ -1,22 +1,23 @@
 import {
   Children,
   createContext,
+  isValidElement,
   use,
   useEffect,
   useLayoutEffect,
   useRef,
   useState,
-  type CSSProperties,
   type ReactNode,
   type RefObject,
 } from "react";
 import { Menu } from "@base-ui/react/menu";
 import { cn } from "@manikrana/ui/lib/utils";
-import { cssTime } from "./css-time";
+import { animate, motion } from "motion/react";
 import { GlassLight, GlassRim } from "./glass";
 import { GlassButton } from "./glass-button";
 import { Crossfade } from "./glass-motion";
 import { useMagnetic, useReducedMotion } from "./magnetic";
+import { menuClose, menuOpen, resize } from "./springs";
 
 type GlassMenuProps = Omit<Menu.Root.Props, "modal"> & {
   modal?: boolean;
@@ -50,9 +51,11 @@ type MenuState = {
 
 const TALL = 44;
 const WIDTH = 200;
-const ROW = 40;
+const ROW = 36;
 const INSET = 10;
-const ROUND = 44;
+const SEPARATOR = 9;
+const LABEL = 24;
+const ROUND = ROW / 2 + INSET;
 
 const MenuContext = createContext<MenuState | null>(null);
 
@@ -135,10 +138,7 @@ function GlassMenuTrigger({ children, className, value, ...props }: GlassMenuTri
       // Springs even while the menu covers it: the menu is anchored to the trigger, so a snap
       // here would jump the closing menu sideways.
       if (reduceMotion) return;
-      button.animate([{ width: `${button.offsetWidth}px` }, { width: `${width}px` }], {
-        duration: cssTime(button, "--spring-resize-time"),
-        easing: getComputedStyle(button).getPropertyValue("--spring-resize"),
-      });
+      animate(button, { width: [button.offsetWidth, width] }, resize);
     });
     observer.observe(node);
     return () => observer.disconnect();
@@ -179,6 +179,16 @@ function GlassMenuTrigger({ children, className, value, ...props }: GlassMenuTri
   );
 }
 
+function stack(children: ReactNode): number {
+  return Children.toArray(children).reduce<number>((sum, child) => {
+    if (!isValidElement<{ children?: ReactNode }>(child)) return sum;
+    if (child.type === GlassMenuItem || child.type === GlassMenuRadioItem) return sum + ROW;
+    if (child.type === GlassMenuSeparator) return sum + SEPARATOR;
+    if (child.type === GlassMenuGroupLabel) return sum + LABEL;
+    return sum + stack(child.props.children);
+  }, 0);
+}
+
 function GlassMenuPopup({
   align = "start",
   children,
@@ -188,17 +198,7 @@ function GlassMenuPopup({
   ...props
 }: GlassMenuPopupProps) {
   const { natural, onClosed, open, reduceMotion, trigger, triggerRef } = useMenu();
-  const [list, setList] = useState<HTMLDivElement | null>(null);
-  const [tall, setTall] = useState(Children.count(children) * ROW + INSET * 2);
-
-  useLayoutEffect(() => {
-    if (!list) return;
-    const measure = () => setTall(list.offsetHeight + INSET * 2);
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(list);
-    return () => observer.disconnect();
-  }, [list]);
+  const tall = stack(children) + INSET * 2;
 
   return (
     <Menu.Portal container={container}>
@@ -213,13 +213,12 @@ function GlassMenuPopup({
       >
         <Menu.Popup
           {...props}
-          style={{ width: WIDTH, height: tall, "--inner": `${ROUND - INSET}px` } as CSSProperties}
+          style={{ width: WIDTH, height: tall }}
           className={cn("relative outline-none", className)}
         >
           <Surface
             align={align}
             anchor={triggerRef}
-            list={setList}
             natural={() => natural.current?.offsetWidth ?? TALL}
             open={open}
             reduceMotion={reduceMotion}
@@ -236,37 +235,46 @@ function GlassMenuPopup({
   );
 }
 
-const ROW_CLASS =
-  "flex h-10 cursor-pointer items-center gap-2.5 rounded-[calc(var(--inner)*0.6)] px-3 text-sm font-medium outline-none [corner-shape:squircle] supports-[corner-shape:squircle]:rounded-(--inner) data-highlighted:bg-(--glass-hover) [&>svg]:opacity-80";
+type Styled<T> = Omit<T, "className"> & { className?: string };
 
-function GlassMenuItem({ className, ...props }: Menu.Item.Props) {
-  return <Menu.Item {...props} className={cn(ROW_CLASS, className as string)} />;
+function GlassMenuItem({ className, ...props }: Styled<Menu.Item.Props>) {
+  return (
+    <Menu.Item
+      {...props}
+      className={cn(
+        "flex h-9 cursor-pointer items-center gap-2.5 rounded-full px-3 text-sm font-medium outline-none data-highlighted:bg-(--glass-hover) [&>svg]:opacity-80",
+        className,
+      )}
+    />
+  );
 }
 
-function GlassMenuRadioItem({ className, closeOnClick = true, ...props }: Menu.RadioItem.Props) {
+function GlassMenuRadioItem({
+  className,
+  closeOnClick = true,
+  ...props
+}: Styled<Menu.RadioItem.Props>) {
   return (
     <Menu.RadioItem
       {...props}
       closeOnClick={closeOnClick}
-      className={cn(ROW_CLASS, className as string)}
+      className={cn(
+        "flex h-9 cursor-pointer items-center gap-2.5 rounded-full px-3 text-sm font-medium outline-none data-highlighted:bg-(--glass-hover) [&>svg]:opacity-80",
+        className,
+      )}
     />
   );
 }
 
-function GlassMenuSeparator({ className, ...props }: Menu.Separator.Props) {
-  return (
-    <Menu.Separator
-      {...props}
-      className={cn("mx-3 my-1 h-px bg-current/12", className as string)}
-    />
-  );
+function GlassMenuSeparator({ className, ...props }: Styled<Menu.Separator.Props>) {
+  return <Menu.Separator {...props} className={cn("mx-3 my-1 h-px bg-current/12", className)} />;
 }
 
-function GlassMenuGroupLabel({ className, ...props }: Menu.GroupLabel.Props) {
+function GlassMenuGroupLabel({ className, ...props }: Styled<Menu.GroupLabel.Props>) {
   return (
     <Menu.GroupLabel
       {...props}
-      className={cn("px-3 pt-1.5 pb-1 text-[11px] font-medium opacity-60", className as string)}
+      className={cn("flex h-6 items-end px-3 pb-1 text-[11px] font-medium opacity-60", className)}
     />
   );
 }
@@ -280,7 +288,6 @@ function Surface({
   open,
   reduceMotion,
   side,
-  list,
   tall,
   trigger,
 }: {
@@ -292,7 +299,6 @@ function Surface({
   open: boolean;
   reduceMotion: boolean;
   side: "top" | "bottom";
-  list: (node: HTMLDivElement | null) => void;
   tall: number;
   trigger: ReactNode;
 }) {
@@ -304,16 +310,16 @@ function Surface({
   measure.current = natural;
   const [rest, setRest] = useState(TALL);
   const [placed, setPlaced] = useState(false);
+  const expanded = useRef(false);
   const shape =
     reduceMotion || (placed && open)
-      ? { x: WIDTH / 2, y: tall / 2, width: WIDTH, height: tall, radius: ROUND, corner: 2, lift: 1 }
+      ? { x: WIDTH / 2, y: tall / 2, width: WIDTH, height: tall, radius: ROUND, lift: 1 }
       : {
           x: align === "center" ? WIDTH / 2 : align === "end" ? WIDTH - rest / 2 : rest / 2,
           y: side === "top" ? tall - TALL / 2 : TALL / 2,
           width: rest,
           height: TALL,
           radius: TALL / 2,
-          corner: 1,
           lift: 0,
         };
 
@@ -345,62 +351,50 @@ function Surface({
 
   useEffect(() => {
     if (!placed || open || reduceMotion) return;
-    flash.current?.animate(
-      { opacity: [0, 0.45, 0], offset: [0, 0.3, 1] },
-      { duration: 250, easing: "ease-out" },
+    if (!flash.current) return;
+    animate(
+      flash.current,
+      { opacity: [0, 0.45, 0] },
+      { duration: 0.25, times: [0, 0.3, 1], ease: "easeOut" },
     );
   }, [placed, open, reduceMotion]);
 
   useEffect(() => {
-    if (!placed || open) return;
-    if (reduceMotion) return closed.current();
-    let live = true;
-    const finish = () => {
-      if (!live) return;
-      live = false;
-      closed.current();
-    };
-    const morphs = magnet.ref.current
-      ?.getAnimations()
-      .filter((item) => item instanceof CSSTransition);
-    void Promise.allSettled((morphs ?? []).map((item) => item.finished)).then(finish);
-    const fallback = window.setTimeout(finish, 700);
-    return () => {
-      live = false;
-      window.clearTimeout(fallback);
-    };
-  }, [placed, open, reduceMotion, magnet.ref]);
+    if (placed && open) expanded.current = true;
+    if (placed && !open && (reduceMotion || !expanded.current)) closed.current();
+  }, [placed, open, reduceMotion]);
 
   return (
-    <div
+    <motion.div
       ref={magnet.ref}
       data-held={magnet.held || undefined}
-      style={
-        {
-          "--glass-cx": `${shape.x}px`,
-          "--glass-cy": `${shape.y}px`,
-          "--glass-w": `${shape.width}px`,
-          "--glass-h": `${shape.height}px`,
-          "--glass-r": `${shape.radius}px`,
-          "--glass-corner": shape.corner,
-          "--glass-lift": shape.lift,
-        } as CSSProperties
-      }
+      initial={false}
+      animate={{
+        "--cx": `${shape.x}px`,
+        "--cy": `${shape.y}px`,
+        "--w": `${shape.width}px`,
+        "--h": `${shape.height}px`,
+        "--r": `${shape.radius}px`,
+        "--lift": shape.lift,
+      }}
+      transition={!placed || reduceMotion ? { duration: 0 } : open ? menuOpen : menuClose}
+      onAnimationComplete={() => {
+        if (placed && !open) closed.current();
+      }}
       {...magnet.handlers}
       className={cn(
-        "magnetic group absolute top-[calc(var(--glass-cy)-var(--glass-h)/2)] left-[calc(var(--glass-cx)-var(--glass-w)/2)] isolate h-(--glass-h) w-(--glass-w) touch-none overflow-hidden rounded-[calc(var(--glass-r)*(1.4_-_0.4*var(--glass-corner)))] supports-[corner-shape:squircle]:rounded-(--glass-r) bg-[linear-gradient(color-mix(in_srgb,var(--glass-sheen)_calc(100%_-_var(--depth)_*_50%),transparent),rgb(255_255_255/0)_calc(100%_+_var(--depth)_*_6.67%)),linear-gradient(var(--glass-color),var(--glass-color))] font-[family-name:system-ui] text-(--glass-ink) subpixel-antialiased shadow-[var(--glass-contact),var(--glass-lift),0_calc(var(--depth)_*_7px)_calc(var(--depth)_*_8px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),0_calc(var(--depth)_*_11px)_calc(var(--depth)_*_28px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),inset_0_0_0_0.5px_rgb(255_255_255/calc(var(--depth)_*_0.16)),inset_0_0_5.5px_rgb(255_255_255/calc(var(--depth)_*_0.1)),inset_0_0.5px_0_rgb(255_255_255/calc(var(--depth)_*_0.3))] [--depth:clamp(0,var(--glass-lift),1)] [backdrop-filter:var(--glass-backdrop)] select-none [corner-shape:superellipse(var(--glass-corner))]",
+        "magnetic group absolute isolate touch-none overflow-hidden font-[family-name:system-ui] text-(--glass-ink) subpixel-antialiased select-none [--depth:clamp(0,var(--lift),1)]",
+        "top-[calc(var(--cy)-var(--h)/2)] left-[calc(var(--cx)-var(--w)/2)] h-(--h) w-(--w)",
+        "rounded-(--r)",
+        "bg-[linear-gradient(color-mix(in_srgb,var(--glass-sheen)_calc(100%_-_var(--depth)_*_50%),transparent),rgb(255_255_255/0)_calc(100%_+_var(--depth)_*_6.67%)),linear-gradient(var(--glass-color),var(--glass-color))] [backdrop-filter:var(--glass-backdrop)]",
+        "shadow-[var(--glass-contact),var(--glass-lift),0_calc(var(--depth)_*_7px)_calc(var(--depth)_*_8px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),0_calc(var(--depth)_*_11px)_calc(var(--depth)_*_28px)_-4px_rgb(0_0_0/calc(var(--depth)_*_0.2)),inset_0_0_0_0.5px_rgb(255_255_255/calc(var(--depth)_*_0.16)),inset_0_0_5.5px_rgb(255_255_255/calc(var(--depth)_*_0.1)),inset_0_0.5px_0_rgb(255_255_255/calc(var(--depth)_*_0.3))]",
         !placed && "opacity-0",
-        placed &&
-          !reduceMotion &&
-          (open
-            ? "[transition:--cx_var(--spring-drift-open-time)_var(--spring-drift-open),--cy_var(--spring-rise-open-time)_var(--spring-rise-open),--w_var(--spring-grow-open-time)_var(--spring-grow-open),--h_var(--spring-grow-open-time)_var(--spring-grow-open),--r_var(--spring-grow-open-time)_var(--spring-grow-open),--corner_var(--spring-grow-open-time)_var(--spring-grow-open),--lift_var(--spring-grow-open-time)_var(--spring-grow-open)]"
-            : "[transition:--cx_var(--spring-drift-close-time)_var(--spring-drift-close),--cy_var(--spring-rise-close-time)_var(--spring-rise-close),--w_var(--spring-grow-close-time)_var(--spring-grow-close),--h_var(--spring-grow-close-time)_var(--spring-grow-close),--r_var(--spring-grow-close-time)_var(--spring-grow-close),--corner_var(--spring-grow-close-time)_var(--spring-grow-close),--lift_var(--spring-grow-close-time)_var(--spring-grow-close)]"),
       )}
     >
       {/* Closed, the surface wears the trigger's own rim so handing back to the button doesn't pop. */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-(--depth) shadow-[inset_0_1px_1.5px_rgb(255_255_255/0.22),inset_0_-1px_1.5px_rgb(255_255_255/0.12)] [corner-shape:inherit] mask-x-from-70% mask-x-to-100%"
+        className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-(--depth) shadow-[inset_0_1px_1.5px_rgb(255_255_255/0.22),inset_0_-1px_1.5px_rgb(255_255_255/0.12)] mask-x-from-70% mask-x-to-100%"
       />
       <span
         aria-hidden="true"
@@ -433,9 +427,9 @@ function Surface({
           placed && !open && "opacity-0 blur-[12px] motion-safe:scale-115",
         )}
       >
-        <div ref={list}>{children}</div>
+        {children}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
