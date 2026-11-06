@@ -7,7 +7,6 @@ import { GithubIcon } from "@/components/icons/github";
 import { MailIcon } from "@/components/icons/mail";
 import { XIcon } from "@/components/icons/x";
 import { Avatar, AvatarImage, AvatarFallback } from "@manikrana/ui/components/ui/avatar";
-import { Backdrop } from "@/components/backdrop";
 import { cn } from "@manikrana/ui/lib/utils";
 import { useFirstVisit } from "@/hooks/use-first-visit";
 import { LibraryList } from "@/routes/-components/library-list";
@@ -34,7 +33,6 @@ function Home() {
         first && "entering",
       )}
     >
-      <Backdrop />
       <section
         id="home"
         aria-labelledby="intro-title"
@@ -42,7 +40,7 @@ function Home() {
       >
         <div>
           <header className="mb-5 flex items-center gap-3">
-            <Avatar data-portrait size="xl" className="rounded-xl">
+            <Avatar size="xl" className="rounded-xl">
               <AvatarFallback delay={200} className="absolute inset-0 rounded-[inherit]">
                 MR
               </AvatarFallback>

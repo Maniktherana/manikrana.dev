@@ -10,9 +10,7 @@ import { ScrollFade } from "@/components/scroll-fade";
 import { useSounds } from "@/hooks/use-sounds";
 
 import appCss from "@/styles/globals.css?url";
-import sansRegularFont from "@manikrana/ui/styles/fonts/open-runde-regular-tabular.woff2?url";
-import sansMediumFont from "@manikrana/ui/styles/fonts/open-runde-medium-tabular.woff2?url";
-import sansSemiboldFont from "@manikrana/ui/styles/fonts/open-runde-semibold-tabular.woff2?url";
+import sansFont from "@manikrana/ui/styles/fonts/inter-latin.woff2?url";
 import monoFont from "@manikrana/ui/styles/fonts/jetbrains-mono-latin.woff2?url";
 
 const TransitionDials = import.meta.env.DEV
@@ -81,21 +79,7 @@ export const Route = createRootRoute({
       {
         rel: "preload",
         as: "font",
-        href: sansRegularFont,
-        type: "font/woff2",
-        crossOrigin: "anonymous",
-      },
-      {
-        rel: "preload",
-        as: "font",
-        href: sansMediumFont,
-        type: "font/woff2",
-        crossOrigin: "anonymous",
-      },
-      {
-        rel: "preload",
-        as: "font",
-        href: sansSemiboldFont,
+        href: sansFont,
         type: "font/woff2",
         crossOrigin: "anonymous",
       },
