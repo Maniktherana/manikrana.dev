@@ -223,7 +223,7 @@ export function ChapterDock({
             animate={{ scale: scrubbing ? 1.1 : pressed ? 0.96 : 1 }}
             transition={SPRING}
             style={{ width: surfaceWidth, height: surfaceHeight }}
-            className="relative rounded-[20px] bg-popover shadow-[var(--edge-raised),inset_0_0_0_1px_oklch(1_0_0/10%),0_2px_6px_oklch(0_0_0/60%),0_12px_40px_oklch(0_0_0/90%)]"
+            className="relative rounded-[20px] bg-popover shadow-[var(--edge-raised),inset_0_0_0_1px_oklch(1_0_0/10%),0_8px_24px_oklch(0_0_0/40%)]"
           >
             <div className="absolute inset-0 overflow-hidden rounded-[inherit]">
               <div

@@ -1,17 +1,23 @@
-import { ArrowUpIcon } from "@/components/icons/arrow-up";
+import { useMatch } from "@tanstack/react-router";
+import { goalShiftRecovery, hockey, memoryUsage, trainingLoss } from "@/components/footer-charts";
+import { LineChart } from "@/components/line-chart";
+
+const postCharts: Record<string, typeof hockey> = {
+  agentchangebench: goalShiftRecovery,
+  "llm-from-scratch": trainingLoss,
+  prometheus: memoryUsage,
+};
 
 export default function Footer() {
+  const id = useMatch({ from: "/library/$id", shouldThrow: false })?.params.id;
+  const lines = (id && postCharts[id]) || hockey;
   return (
-    <footer className="mx-auto flex w-[calc(100%-40px)] max-w-reading items-center justify-between gap-3 pt-26 pb-12 text-sm leading-5 text-muted-foreground">
-      <p>© 2026 Manik Rana</p>
-      <button
-        type="button"
-        aria-label="Back to top"
-        onClick={() => window.scrollTo({ top: 0 })}
-        className="grid size-8 place-items-center rounded-lg text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring motion-safe:transition-colors motion-safe:duration-200 motion-reduce:transition-none"
-      >
-        <ArrowUpIcon className="size-4" />
-      </button>
+    <footer aria-hidden="true" className="pt-16 min-[641px]:pt-26">
+      <LineChart
+        key={lines === hockey ? "site" : id}
+        lines={lines}
+        className="pointer-events-none block h-56 w-full select-none min-[641px]:h-72"
+      />
     </footer>
   );
 }

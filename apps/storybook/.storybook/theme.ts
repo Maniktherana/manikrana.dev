@@ -12,7 +12,7 @@ const vars = {
   base: "dark",
   brandTitle: "manikrana.dev / ui",
 
-  fontBase: '"Open Runde", "Open Runde Fallback", ui-sans-serif, system-ui, sans-serif',
+  fontBase: '"Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif',
   fontCode: "ui-monospace, SFMono-Regular, Menlo, monospace",
 
   colorPrimary: foreground,

@@ -41,7 +41,7 @@ export function PostPage({ id }: { id: string }) {
   return (
     <main
       id="main-content"
-      className="mx-auto flex w-[calc(100%-40px)] max-w-reading flex-col gap-5 pb-24 min-[641px]:gap-10"
+      className="mx-auto flex w-[calc(100%-40px)] max-w-reading flex-col gap-5 min-[641px]:gap-10 min-[641px]:pb-24"
     >
       <LibraryHeader />
 

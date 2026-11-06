@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-// The longest entrance in globals.css: the backdrop's 150ms delay and 1200ms fade.
-const ENTRANCE_MS = 1350;
+// The longest entrance in globals.css: the previews' 500ms fade.
+const ENTRANCE_MS = 500;
 
 let visited = false;
 

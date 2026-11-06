@@ -22,6 +22,15 @@ export const Route = createFileRoute("/library/$id")({
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
+        ...(entry.kind === "post"
+          ? [
+              {
+                property: "og:image",
+                content: `https://manikrana.dev/writing/${entry.id}/og.png`,
+              },
+              { property: "og:image:alt", content: title },
+            ]
+          : []),
       ],
     };
   },

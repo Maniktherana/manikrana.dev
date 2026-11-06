@@ -13,7 +13,7 @@ export function LibraryHeader() {
         aria-keyshortcuts="Escape"
         className="flex w-fit items-center gap-3 rounded-xl group outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
-        <Avatar data-portrait size="xl" className="rounded-xl">
+        <Avatar size="xl" className="rounded-xl">
           <AvatarFallback delay={200} className="absolute inset-0 rounded-[inherit]">
             MR
           </AvatarFallback>
