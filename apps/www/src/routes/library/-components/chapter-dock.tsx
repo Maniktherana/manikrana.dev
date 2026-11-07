@@ -209,7 +209,7 @@ export function ChapterDock({
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-center px-5 lg:hidden">
+      <div className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-center px-5 with-rail:hidden">
         <motion.div
           ref={dock}
           inert={!ready}

@@ -135,7 +135,6 @@ export function ChapterNavigation({ article }: { article: RefObject<HTMLElement 
         chapters={chapters}
         current={current}
         visible={visible}
-        position={position}
         onJump={jump}
       />
     </>

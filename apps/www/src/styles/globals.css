@@ -1,6 +1,8 @@
 @import "@manikrana/ui/styles/globals.css";
 @source "../**/*.{ts,tsx}";
 
+@custom-variant with-rail (@media (min-width: 87rem) and (hover: hover) and (pointer: fine));
+
 @theme {
   --container-reading: 644px;
   --radius-surface: 1rem;
